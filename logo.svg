@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" width="640" height="340" role="img" aria-label="伏流 FUKULIU - Kansai Art Platform">
+    <defs>
+        <style>
+            .fg { fill: #111114; }
+            .ac { fill: #235BC8; }
+            .mu { fill: #5f6168; }
+            .kanji {
+                font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN W9', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', system-ui, sans-serif;
+                font-weight: 900;
+                letter-spacing: -8px;
+            }
+            .meta {
+                font-family: 'Inter', 'Helvetica Neue', system-ui, sans-serif;
+                font-weight: 700;
+                letter-spacing: 4px;
+                fill: #5f6168;
+            }
+        </style>
+    </defs>
+
+    <!-- ── 上部：折れ曲がりのアクセントライン ── -->
+    <path d="M 0 30 L 70 30 L 92 12 L 156 12 L 178 30 L 240 30"
+          stroke="#235BC8" stroke-width="2.5" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+
+    <!-- ── 伏流 (kanji) ── -->
+    <text x="0" y="178" class="kanji fg" font-size="170">伏流</text>
+
+    <!-- 伏流のあとに小さな青い四角（ピリオド／決め点） -->
+    <rect x="332" y="156" width="14" height="14" class="ac"/>
+
+    <!-- ── FUKULIU カクカク・ロマ字（自作パスでカスタム造形） ── -->
+    <!-- 全体グループ。1文字 = 36w × 70h、文字間 12px、Iだけ 12w -->
+    <g transform="translate(0 232)" class="fg">
+        <!-- F -->
+        <path d="M 0 0 L 38 0 L 38 9 L 9 9 L 9 31 L 30 31 L 30 40 L 9 40 L 9 70 L 0 70 Z"/>
+
+        <!-- U (折れ曲がり：内側に1段の段差) -->
+        <g transform="translate(50 0)">
+            <path d="M 0 0 L 9 0 L 9 56 L 18 56 L 18 62 L 29 62 L 29 0 L 38 0 L 38 70 L 0 70 Z"/>
+        </g>
+
+        <!-- K (シャープな対角＋折れ点) -->
+        <g transform="translate(100 0)">
+            <path d="M 0 0 L 9 0 L 9 30 L 31 0 L 42 0 L 19 32 L 42 70 L 31 70 L 9 38 L 9 70 L 0 70 Z"/>
+        </g>
+
+        <!-- U -->
+        <g transform="translate(154 0)">
+            <path d="M 0 0 L 9 0 L 9 56 L 18 56 L 18 62 L 29 62 L 29 0 L 38 0 L 38 70 L 0 70 Z"/>
+        </g>
+
+        <!-- L (右下に小さな段差を入れて"折れ"のニュアンス) -->
+        <g transform="translate(204 0)">
+            <path d="M 0 0 L 9 0 L 9 55 L 22 55 L 22 61 L 38 61 L 38 70 L 0 70 Z"/>
+        </g>
+
+        <!-- I (ナロー) -->
+        <g transform="translate(254 0)">
+            <path d="M 0 0 L 12 0 L 12 70 L 0 70 Z"/>
+        </g>
+
+        <!-- U -->
+        <g transform="translate(278 0)">
+            <path d="M 0 0 L 9 0 L 9 56 L 18 56 L 18 62 L 29 62 L 29 0 L 38 0 L 38 70 L 0 70 Z"/>
+        </g>
+    </g>
+
+    <!-- ── 下部：地下水脈の折れ線（伏流のメタファー） ── -->
+    <path d="M 0 320 L 90 320 L 110 304 L 196 304 L 218 320 L 296 320 L 318 336 L 392 336 L 414 320 L 640 320"
+          stroke="#235BC8" stroke-width="2.5" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+
+    <!-- ── サブタイトル ── -->
+    <text x="332" y="252" class="meta" font-size="11">KANSAI ART PLATFORM</text>
+    <text x="332" y="270" class="meta" font-size="10" fill="#888">EST. 2026</text>
+</svg>

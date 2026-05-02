@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUKULIU — 関西発、領域横断の知のプラットフォーム</title>
+    <meta name="description" content="FUKULIU｜ラジオ・動画・記事で構成される、制作実践者によるアートプラットフォーム。関西の美術シーンを再解釈する。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ============================ HEADER ============================ -->
+    <header class="site-header">
+        <!-- 上部: ON AIR ステータスバー -->
+        <div class="site-header__status">
+            <div class="site-header__status-inner">
+                <span class="status-pulse" aria-hidden="true"></span>
+                <span class="status-label">ON AIR</span>
+                <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+                <span class="status-date">No. 005 · 2026 SPRING</span>
+            </div>
+        </div>
+
+        <!-- メインヘッダー -->
+        <div class="header-inner">
+            <a href="#" class="brand-mark">
+                <img src="fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav">
+                <ul>
+                    <li><a href="#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                    <li><a href="#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                    <li><a href="#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                    <li><a href="#works"><span class="nav-num">04</span><span class="nav-text">Works</span></a></li>
+                    <li><a href="#shop"><span class="nav-num">05</span><span class="nav-text">Shop</span></a></li>
+                    <li><a href="#about"><span class="nav-num">06</span><span class="nav-text">About</span></a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" aria-label="メニューを開く">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <!-- 下部: アクセントストリップ -->
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+
+    <!-- ============================ HERO ============================ -->
+    <section class="hero">
+        <div class="hero__main">
+            <p class="hero__eyebrow">Kansai Art Platform / Est. 2026</p>
+            <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 - Kansai Art Platform" class="hero__logo-img"></h1>
+            <p class="hero__tagline">
+                ラジオ・動画・記事。<br>
+                媒体を横断し、<span class="accent">関西の美術シーンを再解釈する</span>。
+            </p>
+        </div>
+
+        <a href="#feature" class="hero__feature">
+            <div class="hero__feature-meta">
+                <span class="tag">Top Story</span>
+                <span class="date">2026.04.27</span>
+            </div>
+            <h2 class="hero__feature-title">
+                美術史は、いま誰のものか。<br>
+                ——共同作業としての読み解きを、ラジオから始める。
+            </h2>
+            <span class="hero__feature-link">Read the issue →</span>
+        </a>
+    </section>
+
+    <!-- ============================ FEATURE STRIP ============================ -->
+    <section id="feature" class="feature-strip">
+        <div class="feature-strip__inner">
+            <div class="feature-strip__label">Now on air</div>
+            <div class="ticker">
+                <span>#001 美術史ラジオ：他分野ゲストと読み解く20世紀</span>
+                <span>·</span>
+                <span>京芸生の1日 vol.3 公開中</span>
+                <span>·</span>
+                <span>展示レビュー：京都某所、4月の3展示</span>
+                <span>·</span>
+                <span>一年対談 Discordコミュニティ募集中</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ RADIO (Spotify Embed) ============================ -->
+    <!-- ★ エピソードの追加・編集はこのファイル末尾の <script> ブロックの radioEpisodes 配列を編集してください ★ -->
+    <section id="radio" class="program program--spotify">
+        <div class="program__bg" aria-hidden="true"></div>
+
+        <div class="program__head">
+            <div class="program__head-text">
+                <span class="program__label">
+                    <svg class="spotify-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
+                    01 — Podcast on Spotify
+                </span>
+                <h2 class="program__title">美術史ラジオ</h2>
+                <p class="program__desc">他分野のゲストを呼び、共同作業によって美術史を読み解く。耳で聴くアトリエ。Spotifyで配信中。</p>
+                <a id="radio-show-cta" href="#" target="_blank" rel="noopener noreferrer" class="spotify-cta">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
+                    Spotifyで番組を開く
+                </a>
+            </div>
+            <a id="radio-show-more" href="#" target="_blank" rel="noopener noreferrer" class="program__more">All episodes →</a>
+        </div>
+
+        <!-- エピソードはJSで自動生成。配列の先頭が「Latest」として大きく表示されます -->
+        <div id="radio-episodes" class="radio-episodes"></div>
+    </section>
+
+    <!-- ============================ ARTICLE ============================ -->
+    <!-- ★ 記事の追加・編集はこのファイル末尾の <script> ブロックの articles 配列を編集してください ★ -->
+    <section id="article" class="program">
+        <div class="program__head">
+            <div class="program__head-text">
+                <span class="program__label">02 — Article</span>
+                <h2 class="program__title">記事</h2>
+                <p class="program__desc">展示レビュー・エッセイ・対談。制作実践者の正直な目線で書く、強度のあるテキストを蓄積する。</p>
+
+                <div class="cat-legend">
+                    <span class="cat-legend__item"><i class="cat-dot cat-dot--review"></i>展示レビュー</span>
+                    <span class="cat-legend__item"><i class="cat-dot cat-dot--essay"></i>エッセイ</span>
+                    <span class="cat-legend__item"><i class="cat-dot cat-dot--dialogue"></i>対談</span>
+                </div>
+            </div>
+            <a href="#" class="program__more">All articles →</a>
+        </div>
+
+        <!-- 記事はJSで自動生成。配列の先頭が最新として上に並びます -->
+        <div id="articles-list" class="article-list"></div>
+    </section>
+
+    <!-- ============================ VIDEO ============================ -->
+    <section id="video" class="program program--dark">
+        <div class="program__head">
+            <div class="program__head-text">
+                <span class="program__label">03 — Video</span>
+                <h2 class="program__title">芸大生の1日 / Interview</h2>
+                <p class="program__desc">主に京芸生の1日に密着し、リアルな生活と制作のプロセスを記録する映像メディア。</p>
+            </div>
+            <a href="#" class="program__more">YouTube channel →</a>
+        </div>
+
+        <div class="card-grid card-grid--video">
+            <article class="card card--video card--feature">
+                <div class="card__thumb">
+                    <span class="play">▶</span>
+                    <span class="duration">12:48</span>
+                </div>
+                <div class="card__body">
+                    <div class="card__meta">
+                        <span class="tag tag--blue">New</span>
+                        <span class="date">vol.03 · 2026.04.18</span>
+                    </div>
+                    <h3 class="card__title">日本画専攻・3回生の朝6時から24時まで</h3>
+                    <p class="card__excerpt">画材を擦る音、深夜のドローイング、留学生との議論。京都市立芸術大学の生活を、編集を抑えてそのまま。</p>
+                </div>
+            </article>
+
+            <article class="card card--video">
+                <div class="card__thumb"><span class="duration">09:21</span></div>
+                <div class="card__body">
+                    <div class="card__meta"><span class="date">vol.02</span></div>
+                    <h3 class="card__title">彫刻専攻のアトリエにて</h3>
+                </div>
+            </article>
+
+            <article class="card card--video">
+                <div class="card__thumb"><span class="duration">14:02</span></div>
+                <div class="card__body">
+                    <div class="card__meta"><span class="date">vol.01</span></div>
+                    <h3 class="card__title">構想設計：1人のスタジオの哲学</h3>
+                </div>
+            </article>
+
+            <article class="card card--video">
+                <div class="card__thumb"><span class="duration">07:55</span></div>
+                <div class="card__body">
+                    <div class="card__meta"><span class="date">Interview</span></div>
+                    <h3 class="card__title">アーティスト・田中誠 / 制作の動機について</h3>
+                </div>
+            </article>
+        </div>
+    </section>
+
+
+    <!-- ============================ SERIES ============================ -->
+    <section id="series" class="series">
+        <div class="series__head">
+            <span class="program__label">— Programs</span>
+            <h2 class="program__title">連載番組</h2>
+        </div>
+        <div class="series-grid">
+            <a href="#" class="series-card">
+                <span class="series-card__no">#01</span>
+                <h3>多様な視点<br>からのレビュー</h3>
+                <p>一つの展示を、複数の実践者が異なる角度から書く。</p>
+                <span class="series-card__type">記事</span>
+            </a>
+            <a href="#" class="series-card series-card--accent">
+                <span class="series-card__no">#02</span>
+                <h3>一年対談</h3>
+                <p>Discordコミュニティで一年をかけて続ける、長期対話。</p>
+                <span class="series-card__type">Discord</span>
+            </a>
+            <a href="#" class="series-card">
+                <span class="series-card__no">#03</span>
+                <h3>芸大生の1日</h3>
+                <p>主に京芸生に密着。制作と生活が地続きな時間を記録する。</p>
+                <span class="series-card__type">動画</span>
+            </a>
+            <a href="#" class="series-card">
+                <span class="series-card__no">#04</span>
+                <h3>売り込みレビュー</h3>
+                <p>関西圏の展示を、アーティストの正直な目線で批判的に書く。</p>
+                <span class="series-card__type">記事</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================ WORKS / SHOP ============================ -->
+    <section class="dual">
+        <div id="works" class="dual__col">
+            <span class="program__label">04 — Works</span>
+            <h2 class="program__title">作品</h2>
+            <p class="dual__desc">FUKULIUに関わる作家による作品アーカイブ。プラットフォーム自体が、批評と制作の地続きであることの証。</p>
+            <a href="#" class="btn-line">View archive →</a>
+        </div>
+        <div id="shop" class="dual__col dual__col--alt">
+            <span class="program__label">05 — Shop</span>
+            <h2 class="program__title">オンラインショップ</h2>
+            <p class="dual__desc">作品・印刷物・限定アイテムなど。プラットフォームを存続させるための、もうひとつの場。</p>
+            <a href="#" class="btn-line btn-line--white">Visit shop →</a>
+        </div>
+    </section>
+
+    <!-- ============================ BACKNUMBERS ============================ -->
+    <section id="backnumbers" class="backnumbers">
+        <div class="backnumbers__head">
+            <span class="program__label">— Archive</span>
+            <h2 class="program__title">バックナンバー</h2>
+            <p class="program__desc">これまでに公開されたエピソード・記事・動画のすべて。</p>
+        </div>
+
+        <div class="archive-filter">
+            <button class="archive-filter__btn is-active">All</button>
+            <button class="archive-filter__btn">Radio</button>
+            <button class="archive-filter__btn">Video</button>
+            <button class="archive-filter__btn">Article</button>
+            <button class="archive-filter__btn">Series</button>
+        </div>
+
+        <ul class="archive-list">
+            <li><span class="archive-list__date">2026.04.20</span><span class="archive-list__cat">RADIO</span><span class="archive-list__title">EP.012 印象派は本当に革命だったのか</span></li>
+            <li><span class="archive-list__date">2026.04.18</span><span class="archive-list__cat">VIDEO</span><span class="archive-list__title">芸大生の1日 vol.3 日本画専攻・3回生</span></li>
+            <li><span class="archive-list__date">2026.04.10</span><span class="archive-list__cat">ARTICLE</span><span class="archive-list__title">関西で美術をやることの、地理的な意味</span></li>
+            <li><span class="archive-list__date">2026.04.06</span><span class="archive-list__cat">RADIO</span><span class="archive-list__title">EP.011 建築家と読む、戦後京都の空間</span></li>
+            <li><span class="archive-list__date">2026.03.28</span><span class="archive-list__cat">ARTICLE</span><span class="archive-list__title">神戸・元町、見るべきだった展示3つ</span></li>
+            <li><span class="archive-list__date">2026.03.23</span><span class="archive-list__cat">RADIO</span><span class="archive-list__title">EP.010 写真家と語る、コンテンポラリーの今</span></li>
+            <li><span class="archive-list__date">2026.03.18</span><span class="archive-list__cat">VIDEO</span><span class="archive-list__title">芸大生の1日 vol.2 彫刻専攻のアトリエ</span></li>
+            <li><span class="archive-list__date">2026.03.05</span><span class="archive-list__cat">ARTICLE</span><span class="archive-list__title">「観客」という言葉が壊しているもの</span></li>
+        </ul>
+
+        <button class="load-more">Load more</button>
+    </section>
+
+    <!-- ============================ ABOUT / RESPONSE ============================ -->
+    <section id="about" class="about">
+        <div class="about__inner">
+            <span class="program__label">— About</span>
+            <h2 class="about__title">場として、<br><span class="accent">レスポンスから生まれる。</span></h2>
+            <p class="about__text">
+                FUKULIUは、単なる情報発信ではなく、媒体ごとの特性を活かして知覚と理解の仕方そのものを変化させる場を目指します。<br>
+                ラジオのお便り、Discordでの対話、コメント。<span class="accent">フィジカルを伴わない「盆踊り」</span>のような場を、関西の知の結節点として育てていきます。
+            </p>
+            <div class="about__cta">
+                <a href="#" class="btn-fill">お便りを送る</a>
+                <a href="#" class="btn-line">Discordに参加</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ FOOTER ============================ -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div>
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="#radio">Radio</a></li>
+                        <li><a href="#video">Video</a></li>
+                        <li><a href="#article">Article</a></li>
+                        <li><a href="#series">Series</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#works">Works</a></li>
+                        <li><a href="#shop">Shop</a></li>
+                        <li><a href="#backnumbers">Backnumbers</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Follow</h4>
+                    <ul>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">Spotify</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="site-footer__base">
+            <span>&copy; 2026 FUKULIU / ART Platform</span>
+            <span>Designed in Kansai.</span>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        //  記事 — articles データ
+        //  ------------------------------------------------------------
+        //  ★ 新しい記事を追加するときは、↓ articles 配列のいちばん上に
+        //    オブジェクトを1つ足すだけ。配列の先頭が最新（一番上）に
+        //    表示されます。
+        //
+        //  各フィールド:
+        //    cat     : 'review' | 'essay' | 'dialogue'  ← カテゴリ
+        //              review   = 展示レビュー (オレンジ)
+        //              essay    = エッセイ     (ブルー)
+        //              dialogue = 対談         (チャコール)
+        //    date    : 公開日                (例: '2026.04.25')
+        //    title   : 記事タイトル
+        //    excerpt : 概要文                (任意)
+        //    author  : 著者名                (任意。省略可)
+        //    url     : 記事本体へのリンク     (任意)
+        //              - 'articles/001.html' のような相対パス
+        //              - 'https://note.com/...' のような外部URL
+        //              - 空文字なら「準備中」表示
+        // ============================================================
+        const articles = [
+            {
+                cat: 'review',
+                date: '2026.04.25',
+                title: '京都某所、4月の3展示──「優しさ」という退屈について',
+                excerpt: '関西の現代美術における「ケア」の語り口は、いつから批評の鋭さを失ったのか。',
+                author: '編集部',
+                url: ''
+            },
+            {
+                cat: 'dialogue',
+                date: '2026.04.18',
+                title: '大阪・中之島 / 同じ展示を、3人がそれぞれ書く',
+                excerpt: '建築・写真・彫刻、それぞれの実践者が同じ展示を巡る。レビューの複数性を試みる連載。',
+                author: '3名共著',
+                url: ''
+            },
+            {
+                cat: 'essay',
+                date: '2026.04.10',
+                title: '関西で美術をやることの、地理的な意味',
+                excerpt: '東京一極集中の言説の中で、関西を拠点にすることの利点と不利益を改めて整理する。',
+                author: '編集部',
+                url: ''
+            },
+            {
+                cat: 'review',
+                date: '2026.03.28',
+                title: '神戸・元町、見るべきだった展示3つ',
+                excerpt: '惜しくも会期終了。それでも、今後の参照のために書き残す。',
+                author: '編集部',
+                url: ''
+            }
+        ];
+
+        const ARTICLE_CATEGORIES = {
+            review:   { label: '展示レビュー' },
+            essay:    { label: 'エッセイ' },
+            dialogue: { label: '対談' }
+        };
+
+        (function () {
+            function escapeAttr(s) {
+                return String(s || '').replace(/"/g, '&quot;');
+            }
+            function isExternal(url) { return /^https?:\/\//.test(url); }
+            function hasUrl(url) { return url && url !== '#'; }
+
+            function renderArticle(article, index) {
+                const num = String(index + 1).padStart(3, '0');
+                const cat = ARTICLE_CATEGORIES[article.cat] || ARTICLE_CATEGORIES.essay;
+                const tagHTML = `<span class="tag tag--${article.cat}">${cat.label}</span>`;
+                const linked  = hasUrl(article.url);
+                const tag = linked ? 'a' : 'div';
+                const attrs = linked
+                    ? `href="${escapeAttr(article.url)}"${isExternal(article.url) ? ' target="_blank" rel="noopener noreferrer"' : ''}`
+                    : '';
+
+                return `
+                    <${tag} class="article-row article-row--${article.cat}${linked ? ' article-row--link' : ''}" ${attrs}>
+                        <span class="article-row__num">${num}</span>
+                        <div class="article-row__body">
+                            <div class="article-row__meta">
+                                ${tagHTML}
+                                <span class="date">${article.date || ''}</span>
+                                ${!linked ? '<span class="article-row__pending">準備中</span>' : ''}
+                            </div>
+                            <h3 class="article-row__title">${article.title || ''}</h3>
+                            ${article.excerpt ? `<p class="article-row__excerpt">${article.excerpt}</p>` : ''}
+                        </div>
+                        ${article.author ? `<span class="article-row__author">By ${article.author}</span>` : ''}
+                    </${tag}>
+                `;
+            }
+
+            const list = document.getElementById('articles-list');
+            if (list) list.innerHTML = articles.map(renderArticle).join('');
+        })();
+
+        // ============================================================
+        //  美術史ラジオ — エピソードデータ
+        //  ------------------------------------------------------------
+        //  ★ 新しいエピソードを追加するときは、↓ radioEpisodes 配列の
+        //    いちばん上にオブジェクトを1つ足すだけ。
+        //    配列の先頭が自動的に "Latest" として大きく表示されます。
+        //
+        //  各フィールド:
+        //    id      : Spotify の エピソードURL / 埋め込みURL / IDのいずれでもOK
+        //              例) '14TZlIzEP8uggIUocaTKh2'
+        //                  'https://open.spotify.com/episode/14TZlIz...?si=...'
+        //    ep      : 表示用エピソード番号  (例: 'EP.05')
+        //    date    : 公開日                (例: '2026.04.21')
+        //    title   : タイトル(改行は<br>OK)
+        //    guest   : ゲスト情報            (任意)
+        //    excerpt : 概要文                (任意)
+        //    cover   : カバー画像のファイル名(任意。空ならグラデのみ)
+        // ============================================================
+
+        // 番組ページのURL（CTA / All episodes リンク用）
+        const RADIO_SHOW_URL = 'https://open.spotify.com/show/3O4Qm8XTn8jE4YOZXiGsxO?si=9db5099e1845493d';
+
+        const radioEpisodes = [
+            {
+                id: 'https://open.spotify.com/episode/14TZlIzEP8uggIUocaTKh2?si=0mOrFDpUSmmzT4FYBK6DOQ',
+                ep: 'EP.05',
+                date: '2026.04.21',
+                title: '「鑑賞授業！慧可断臂図」<br>──画聖の“異色作”を見る',
+                guest: '山手 亮弥（立命館大学／東アジア研究領域）',
+                excerpt: '「画聖」雪舟の異色作《慧可断臂図》を、書道・西洋画の視点から読み解く。',
+                cover: 'exhi01_img01-1280x720.jpg'
+            },
+            {
+                id: 'https://open.spotify.com/episode/4Ys0MSixojrfFmpkYTpY3d?si=ClGpNT-2SoakoSh6GO4GUAD',
+                ep: 'EP.03',
+                date: '2026.04.15',
+                title: '「日本画の“東西”」',
+                guest: '山本 涼太（京都市立芸術大学／日本画）',
+                excerpt: '明治期の「日本画」の誕生から、日本画における“東西”の対比と融合について考察する。',
+                cover: 'okakura 2.jpg'
+            },
+            {
+                id: 'https://open.spotify.com/episode/3WVoEoied83Ord8n8bcNGZ?si=wRyA1AKQSoWc64u-iUltyg',
+                ep: 'EP.0２',
+                date: '2026.03.23',
+                title: '「病と画家」',
+                guest: '久保ゆうき(京都市立芸術大学/ゴッホ研究)',
+                excerpt: '狂気の画家、というのは本当なのか。エゴン・シーレを軸に、ファン・ゴッホら病と人生を共にした画家について考える。',
+                cover: '1658278331825_9e3ef917c8c0241daba20949d655606f.avif'
+
+                
+            },
+        
+             {
+                id: 'https://open.spotify.com/episode/5SJ174QBTS7TFXp2qRbK2w?si=o0SlmrJdRVm_6IrK28zDYA',
+                ep: 'EP.01',
+                date: '2026.03.24',
+                title: '「関西ニューウェーブ」',
+                guest: 'オオノ(京都市立芸術大学/彫刻)',
+                excerpt: '「関西ニューウェーブ」とは、どのような美術史的潮流だったのか。',
+                cover: 'ishihara.jpg'
+            }
+            
+
+            
+        ];
+
+        // ============================================================
+        //  描画ロジック（基本的には変更不要）
+        // ============================================================
+        (function () {
+            // URL/ID どちらでも受け取れるようにする
+            function extractSpotifyId(input) {
+                if (!input) return '';
+                const m = String(input).match(/episode\/([a-zA-Z0-9]+)/);
+                return m ? m[1] : String(input).split('?')[0];
+            }
+            function escapeAttr(s) {
+                return String(s || '').replace(/"/g, '&quot;');
+            }
+
+            function renderEpisode(ep, index) {
+                const id = extractSpotifyId(ep.id);
+                const isFeatured = index === 0;
+                const isPlaceholder = !id || id.startsWith('REPLACE_');
+                const embedHeight = isFeatured ? 232 : 152;
+
+                const embedHTML = isPlaceholder
+                    ? `<div class="radio-card__embed-placeholder">Coming soon — Spotify ID 未設定</div>`
+                    : `<iframe class="radio-card__iframe"
+                               src="https://open.spotify.com/embed/episode/${id}?utm_source=generator"
+                               width="100%" height="${embedHeight}" frameBorder="0"
+                               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                               loading="lazy"
+                               title="${escapeAttr(ep.title.replace(/<[^>]+>/g, ' '))}"></iframe>`;
+
+                const coverHTML = ep.cover
+                    ? `<img src="${escapeAttr(ep.cover)}" alt="${escapeAttr(ep.title.replace(/<[^>]+>/g, ' '))}" loading="lazy">`
+                    : '';
+
+                return `
+                    <article class="radio-card${isFeatured ? ' radio-card--featured' : ''}">
+                        <div class="radio-card__cover">
+                            ${coverHTML}
+                            ${isFeatured ? '<span class="radio-card__badge">Latest Episode</span>' : ''}
+                        </div>
+                        <div class="radio-card__body">
+                            <div class="radio-card__meta">
+                                <span class="date">${ep.ep || ''} · ${ep.date || ''}</span>
+                            </div>
+                            <h3 class="radio-card__title">${ep.title || ''}</h3>
+                            ${ep.guest ? `<p class="radio-card__guest">ゲスト：${ep.guest}</p>` : ''}
+                            ${ep.excerpt ? `<p class="radio-card__excerpt">${ep.excerpt}</p>` : ''}
+                            ${embedHTML}
+                        </div>
+                    </article>
+                `;
+            }
+
+            const list = document.getElementById('radio-episodes');
+            if (list) list.innerHTML = radioEpisodes.map(renderEpisode).join('');
+
+            const cta = document.getElementById('radio-show-cta');
+            const more = document.getElementById('radio-show-more');
+            if (cta)  cta.href  = RADIO_SHOW_URL;
+            if (more) more.href = RADIO_SHOW_URL;
+        })();
+
+        // ============================================================
+        //  ナビ・フィルタ（ラジオ以外）
+        // ============================================================
+        // 簡易的なナビ開閉（モバイル）
+        document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+            document.querySelector('.global-nav')?.classList.toggle('is-open');
+        });
+
+        // アーカイブフィルタ（見た目のみ）
+        document.querySelectorAll('.archive-filter__btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.archive-filter__btn').forEach(b => b.classList.remove('is-active'));
+                btn.classList.add('is-active');
+            });
+        });
+    </script>
+
+</body>
+</html>
