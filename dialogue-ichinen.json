@@ -1,0 +1,712 @@
+{
+  "guild": {
+    "id": "1470674464189448194",
+    "name": "JUM-b",
+    "iconUrl": "https://cdn.discordapp.com/embed/avatars/0.png"
+  },
+  "channel": {
+    "id": "1497262854909333635",
+    "type": "GuildTextChat",
+    "categoryId": "1470674465108005051",
+    "category": "交換",
+    "name": "松森×田代-一年対談",
+    "topic": "田代ひなたと松森ひろあきによる1年間の対談をお送りします。お互いが片手間で行う為、対談というよりむしろLINEを公開するようなものだと考えています。"
+  },
+  "dateRange": {
+    "after": null,
+    "before": null
+  },
+  "exportedAt": "2026-05-02T18:51:58.616275+09:00",
+  "messages": [
+    {
+      "id": "1497263174016303155",
+      "type": "Default",
+      "timestamp": "2026-04-25T00:49:18.49+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "どこから話を始めようか。",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497263282606706899",
+      "type": "Default",
+      "timestamp": "2026-04-25T00:49:44.38+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "さっきの「体系化」でひとつ思い出したのは、美術手帖に関するトピックで、",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497263837663985814",
+      "type": "Default",
+      "timestamp": "2026-04-25T00:51:56.716+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "Web版美術手帖には美術用語を掲載してるコーナーがあるんだけど、そこに「美術手帖」も整理されてるんだよね。",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497266194758242335",
+      "type": "Default",
+      "timestamp": "2026-04-25T01:01:18.691+09:00",
+      "timestampEdited": "2026-04-25T01:04:55.471+09:00",
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "つまり、美術手帳は自己を美術史や美術史上の重要トピックと並列することで、ちゃっかり自分自身を体系化し、価値付けようとしてるんだよね",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497266757134585856",
+      "type": "Default",
+      "timestamp": "2026-04-25T01:03:32.772+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "あたかも美術界の「公式」スピーカーかのように振る舞うことで、結果的に自己言及によって自身を体系化することが可能になっている",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497266998764110007",
+      "type": "Default",
+      "timestamp": "2026-04-25T01:04:30.381+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [
+        {
+          "id": "1497266998797930747",
+          "url": "https://cdn.discordapp.com/attachments/1497262854909333635/1497266998797930747/IMG_1892.png?ex=69f6c94e&is=69f577ce&hm=f39ebc82d644c8ea755e66f22aa2385ebe258f92b482c30d9b9cb8fcd3e918e5&",
+          "fileName": "IMG_1892.png",
+          "fileSizeBytes": 824784
+        }
+      ],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497268612032106526",
+      "type": "Default",
+      "timestamp": "2026-04-25T01:10:55.014+09:00",
+      "timestampEdited": "2026-04-25T01:11:21.53+09:00",
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "松森くんとの対談やのに横槍入れちゃうけど、美術手帖はかなり歴史ある方の雑誌やから、実際に今の編集部の中には美術手帖がそういう公式のスピーカーである、みたいな感覚を持ってる人がいてもおかしくない気はした",
+      "author": {
+        "id": "1459856430474465290",
+        "name": "amano0157_97377",
+        "discriminator": "0000",
+        "nickname": "天野紘寿",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1459856430474465290/7095bac1198d7371d3abd9abeb3bbae4.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497269184848068628",
+      "type": "Default",
+      "timestamp": "2026-04-25T01:13:11.584+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "自己言及によって、アートワールドの1プレイヤーとしての記述ではなく、アートワールドを俯瞰する視点を得ているよね。",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497269495067050208",
+      "type": "Reply",
+      "timestamp": "2026-04-25T01:14:25.546+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "今の段階で、それが問題であるとは言えないけど、図太い自信だとは思う。",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [
+        {
+          "id": "1459856430474465290",
+          "name": "amano0157_97377",
+          "discriminator": "0000",
+          "nickname": "天野紘寿",
+          "color": "#9B59B6",
+          "isBot": false,
+          "roles": [
+            {
+              "id": "1497612511535431882",
+              "name": "アクティブメンバー",
+              "color": "#9B59B6",
+              "position": 1
+            }
+          ],
+          "avatarUrl": "https://cdn.discordapp.com/avatars/1459856430474465290/7095bac1198d7371d3abd9abeb3bbae4.png?size=512"
+        }
+      ],
+      "reference": {
+        "type": "Default",
+        "messageId": "1497268612032106526",
+        "channelId": "1497262854909333635",
+        "guildId": "1470674464189448194"
+      },
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497271746234159325",
+      "type": "Reply",
+      "timestamp": "2026-04-25T01:23:22.266+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "いかに他の人よりメタな視点に立てるか、みたいな競争の側面から見れば、けっこう強い構造と実績を得てしまってるな",
+      "author": {
+        "id": "1459856430474465290",
+        "name": "amano0157_97377",
+        "discriminator": "0000",
+        "nickname": "天野紘寿",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1459856430474465290/7095bac1198d7371d3abd9abeb3bbae4.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [
+        {
+          "id": "1201951481000108052",
+          "name": "tashiroamazingdaimaou_57235",
+          "discriminator": "0000",
+          "nickname": "田代",
+          "color": "#9B59B6",
+          "isBot": false,
+          "roles": [
+            {
+              "id": "1497612511535431882",
+              "name": "アクティブメンバー",
+              "color": "#9B59B6",
+              "position": 1
+            }
+          ],
+          "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+        }
+      ],
+      "reference": {
+        "type": "Default",
+        "messageId": "1497269184848068628",
+        "channelId": "1497262854909333635",
+        "guildId": "1470674464189448194"
+      },
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497675412623458314",
+      "type": "Default",
+      "timestamp": "2026-04-26T04:07:23.833+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "美術手帖が批評的役割を担っていた部分を持つ雑誌でもあると思うからこそ自身のことを俯瞰的に、かつ体系化することが意識されてるんだろうね。",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1497676900037038201",
+      "type": "Default",
+      "timestamp": "2026-04-26T04:13:18.46+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "美術手帖のバックナンバーもウェブ上で閲覧できるようにしてたのも、少し前だったかな？検索では2020年ぐらいからかな。生存戦略的でもあるし、ブランディングってのを上手くしているようにも見える。",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1498132109720682588",
+      "type": "Default",
+      "timestamp": "2026-04-27T10:22:08.906+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "先日の雑談とも繋がるけど、昨今では作者や作品を美術史やアートワールドに体系化していく方法が沢山あるよね。\n批評を書かれることもそのひとつ。",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1498132278235107349",
+      "type": "Default",
+      "timestamp": "2026-04-27T10:22:49.083+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "松森くんは、自分や作品を体系化すること、されることを意識してる？",
+      "author": {
+        "id": "1201951481000108052",
+        "name": "tashiroamazingdaimaou_57235",
+        "discriminator": "0000",
+        "nickname": "田代",
+        "color": "#9B59B6",
+        "isBot": false,
+        "roles": [
+          {
+            "id": "1497612511535431882",
+            "name": "アクティブメンバー",
+            "color": "#9B59B6",
+            "position": 1
+          }
+        ],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1201951481000108052/6237d042452b426b8c2feac7d3f05dd2.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1499812478706520250",
+      "type": "Default",
+      "timestamp": "2026-05-02T01:39:20.092+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "まず、すごく意識してない。でも重要じゃないって思ってない。「体系化」むずかしいが、アートワールドの中でどう生きるかって言う行為性なんやと思ってるからね。その前提を伝えた上で川俣正、ヨーゼフ・ボイスを参考に意識してる。",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1499813841033367672",
+      "type": "Default",
+      "timestamp": "2026-05-02T01:44:44.896+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "両方のアーティストを深く知っていると言えないんだが、自分が大学3年の頃アートフェアを回りまくってた時があったんやけど、川俣正の平面(？)というか、半立体(レリーフぽくも感じる)作品を初めて見たんやけど、川俣正を知らんかった頃やったから、「わからんな」って(マイナス)正直思ってた。",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1499814272912326788",
+      "type": "Default",
+      "timestamp": "2026-05-02T01:46:27.864+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "けど、大規模プロジェクトをしていて、そのエスキースやマケットが、その作品になってるって理解した時に、おもろいなって思ったんよな。関西日仏のアートイベントで川俣正の公演を見に行って理解した。",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1499815234976616639",
+      "type": "Default",
+      "timestamp": "2026-05-02T01:50:17.238+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "https://culture.institutfrancais.jp/event/2025expo",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1499815396616700176",
+      "type": "Default",
+      "timestamp": "2026-05-02T01:50:55.776+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "↑たぶん、この講演を見に行った",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1499817750909157578",
+      "type": "Default",
+      "timestamp": "2026-05-02T02:00:17.083+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "ヨーゼフ・ボイスは自分の伝記を作っているような感覚がある。説明しがたいんで、気になったら調べたり、実際に見るのが良いなと思う､､､\nしかしながら、ボイスって自分に関係した「物」に作品を託してるように見える。でも、「自分が関係する」っていう能動的な部分も含めて、作品にしてるのが、潔く感じる。現代美術の中で、構造を扱ったり、何処かの文脈を持ってくるとかが方法論としてあるが、「自分の文脈」を持ってくるように、「自分の文脈」を作るような制作方法でボイスは成功してるように感じた。",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1499819257108631704",
+      "type": "Default",
+      "timestamp": "2026-05-02T02:06:16.189+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "ヨーゼフボイスの活動にヒロイックな部分を一部感じるわけではあるが、そこに関しては距離を置いてます〜",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    },
+    {
+      "id": "1500040730050170970",
+      "type": "Default",
+      "timestamp": "2026-05-02T16:46:19.453+09:00",
+      "timestampEdited": null,
+      "callEndedTimestamp": null,
+      "isPinned": false,
+      "content": "田代くんは、「体系化」をどう捉えていますか？あと参考にしてる作家とか居る？",
+      "author": {
+        "id": "1045186326670098462",
+        "name": "heyryom",
+        "discriminator": "0000",
+        "nickname": "まつもりひろあき",
+        "color": null,
+        "isBot": false,
+        "roles": [],
+        "avatarUrl": "https://cdn.discordapp.com/avatars/1045186326670098462/5445ffd7ffb201a98393cbdf684ea4b1.png?size=512"
+      },
+      "attachments": [],
+      "embeds": [],
+      "stickers": [],
+      "reactions": [],
+      "mentions": [],
+      "inlineEmojis": []
+    }
+  ],
+  "messageCount": 22
+}
