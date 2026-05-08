@@ -833,7 +833,10 @@
                         tagline.innerHTML = html;
                         // タイプライター完了 → ロゴをブワッと表示
                         const logo = document.querySelector('.hero__logo-img');
-                        if (logo) setTimeout(() => logo.classList.add('is-visible'), 100);
+                        if (logo) setTimeout(() => {
+                            logo.style.opacity = '';   // インラインスタイルを除去してCSSに委ねる
+                            logo.classList.add('is-visible');
+                        }, 100);
                         return;
                     }
                     if (html[i] === '<') {
