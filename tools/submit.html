@@ -466,14 +466,16 @@ function parseMarkdown(text, tocItems) {
 
         if (line.startsWith('# ')) {
             const txt = line.slice(2).trim();
-            if (tocItems) tocItems.push({ level: 2, text: txt });
-            html += `<h2 id="h-${++h2count}">${inlineFmt(txt)}</h2>`;
+            const id  = `h-${++h2count}`;
+            if (tocItems) tocItems.push({ level: 2, text: txt, id });
+            html += `<h2 id="${id}">${inlineFmt(txt)}</h2>`;
             return;
         }
         if (line.startsWith('## ')) {
             const txt = line.slice(3).trim();
-            if (tocItems) tocItems.push({ level: 3, text: txt });
-            html += `<h3>${inlineFmt(txt)}</h3>`;
+            const id  = `h-${++h2count}`;
+            if (tocItems) tocItems.push({ level: 3, text: txt, id });
+            html += `<h3 id="${id}">${inlineFmt(txt)}</h3>`;
             return;
         }
         if (line.trim() === '---') { html += '<hr>'; return; }
@@ -508,6 +510,28 @@ function buildTOC(items) {
         `<li class="${i.level===3?'sub':''}">${i.text}</li>`
     ).join('');
     return `<div class="pv-toc"><div class="pv-toc__title">目次</div><ol>${lis}</ol></div>`;
+}
+
+function buildSidebarTOC(items) {
+    if (!items.length) return '';
+    return items.map(i =>
+        `<a href="#${i.id}"${i.level===3?' class="sub"':''}>${i.text}</a>`
+    ).join('');
+}
+
+// マークダウン記号を除去してプレーンテキスト化（excerpt自動生成用）
+function plainText(str) {
+    return str
+        .replace(/\[INDEX\]/g, '')
+        .replace(/^#+\s*/gm, '')
+        .replace(/^>\s*/gm, '')
+        .replace(/\*\*(.+?)\*\*/g, '$1')
+        .replace(/\*(.+?)\*/g, '$1')
+        .replace(/==(.+?)==/g, '$1')
+        .replace(/~~(.+?)~~/g, '$1')
+        .replace(/^---$/gm, '')
+        .replace(/\n+/g, ' ')
+        .trim();
 }
 
 function fmtDate(d) {
@@ -582,11 +606,28 @@ function buildArticleHTML(data) {
     const { cat, title, subtitle, author, date, body } = data;
     const catLabel = CAT_LABELS[cat] || cat;
     const dateJP   = fmtDate(date);
+
+    // マークダウンをパース（[INDEX]があればサイドバーTOCとして使う）
     const tocItems = [];
     let bodyHTML = parseMarkdown(body, tocItems);
-    const tocHTML = buildTOC(tocItems).replace(/class="pv-toc/g, 'class="article-toc').replace(/class="pv-toc__title/g,'class="article-toc__title').replace(/class="pv-body/g,'class="article-body');
-    bodyHTML = bodyHTML.replace('{{TOC}}', tocHTML);
-    // アクセントCSSに合わせてクラスを付与（生成HTML用）
+    const hasTOC = body.includes('[INDEX]') && tocItems.length > 0;
+    // 本文中の{{TOC}}プレースホルダーは除去（サイドバーに移動）
+    bodyHTML = bodyHTML.replace('{{TOC}}', '');
+
+    // カテゴリ別グラデーション背景色
+    const bgColor = cat === 'review'   ? 'rgba(241,90,34,.08)'
+                  : cat === 'dialogue' ? 'rgba(26,26,26,.06)'
+                  :                      'rgba(35,91,200,.08)';
+
+    // サイドバーTOC HTML
+    const tocSidebarHTML = hasTOC ? `
+        <nav class="article-toc" aria-label="本文内ナビゲーション">
+            Index
+            ${buildSidebarTOC(tocItems)}
+        </nav>` : '';
+
+    const shellClass = hasTOC ? 'article-shell' : 'article-shell article-shell--no-toc';
+
     return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -594,37 +635,63 @@ function buildArticleHTML(data) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} — FUKULIU</title>
     <meta name="description" content="${subtitle || title}">
+    <meta property="og:title" content="${title} — FUKULIU">
+    <meta property="og:description" content="${subtitle || title}">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../fukuryu-logo.png">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <style>
-        .article-wrap{max-width:760px;margin:0 auto;padding:80px 6vw 120px}
-        .article-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px}
-        .article-title{font-family:var(--serif);font-weight:900;font-size:clamp(28px,4.5vw,52px);line-height:1.25;letter-spacing:-.02em;margin-bottom:20px}
-        .article-subtitle{font-family:var(--serif);font-size:19px;color:var(--fg-mute);line-height:1.65;margin-bottom:28px}
-        .article-meta{font-size:13px;color:var(--fg-mute);padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:52px}
-        .article-toc{background:var(--bg-soft);border-left:3px solid var(--accent);padding:18px 22px;margin-bottom:40px;border-radius:0 4px 4px 0}
-        .article-toc__title{font-size:11px;letter-spacing:.14em;font-weight:700;text-transform:uppercase;color:var(--fg-mute);margin-bottom:10px}
-        .article-toc ol{list-style:decimal;padding-left:18px}
-        .article-toc li{font-size:13px;line-height:1.9;color:var(--accent)}
-        .article-toc li.sub{margin-left:14px;font-size:12px;color:var(--fg-mute)}
-        .article-body{font-family:var(--serif);font-size:17px;line-height:2.1;color:var(--fg)}
-        .article-body h2{font-family:var(--serif);font-weight:700;font-size:22px;margin:56px 0 20px;letter-spacing:-.01em}
-        .article-body h3{font-family:var(--serif);font-weight:700;font-size:18px;margin:40px 0 16px}
-        .article-body p{margin-bottom:28px}
-        .article-body blockquote{border-left:3px solid var(--accent);padding-left:24px;margin:36px 0;color:var(--fg-mute);font-style:italic}
-        .article-body hr{border:none;border-top:1px solid var(--line);margin:52px 0}
+        .article-page{background:linear-gradient(90deg,${bgColor},transparent 26%),linear-gradient(180deg,#fff 0,var(--bg) 520px)}
+        .article-hero{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 56px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.55fr);gap:56px;align-items:end;border-bottom:1px solid var(--line)}
+        .article-hero__eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+        .article-hero__title{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,68px);line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+        .article-hero__lead{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);line-height:1.85;color:var(--fg-mute);margin:0;max-width:760px}
+        .article-hero__side{border-left:1px solid var(--line);padding-left:28px}
+        .article-hero__mark{width:min(240px,70%);height:auto;margin:0 0 34px;opacity:.88}
+        .article-meta-stack{display:grid;gap:18px}
+        .article-meta-stack__item{border-top:1px solid var(--line);padding-top:14px}
+        .article-meta-stack__label{display:block;color:var(--fg-mute);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
+        .article-meta-stack__value{font-family:var(--serif);font-size:15px}
+        .article-shell{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 120px;display:grid;grid-template-columns:180px minmax(0,760px);gap:clamp(32px,7vw,96px);align-items:start}
+        .article-shell--no-toc{grid-template-columns:minmax(0,760px);justify-content:center}
+        .article-toc{position:sticky;top:132px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute);border-top:2px solid var(--fg);padding-top:18px}
+        .article-toc a{display:block;margin-top:14px;letter-spacing:.06em;text-transform:none;color:var(--fg);text-decoration:none}
+        .article-toc a:hover{color:var(--accent)}
+        .article-toc a.sub{margin-left:12px;font-size:11px;color:var(--fg-mute)}
+        .article-body{font-family:var(--serif);font-size:17px;line-height:2.12;color:var(--fg)}
+        .article-body p{margin:0 0 30px}
+        .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
+        .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
+        .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
+        .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
         .article-body .accent{color:var(--accent);font-weight:600}
         .article-body .accent2{color:var(--accent2);font-weight:600}
-        .article-back{display:inline-block;margin-top:64px;font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--accent);border-bottom:1px solid var(--accent);padding-bottom:3px}
+        .article-back{display:inline-flex;align-items:center;gap:10px;margin-top:52px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+        .article-back::before{content:"";width:28px;height:1px;background:currentColor}
         .tag--review{background:var(--accent2);color:#fff;border-color:var(--accent2)}
         .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
         .tag--dialogue{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+        @media(max-width:880px){
+            .article-hero{grid-template-columns:1fr;gap:36px;padding-top:54px}
+            .article-hero__side{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
+            .article-shell,.article-shell--no-toc{grid-template-columns:1fr;padding-top:52px}
+            .article-toc{position:static;display:flex;gap:18px;flex-wrap:wrap}
+            .article-toc a{margin-top:0}
+        }
+        @media(max-width:640px){
+            .article-hero__title{font-size:34px}
+            .article-body{font-size:16px;line-height:2}
+            .article-body blockquote{padding:20px;font-size:16px}
+        }
     </style>
 </head>
-<body>
+<body class="article-page">
     <header class="site-header">
         <div class="site-header__status"><div class="site-header__status-inner">
             <span class="status-pulse" aria-hidden="true"></span>
@@ -641,23 +708,49 @@ function buildArticleHTML(data) {
                 <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
                 <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
                 <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
-                <li><a href="../index.html#works"><span class="nav-num">04</span><span class="nav-text">Works</span></a></li>
-                <li><a href="../index.html#about"><span class="nav-num">06</span><span class="nav-text">About</span></a></li>
+                <li><a href="../dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                <li><a href="../index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                <li><a href="../index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
             </ul></nav>
             <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
         </div>
         <div class="site-header__bar" aria-hidden="true"></div>
     </header>
-    <main class="article-wrap">
-        <div class="article-eyebrow">
-            <span class="tag tag--${cat}">${catLabel}</span>
-            <span class="date">${dateJP}</span>
+    <main>
+        <section class="article-hero">
+            <div>
+                <div class="article-hero__eyebrow">
+                    <span class="tag tag--${cat}">${catLabel}</span>
+                    <span class="date">${dateJP}</span>
+                </div>
+                <h1 class="article-hero__title">${title}</h1>
+                ${subtitle ? `<p class="article-hero__lead">${subtitle}</p>` : ''}
+            </div>
+            <aside class="article-hero__side" aria-label="記事情報">
+                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
+                <div class="article-meta-stack">
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Author</span>
+                        <span class="article-meta-stack__value">${author}</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Category</span>
+                        <span class="article-meta-stack__value">${catLabel}</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Published</span>
+                        <span class="article-meta-stack__value">${dateJP}</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+        <div class="${shellClass}">
+            ${tocSidebarHTML}
+            <article class="article-body">
+                ${bodyHTML}
+                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
+            </article>
         </div>
-        <h1 class="article-title">${title}</h1>
-        ${subtitle ? `<p class="article-subtitle">${subtitle}</p>` : ''}
-        <p class="article-meta">By ${author}</p>
-        <div class="article-body">${bodyHTML}</div>
-        <a href="../index.html#article" class="article-back">← 記事一覧に戻る</a>
     </main>
     <footer class="site-footer">
         <div class="site-footer__inner">
@@ -670,6 +763,7 @@ function buildArticleHTML(data) {
                     <li><a href="../index.html#radio">Radio</a></li>
                     <li><a href="../index.html#article">Article</a></li>
                     <li><a href="../index.html#video">Video</a></li>
+                    <li><a href="../dialogue-ichinen.html">Dialogue</a></li>
                 </ul></div>
                 <div><h4>Follow</h4><ul>
                     <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
@@ -726,7 +820,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
 
         const newEntry = {
             cat, date: fmtDate(date), title,
-            excerpt: excerpt || body.slice(0,80).replace(/\n/g,' ') + '…',
+            excerpt: excerpt || plainText(body).slice(0,80) + '…',
             author, url: filepath,
             _body: body, _subtitle: subtitle  // 修正用に本文を保持
         };
