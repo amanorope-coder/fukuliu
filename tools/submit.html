@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>記事を投稿する — FUKULIU</title>
+    <title>記事エディタ — FUKULIU</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,460 +24,570 @@
             --t:       cubic-bezier(.2,.7,.2,1);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: var(--sans);
-            background: var(--bg-soft);
-            color: var(--fg);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
+        body { font-family: var(--sans); background: var(--bg-soft); color: var(--fg); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-        /* ヘッダー */
-        .hd {
-            background: var(--fg);
-            color: #fff;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .hd__logo { font-family: var(--serif); font-size: 20px; font-weight: 900; }
-        .hd__sub  { font-size: 11px; letter-spacing: .2em; color: rgba(255,255,255,.5); text-transform: uppercase; margin-top: 2px; }
-        .hd a     { color: rgba(255,255,255,.5); font-size: 12px; letter-spacing: .1em; text-decoration: none; }
+        /* ── ヘッダー ── */
+        .hd { background: var(--fg); color: #fff; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .hd__left { display: flex; align-items: center; gap: 20px; }
+        .hd__logo { font-family: var(--serif); font-size: 18px; font-weight: 900; }
+        .hd__sub  { font-size: 10px; letter-spacing: .2em; color: rgba(255,255,255,.45); text-transform: uppercase; }
+        .hd a { color: rgba(255,255,255,.5); font-size: 12px; letter-spacing: .1em; text-decoration: none; }
         .hd a:hover { color: #fff; }
 
-        /* ページレイアウト */
-        .page { max-width: 720px; margin: 0 auto; padding: 48px 24px 100px; }
+        /* ── タブ ── */
+        .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--line); background: #fff; padding: 0 32px; }
+        .tab-btn {
+            padding: 14px 24px; background: none; border: none; font-family: var(--sans); font-size: 13px; font-weight: 700;
+            letter-spacing: .06em; cursor: pointer; color: var(--fg-mute); border-bottom: 2px solid transparent;
+            margin-bottom: -2px; transition: color .2s, border-color .2s;
+        }
+        .tab-btn.is-active { color: var(--accent); border-bottom-color: var(--accent); }
+        .tab-btn:hover { color: var(--fg); }
 
-        /* ---- トークン設定パネル ---- */
-        #setup-panel {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: 4px;
-            padding: 36px;
-            margin-bottom: 32px;
-        }
-        .setup-title {
-            font-family: var(--serif);
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .setup-desc {
-            font-size: 14px;
-            color: var(--fg-mute);
-            line-height: 1.85;
-            margin-bottom: 24px;
-        }
-        .setup-row {
-            display: flex;
-            gap: 12px;
-        }
-        .setup-row input {
-            flex: 1;
-            padding: 12px 14px;
-            border: 1px solid var(--line);
-            border-radius: 2px;
-            font-family: monospace;
-            font-size: 13px;
-            color: var(--fg);
-            background: var(--bg-soft);
-        }
-        .setup-row input:focus { outline: none; border-color: var(--accent); }
-        .btn-save-token {
-            padding: 12px 24px;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: 2px;
-            font-family: var(--sans);
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background .2s;
-        }
-        .btn-save-token:hover { background: #1a4aad; }
-        .token-status {
-            margin-top: 12px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .token-status--ok   { color: var(--green); }
-        .token-status--none { color: var(--fg-mute); }
-        .btn-reset-token {
-            background: none;
-            border: none;
-            color: var(--fg-mute);
-            font-size: 11px;
-            cursor: pointer;
-            text-decoration: underline;
-            font-family: var(--sans);
-        }
-        .btn-reset-token:hover { color: var(--red); }
+        /* ── ページ本体 ── */
+        .page { max-width: 1400px; margin: 0 auto; padding: 32px 24px 80px; }
 
-        /* ---- 投稿フォーム ---- */
-        #article-form {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: 4px;
-            padding: 36px;
+        /* ── トークンパネル ── */
+        .token-bar {
+            background: #fff; border: 1px solid var(--line); border-radius: 4px;
+            padding: 20px 24px; margin-bottom: 24px;
+            display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
         }
-        .form-title {
-            font-family: var(--serif);
-            font-size: 22px;
-            font-weight: 900;
-            margin-bottom: 32px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--line);
+        .token-bar__label { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-mute); white-space: nowrap; }
+        .token-bar input {
+            flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px;
+            font-family: monospace; font-size: 13px; background: var(--bg-soft);
         }
-        .field { margin-bottom: 22px; }
-        .field label {
-            display: block;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .16em;
-            text-transform: uppercase;
-            color: var(--fg-mute);
-            margin-bottom: 7px;
+        .token-bar input:focus { outline: none; border-color: var(--accent); }
+        .btn-sm {
+            padding: 10px 18px; background: var(--accent); color: #fff; border: none; border-radius: 2px;
+            font-family: var(--sans); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .2s;
         }
-        .field input,
-        .field select,
-        .field textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--line);
-            border-radius: 2px;
-            font-family: var(--sans);
-            font-size: 14px;
-            color: var(--fg);
-            background: var(--bg);
-            transition: border-color .2s;
-            appearance: none;
+        .btn-sm:hover { background: #1a4aad; }
+        .btn-sm--ghost { background: transparent; color: var(--fg-mute); border: 1px solid var(--line); }
+        .btn-sm--ghost:hover { background: var(--bg-soft); color: var(--fg); }
+        .token-ok { font-size: 12px; color: var(--green); font-weight: 600; }
+
+        /* ── レイアウト：メタ + エディタ ── */
+        .editor-layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start; }
+
+        /* メタパネル（左） */
+        .meta-panel { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 24px; position: sticky; top: 16px; }
+        .meta-panel__title { font-family: var(--serif); font-weight: 700; font-size: 16px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-mute); margin-bottom: 6px; }
+        .field input, .field select, .field textarea {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px;
+            font-family: var(--sans); font-size: 14px; color: var(--fg); background: var(--bg);
+            transition: border-color .2s; appearance: none;
         }
-        .field input:focus,
-        .field select:focus,
-        .field textarea:focus { outline: none; border-color: var(--accent); }
-        .field textarea { resize: vertical; min-height: 80px; line-height: 1.75; }
-        .field--body textarea { min-height: 340px; font-size: 13px; }
-        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+        .field textarea { resize: vertical; min-height: 72px; line-height: 1.7; font-size: 13px; }
         .cat-wrap { position: relative; }
-        .cat-wrap select { padding-right: 32px; cursor: pointer; }
-        .cat-wrap::after {
-            content: "▾";
-            position: absolute;
-            right: 12px; top: 50%;
-            transform: translateY(-50%);
-            font-size: 12px;
-            color: var(--fg-mute);
-            pointer-events: none;
+        .cat-wrap select { padding-right: 28px; cursor: pointer; }
+        .cat-wrap::after { content: "▾"; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--fg-mute); pointer-events: none; }
+
+        /* エディタパネル（右） */
+        .editor-panel { background: #fff; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+
+        /* ツールバー */
+        .toolbar {
+            display: flex; align-items: center; gap: 2px; padding: 10px 14px;
+            background: var(--bg-soft); border-bottom: 1px solid var(--line); flex-wrap: wrap;
         }
-        .format-hint {
-            margin-top: 8px;
-            padding: 12px 14px;
-            background: var(--bg-soft);
-            border-radius: 2px;
-            font-size: 11px;
-            color: var(--fg-mute);
-            line-height: 1.9;
+        .tb-btn {
+            padding: 6px 10px; background: none; border: 1px solid transparent; border-radius: 3px;
+            font-family: var(--sans); font-size: 12px; font-weight: 700; color: var(--fg-mute);
+            cursor: pointer; transition: all .15s; line-height: 1; white-space: nowrap;
         }
-        .format-hint code {
-            background: var(--line);
-            padding: 1px 5px;
-            border-radius: 2px;
-            font-family: monospace;
-            font-size: 11px;
-            color: var(--fg);
+        .tb-btn:hover { background: #fff; border-color: var(--line); color: var(--fg); }
+        .tb-btn--accent  { color: var(--accent); }
+        .tb-btn--accent:hover  { background: rgba(35,91,200,.08); border-color: rgba(35,91,200,.25); color: var(--accent); }
+        .tb-btn--accent2 { color: var(--accent2); }
+        .tb-btn--accent2:hover { background: rgba(241,90,34,.08); border-color: rgba(241,90,34,.25); color: var(--accent2); }
+        .tb-sep { width: 1px; height: 20px; background: var(--line); margin: 0 4px; flex-shrink: 0; }
+
+        .toolbar__hint { margin-left: auto; font-size: 10px; color: var(--fg-mute); letter-spacing: .04em; }
+
+        /* 分割ビュー */
+        .split-view { display: grid; grid-template-columns: 1fr 1fr; min-height: 520px; }
+        .split-view.preview-only { grid-template-columns: 0 1fr; }
+        .split-view.editor-only  { grid-template-columns: 1fr 0; }
+
+        .editor-pane { border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+        .editor-pane textarea {
+            flex: 1; width: 100%; border: none; resize: none; padding: 20px;
+            font-family: "SFMono-Regular", "Consolas", monospace; font-size: 13px; line-height: 1.85;
+            color: var(--fg); background: var(--bg); outline: none; min-height: 480px;
         }
 
-        /* 送信ボタン */
-        .submit-row {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-top: 32px;
-            padding-top: 24px;
-            border-top: 1px solid var(--line);
-        }
+        /* プレビューペイン */
+        .preview-pane { padding: 32px 36px; overflow-y: auto; background: #fff; }
+        .preview-pane__label { font-size: 10px; letter-spacing: .18em; font-weight: 700; text-transform: uppercase; color: var(--fg-mute); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .preview-pane__label::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+        /* プレビュー内の記事スタイル */
+        .pv-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .pv-tag { display: inline-block; font-size: 10px; letter-spacing: .12em; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; text-transform: uppercase; }
+        .pv-tag--review   { background: var(--accent2); }
+        .pv-tag--essay    { background: var(--accent); }
+        .pv-tag--dialogue { background: #1a1a1a; }
+        .pv-date { font-size: 11px; letter-spacing: .1em; color: var(--fg-mute); }
+        .pv-title { font-family: var(--serif); font-weight: 900; font-size: 28px; line-height: 1.3; letter-spacing: -.02em; margin-bottom: 14px; }
+        .pv-subtitle { font-family: var(--serif); font-size: 16px; color: var(--fg-mute); line-height: 1.6; margin-bottom: 18px; }
+        .pv-author { font-size: 12px; color: var(--fg-mute); padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 32px; }
+        .pv-toc { background: var(--bg-soft); border-left: 3px solid var(--accent); padding: 16px 20px; margin-bottom: 32px; border-radius: 0 4px 4px 0; }
+        .pv-toc__title { font-size: 11px; letter-spacing: .14em; font-weight: 700; text-transform: uppercase; color: var(--fg-mute); margin-bottom: 10px; }
+        .pv-toc ol { list-style: decimal; padding-left: 18px; }
+        .pv-toc li { font-size: 13px; line-height: 1.8; color: var(--accent); }
+        .pv-toc li.sub { margin-left: 14px; font-size: 12px; color: var(--fg-mute); }
+        .pv-body { font-family: var(--serif); font-size: 16px; line-height: 2.05; color: var(--fg); }
+        .pv-body h2 { font-family: var(--serif); font-weight: 700; font-size: 20px; margin: 44px 0 16px; letter-spacing: -.01em; }
+        .pv-body h3 { font-family: var(--serif); font-weight: 700; font-size: 16px; margin: 32px 0 12px; }
+        .pv-body p  { margin-bottom: 22px; }
+        .pv-body blockquote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 28px 0; color: var(--fg-mute); font-style: italic; }
+        .pv-body hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+        .pv-body strong { font-weight: 700; }
+        .pv-body em { font-style: italic; }
+        .pv-body .accent  { color: var(--accent); font-weight: 600; }
+        .pv-body .accent2 { color: var(--accent2); font-weight: 600; }
+        .pv-empty { color: var(--fg-mute); font-size: 14px; padding: 40px 0; text-align: center; }
+
+        /* ビュー切り替えボタン */
+        .view-toggle { display: flex; gap: 4px; padding: 8px 14px; background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+        .vt-btn { padding: 5px 12px; background: none; border: 1px solid var(--line); border-radius: 2px; font-size: 11px; font-weight: 700; color: var(--fg-mute); cursor: pointer; font-family: var(--sans); transition: all .15s; }
+        .vt-btn.is-active { background: var(--fg); color: #fff; border-color: var(--fg); }
+        .vt-btn:hover:not(.is-active) { border-color: var(--fg); color: var(--fg); }
+
+        /* 送信エリア */
+        .submit-area { padding: 20px 24px; border-top: 1px solid var(--line); background: var(--bg-soft); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
         .btn-publish {
-            padding: 16px 36px;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: 2px;
-            font-family: var(--sans);
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: .1em;
-            cursor: pointer;
-            transition: background .2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 14px 32px; background: var(--accent); color: #fff; border: none; border-radius: 2px;
+            font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: .1em;
+            cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background .2s;
         }
         .btn-publish:hover:not(:disabled) { background: #1a4aad; }
         .btn-publish:disabled { opacity: .5; cursor: not-allowed; }
-        .btn-publish .spinner {
-            display: none;
-            width: 16px; height: 16px;
-            border: 2px solid rgba(255,255,255,.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin .7s linear infinite;
-        }
+        .btn-publish .spinner { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
         .btn-publish.is-loading .spinner { display: block; }
-        .btn-publish.is-loading .btn-label { opacity: .7; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .no-token-note { font-size: 12px; color: var(--fg-mute); }
 
-        .no-token-note {
-            font-size: 12px;
-            color: var(--fg-mute);
-        }
-
-        /* ---- 結果メッセージ ---- */
-        .result {
-            margin-top: 24px;
-            padding: 20px 24px;
-            border-radius: 4px;
-            font-size: 14px;
-            line-height: 1.8;
-            display: none;
-        }
+        /* 結果メッセージ */
+        .result { margin-top: 0; padding: 16px 20px; border-radius: 2px; font-size: 13px; line-height: 1.8; display: none; flex: 1; }
         .result.is-visible { display: block; }
-        .result--success {
-            background: #f0faf5;
-            border: 1px solid #a8dfc0;
-            color: #1a6641;
-        }
-        .result--error {
-            background: #fff5f5;
-            border: 1px solid #f5b8b4;
-            color: #8b2a2a;
-        }
+        .result--success { background: #f0faf5; border: 1px solid #a8dfc0; color: #1a6641; }
+        .result--error   { background: #fff5f5; border: 1px solid #f5b8b4; color: #8b2a2a; }
         .result a { color: var(--accent); font-weight: 700; }
 
-        @media (max-width: 600px) {
-            .hd { padding: 16px 20px; }
-            .page { padding: 28px 16px 80px; }
-            #setup-panel, #article-form { padding: 24px 20px; }
-            .setup-row { flex-direction: column; }
-            .field-row { grid-template-columns: 1fr; }
-            .submit-row { flex-direction: column; align-items: stretch; }
+        /* ── 修正タブ ── */
+        .edit-tab { max-width: 720px; }
+        .edit-tab .section-title { font-family: var(--serif); font-weight: 700; font-size: 18px; margin-bottom: 6px; }
+        .edit-tab .section-desc  { font-size: 13px; color: var(--fg-mute); line-height: 1.8; margin-bottom: 24px; }
+        .article-list-edit { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: #fff; margin-bottom: 24px; }
+        .article-item {
+            display: flex; align-items: center; gap: 16px; padding: 16px 20px;
+            border-bottom: 1px solid var(--line); cursor: pointer; transition: background .15s;
         }
+        .article-item:last-child { border-bottom: none; }
+        .article-item:hover { background: var(--bg-soft); }
+        .article-item__tag { font-size: 10px; font-weight: 700; letter-spacing: .12em; padding: 3px 10px; border-radius: 999px; color: #fff; text-transform: uppercase; flex-shrink: 0; }
+        .article-item__title { flex: 1; font-family: var(--serif); font-weight: 700; font-size: 15px; }
+        .article-item__date  { font-size: 11px; color: var(--fg-mute); flex-shrink: 0; }
+        .article-item__edit  { font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+        .edit-loading { padding: 32px; text-align: center; color: var(--fg-mute); font-size: 13px; }
+        .edit-note { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
+        .edit-note h3 { font-family: var(--serif); font-weight: 700; font-size: 16px; margin-bottom: 12px; }
+        .edit-note p  { font-size: 14px; color: var(--fg-mute); line-height: 1.85; margin-bottom: 10px; }
+        .edit-note code { background: var(--bg-soft); padding: 2px 7px; border-radius: 2px; font-family: monospace; font-size: 12px; }
+
+        /* レスポンシブ */
+        @media (max-width: 1100px) { .editor-layout { grid-template-columns: 1fr; } .meta-panel { position: static; } }
+        @media (max-width: 768px) { .split-view { grid-template-columns: 1fr; } .editor-pane { border-right: none; border-bottom: 1px solid var(--line); } .hd { padding: 14px 20px; } .page { padding: 20px 14px 60px; } }
     </style>
 </head>
 <body>
 
 <header class="hd">
-    <div>
-        <p class="hd__logo">FUKULIU</p>
-        <p class="hd__sub">記事投稿ポータル</p>
+    <div class="hd__left">
+        <div>
+            <p class="hd__logo">FUKULIU</p>
+            <p class="hd__sub">記事エディタ</p>
+        </div>
     </div>
     <a href="../index.html">← サイトに戻る</a>
 </header>
 
+<!-- タブ -->
+<div class="tabs">
+    <button class="tab-btn is-active" onclick="switchTab('write')">✏️ 新規投稿</button>
+    <button class="tab-btn" onclick="switchTab('edit')">📝 記事を修正</button>
+</div>
+
 <div class="page">
 
-    <!-- ======== トークン設定 ======== -->
-    <div id="setup-panel">
-        <h2 class="setup-title">はじめに — 投稿キーを入力</h2>
-        <p class="setup-desc">
-            FUKULIU編集部から共有された「投稿キー」を入力してください。<br>
-            一度入力すると、このブラウザでは次回から不要です。
-        </p>
-        <div class="setup-row">
-            <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx...">
-            <button class="btn-save-token" onclick="saveToken()">保存する</button>
-        </div>
-        <div class="token-status" id="token-status">
-            <span class="token-status--none">投稿キーが未設定です。入力してください。</span>
-        </div>
+    <!-- ── トークンバー ── -->
+    <div class="token-bar" id="token-bar">
+        <span class="token-bar__label">投稿キー</span>
+        <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx...">
+        <button class="btn-sm" onclick="saveToken()">保存</button>
+        <span id="token-ok" class="token-ok" style="display:none">✓ 設定済み</span>
+        <button class="btn-sm btn-sm--ghost" id="btn-reset-token" onclick="resetToken()" style="display:none">リセット</button>
     </div>
 
-    <!-- ======== 投稿フォーム ======== -->
-    <div id="article-form">
-        <h1 class="form-title">記事を投稿する</h1>
+    <!-- ════════ 新規投稿タブ ════════ -->
+    <div id="tab-write">
+        <div class="editor-layout">
 
-        <div class="field-row">
-            <div class="field">
-                <label>カテゴリ</label>
-                <div class="cat-wrap">
-                    <select id="f-cat">
-                        <option value="review">展示レビュー</option>
-                        <option value="essay" selected>エッセイ</option>
-                        <option value="dialogue">対談</option>
-                    </select>
+            <!-- 左：メタ情報 -->
+            <aside class="meta-panel">
+                <h2 class="meta-panel__title">記事情報</h2>
+                <div class="field">
+                    <label>カテゴリ</label>
+                    <div class="cat-wrap">
+                        <select id="f-cat" onchange="updatePreview()">
+                            <option value="review">展示レビュー</option>
+                            <option value="essay" selected>エッセイ</option>
+                            <option value="dialogue">対談</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label>公開日</label>
-                <input type="date" id="f-date">
-            </div>
-        </div>
+                <div class="field">
+                    <label>公開日</label>
+                    <input type="date" id="f-date" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>タイトル</label>
+                    <input type="text" id="f-title" placeholder="記事タイトル" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>サブタイトル（任意）</label>
+                    <input type="text" id="f-subtitle" placeholder="副題や一言説明" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>著者名</label>
+                    <input type="text" id="f-author" placeholder="例：松森ひろあき" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>概要文（一覧表示用）</label>
+                    <textarea id="f-excerpt" rows="3" placeholder="2〜3行で要点を。省略すると本文冒頭が使われます。"></textarea>
+                </div>
+                <div style="margin-top:8px;padding:12px;background:var(--bg-soft);border-radius:3px;font-size:11px;color:var(--fg-mute);line-height:1.85;">
+                    <strong>書式の使い方</strong><br>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;"># 大見出し</code>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">## 小見出し</code><br>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">==青強調==</code>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">~~橙強調~~</code><br>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">**太字**</code>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">*斜体*</code>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">&gt; 引用</code><br>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">[INDEX]</code> → 目次を自動生成
+                </div>
+            </aside>
 
-        <div class="field">
-            <label>タイトル</label>
-            <input type="text" id="f-title" placeholder="記事のタイトルを入力">
-        </div>
+            <!-- 右：エディタ -->
+            <div class="editor-panel">
 
-        <div class="field">
-            <label>サブタイトル（任意）</label>
-            <input type="text" id="f-subtitle" placeholder="副題や一言説明">
-        </div>
+                <!-- ツールバー -->
+                <div class="toolbar">
+                    <button class="tb-btn" onclick="ins('# ', '')" title="大見出し（H2）">H2</button>
+                    <button class="tb-btn" onclick="ins('## ', '')" title="小見出し（H3）">H3</button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn" onclick="wrap('**', '**')" title="太字"><strong>B</strong></button>
+                    <button class="tb-btn" onclick="wrap('*', '*')" title="斜体"><em>I</em></button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn tb-btn--accent" onclick="wrap('==', '==')" title="青アクセント（強調）">A＋</button>
+                    <button class="tb-btn tb-btn--accent2" onclick="wrap('~~', '~~')" title="オレンジアクセント">A＋</button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn" onclick="ins('> ', '')" title="引用">❝</button>
+                    <button class="tb-btn" onclick="ins('---', '')" title="区切り線">—</button>
+                    <button class="tb-btn" onclick="ins('[INDEX]', '')" title="目次を挿入">目次</button>
+                    <div class="tb-sep"></div>
+                    <button class="tb-btn" onclick="ins('\n\n', '')" title="段落を追加">¶</button>
+                    <span class="toolbar__hint">選択してからボタンを押すと装飾できます</span>
+                </div>
 
-        <div class="field">
-            <label>著者名</label>
-            <input type="text" id="f-author" placeholder="例：天野 紘寿">
-        </div>
+                <!-- ビュー切り替え -->
+                <div class="view-toggle">
+                    <button class="vt-btn is-active" id="vt-both"    onclick="setView('both')">分割</button>
+                    <button class="vt-btn"           id="vt-editor"  onclick="setView('editor')">編集のみ</button>
+                    <button class="vt-btn"           id="vt-preview" onclick="setView('preview')">プレビューのみ</button>
+                </div>
 
-        <div class="field">
-            <label>概要文（記事一覧に表示される2〜3行）</label>
-            <textarea id="f-excerpt" rows="3" placeholder="記事の要点を簡潔に。省略すると本文の冒頭が使われます。"></textarea>
-        </div>
-
-        <div class="field field--body">
-            <label>本文</label>
-            <textarea id="f-body" placeholder="ここに本文を貼り付けてください。
+                <!-- 分割ビュー -->
+                <div class="split-view" id="split-view">
+                    <div class="editor-pane">
+                        <textarea id="f-body" placeholder="ここに本文を書いてください。
 
 Google Docs や Word からコピーした文章をそのまま貼り付けるだけでOKです。
 
 空行 → 段落区切り
 
-【書式（任意）】
-# 見出し（大）
-## 見出し（小）
+# 大見出し
+## 小見出し
+==青色で強調したいテキスト==
+~~オレンジ色で強調したいテキスト~~
+**太字**　*斜体*
 > 引用文
-**太字**　*イタリック*
---- 区切り線"></textarea>
-            <div class="format-hint">
-                <strong>書式メモ</strong>
-                <code># 見出し</code>　<code>## 小見出し</code>
-                <code>**太字**</code>　<code>*斜体*</code>
-                <code>&gt; 引用</code>　<code>---</code> 区切り　空行→段落
+---（区切り線）
+[INDEX]（目次を自動挿入）" oninput="updatePreview()"></textarea>
+                    </div>
+                    <div class="preview-pane" id="preview-pane">
+                        <p class="preview-pane__label">プレビュー</p>
+                        <p class="pv-empty">左に本文を入力すると<br>ここにプレビューが表示されます</p>
+                    </div>
+                </div>
+
+                <!-- 送信エリア -->
+                <div class="submit-area">
+                    <button class="btn-publish" id="btn-publish" onclick="publishArticle()">
+                        <span class="spinner"></span>
+                        <span>公開する</span>
+                    </button>
+                    <span class="no-token-note" id="no-token-note" style="display:none">投稿キーを入力してください</span>
+                    <div class="result" id="result"></div>
+                </div>
             </div>
         </div>
-
-        <div class="submit-row">
-            <button class="btn-publish" id="btn-publish" onclick="publishArticle()">
-                <span class="spinner"></span>
-                <span class="btn-label">公開する</span>
-            </button>
-            <span class="no-token-note" id="no-token-note" style="display:none">
-                ※ 投稿キーを入力してください
-            </span>
-        </div>
-
-        <div class="result" id="result"></div>
     </div>
-</div>
+
+    <!-- ════════ 修正タブ ════════ -->
+    <div id="tab-edit" style="display:none">
+        <div class="edit-tab">
+            <h2 class="section-title">公開済み記事を修正する</h2>
+            <p class="section-desc">下の一覧から修正したい記事を選ぶと、エディタに内容が読み込まれます。<br>修正後「更新して公開」を押すと即時反映されます。</p>
+
+            <div id="edit-list-wrap">
+                <p class="edit-loading">投稿キーを設定すると記事一覧が表示されます。</p>
+            </div>
+
+            <div class="edit-note">
+                <h3>手動で修正する場合（テキスト以外の変更）</h3>
+                <p>レイアウトや画像など、大きな変更は <a href="https://github.com/amanorope-coder/fukuliu" target="_blank" rel="noopener noreferrer">GitHub</a> から直接ファイルを編集できます。</p>
+                <p><code>articles/</code> フォルダ内のHTMLファイルを選び、右上の鉛筆アイコン（Edit）をクリックしてブラウザ上で編集→コミットするだけです。</p>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /page -->
 
 <script>
-    // ============================================================
-    //  設定
-    // ============================================================
-    const REPO  = 'amanorope-coder/fukuliu';
-    const BRANCH = 'main';
-    const CAT_LABELS = { review: '展示レビュー', essay: 'エッセイ', dialogue: '対談' };
+// ═══════════════════════════════════════════════════════════
+//  設定
+// ═══════════════════════════════════════════════════════════
+const REPO   = 'amanorope-coder/fukuliu';
+const BRANCH = 'main';
+const CAT_LABELS = { review: '展示レビュー', essay: 'エッセイ', dialogue: '対談' };
 
-    // 今日の日付をデフォルトに
-    document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
 
-    // ============================================================
-    //  トークン管理
-    // ============================================================
-    function getToken() { return localStorage.getItem('fukuliu_publish_token') || ''; }
+// ═══════════════════════════════════════════════════════════
+//  タブ切り替え
+// ═══════════════════════════════════════════════════════════
+function switchTab(name) {
+    document.getElementById('tab-write').style.display = name === 'write' ? '' : 'none';
+    document.getElementById('tab-edit').style.display  = name === 'edit'  ? '' : 'none';
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('is-active', (i===0&&name==='write')||(i===1&&name==='edit')));
+    if (name === 'edit') loadEditList();
+}
 
-    function saveToken() {
-        const val = document.getElementById('token-input').value.trim();
-        if (!val) { alert('投稿キーを入力してください。'); return; }
-        localStorage.setItem('fukuliu_publish_token', val);
-        document.getElementById('token-input').value = '';
-        updateTokenStatus();
-    }
+// ═══════════════════════════════════════════════════════════
+//  ビュー切り替え（分割 / 編集のみ / プレビューのみ）
+// ═══════════════════════════════════════════════════════════
+function setView(mode) {
+    const sv = document.getElementById('split-view');
+    sv.className = 'split-view' + (mode === 'preview' ? ' preview-only' : mode === 'editor' ? ' editor-only' : '');
+    ['both','editor','preview'].forEach(m => document.getElementById('vt-'+m).classList.toggle('is-active', m===mode));
+}
 
-    function resetToken() {
-        if (!confirm('投稿キーをリセットしますか？')) return;
-        localStorage.removeItem('fukuliu_publish_token');
-        updateTokenStatus();
-    }
+// ═══════════════════════════════════════════════════════════
+//  トークン管理
+// ═══════════════════════════════════════════════════════════
+function getToken() { return localStorage.getItem('fukuliu_publish_token') || ''; }
 
-    function updateTokenStatus() {
-        const token = getToken();
-        const el = document.getElementById('token-status');
-        const btn = document.getElementById('btn-publish');
-        const note = document.getElementById('no-token-note');
-        if (token) {
-            el.innerHTML = `<span class="token-status--ok">✓ 投稿キーが設定されています</span>
-                <button class="btn-reset-token" onclick="resetToken()">リセット</button>`;
-            btn.disabled = false;
-            note.style.display = 'none';
-        } else {
-            el.innerHTML = `<span class="token-status--none">投稿キーが未設定です。上のフォームから入力してください。</span>`;
-            btn.disabled = true;
-            note.style.display = 'inline';
+function saveToken() {
+    const v = document.getElementById('token-input').value.trim();
+    if (!v) { alert('投稿キーを入力してください。'); return; }
+    localStorage.setItem('fukuliu_publish_token', v);
+    document.getElementById('token-input').value = '';
+    updateTokenUI();
+}
+function resetToken() {
+    if (!confirm('投稿キーをリセットしますか？')) return;
+    localStorage.removeItem('fukuliu_publish_token');
+    updateTokenUI();
+}
+function updateTokenUI() {
+    const has = !!getToken();
+    document.getElementById('token-ok').style.display        = has ? '' : 'none';
+    document.getElementById('btn-reset-token').style.display = has ? '' : 'none';
+    document.getElementById('token-input').style.display     = has ? 'none' : '';
+    document.querySelector('.btn-sm:not(.btn-sm--ghost)').style.display = has ? 'none' : '';
+    document.getElementById('btn-publish').disabled          = !has;
+    document.getElementById('no-token-note').style.display   = has ? 'none' : 'inline';
+}
+updateTokenUI();
+
+// ═══════════════════════════════════════════════════════════
+//  ツールバー操作（テキストエリアへの挿入・ラップ）
+// ═══════════════════════════════════════════════════════════
+function ins(before, after) {
+    const ta = document.getElementById('f-body');
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    const sel = ta.value.slice(s, e);
+    const insert = before + sel + after;
+    ta.value = ta.value.slice(0,s) + insert + ta.value.slice(e);
+    ta.selectionStart = s + before.length;
+    ta.selectionEnd   = s + before.length + sel.length;
+    ta.focus();
+    updatePreview();
+}
+function wrap(open, close) { ins(open, close); }
+
+// ═══════════════════════════════════════════════════════════
+//  Markdown パーサー（拡張版）
+// ═══════════════════════════════════════════════════════════
+function parseMarkdown(text, tocItems) {
+    if (!text) return '';
+    const lines = text.split('\n');
+    let html = '', inBQ = false;
+    let h2count = 0;
+
+    lines.forEach(line => {
+        // 引用
+        if (line.startsWith('> ')) {
+            if (!inBQ) { html += '<blockquote>'; inBQ = true; }
+            html += inlineFmt(line.slice(2)) + '<br>';
+            return;
+        } else if (inBQ) { html += '</blockquote>'; inBQ = false; }
+
+        // 目次プレースホルダー（後で差し替え）
+        if (line.trim() === '[INDEX]') { html += '__INDEX_PLACEHOLDER__'; return; }
+
+        if (line.startsWith('# ')) {
+            const txt = line.slice(2).trim();
+            if (tocItems) tocItems.push({ level: 2, text: txt });
+            html += `<h2 id="h-${++h2count}">${inlineFmt(txt)}</h2>`;
+            return;
         }
+        if (line.startsWith('## ')) {
+            const txt = line.slice(3).trim();
+            if (tocItems) tocItems.push({ level: 3, text: txt });
+            html += `<h3>${inlineFmt(txt)}</h3>`;
+            return;
+        }
+        if (line.trim() === '---') { html += '<hr>'; return; }
+        if (line.trim() === '')    { html += '</p><p>'; return; }
+        html += inlineFmt(line) + '\n';
+    });
+    if (inBQ) html += '</blockquote>';
+
+    html = '<p>' + html + '</p>';
+    html = html.replace(/<p>\s*<\/p>/g, '');
+    ['h2','h3','hr','blockquote'].forEach(tag => {
+        html = html.replace(new RegExp(`<p>\\s*(<${tag}[^>]*>)`, 'g'), '$1');
+        html = html.replace(new RegExp(`(</${tag}>)\\s*<\\/p>`, 'g'), '$1');
+    });
+    html = html.replace(/<p>\s*(__INDEX_PLACEHOLDER__)\s*<\/p>/g, '$1');
+    html = html.replace(/__INDEX_PLACEHOLDER__/g, '{{TOC}}');
+    return html;
+}
+
+function inlineFmt(t) {
+    return t
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/==(.+?)==/g, '<span class="accent">$1</span>')
+        .replace(/~~(.+?)~~/g, '<span class="accent2">$1</span>')
+        .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g,'<em>$1</em>');
+}
+
+function buildTOC(items) {
+    if (!items.length) return '';
+    const lis = items.map(i =>
+        `<li class="${i.level===3?'sub':''}">${i.text}</li>`
+    ).join('');
+    return `<div class="pv-toc"><div class="pv-toc__title">目次</div><ol>${lis}</ol></div>`;
+}
+
+function fmtDate(d) {
+    if (!d) return '';
+    const [y,m,dd] = d.split('-');
+    return `${y}.${m}.${dd}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  リアルタイムプレビュー更新
+// ═══════════════════════════════════════════════════════════
+function updatePreview() {
+    const cat      = document.getElementById('f-cat').value;
+    const title    = document.getElementById('f-title').value || '（タイトル）';
+    const subtitle = document.getElementById('f-subtitle').value;
+    const author   = document.getElementById('f-author').value || '著者名';
+    const date     = document.getElementById('f-date').value;
+    const body     = document.getElementById('f-body').value;
+
+    const tocItems = [];
+    let bodyHTML = parseMarkdown(body, tocItems);
+    const tocHTML = buildTOC(tocItems);
+    bodyHTML = bodyHTML.replace('{{TOC}}', tocHTML);
+
+    const dateJP = fmtDate(date);
+    const pv = document.getElementById('preview-pane');
+
+    pv.innerHTML = `
+        <p class="preview-pane__label">プレビュー</p>
+        <div class="pv-eyebrow">
+            <span class="pv-tag pv-tag--${cat}">${CAT_LABELS[cat]||cat}</span>
+            <span class="pv-date">${dateJP}</span>
+        </div>
+        <h1 class="pv-title">${title}</h1>
+        ${subtitle ? `<p class="pv-subtitle">${subtitle}</p>` : ''}
+        <p class="pv-author">By ${author}</p>
+        <div class="pv-body">${bodyHTML || '<p class="pv-empty">本文を入力してください</p>'}</div>
+    `;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GitHub API ヘルパー
+// ═══════════════════════════════════════════════════════════
+async function ghGet(path, token) {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}&t=${Date.now()}`, {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`GitHub GET ${path} → ${res.status}`);
+    return res.json();
+}
+
+async function ghPut(path, token, message, content, sha) {
+    const body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `GitHub PUT ${path} → ${res.status}`);
     }
-    updateTokenStatus();
+    return res.json();
+}
 
-    // ============================================================
-    //  Markdown パーサー（シンプル版）
-    // ============================================================
-    function parseMarkdown(text) {
-        if (!text) return '';
-        const lines = text.split('\n');
-        let html = '';
-        let inBQ = false;
-
-        lines.forEach(line => {
-            if (line.startsWith('> ')) {
-                if (!inBQ) { html += '<blockquote>'; inBQ = true; }
-                html += inlineFmt(line.slice(2)) + '<br>';
-                return;
-            } else if (inBQ) { html += '</blockquote>'; inBQ = false; }
-
-            if (line.startsWith('# '))  { html += `<h2>${inlineFmt(line.slice(2))}</h2>`; return; }
-            if (line.startsWith('## ')) { html += `<h3>${inlineFmt(line.slice(3))}</h3>`; return; }
-            if (line.trim() === '---')  { html += '<hr>'; return; }
-            if (line.trim() === '')     { html += '</p><p>'; return; }
-            html += inlineFmt(line) + '\n';
-        });
-        if (inBQ) html += '</blockquote>';
-
-        html = '<p>' + html + '</p>';
-        html = html.replace(/<p>\s*<\/p>/g,'');
-        html = html.replace(/<p>\s*(<h[23]>)/g,'$1');
-        html = html.replace(/(<\/h[23]>)\s*<\/p>/g,'$1');
-        html = html.replace(/<p>\s*(<hr>)\s*<\/p>/g,'$1');
-        html = html.replace(/<p>\s*(<blockquote>)/g,'$1');
-        html = html.replace(/(<\/blockquote>)\s*<\/p>/g,'$1');
-        return html;
-    }
-
-    function inlineFmt(t) {
-        return t
-            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-            .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-            .replace(/\*(.+?)\*/g,'<em>$1</em>');
-    }
-
-    function fmtDate(d) {
-        if (!d) return '';
-        const [y,m,dd] = d.split('-');
-        return `${y}.${m}.${dd}`;
-    }
-
-    // ============================================================
-    //  記事 HTML を生成
-    // ============================================================
-    function buildArticleHTML(data) {
-        const { cat, title, subtitle, author, date, body } = data;
-        const catLabel = CAT_LABELS[cat] || cat;
-        const dateJP   = fmtDate(date);
-        const bodyHTML = parseMarkdown(body);
-
-        return `<!DOCTYPE html>
+// ═══════════════════════════════════════════════════════════
+//  記事HTMLを生成（フルページ）
+// ═══════════════════════════════════════════════════════════
+function buildArticleHTML(data) {
+    const { cat, title, subtitle, author, date, body } = data;
+    const catLabel = CAT_LABELS[cat] || cat;
+    const dateJP   = fmtDate(date);
+    const tocItems = [];
+    let bodyHTML = parseMarkdown(body, tocItems);
+    const tocHTML = buildTOC(tocItems).replace(/class="pv-toc/g, 'class="article-toc').replace(/class="pv-toc__title/g,'class="article-toc__title').replace(/class="pv-body/g,'class="article-body');
+    bodyHTML = bodyHTML.replace('{{TOC}}', tocHTML);
+    // アクセントCSSに合わせてクラスを付与（生成HTML用）
+    return `<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -494,13 +604,20 @@ Google Docs や Word からコピーした文章をそのまま貼り付ける�
         .article-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px}
         .article-title{font-family:var(--serif);font-weight:900;font-size:clamp(28px,4.5vw,52px);line-height:1.25;letter-spacing:-.02em;margin-bottom:20px}
         .article-subtitle{font-family:var(--serif);font-size:19px;color:var(--fg-mute);line-height:1.65;margin-bottom:28px}
-        .article-meta{font-size:13px;color:var(--fg-mute);padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:52px;letter-spacing:.04em}
+        .article-meta{font-size:13px;color:var(--fg-mute);padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:52px}
+        .article-toc{background:var(--bg-soft);border-left:3px solid var(--accent);padding:18px 22px;margin-bottom:40px;border-radius:0 4px 4px 0}
+        .article-toc__title{font-size:11px;letter-spacing:.14em;font-weight:700;text-transform:uppercase;color:var(--fg-mute);margin-bottom:10px}
+        .article-toc ol{list-style:decimal;padding-left:18px}
+        .article-toc li{font-size:13px;line-height:1.9;color:var(--accent)}
+        .article-toc li.sub{margin-left:14px;font-size:12px;color:var(--fg-mute)}
         .article-body{font-family:var(--serif);font-size:17px;line-height:2.1;color:var(--fg)}
         .article-body h2{font-family:var(--serif);font-weight:700;font-size:22px;margin:56px 0 20px;letter-spacing:-.01em}
         .article-body h3{font-family:var(--serif);font-weight:700;font-size:18px;margin:40px 0 16px}
         .article-body p{margin-bottom:28px}
         .article-body blockquote{border-left:3px solid var(--accent);padding-left:24px;margin:36px 0;color:var(--fg-mute);font-style:italic}
         .article-body hr{border:none;border-top:1px solid var(--line);margin:52px 0}
+        .article-body .accent{color:var(--accent);font-weight:600}
+        .article-body .accent2{color:var(--accent2);font-weight:600}
         .article-back{display:inline-block;margin-top:64px;font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--accent);border-bottom:1px solid var(--accent);padding-bottom:3px}
         .tag--review{background:var(--accent2);color:#fff;border-color:var(--accent2)}
         .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -509,33 +626,28 @@ Google Docs や Word からコピーした文章をそのまま貼り付ける�
 </head>
 <body>
     <header class="site-header">
-        <div class="site-header__status">
-            <div class="site-header__status-inner">
-                <span class="status-pulse" aria-hidden="true"></span>
-                <span class="status-label">ON AIR</span>
-                <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
-                <span class="status-date">No. 005 · 2026 SPRING</span>
-            </div>
-        </div>
+        <div class="site-header__status"><div class="site-header__status-inner">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <span class="status-label">ON AIR</span>
+            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+            <span class="status-date">No. 005 · 2026 SPRING</span>
+        </div></div>
         <div class="header-inner">
             <a href="../index.html" class="brand-mark">
                 <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
                 <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
             </a>
-            <nav class="global-nav">
-                <ul>
-                    <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
-                    <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
-                    <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
-                    <li><a href="../index.html#works"><span class="nav-num">04</span><span class="nav-text">Works</span></a></li>
-                    <li><a href="../index.html#about"><span class="nav-num">06</span><span class="nav-text">About</span></a></li>
-                </ul>
-            </nav>
+            <nav class="global-nav"><ul>
+                <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                <li><a href="../index.html#works"><span class="nav-num">04</span><span class="nav-text">Works</span></a></li>
+                <li><a href="../index.html#about"><span class="nav-num">06</span><span class="nav-text">About</span></a></li>
+            </ul></nav>
             <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
         </div>
         <div class="site-header__bar" aria-hidden="true"></div>
     </header>
-
     <main class="article-wrap">
         <div class="article-eyebrow">
             <span class="tag tag--${cat}">${catLabel}</span>
@@ -547,7 +659,6 @@ Google Docs や Word からコピーした文章をそのまま貼り付ける�
         <div class="article-body">${bodyHTML}</div>
         <a href="../index.html#article" class="article-back">← 記事一覧に戻る</a>
     </main>
-
     <footer class="site-footer">
         <div class="site-footer__inner">
             <div class="site-footer__brand">
@@ -557,145 +668,165 @@ Google Docs や Word からコピーした文章をそのまま貼り付ける�
             <div class="site-footer__cols">
                 <div><h4>Programs</h4><ul>
                     <li><a href="../index.html#radio">Radio</a></li>
-                    <li><a href="../index.html#video">Video</a></li>
                     <li><a href="../index.html#article">Article</a></li>
+                    <li><a href="../index.html#video">Video</a></li>
                 </ul></div>
-                <div><h4>Platform</h4><ul>
-                    <li><a href="../index.html#about">About</a></li>
+                <div><h4>Follow</h4><ul>
                     <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
                 </ul></div>
             </div>
         </div>
-        <div class="site-footer__base">
-            <span>&copy; 2026 FUKULIU / ART Platform</span>
-            <span>Designed in Kansai.</span>
-        </div>
+        <div class="site-footer__base"><span>&copy; 2026 FUKULIU</span><span>Designed in Kansai.</span></div>
     </footer>
-    <script>
-        document.querySelector('.nav-toggle')?.addEventListener('click',()=>{
-            document.querySelector('.global-nav')?.classList.toggle('is-open');
-        });
-    <\/script>
+    <script>document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});<\/script>
 </body>
 </html>`;
-    }
+}
 
-    // ============================================================
-    //  GitHub API ヘルパー
-    // ============================================================
-    async function ghGet(path, token) {
-        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
-            headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
-        });
-        if (res.status === 404) return null;
-        if (!res.ok) throw new Error(`GitHub GET ${path} → ${res.status}`);
-        return res.json();
-    }
+// ═══════════════════════════════════════════════════════════
+//  記事公開
+// ═══════════════════════════════════════════════════════════
+async function publishArticle(existingPath, existingFileSha, existingManifestEntry) {
+    const token  = getToken();
+    if (!token) { alert('投稿キーを入力してください。'); return; }
 
-    async function ghPut(path, token, message, content, sha) {
-        const body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
-        if (sha) body.sha = sha;
-        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-            method: 'PUT',
-            headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
-            body: JSON.stringify(body)
-        });
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.message || `GitHub PUT ${path} → ${res.status}`);
+    const title    = document.getElementById('f-title').value.trim();
+    const subtitle = document.getElementById('f-subtitle').value.trim();
+    const author   = document.getElementById('f-author').value.trim();
+    const date     = document.getElementById('f-date').value;
+    const cat      = document.getElementById('f-cat').value;
+    const excerpt  = document.getElementById('f-excerpt').value.trim();
+    const body     = document.getElementById('f-body').value.trim();
+
+    if (!title)  { alert('タイトルを入力してください。'); return; }
+    if (!author) { alert('著者名を入力してください。'); return; }
+    if (!body)   { alert('本文を入力してください。'); return; }
+
+    const btn    = document.getElementById('btn-publish');
+    const result = document.getElementById('result');
+    btn.classList.add('is-loading'); btn.disabled = true;
+    result.className = 'result'; result.style.display = 'none';
+
+    try {
+        // ファイルパスを決定（新規 or 上書き）
+        const isEdit = !!existingPath;
+        const dateSlug = date.replace(/-/g,'');
+        const filepath = isEdit ? existingPath : `articles/${dateSlug}-${Math.random().toString(36).slice(2,7)}.html`;
+        const fileSha  = isEdit ? existingFileSha : undefined;
+
+        // 記事HTMLを生成してコミット
+        const articleHTML = buildArticleHTML({ cat, title, subtitle, author, date, body });
+        await ghPut(filepath, token, `${isEdit?'記事更新':'記事追加'}: ${title}`, articleHTML, fileSha);
+
+        // manifest.json を更新
+        const existing  = await ghGet('articles/manifest.json', token);
+        let currentArr  = existing
+            ? JSON.parse(decodeURIComponent(escape(atob(existing.content.replace(/\n/g,'')))))
+            : [];
+
+        const newEntry = {
+            cat, date: fmtDate(date), title,
+            excerpt: excerpt || body.slice(0,80).replace(/\n/g,' ') + '…',
+            author, url: filepath,
+            _body: body, _subtitle: subtitle  // 修正用に本文を保持
+        };
+
+        if (isEdit) {
+            // 既存エントリを置換
+            currentArr = currentArr.map(a => a.url === filepath ? newEntry : a);
+        } else {
+            currentArr = [newEntry, ...currentArr];
         }
-        return res.json();
-    }
+        await ghPut('articles/manifest.json', token, `マニフェスト更新: ${title}`, JSON.stringify(currentArr, null, 2), existing?.sha);
 
-    // ============================================================
-    //  記事公開メイン処理
-    // ============================================================
-    async function publishArticle() {
-        const token = getToken();
-        if (!token) { alert('投稿キーを入力してください。'); return; }
+        const siteUrl = `https://amanorope-coder.github.io/fukuliu/${filepath}`;
+        result.className = 'result result--success is-visible';
+        result.innerHTML = `✓ <strong>「${title}」を${isEdit?'更新':'公開'}しました。</strong> 反映まで1〜2分。 <a href="${siteUrl}" target="_blank">確認する →</a>`;
+        result.style.display = 'block';
 
-        const title    = document.getElementById('f-title').value.trim();
-        const subtitle = document.getElementById('f-subtitle').value.trim();
-        const author   = document.getElementById('f-author').value.trim();
-        const date     = document.getElementById('f-date').value;
-        const cat      = document.getElementById('f-cat').value;
-        const excerpt  = document.getElementById('f-excerpt').value.trim();
-        const body     = document.getElementById('f-body').value.trim();
-
-        if (!title) { alert('タイトルを入力してください。'); return; }
-        if (!author) { alert('著者名を入力してください。'); return; }
-        if (!body)   { alert('本文を入力してください。'); return; }
-
-        const btn = document.getElementById('btn-publish');
-        const result = document.getElementById('result');
-        btn.classList.add('is-loading');
-        btn.disabled = true;
-        result.className = 'result';
-        result.style.display = 'none';
-
-        try {
-            // ① ファイル名を生成
-            const dateSlug = date.replace(/-/g,'');
-            const rand     = Math.random().toString(36).slice(2,7);
-            const filename = `articles/${dateSlug}-${rand}.html`;
-
-            // ② 記事HTMLを生成してコミット
-            const articleHTML = buildArticleHTML({ cat, title, subtitle, author, date, body });
-            await ghPut(filename, token, `記事追加: ${title}`, articleHTML);
-
-            // ③ manifest.json を取得して更新
-            const existing   = await ghGet('articles/manifest.json', token);
-            const currentArr = existing
-                ? JSON.parse(decodeURIComponent(escape(atob(existing.content.replace(/\n/g,'')))))
-                : [];
-
-            const newEntry = {
-                cat,
-                date: fmtDate(date),
-                title,
-                excerpt: excerpt || body.slice(0,80).replace(/\n/g,' ') + '…',
-                author,
-                url: filename
-            };
-            const newArr = [newEntry, ...currentArr];
-            await ghPut(
-                'articles/manifest.json',
-                token,
-                `マニフェスト更新: ${title}`,
-                JSON.stringify(newArr, null, 2),
-                existing?.sha
-            );
-
-            // ④ 成功表示
-            const siteUrl = `https://amanorope-coder.github.io/fukuliu/${filename}`;
-            result.className = 'result result--success is-visible';
-            result.innerHTML = `
-                ✓ <strong>「${title}」を公開しました。</strong><br>
-                反映まで1〜2分かかります。<br>
-                <a href="${siteUrl}" target="_blank" rel="noopener noreferrer">記事を確認する →</a>
-            `;
-            result.style.display = 'block';
-
-            // フォームをリセット
-            ['f-title','f-subtitle','f-author','f-excerpt','f-body'].forEach(id => {
-                document.getElementById(id).value = '';
-            });
+        if (!isEdit) {
+            // 新規の場合はフォームリセット
+            ['f-title','f-subtitle','f-author','f-excerpt','f-body'].forEach(id => document.getElementById(id).value='');
             document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
-
-        } catch (e) {
-            result.className = 'result result--error is-visible';
-            result.innerHTML = `
-                ✗ <strong>公開に失敗しました。</strong><br>
-                ${e.message}<br>
-                投稿キーが正しいか確認してください。
-            `;
-            result.style.display = 'block';
-            console.error(e);
-        } finally {
-            btn.classList.remove('is-loading');
-            btn.disabled = false;
+            updatePreview();
         }
+    } catch(e) {
+        result.className = 'result result--error is-visible';
+        result.innerHTML = `✗ <strong>失敗しました。</strong> ${e.message}`;
+        result.style.display = 'block';
+        console.error(e);
+    } finally {
+        btn.classList.remove('is-loading'); btn.disabled = !getToken();
     }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  修正タブ：記事一覧を読み込む
+// ═══════════════════════════════════════════════════════════
+async function loadEditList() {
+    const token = getToken();
+    const wrap  = document.getElementById('edit-list-wrap');
+    if (!token) { wrap.innerHTML = '<p class="edit-loading">投稿キーを設定すると一覧が表示されます。</p>'; return; }
+
+    wrap.innerHTML = '<p class="edit-loading">読み込み中…</p>';
+    try {
+        const file = await ghGet('articles/manifest.json', token);
+        if (!file) { wrap.innerHTML = '<p class="edit-loading">まだ投稿された記事がありません。</p>'; return; }
+        const arr = JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,'')))));
+        if (!arr.length) { wrap.innerHTML = '<p class="edit-loading">まだ投稿された記事がありません。</p>'; return; }
+
+        const colors = { review: 'var(--accent2)', essay: 'var(--accent)', dialogue: '#1a1a1a' };
+        wrap.innerHTML = `<div class="article-list-edit">` +
+            arr.map((a,i) => `
+                <div class="article-item" onclick="loadForEdit(${i})">
+                    <span class="article-item__tag" style="background:${colors[a.cat]||'#555'}">${CAT_LABELS[a.cat]||a.cat}</span>
+                    <span class="article-item__title">${a.title}</span>
+                    <span class="article-item__date">${a.date}</span>
+                    <span class="article-item__edit">修正する →</span>
+                </div>`).join('') +
+        `</div>`;
+        wrap._manifest = arr;
+        wrap._manifestSha = file.sha;
+    } catch(e) {
+        wrap.innerHTML = `<p class="edit-loading">読み込みに失敗しました: ${e.message}</p>`;
+    }
+}
+
+async function loadForEdit(index) {
+    const token = getToken();
+    const wrap  = document.getElementById('edit-list-wrap');
+    const arr   = wrap._manifest;
+    if (!arr) return;
+    const entry = arr[index];
+
+    // エディタタブに切り替えて値を流し込む
+    switchTab('write');
+
+    // 記事ファイルから sha を取得
+    const fileData = await ghGet(entry.url, token).catch(() => null);
+    const fileSha  = fileData?.sha;
+
+    // フィールドに値をセット
+    const dateStr = entry.date ? entry.date.replace(/\./g, '-') : '';
+    document.getElementById('f-cat').value    = entry.cat    || 'essay';
+    document.getElementById('f-date').value   = dateStr;
+    document.getElementById('f-title').value  = entry.title  || '';
+    document.getElementById('f-subtitle').value = entry._subtitle || '';
+    document.getElementById('f-author').value = entry.author || '';
+    document.getElementById('f-excerpt').value = entry.excerpt || '';
+    document.getElementById('f-body').value   = entry._body  || '（本文データなし。直接GitHubで編集してください）';
+    updatePreview();
+
+    // 「公開する」ボタンを「更新して公開」に変更し、上書きモードにする
+    const btn = document.getElementById('btn-publish');
+    btn.querySelector('span:last-child').textContent = `「${entry.title}」を更新して公開`;
+    btn.onclick = () => publishArticle(entry.url, fileSha);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('result').innerHTML = `<em>「${entry.title}」を修正中です。修正が完了したら「更新して公開」を押してください。</em>`;
+    document.getElementById('result').className = 'result result--success is-visible';
+    document.getElementById('result').style.display = 'block';
+}
 </script>
 </body>
 </html>
