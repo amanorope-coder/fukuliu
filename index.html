@@ -818,17 +818,7 @@
 
         const SHUFFLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789アイウエオカキクケコサシスセソタチツテトナニヌネノ';
 
-        // ① ページ読み込み時：hero__feature-title をシャッフル
         window.addEventListener('DOMContentLoaded', () => {
-            const featureTitle = document.querySelector('.hero__feature-title');
-            if (featureTitle) {
-                setTimeout(() => {
-                    const st = new ShuffleText(featureTitle);
-                    st.duration = 2200;
-                    st.sourceRandomCharacter = SHUFFLE_CHARS;
-                    st.start();
-                }, 600);
-            }
 
             // ② タイプライター：hero__tagline（1文字ずつ、遅め）
             const tagline = document.querySelector('.hero__tagline');
