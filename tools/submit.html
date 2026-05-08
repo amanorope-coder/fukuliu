@@ -821,7 +821,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
 
         const newEntry = {
             cat, date: fmtDate(date), title,
-            excerpt: excerpt || plainText(body).slice(0,80) + '…',
+            excerpt: plainText(excerpt) || plainText(body).slice(0,80) + '…',
             author, url: filepath,
             _body: body, _subtitle: subtitle  // 修正用に本文を保持
         };
