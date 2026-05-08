@@ -816,37 +816,70 @@
         //  ShuffleText エフェクト
         // ============================================================
 
-        // ① ページ読み込み時：ヒーローのタグラインとフィーチャータイトル
+        // ① ページ読み込み時：hero__feature-title をシャッフル
         window.addEventListener('DOMContentLoaded', () => {
-            const heroTargets = [
-                document.querySelector('.hero__tagline'),
-                document.querySelector('.hero__feature-title'),
-            ];
-            heroTargets.forEach((el, i) => {
-                if (!el) return;
+            const featureTitle = document.querySelector('.hero__feature-title');
+            if (featureTitle) {
                 setTimeout(() => {
-                    const st = new ShuffleText(el);
+                    const st = new ShuffleText(featureTitle);
                     st.duration = 18;
                     st.start();
-                }, i * 300); // 少しずらして順番に発火
-            });
+                }, 400);
+            }
+
+            // ② タイプライター：hero__tagline
+            const tagline = document.querySelector('.hero__tagline');
+            if (tagline) {
+                const html = tagline.innerHTML;
+                tagline.innerHTML = '';
+                let i = 0;
+                let current = '';
+
+                function typeNext() {
+                    if (i >= html.length) {
+                        tagline.innerHTML = html; // 最終的に元のHTMLに戻す
+                        return;
+                    }
+                    if (html[i] === '<') {
+                        // HTMLタグはまとめてスキップ（即時挿入）
+                        const end = html.indexOf('>', i);
+                        current += html.slice(i, end + 1);
+                        tagline.innerHTML = current + '<span class="tw-cursor">|</span>';
+                        i = end + 1;
+                        typeNext();
+                    } else {
+                        current += html[i];
+                        tagline.innerHTML = current + '<span class="tw-cursor">|</span>';
+                        i++;
+                        setTimeout(typeNext, 60);
+                    }
+                }
+                setTimeout(typeNext, 200);
+            }
         });
 
-        // ② スクロール時：セクション見出し（program__title）
-        const sectionTitles = document.querySelectorAll('.program__title');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const st = new ShuffleText(entry.target);
-                    st.duration = 16;
-                    st.start();
-                    observer.unobserve(entry.target); // 一度だけ発火
-                }
-            });
-        }, { threshold: 0.3 });
-
-        sectionTitles.forEach(el => observer.observe(el));
+        // ③ ホバーシャッフル：記事カード見出し（イベント委譲）
+        document.addEventListener('mouseover', (e) => {
+            const title = e.target.closest('.article-row__title, .article-feature__title');
+            if (title && !title._shuffling) {
+                title._shuffling = true;
+                const st = new ShuffleText(title);
+                st.duration = 12;
+                st.start();
+                setTimeout(() => { title._shuffling = false; }, 1200);
+            }
+        });
     </script>
+    <style>
+        .tw-cursor {
+            display: inline-block;
+            font-weight: 300;
+            opacity: 1;
+            animation: tw-blink .7s step-end infinite;
+            color: var(--accent);
+        }
+        @keyframes tw-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    </style>
 
 </body>
 </html>
