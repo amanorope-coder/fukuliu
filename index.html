@@ -831,6 +831,9 @@
                 function typeNext() {
                     if (i >= html.length) {
                         tagline.innerHTML = html;
+                        // タイプライター完了 → ロゴをブワッと表示
+                        const logo = document.querySelector('.hero__logo-img');
+                        if (logo) setTimeout(() => logo.classList.add('is-visible'), 100);
                         return;
                     }
                     if (html[i] === '<') {
@@ -872,6 +875,21 @@
             color: var(--accent);
         }
         @keyframes tw-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* ロゴ初期状態：非表示 */
+        .hero__logo-img {
+            opacity: 0;
+            transform: scale(1.08);
+            filter: blur(12px);
+            transition: opacity 1.2s cubic-bezier(.2,.7,.2,1),
+                        transform 1.4s cubic-bezier(.2,.7,.2,1),
+                        filter 1.2s cubic-bezier(.2,.7,.2,1);
+        }
+        .hero__logo-img.is-visible {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0px);
+        }
     </style>
 
 </body>
