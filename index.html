@@ -38,9 +38,10 @@
                     <li><a href="#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
                     <li><a href="#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
                     <li><a href="#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
-                    <li><a href="#works"><span class="nav-num">04</span><span class="nav-text">Works</span></a></li>
-                    <li><a href="#shop"><span class="nav-num">05</span><span class="nav-text">Shop</span></a></li>
-                    <li><a href="#about"><span class="nav-num">06</span><span class="nav-text">About</span></a></li>
+                    <li><a href="dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                    <li><a href="#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                    <li><a href="#shop"><span class="nav-num">06</span><span class="nav-text">Shop</span></a></li>
+                    <li><a href="#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
                 </ul>
             </nav>
             <button class="nav-toggle" aria-label="メニューを開く">
@@ -132,7 +133,7 @@
                     <span class="cat-legend__item"><i class="cat-dot cat-dot--dialogue"></i>対談</span>
                 </div>
             </div>
-            <a href="#" class="program__more">All articles →</a>
+            <a href="#backnumbers" class="program__more">All articles →</a>
         </div>
 
         <!-- 記事はJSで自動生成。配列の先頭が最新として上に並びます -->
@@ -252,25 +253,17 @@
         </div>
 
         <div class="archive-filter">
-            <button class="archive-filter__btn is-active">All</button>
-            <button class="archive-filter__btn">Radio</button>
-            <button class="archive-filter__btn">Video</button>
-            <button class="archive-filter__btn">Article</button>
-            <button class="archive-filter__btn">Series</button>
+            <button class="archive-filter__btn is-active" type="button" data-filter="all">All</button>
+            <button class="archive-filter__btn" type="button" data-filter="radio">Radio</button>
+            <button class="archive-filter__btn" type="button" data-filter="video">Video</button>
+            <button class="archive-filter__btn" type="button" data-filter="article">Article</button>
+            <button class="archive-filter__btn" type="button" data-filter="series">Series</button>
         </div>
 
-        <ul class="archive-list">
-            <li><span class="archive-list__date">2026.04.20</span><span class="archive-list__cat">RADIO</span><span class="archive-list__title">EP.012 印象派は本当に革命だったのか</span></li>
-            <li><span class="archive-list__date">2026.04.18</span><span class="archive-list__cat">VIDEO</span><span class="archive-list__title">芸大生の1日 vol.3 日本画専攻・3回生</span></li>
-            <li><span class="archive-list__date">2026.04.10</span><span class="archive-list__cat">ARTICLE</span><span class="archive-list__title">関西で美術をやることの、地理的な意味</span></li>
-            <li><span class="archive-list__date">2026.04.06</span><span class="archive-list__cat">RADIO</span><span class="archive-list__title">EP.011 建築家と読む、戦後京都の空間</span></li>
-            <li><span class="archive-list__date">2026.03.28</span><span class="archive-list__cat">ARTICLE</span><span class="archive-list__title">神戸・元町、見るべきだった展示3つ</span></li>
-            <li><span class="archive-list__date">2026.03.23</span><span class="archive-list__cat">RADIO</span><span class="archive-list__title">EP.010 写真家と語る、コンテンポラリーの今</span></li>
-            <li><span class="archive-list__date">2026.03.18</span><span class="archive-list__cat">VIDEO</span><span class="archive-list__title">芸大生の1日 vol.2 彫刻専攻のアトリエ</span></li>
-            <li><span class="archive-list__date">2026.03.05</span><span class="archive-list__cat">ARTICLE</span><span class="archive-list__title">「観客」という言葉が壊しているもの</span></li>
-        </ul>
+        <p id="archive-status" class="archive-status" aria-live="polite"></p>
+        <ul id="archive-list" class="archive-list"></ul>
 
-        <button class="load-more">Load more</button>
+        <button id="archive-load-more" class="load-more" type="button">Load more</button>
     </section>
 
     <!-- ============================ ABOUT / RESPONSE ============================ -->
@@ -301,8 +294,9 @@
                     <h4>Programs</h4>
                     <ul>
                         <li><a href="#radio">Radio</a></li>
-                        <li><a href="#video">Video</a></li>
                         <li><a href="#article">Article</a></li>
+                        <li><a href="#video">Video</a></li>
+                        <li><a href="dialogue-ichinen.html">Dialogue</a></li>
                         <li><a href="#series">Series</a></li>
                     </ul>
                 </div>
@@ -319,8 +313,8 @@
                     <h4>Follow</h4>
                     <ul>
                         <li><a href="#">YouTube</a></li>
-                        <li><a href="#">Spotify</a></li>
-                        <li><a href="#">Instagram</a></li>
+                        <li><a href="https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap?si=1b46e9fb428348eb">Spotify<a></li>
+                        <li><a href="https://www.instagram.com/fukuliu.from.art?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Instagram</a></li>
                         <li><a href="#">Discord</a></li>
                     </ul>
                 </div>
@@ -369,7 +363,7 @@
                 title: '京都某所、4月の3展示──「優しさ」という退屈について',
                 excerpt: '関西の現代美術における「ケア」の語り口は、いつから批評の鋭さを失ったのか。',
                 author: '編集部',
-                url: ''
+                url: 'articles/20260425-kyoto-april-exhibitions.html'
             },
             {
                 cat: 'dialogue',
@@ -437,8 +431,18 @@
                 `;
             }
 
-            const list = document.getElementById('articles-list');
-            if (list) list.innerHTML = articles.map(renderArticle).join('');
+            function renderAll(dynamicArticles) {
+                // manifest.json から取得した新着を先頭に、固定記事を後ろに並べる
+                const merged = [...dynamicArticles, ...articles];
+                const list = document.getElementById('articles-list');
+                if (list) list.innerHTML = merged.map(renderArticle).join('');
+            }
+
+            // articles/manifest.json を読んで動的記事を追加（GitHub Pages 上で動作）
+            fetch('articles/manifest.json')
+                .then(r => r.json())
+                .then(dynamic => renderAll(dynamic))
+                .catch(() => renderAll([])); // ローカルやエラー時は固定記事のみ表示
         })();
 
         // ============================================================
@@ -570,19 +574,181 @@
         })();
 
         // ============================================================
+        //  バックナンバー — 実データ連動フィルタ
+        // ============================================================
+        const videoArchiveItems = [
+            {
+                type: 'video',
+                date: '2026.04.18',
+                title: '芸大生の1日 vol.03 日本画専攻・3回生の朝6時から24時まで',
+                url: '#video'
+            },
+            {
+                type: 'video',
+                date: '2026.03.18',
+                title: '芸大生の1日 vol.02 彫刻専攻のアトリエ',
+                url: '#video'
+            },
+            {
+                type: 'video',
+                date: '2026.03.05',
+                title: '芸大生の1日 vol.01 構想設計：1人のスタジオの哲学',
+                url: '#video'
+            }
+        ];
+
+        const seriesArchiveItems = [
+            {
+                type: 'series',
+                date: '2026.04.25',
+                title: '一年対談 — マツモリ × タシロ',
+                url: 'dialogue-ichinen.html'
+            },
+            {
+                type: 'series',
+                date: '2026.04.01',
+                title: '多様な視点からのレビュー',
+                url: '#series'
+            },
+            {
+                type: 'series',
+                date: '2026.03.24',
+                title: '売り込みレビュー',
+                url: '#series'
+            }
+        ];
+
+        (function () {
+            const ARCHIVE_PAGE_SIZE = 6;
+            const typeLabels = {
+                radio: 'RADIO',
+                video: 'VIDEO',
+                article: 'ARTICLE',
+                series: 'SERIES'
+            };
+            let currentFilter = 'all';
+            let visibleCount = ARCHIVE_PAGE_SIZE;
+
+            function stripHTML(value) {
+                return String(value || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            }
+            function escapeHTML(value) {
+                return String(value || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
+            function escapeAttr(value) {
+                return escapeHTML(value).replace(/"/g, '&quot;');
+            }
+            function sortKey(date) {
+                return String(date || '').replace(/\D/g, '').slice(0, 8);
+            }
+            function isExternal(url) {
+                return /^https?:\/\//.test(url);
+            }
+            function hasUrl(url) {
+                return url && url !== '#';
+            }
+            function spotifyEpisodeUrl(input) {
+                if (!input) return '';
+                const value = String(input).trim();
+                if (isExternal(value)) return value;
+                const id = value.split('?')[0];
+                return id ? `https://open.spotify.com/episode/${id}` : '';
+            }
+
+            const radioArchiveItems = radioEpisodes.map(ep => ({
+                type: 'radio',
+                date: ep.date,
+                title: `${ep.ep || ''} ${stripHTML(ep.title)}`.trim(),
+                url: spotifyEpisodeUrl(ep.id)
+            }));
+
+            const articleArchiveItems = articles.map(article => ({
+                type: 'article',
+                date: article.date,
+                title: article.title,
+                url: article.url
+            }));
+
+            const allItems = [
+                ...articleArchiveItems,
+                ...radioArchiveItems,
+                ...videoArchiveItems,
+                ...seriesArchiveItems
+            ].sort((a, b) => sortKey(b.date).localeCompare(sortKey(a.date)));
+
+            function getFilteredItems() {
+                return currentFilter === 'all'
+                    ? allItems
+                    : allItems.filter(item => item.type === currentFilter);
+            }
+
+            function renderArchiveItem(item) {
+                const linked = hasUrl(item.url);
+                const tag = linked ? 'a' : 'span';
+                const attrs = linked
+                    ? `href="${escapeAttr(item.url)}"${isExternal(item.url) ? ' target="_blank" rel="noopener noreferrer"' : ''}`
+                    : '';
+                const pending = linked ? '' : '<span class="archive-list__pending">準備中</span>';
+
+                return `
+                    <li class="archive-list__item archive-list__item--${item.type}${linked ? ' archive-list__item--link' : ' archive-list__item--pending'}">
+                        <${tag} class="archive-list__link" ${attrs}>
+                            <span class="archive-list__date">${escapeHTML(item.date)}</span>
+                            <span class="archive-list__cat">${typeLabels[item.type] || item.type}</span>
+                            <span class="archive-list__title">${escapeHTML(item.title)}</span>
+                            ${pending}
+                        </${tag}>
+                    </li>
+                `;
+            }
+
+            function renderArchive() {
+                const list = document.getElementById('archive-list');
+                const more = document.getElementById('archive-load-more');
+                const status = document.getElementById('archive-status');
+                if (!list || !more) return;
+
+                const items = getFilteredItems();
+                const visibleItems = items.slice(0, visibleCount);
+                list.innerHTML = visibleItems.length
+                    ? visibleItems.map(renderArchiveItem).join('')
+                    : '<li class="archive-list__empty">該当するバックナンバーはまだありません。</li>';
+
+                if (status) {
+                    const label = currentFilter === 'all' ? 'All' : typeLabels[currentFilter];
+                    status.textContent = `${label} / ${items.length} items`;
+                }
+
+                more.hidden = visibleCount >= items.length;
+            }
+
+            document.querySelectorAll('.archive-filter__btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.archive-filter__btn').forEach(b => b.classList.remove('is-active'));
+                    btn.classList.add('is-active');
+                    currentFilter = btn.dataset.filter || 'all';
+                    visibleCount = ARCHIVE_PAGE_SIZE;
+                    renderArchive();
+                });
+            });
+
+            document.getElementById('archive-load-more')?.addEventListener('click', () => {
+                visibleCount += ARCHIVE_PAGE_SIZE;
+                renderArchive();
+            });
+
+            renderArchive();
+        })();
+
+        // ============================================================
         //  ナビ・フィルタ（ラジオ以外）
         // ============================================================
         // 簡易的なナビ開閉（モバイル）
         document.querySelector('.nav-toggle')?.addEventListener('click', () => {
             document.querySelector('.global-nav')?.classList.toggle('is-open');
-        });
-
-        // アーカイブフィルタ（見た目のみ）
-        document.querySelectorAll('.archive-filter__btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.archive-filter__btn').forEach(b => b.classList.remove('is-active'));
-                btn.classList.add('is-active');
-            });
         });
     </script>
 

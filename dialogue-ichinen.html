@@ -233,19 +233,23 @@
             line-height: 1.85;
             border-radius: 4px;
             word-break: break-word;
+            overflow-wrap: anywhere;
             position: relative;
+            max-width: 640px;
         }
         .msg--matsumori .msg__bubble {
             background: var(--bg-soft);
             border-left: 3px solid var(--accent);
             border-radius: 0 4px 4px 0;
             text-align: left;
+            justify-self: start;
         }
         .msg--tashiro .msg__bubble {
             background: #fff4f0;
             border-right: 3px solid var(--accent2);
             border-radius: 4px 0 0 4px;
             text-align: left;
+            justify-self: end;
         }
 
         /* 画像添付 */
@@ -344,6 +348,7 @@
             border-radius: 0 4px 4px 0;
             font-size: 14px;
             color: var(--fg-mute);
+            max-width: 560px;
         }
 
         /* メンションハイライト */
@@ -355,15 +360,33 @@
 
         /* ---- レスポンシブ ---- */
         @media (max-width: 640px) {
+            .dialogue-header { padding-top: 48px; padding-bottom: 46px; }
             .dialogue-header__title { font-size: 32px; }
+            .dialogue-controls { padding-top: 20px; padding-bottom: 20px; }
+            .dialogue-body { padding: 42px var(--pad-x) 86px; }
             .msg--tashiro {
-                grid-template-columns: 1fr 36px;
+                grid-template-columns: minmax(0, 1fr) 34px;
             }
-            .msg--matsumori {
-                grid-template-columns: 36px 1fr;
+            .msg--matsumori,
+            .msg--other {
+                grid-template-columns: 34px minmax(0, 1fr);
             }
-            .msg__avatar { width: 34px; height: 34px; font-size: 12px; }
-            .msg__bubble { font-size: 14px; padding: 12px 14px; }
+            .msg { gap: 0 10px; }
+            .msg__avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+                position: static;
+                margin-top: 3px;
+            }
+            .msg__meta { gap: 8px; }
+            .msg__bubble {
+                max-width: 100%;
+                font-size: 14px;
+                line-height: 1.78;
+                padding: 12px 14px;
+            }
+            .msg__image { max-width: min(100%, 360px); }
             .dialogue-about__grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -390,9 +413,10 @@
                     <li><a href="index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
                     <li><a href="index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
                     <li><a href="index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
-                    <li><a href="index.html#works"><span class="nav-num">04</span><span class="nav-text">Works</span></a></li>
-                    <li><a href="index.html#shop"><span class="nav-num">05</span><span class="nav-text">Shop</span></a></li>
-                    <li><a href="index.html#about"><span class="nav-num">06</span><span class="nav-text">About</span></a></li>
+                    <li><a href="dialogue-ichinen.html" aria-current="page"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                    <li><a href="index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                    <li><a href="index.html#shop"><span class="nav-num">06</span><span class="nav-text">Shop</span></a></li>
+                    <li><a href="index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
                 </ul>
             </nav>
             <button class="nav-toggle" aria-label="メニューを開く">
@@ -480,8 +504,9 @@
                     <h4>Programs</h4>
                     <ul>
                         <li><a href="index.html#radio">Radio</a></li>
-                        <li><a href="index.html#video">Video</a></li>
                         <li><a href="index.html#article">Article</a></li>
+                        <li><a href="index.html#video">Video</a></li>
+                        <li><a href="dialogue-ichinen.html">Dialogue</a></li>
                         <li><a href="index.html#series">Series</a></li>
                     </ul>
                 </div>

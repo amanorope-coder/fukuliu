@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京都某所、4月の3展示──「優しさ」という退屈について — FUKULIU</title>
+    <meta name="description" content="関西の現代美術における「ケア」の語り口は、いつから批評の鋭さを失ったのか。FUKULIU編集部による展示レビュー。">
+    <meta property="og:title" content="京都某所、4月の3展示──「優しさ」という退屈について — FUKULIU">
+    <meta property="og:description" content="関西の現代美術における「ケア」の語り口は、いつから批評の鋭さを失ったのか。">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .article-page {
+            background:
+                linear-gradient(90deg, rgba(35,91,200,.08), transparent 26%),
+                linear-gradient(180deg, #fff 0, var(--bg) 520px);
+        }
+        .article-hero {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 72px var(--pad-x) 56px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(260px, .55fr);
+            gap: 56px;
+            align-items: end;
+            border-bottom: 1px solid var(--line);
+        }
+        .article-hero__eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .article-hero__title {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: clamp(34px, 5vw, 68px);
+            line-height: 1.16;
+            letter-spacing: -0.02em;
+            margin: 0 0 24px;
+        }
+        .article-hero__lead {
+            font-family: var(--serif);
+            font-size: clamp(17px, 1.55vw, 21px);
+            line-height: 1.85;
+            color: var(--fg-mute);
+            margin: 0;
+            max-width: 760px;
+        }
+        .article-hero__side {
+            border-left: 1px solid var(--line);
+            padding-left: 28px;
+        }
+        .article-hero__mark {
+            width: min(240px, 70%);
+            height: auto;
+            margin: 0 0 34px;
+            opacity: .88;
+        }
+        .article-meta-stack {
+            display: grid;
+            gap: 18px;
+        }
+        .article-meta-stack__item {
+            border-top: 1px solid var(--line);
+            padding-top: 14px;
+        }
+        .article-meta-stack__label {
+            display: block;
+            color: var(--fg-mute);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .article-meta-stack__value {
+            font-family: var(--serif);
+            font-size: 15px;
+        }
+        .article-shell {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 72px var(--pad-x) 120px;
+            display: grid;
+            grid-template-columns: 180px minmax(0, 760px);
+            gap: clamp(32px, 7vw, 96px);
+            align-items: start;
+        }
+        .article-toc {
+            position: sticky;
+            top: 132px;
+            font-size: 11px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--fg-mute);
+            border-top: 2px solid var(--fg);
+            padding-top: 18px;
+        }
+        .article-toc a {
+            display: block;
+            margin-top: 14px;
+            letter-spacing: .06em;
+            text-transform: none;
+            color: var(--fg);
+        }
+        .article-body {
+            font-family: var(--serif);
+            font-size: 17px;
+            line-height: 2.12;
+            color: var(--fg);
+        }
+        .article-body p {
+            margin: 0 0 30px;
+        }
+        .article-body h2 {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: clamp(24px, 2.6vw, 34px);
+            line-height: 1.45;
+            letter-spacing: -0.01em;
+            margin: 68px 0 22px;
+        }
+        .article-body blockquote {
+            margin: 46px 0;
+            padding: 26px 30px;
+            border-left: 4px solid var(--accent);
+            background: #f6f8fc;
+            color: var(--fg);
+            font-size: 18px;
+            line-height: 1.95;
+        }
+        .article-body hr {
+            border: 0;
+            border-top: 1px solid var(--line);
+            margin: 56px 0;
+        }
+        .article-note {
+            margin-top: 72px;
+            padding: 22px 0 0;
+            border-top: 1px solid var(--line);
+            color: var(--fg-mute);
+            font-family: var(--sans);
+            font-size: 12px;
+            letter-spacing: .05em;
+            line-height: 1.9;
+        }
+        .article-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 52px;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            color: var(--accent);
+        }
+        .article-back::before {
+            content: "";
+            width: 28px;
+            height: 1px;
+            background: currentColor;
+        }
+        .tag--review { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+        @media (max-width: 880px) {
+            .article-hero {
+                grid-template-columns: 1fr;
+                gap: 36px;
+                padding-top: 54px;
+            }
+            .article-hero__side {
+                border-left: 0;
+                border-top: 1px solid var(--line);
+                padding: 24px 0 0;
+            }
+            .article-shell {
+                grid-template-columns: 1fr;
+                padding-top: 52px;
+            }
+            .article-toc {
+                position: static;
+                display: flex;
+                gap: 18px;
+                flex-wrap: wrap;
+            }
+            .article-toc a { margin-top: 0; }
+        }
+        @media (max-width: 640px) {
+            .article-hero__title { font-size: 34px; }
+            .article-body { font-size: 16px; line-height: 2; }
+            .article-body blockquote { padding: 20px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body class="article-page">
+
+    <header class="site-header">
+        <div class="site-header__status">
+            <div class="site-header__status-inner">
+                <span class="status-pulse" aria-hidden="true"></span>
+                <span class="status-label">ON AIR</span>
+                <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+                <span class="status-date">No. 005 · 2026 SPRING</span>
+            </div>
+        </div>
+        <div class="header-inner">
+            <a href="../index.html" class="brand-mark">
+                <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav">
+                <ul>
+                    <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                    <li><a href="../index.html#article" aria-current="page"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                    <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                    <li><a href="../dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                    <li><a href="../index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                    <li><a href="../index.html#shop"><span class="nav-num">06</span><span class="nav-text">Shop</span></a></li>
+                    <li><a href="../index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" aria-label="メニューを開く">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+
+    <main>
+        <section class="article-hero">
+            <div>
+                <div class="article-hero__eyebrow">
+                    <span class="tag tag--review">展示レビュー</span>
+                    <span class="date">2026.04.25</span>
+                </div>
+                <h1 class="article-hero__title">京都某所、4月の3展示──<br>「優しさ」という退屈について</h1>
+                <p class="article-hero__lead">関西の現代美術における「ケア」の語り口は、いつから批評の鋭さを失ったのか。固有名をいったん伏せたまま、4月に見た複数の展示から、いま頻出している柔らかさの身振りを考える。</p>
+            </div>
+            <aside class="article-hero__side" aria-label="記事情報">
+                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
+                <div class="article-meta-stack">
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Author</span>
+                        <span class="article-meta-stack__value">編集部</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Category</span>
+                        <span class="article-meta-stack__value">展示レビュー</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Issue</span>
+                        <span class="article-meta-stack__value">FUKULIU Review / 2026 Spring</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <div class="article-shell">
+            <nav class="article-toc" aria-label="本文内ナビゲーション">
+                Index
+                <a href="#section-1">優しさの形式</a>
+                <a href="#section-2">摩擦の不在</a>
+                <a href="#section-3">次の批評へ</a>
+            </nav>
+
+            <article class="article-body">
+                <p>4月、京都市内で見た三つの展示には、互いに直接の関係があるわけではない。場所も、作家の世代も、扱っている素材も異なる。ただ、会場を出たあとに残った感触はよく似ていた。作品は観客を脅かさない。壁文は傷つきやすさに配慮する。展示全体は、できるだけ誰も置き去りにしないよう設計されている。</p>
+
+                <p>それ自体は悪いことではない。むしろ、暴力的な断言や、観客への一方的な負荷を批評性と取り違えてきた時代への反省として、必要な変化でもある。けれど、その反省がいつの間にか「摩擦の少なさ」そのものを価値にしてしまうとき、展示は急に退屈になる。優しいが、何も譲らせない。丁寧だが、こちらの考えを変形させない。</p>
+
+                <h2 id="section-1">優しさの形式</h2>
+                <p>近年の展示空間でよく見るのは、ケア、記憶、共同性、生活、土地といった語のなめらかな連結である。そこでは、作家が何かを断ち切るよりも、すでにある関係をほどかずに置いておくことが重視される。強い主張よりも、弱い声に耳を澄ませる態度が前景化する。</p>
+
+                <p>この態度は、たしかに現在的だ。大きな物語を疑い、声になりにくい経験を拾い上げることは、いま作品が引き受けうる重要な仕事のひとつだろう。しかし問題は、その態度が形式として定着しすぎていることにある。やわらかな照明、余白の多い配置、断定を避けるステートメント、観客に委ねる結語。それらが揃った瞬間、展示は最初から「よいもの」として読まれる安全圏に入ってしまう。</p>
+
+                <blockquote>優しさは、作品が観客に差し出す態度であると同時に、作品を批評から遠ざける防御膜にもなりうる。</blockquote>
+
+                <p>三つの展示に共通していたのは、作品がそれぞれ十分に誠実であるにもかかわらず、その誠実さが展示の輪郭を鈍らせていたことだった。どの作品も乱暴ではない。だが、乱暴でないことが、いつの間にかもっとも強い自己正当化になっている。</p>
+
+                <h2 id="section-2">摩擦の不在</h2>
+                <p>展覧会を見ることは、作品の前で快適に過ごすことだけではない。むしろ、どこかで自分の見方が引っかかり、うまく飲み込めないものが残るからこそ、展示はあとから効いてくる。今回見た展示群には、その引っかかりが少なかった。問いは提示されるが、問いの形があまりにも整っている。違和感はあるが、違和感として扱いやすい場所に置かれている。</p>
+
+                <p>もちろん、展示が観客を傷つける必要はない。だが、観客の受け取りやすさを最優先にした空間は、作品の側にある本来の厄介さまで丸めてしまうことがある。作家が抱えているはずの矛盾や、素材が持っている抵抗、場所が持つ政治性が、語りの柔らかさによって先回りして調停される。そこでは、作品は批判される前に理解されてしまう。</p>
+
+                <p>理解されやすい作品は、広く届きやすい。しかし、すぐに理解されることと、深く届くことは同じではない。作品がこちらに残すべき小さな異物感まで、展示の言葉が回収してしまうなら、その親切さは少し危うい。</p>
+
+                <hr>
+
+                <h2 id="section-3">次の批評へ</h2>
+                <p>FUKULIUで展示レビューを書く意味は、良い展示を良いと言うことだけではない。むしろ、良いとされやすい展示のなかにある鈍さや、批評されにくい美徳の退屈さを言葉にすることにある。優しさを否定したいのではない。優しさが作品の緊張を奪っていないかを見たい。</p>
+
+                <p>関西の美術シーンには、小規模で、実験的で、作家同士の距離が近いからこそ生まれる強度がある。一方で、その近さは批評の刃を鈍らせることもある。知り合いの展示を、場を壊さないように、よいところを拾いながら語る。その態度は必要だが、それだけでは場は育たない。</p>
+
+                <p>優しさは、批評の終点ではなく、出発点であってほしい。誰かを雑に傷つけないこと。そのうえで、作品が持っている弱さ、甘さ、未整理な部分まで引き受けて言葉にすること。4月に見た三つの展示は、その必要を静かに教えていた。</p>
+
+                <p class="article-note">編集メモ: 本稿は公開初期レビューとして、展示名を伏せた状態で掲載しています。作品・会場名を含む詳細版は、掲載許諾と事実確認のうえで追記予定です。</p>
+                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
+            </article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="../fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div>
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="../index.html#radio">Radio</a></li>
+                        <li><a href="../index.html#article">Article</a></li>
+                        <li><a href="../index.html#video">Video</a></li>
+                        <li><a href="../dialogue-ichinen.html">Dialogue</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="../index.html#works">Works</a></li>
+                        <li><a href="../index.html#shop">Shop</a></li>
+                        <li><a href="../index.html#backnumbers">Backnumbers</a></li>
+                        <li><a href="../index.html#about">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Follow</h4>
+                    <ul>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap" target="_blank" rel="noopener noreferrer">Spotify</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="site-footer__base">
+            <span>&copy; 2026 FUKULIU / ART Platform</span>
+            <span>Designed in Kansai.</span>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+            document.querySelector('.global-nav')?.classList.toggle('is-open');
+        });
+    </script>
+</body>
+</html>
