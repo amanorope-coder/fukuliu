@@ -57,7 +57,7 @@
     <section class="hero">
         <div class="hero__main">
             <p class="hero__eyebrow">Kansai Art Platform / Est. 2026</p>
-            <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 - Kansai Art Platform" class="hero__logo-img"></h1>
+            <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 - Kansai Art Platform" class="hero__logo-img" style="opacity:0"></h1>
             <p class="hero__tagline">
                 ラジオ・動画・記事。<br>
                 媒体を横断し、<span class="accent">関西の美術シーンを再解釈する</span>。
@@ -879,11 +879,11 @@
         /* ロゴ初期状態：非表示 */
         .hero__logo-img {
             opacity: 0;
-            transform: scale(1.08);
-            filter: blur(12px);
-            transition: opacity 1.2s cubic-bezier(.2,.7,.2,1),
-                        transform 1.4s cubic-bezier(.2,.7,.2,1),
-                        filter 1.2s cubic-bezier(.2,.7,.2,1);
+            transform: scale(1.1);
+            filter: blur(16px);
+            transition: opacity 2.4s cubic-bezier(.2,.7,.2,1),
+                        transform 2.8s cubic-bezier(.2,.7,.2,1),
+                        filter 2.4s cubic-bezier(.2,.7,.2,1);
         }
         .hero__logo-img.is-visible {
             opacity: 1;
