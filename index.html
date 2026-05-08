@@ -136,7 +136,8 @@
             <a href="#backnumbers" class="program__more">All articles →</a>
         </div>
 
-        <!-- 記事はJSで自動生成。配列の先頭が最新として上に並びます -->
+        <!-- 最新記事はTOP STORYとして大きく表示。残りはリスト形式 -->
+        <div id="article-top-story"></div>
         <div id="articles-list" class="article-list"></div>
     </section>
 
@@ -404,6 +405,33 @@
             function isExternal(url) { return /^https?:\/\//.test(url); }
             function hasUrl(url) { return url && url !== '#'; }
 
+            function catTagClass(cat) {
+                return cat === 'review' ? 'tag--orange' : cat === 'dialogue' ? 'tag--dark' : 'tag--blue';
+            }
+
+            function renderFeatureCard(article) {
+                const cat = ARTICLE_CATEGORIES[article.cat] || ARTICLE_CATEGORIES.essay;
+                const linked = hasUrl(article.url);
+                const tag = linked ? 'a' : 'div';
+                const attrs = linked
+                    ? `href="${escapeAttr(article.url)}"${isExternal(article.url) ? ' target="_blank" rel="noopener noreferrer"' : ''}`
+                    : '';
+                return `
+                    <${tag} class="article-feature article-feature--${article.cat}${linked ? ' article-feature--link' : ''}" ${attrs}>
+                        <div class="article-feature__label">
+                            <span class="tag ${catTagClass(article.cat)}">${cat.label}</span>
+                            <span class="article-feature__badge">TOP STORY</span>
+                        </div>
+                        <h2 class="article-feature__title">${article.title || ''}</h2>
+                        ${article.excerpt ? `<p class="article-feature__excerpt">${article.excerpt}</p>` : ''}
+                        <div class="article-feature__foot">
+                            ${article.author ? `<span class="article-feature__author">By ${article.author}</span>` : ''}
+                            <span class="date">${article.date || ''}</span>
+                        </div>
+                    </${tag}>
+                `;
+            }
+
             function renderArticle(article, index) {
                 const num = String(index + 1).padStart(3, '0');
                 const cat = ARTICLE_CATEGORIES[article.cat] || ARTICLE_CATEGORIES.essay;
@@ -434,8 +462,19 @@
             function renderAll(dynamicArticles) {
                 // manifest.json から取得した新着を先頭に、固定記事を後ろに並べる
                 const merged = [...dynamicArticles, ...articles];
+
+                // TOP STORY: 最新記事を大きく表示
+                const topStory = document.getElementById('article-top-story');
+                if (topStory) {
+                    topStory.innerHTML = merged.length > 0 ? renderFeatureCard(merged[0]) : '';
+                }
+
+                // 残りをリスト形式で表示
                 const list = document.getElementById('articles-list');
-                if (list) list.innerHTML = merged.map(renderArticle).join('');
+                if (list) list.innerHTML = merged.slice(1).map(renderArticle).join('');
+
+                // バックナンバーにも動的記事を反映
+                if (window._updateArchiveArticles) window._updateArchiveArticles(dynamicArticles);
             }
 
             // articles/manifest.json を読んで動的記事を追加（GitHub Pages 上で動作）
@@ -672,7 +711,7 @@
                 url: article.url
             }));
 
-            const allItems = [
+            let allItems = [
                 ...articleArchiveItems,
                 ...radioArchiveItems,
                 ...videoArchiveItems,
@@ -741,6 +780,25 @@
             });
 
             renderArchive();
+
+            // 動的記事（manifest.json）をバックナンバーにも反映する
+            window._updateArchiveArticles = function(dynamicArticles) {
+                const dynItems = dynamicArticles.map(a => ({
+                    type: 'article',
+                    date: a.date,
+                    title: a.title,
+                    url: a.url
+                }));
+                allItems = [
+                    ...dynItems,
+                    ...articleArchiveItems,
+                    ...radioArchiveItems,
+                    ...videoArchiveItems,
+                    ...seriesArchiveItems
+                ].sort((a, b) => sortKey(b.date).localeCompare(sortKey(a.date)));
+                visibleCount = ARCHIVE_PAGE_SIZE;
+                renderArchive();
+            };
         })();
 
         // ============================================================
