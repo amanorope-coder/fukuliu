@@ -57,11 +57,8 @@
     <section class="hero">
         <div class="hero__main">
             <p class="hero__eyebrow">Kansai Art Platform / Est. 2026</p>
-            <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 - Kansai Art Platform" class="hero__logo-img" style="opacity:0"></h1>
-            <p class="hero__tagline">
-                ラジオ・動画・記事。<br>
-                媒体を横断し、<span class="accent">関西の美術シーンを再解釈する</span>。
-            </p>
+            <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 - Kansai Art Platform" class="hero__logo-img"></h1>
+            <p class="hero__tagline">ラジオ・動画・記事。媒体を横断し、<span class="accent">関西の美術シーンを再解釈する</span>。</p>
         </div>
 
         <a href="#feature" class="hero__feature">
@@ -820,6 +817,15 @@
 
         window.addEventListener('DOMContentLoaded', () => {
 
+            // ① シャッフル：hero__eyebrow（読み込み時スクランブル）
+            const eyebrow = document.querySelector('.hero__eyebrow');
+            if (eyebrow) {
+                const st = new ShuffleText(eyebrow);
+                st.duration = 2200;
+                st.sourceRandomCharacter = SHUFFLE_CHARS;
+                st.start();
+            }
+
             // ② タイプライター：hero__tagline（1文字ずつ、遅め）
             const tagline = document.querySelector('.hero__tagline');
             if (tagline) {
@@ -831,23 +837,17 @@
                 function typeNext() {
                     if (i >= html.length) {
                         tagline.innerHTML = html;
-                        // タイプライター完了 → ロゴをブワッと表示
-                        const logo = document.querySelector('.hero__logo-img');
-                        if (logo) setTimeout(() => {
-                            logo.style.opacity = '';   // インラインスタイルを除去してCSSに委ねる
-                            logo.classList.add('is-visible');
-                        }, 100);
                         return;
                     }
                     if (html[i] === '<') {
                         const end = html.indexOf('>', i);
                         current += html.slice(i, end + 1);
-                        tagline.innerHTML = current + '<span class="tw-cursor">|</span>';
+                        tagline.innerHTML = current + '<span class="tw-cursor"></span>';
                         i = end + 1;
                         typeNext();
                     } else {
                         current += html[i];
-                        tagline.innerHTML = current + '<span class="tw-cursor">|</span>';
+                        tagline.innerHTML = current + '<span class="tw-cursor"></span>';
                         i++;
                         setTimeout(typeNext, 95);
                     }
@@ -872,27 +872,14 @@
     <style>
         .tw-cursor {
             display: inline-block;
-            font-weight: 300;
-            opacity: 1;
+            width: 2px;
+            height: 1.1em;
+            background: var(--accent);
+            vertical-align: text-bottom;
+            margin-left: 2px;
             animation: tw-blink .7s step-end infinite;
-            color: var(--accent);
         }
         @keyframes tw-blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-        /* ロゴ初期状態：非表示 */
-        .hero__logo-img {
-            opacity: 0;
-            transform: scale(1.1);
-            filter: blur(16px);
-            transition: opacity 2.4s cubic-bezier(.2,.7,.2,1),
-                        transform 2.8s cubic-bezier(.2,.7,.2,1),
-                        filter 2.4s cubic-bezier(.2,.7,.2,1);
-        }
-        .hero__logo-img.is-visible {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0px);
-        }
     </style>
 
 </body>
