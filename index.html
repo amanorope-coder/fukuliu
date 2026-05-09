@@ -882,6 +882,15 @@
             });
 
             // ---- クローン生成 ----
+            function preventCloneNav(clone) {
+                clone.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const idx = allCards().indexOf(clone);
+                    if (idx >= 0) { setPos(idx, true); updateState(); }
+                };
+            }
+
             function setupClones(cards) {
                 realCount = cards.length;
                 // 末尾の複製を先頭に
@@ -889,11 +898,13 @@
                 lastClone.classList.add('reel-clone');
                 lastClone.setAttribute('aria-hidden', 'true');
                 track.insertBefore(lastClone, cards[0]);
+                preventCloneNav(lastClone);
                 // 先頭の複製を末尾に
                 const firstClone = cards[0].cloneNode(true);
                 firstClone.classList.add('reel-clone');
                 firstClone.setAttribute('aria-hidden', 'true');
                 track.appendChild(firstClone);
+                preventCloneNav(firstClone);
             }
 
             // ---- ページネーション ----
