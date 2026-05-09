@@ -100,14 +100,8 @@
     <section id="feature" class="feature-strip">
         <div class="feature-strip__inner">
             <div class="feature-strip__label">Now on air</div>
-            <div class="ticker">
-                <span>#001 美術史ラジオ：他分野ゲストと読み解く20世紀</span>
-                <span>·</span>
-                <span>京芸生の1日 vol.3 公開中</span>
-                <span>·</span>
-                <span>展示レビュー：京都某所、4月の3展示</span>
-                <span>·</span>
-                <span>一年対談 Discordコミュニティ募集中</span>
+            <div class="ticker" id="feature-ticker">
+                <span>読み込み中…</span>
             </div>
         </div>
     </section>
@@ -169,28 +163,28 @@
             <h2 class="program__title">連載番組</h2>
         </div>
         <div class="series-grid">
-            <a href="#" class="series-card">
+            <a href="#article" class="series-card">
                 <span class="series-card__no">#01</span>
-                <h3>多様な視点<br>からのレビュー</h3>
-                <p>一つの展示を、複数の実践者が異なる角度から書く。</p>
+                <h3>記事</h3>
+                <p>展示レビュー・エッセイ・対談。制作実践者の目線でつむぐ、強度のあるテキスト。</p>
                 <span class="series-card__type">記事</span>
             </a>
-            <a href="dialogue-ichinen.html" class="series-card series-card--accent">
+            <a href="#radio" class="series-card series-card--accent">
                 <span class="series-card__no">#02</span>
-                <h3>一年対談</h3>
-                <p>Discordコミュニティで一年をかけて続ける、長期対話。</p>
-                <span class="series-card__type">Discord</span>
+                <h3>美術史ラジオ</h3>
+                <p>美術を軸にした、他分野との交歓。</p>
+                <span class="series-card__type">Podcast</span>
             </a>
-            <a href="#" class="series-card">
+            <a href="dialogue-ichinen.html" class="series-card">
                 <span class="series-card__no">#03</span>
-                <h3>芸大生の1日</h3>
-                <p>主に京芸生に密着。制作と生活が地続きな時間を記録する。</p>
-                <span class="series-card__type">動画</span>
+                <h3>一年対談</h3>
+                <p>マツモリ×タシロ、一年がかりの対話。</p>
+                <span class="series-card__type">対談</span>
             </a>
             <a href="#" class="series-card">
                 <span class="series-card__no">#04</span>
-                <h3>売り込みレビュー</h3>
-                <p>関西圏の展示を、アーティストの正直な目線で批判的に書く。</p>
+                <h3>読了、その時。。。</h3>
+                <p>家・駅・旅先...。その本、どこで読み終える？</p>
                 <span class="series-card__type">記事</span>
             </a>
         </div>
@@ -323,14 +317,6 @@
                 author: 'マツモリ・タシロ',
                 url: 'dialogue-ichinen.html'
             },
-            {
-                cat: 'review',
-                date: '2026.04.25',
-                title: '京都某所、4月の3展示──「優しさ」という退屈について',
-                excerpt: '関西の現代美術における「ケア」の語り口は、いつから批評の鋭さを失ったのか。',
-                author: '編集部',
-                url: 'articles/20260425-kyoto-april-exhibitions.html'
-            },
         ];
 
         const ARTICLE_CATEGORIES = {
@@ -419,6 +405,20 @@
                 `;
             }
 
+            function updateTicker(merged) {
+                const ticker = document.getElementById('feature-ticker');
+                if (!ticker) return;
+                // 最新ラジオ（radioEpisodes[0]）と最新記事（merged[0]）のタイトルを表示
+                const latestRadio = typeof radioEpisodes !== 'undefined' && radioEpisodes[0]
+                    ? radioEpisodes[0].ep + ' ' + radioEpisodes[0].title.replace(/<[^>]+>/g, '')
+                    : null;
+                const latestArticle = merged[0] ? merged[0].title : null;
+                const items = [latestRadio, latestArticle].filter(Boolean);
+                ticker.innerHTML = items.map((t, i) =>
+                    `<span>${t}</span>${i < items.length - 1 ? '<span>·</span>' : ''}`
+                ).join('');
+            }
+
             function renderAll(dynamicArticles) {
                 // manifest.json から取得した新着を先頭に、固定記事を後ろに並べる
                 const merged = [...dynamicArticles, ...articles];
@@ -443,6 +443,9 @@
 
                 // バックナンバーにも動的記事を反映
                 if (window._updateArchiveArticles) window._updateArchiveArticles(dynamicArticles);
+
+                // ティッカー更新（最新ラジオ＋最新記事）
+                updateTicker(merged);
             }
 
             // articles/manifest.json を読んで動的記事を追加（GitHub Pages 上で動作）
