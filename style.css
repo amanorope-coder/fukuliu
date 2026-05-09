@@ -309,10 +309,14 @@ ul { list-style: none; padding: 0; margin: 0; }
    ============================================================ */
 .hero {
     position: relative;
-    max-width: var(--max);
+    max-width: 100%;
     margin: 0 auto;
     padding: 80px var(--pad-x) 60px;
     overflow: hidden;
+    background-image: url('hero-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 .hero__bg-text {
     position: absolute;

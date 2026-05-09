@@ -796,18 +796,7 @@
             }
         });
 
-        // ③ ホバーシャッフル：記事カード見出し（イベント委譲）
-        document.addEventListener('mouseover', (e) => {
-            const title = e.target.closest('.article-row__title, .article-feature__title');
-            if (title && !title._shuffling) {
-                title._shuffling = true;
-                const st = new ShuffleText(title);
-                st.duration = 1400;
-                st.sourceRandomCharacter = SHUFFLE_CHARS;
-                st.start();
-                setTimeout(() => { title._shuffling = false; }, 1600);
-            }
-        });
+        // ③ ホバーシャッフル：無効化
     </script>
 
     <script>
