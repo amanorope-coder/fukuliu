@@ -223,7 +223,6 @@
         <div class="archive-filter">
             <button class="archive-filter__btn is-active" type="button" data-filter="all">All</button>
             <button class="archive-filter__btn" type="button" data-filter="radio">Radio</button>
-            <button class="archive-filter__btn" type="button" data-filter="video">Video</button>
             <button class="archive-filter__btn" type="button" data-filter="article">Article</button>
             <button class="archive-filter__btn" type="button" data-filter="series">Series</button>
         </div>
@@ -585,26 +584,7 @@
         // ============================================================
         //  バックナンバー — 実データ連動フィルタ
         // ============================================================
-        const videoArchiveItems = [
-            {
-                type: 'video',
-                date: '2026.04.18',
-                title: '芸大生の1日 vol.03 日本画専攻・3回生の朝6時から24時まで',
-                url: '#video'
-            },
-            {
-                type: 'video',
-                date: '2026.03.18',
-                title: '芸大生の1日 vol.02 彫刻専攻のアトリエ',
-                url: '#video'
-            },
-            {
-                type: 'video',
-                date: '2026.03.05',
-                title: '芸大生の1日 vol.01 構想設計：1人のスタジオの哲学',
-                url: '#video'
-            }
-        ];
+        const videoArchiveItems = [];
 
         const seriesArchiveItems = [
             {
@@ -612,18 +592,6 @@
                 date: '2026.04.25',
                 title: '一年対談 — マツモリ × タシロ',
                 url: 'dialogue-ichinen.html'
-            },
-            {
-                type: 'series',
-                date: '2026.04.01',
-                title: '多様な視点からのレビュー',
-                url: '#series'
-            },
-            {
-                type: 'series',
-                date: '2026.03.24',
-                title: '売り込みレビュー',
-                url: '#series'
             }
         ];
 
@@ -845,99 +813,132 @@
 
     <script>
         // ============================================================
-        //  Featured Reel — センターフォーカスカルーセル
+        //  Featured Reel — センターフォーカスカルーセル（無限ループ）
         // ============================================================
         (function () {
-            let currentIndex = 0;
-
             const track      = document.getElementById('featured-reel-track');
             const pagination = document.getElementById('reel-pagination');
             const prevBtn    = document.querySelector('.reel-arrow--prev');
             const nextBtn    = document.querySelector('.reel-arrow--next');
+            if (!track) return;
 
-            function getCards() {
-                return track ? Array.from(track.querySelectorAll('.reel-card')) : [];
+            let pos       = 1;  // 現在位置（0=末尾クローン, 1..n=実カード, n+1=先頭クローン）
+            let realCount = 0;
+
+            // ---- ユーティリティ ----
+            function allCards()  { return Array.from(track.querySelectorAll('.reel-card')); }
+            function realCards() { return Array.from(track.querySelectorAll('.reel-card:not(.reel-clone)')); }
+
+            function calcTx(p) {
+                const cards = allCards();
+                if (!cards.length) return 0;
+                const cW  = cards[0].offsetWidth;
+                const gap = parseFloat(window.getComputedStyle(track).columnGap) || 24;
+                const containerW = track.parentElement.offsetWidth;
+                return (containerW - cW) / 2 - p * (cW + gap);
             }
 
-            function update() {
-                if (!track) return;
-                const cards = getCards();
-                if (!cards.length) return;
+            function setPos(p, animate) {
+                pos = p;
+                if (!animate) track.style.transition = 'none';
+                track.style.transform = `translateX(${calcTx(p)}px)`;
+                if (!animate) { track.offsetHeight; track.style.transition = ''; }
+            }
 
-                const wrap        = track.parentElement;
-                const containerW  = wrap.offsetWidth;
-                const cardW       = cards[0].offsetWidth;
-                const gap         = parseFloat(window.getComputedStyle(track).columnGap) || 24;
-                const step        = cardW + gap;
-                const centerOff   = (containerW - cardW) / 2;
-                const tx          = centerOff - currentIndex * step;
+            function realIndex() { return pos - 1; }   // 0-based 実カードindex
 
-                track.style.transform = `translateX(${tx}px)`;
-
-                // Active / inactive state
-                cards.forEach((c, i) => c.classList.toggle('is-active', i === currentIndex));
-
-                // Arrow disabled state
-                if (prevBtn) prevBtn.disabled = currentIndex === 0;
-                if (nextBtn) nextBtn.disabled = currentIndex === cards.length - 1;
-
-                // Pagination
-                if (pagination) {
+            function updateState() {
+                const ri = realIndex();
+                realCards().forEach((c, i) => c.classList.toggle('is-active', i === ri));
+                if (pagination)
                     Array.from(pagination.querySelectorAll('.reel-bar'))
-                         .forEach((b, i) => b.classList.toggle('is-active', i === currentIndex));
-                }
+                         .forEach((b, i) => b.classList.toggle('is-active', i === ri));
             }
 
-            function buildPagination(count) {
+            // アニメーション → 無限ループ処理
+            track.addEventListener('transitionend', () => {
+                if (pos === 0) {
+                    setPos(realCount, false);   // 末尾クローン → 実末尾へ瞬間移動
+                    updateState();
+                } else if (pos === realCount + 1) {
+                    setPos(1, false);           // 先頭クローン → 実先頭へ瞬間移動
+                    updateState();
+                }
+            });
+
+            // ---- クローン生成 ----
+            function setupClones(cards) {
+                realCount = cards.length;
+                // 末尾の複製を先頭に
+                const lastClone = cards[realCount - 1].cloneNode(true);
+                lastClone.classList.add('reel-clone');
+                lastClone.setAttribute('aria-hidden', 'true');
+                track.insertBefore(lastClone, cards[0]);
+                // 先頭の複製を末尾に
+                const firstClone = cards[0].cloneNode(true);
+                firstClone.classList.add('reel-clone');
+                firstClone.setAttribute('aria-hidden', 'true');
+                track.appendChild(firstClone);
+            }
+
+            // ---- ページネーション ----
+            function buildPagination(n) {
                 if (!pagination) return;
-                pagination.innerHTML = Array.from({ length: count }, (_, i) =>
+                pagination.innerHTML = Array.from({ length: n }, (_, i) =>
                     `<button class="reel-bar" data-idx="${i}" aria-label="スライド${i + 1}へ"></button>`
                 ).join('');
                 pagination.querySelectorAll('.reel-bar').forEach(bar => {
                     bar.addEventListener('click', () => {
-                        currentIndex = +bar.dataset.idx;
-                        update();
+                        setPos(+bar.dataset.idx + 1, true);
+                        updateState();
                     });
                 });
             }
 
-            // 記事カード挿入後（renderAll から）呼ばれる
-            window._initReel = function () {
-                const cards = getCards();
-                if (!cards.length) return;
-                currentIndex = 0;
-                buildPagination(cards.length);
-                update();
-            };
-
-            // Arrow click
-            if (prevBtn) prevBtn.addEventListener('click', () => {
-                if (currentIndex > 0) { currentIndex--; update(); }
-            });
-            if (nextBtn) nextBtn.addEventListener('click', () => {
-                const n = getCards().length;
-                if (currentIndex < n - 1) { currentIndex++; update(); }
-            });
-
-            // Touch swipe
-            if (track) {
-                let tx0 = 0;
-                track.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
-                track.addEventListener('touchend', e => {
-                    const diff = tx0 - e.changedTouches[0].clientX;
-                    const n = getCards().length;
-                    if (Math.abs(diff) > 50) {
-                        if (diff > 0 && currentIndex < n - 1) currentIndex++;
-                        else if (diff < 0 && currentIndex > 0) currentIndex--;
-                        update();
-                    }
-                });
+            // ---- 移動 ----
+            function go(delta) {
+                setPos(pos + delta, true);
+                // 実カード範囲内のときだけ即時 updateState（cloneへの移動はtransitionend後）
+                if (pos >= 1 && pos <= realCount) updateState();
             }
 
-            // Recompute on resize
-            window.addEventListener('resize', update);
+            // ---- 初期化 ----
+            window._initReel = function () {
+                const cards = realCards();
+                if (!cards.length) return;
+                setupClones(cards);
+                buildPagination(cards.length);
+                pos = 1;
+                setPos(pos, false);
+                updateState();
+            };
 
-            // フォールバック: fetchが早期完了しても確実に初期化
+            // ---- 矢印 ----
+            if (prevBtn) prevBtn.addEventListener('click', () => go(-1));
+            if (nextBtn) nextBtn.addEventListener('click', () => go(+1));
+
+            // ---- 薄暗いカードをクリック → 中央へ移動（または遷移） ----
+            track.addEventListener('click', e => {
+                const card = e.target.closest('.reel-card');
+                if (!card) return;
+                if (card.classList.contains('is-active')) return; // アクティブは通常リンク動作
+                e.preventDefault();
+                const idx = allCards().indexOf(card); // クローン含む全カードでのindex
+                if (idx >= 0) { setPos(idx, true); updateState(); }
+            });
+
+            // ---- タッチスワイプ ----
+            let tx0 = 0;
+            track.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchend', e => {
+                const diff = tx0 - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1);
+            });
+
+            // ---- リサイズ ----
+            window.addEventListener('resize', () => setPos(pos, false));
+
+            // ---- フォールバック ----
             window.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     if (pagination && !pagination.children.length) window._initReel();
