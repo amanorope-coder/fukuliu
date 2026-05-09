@@ -69,21 +69,32 @@
             <span class="featured-reel__label">New Arrivals</span>
             <p class="featured-reel__subtitle">記事・ラジオ・対談 — 最新コンテンツ</p>
         </div>
-        <div class="featured-reel__track" id="featured-reel-track">
-            <!-- ラジオ: 最新エピソード（固定） -->
-            <a href="https://open.spotify.com/episode/14TZlIzEP8uggIUocaTKh2" class="reel-card reel-card--radio" target="_blank" rel="noopener noreferrer">
-                <div class="reel-card__type">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-                    Radio
+        <div class="featured-reel__stage">
+            <button class="reel-arrow reel-arrow--prev" aria-label="前のコンテンツ">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="featured-reel__track-wrap">
+                <div class="featured-reel__track" id="featured-reel-track">
+                    <!-- ラジオ: 最新エピソード（固定） -->
+                    <a href="https://open.spotify.com/episode/14TZlIzEP8uggIUocaTKh2" class="reel-card reel-card--radio" target="_blank" rel="noopener noreferrer">
+                        <div class="reel-card__type">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
+                            Radio
+                        </div>
+                        <h3 class="reel-card__title">美術史ラジオ EP.05<br>鑑賞授業！慧可断臂図</h3>
+                        <div class="reel-card__meta">
+                            <span class="reel-card__date">2026.04.21</span>
+                            <span class="reel-card__platform">Spotify →</span>
+                        </div>
+                    </a>
+                    <!-- 記事カードはJSで追加 -->
                 </div>
-                <h3 class="reel-card__title">美術史ラジオ EP.05<br>鑑賞授業！慧可断臂図</h3>
-                <div class="reel-card__meta">
-                    <span class="reel-card__date">2026.04.21</span>
-                    <span class="reel-card__platform">Spotify →</span>
-                </div>
-            </a>
-            <!-- 記事カードはJSで追加 -->
+            </div>
+            <button class="reel-arrow reel-arrow--next" aria-label="次のコンテンツ">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
         </div>
+        <div class="reel-pagination" id="reel-pagination"></div>
     </section>
 
     <!-- ============================ FEATURE STRIP ============================ -->
@@ -111,7 +122,7 @@
             <div class="program__head-text">
                 <span class="program__label">
                     <svg class="spotify-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-                    01 — Podcast on Spotify
+                    Podcast on Spotify
                 </span>
                 <h2 class="program__title">美術史ラジオ</h2>
                 <p class="program__desc">他分野のゲストを呼び、共同作業によって美術史を読み解く。耳で聴くアトリエ。Spotifyで配信中。</p>
@@ -132,7 +143,7 @@
     <section id="article" class="program">
         <div class="program__head">
             <div class="program__head-text">
-                <span class="program__label">02 — Article</span>
+                <span class="program__label">Article</span>
                 <h2 class="program__title">記事</h2>
                 <p class="program__desc">展示レビュー・エッセイ・対談。制作実践者の正直な目線で書く、強度のあるテキストを蓄積する。</p>
 
@@ -154,7 +165,7 @@
     <section id="video" class="program program--dark">
         <div class="program__head">
             <div class="program__head-text">
-                <span class="program__label">03 — Video</span>
+                <span class="program__label">Video</span>
                 <h2 class="program__title">芸大生の1日 / Interview</h2>
                 <p class="program__desc">主に京芸生の1日に密着し、リアルな生活と制作のプロセスを記録する映像メディア。</p>
             </div>
@@ -241,13 +252,13 @@
     <!-- ============================ WORKS / SHOP ============================ -->
     <section class="dual">
         <div id="works" class="dual__col">
-            <span class="program__label">04 — Works</span>
+            <span class="program__label">Works</span>
             <h2 class="program__title">作品</h2>
             <p class="dual__desc">FUKURYUに関わる作家による作品アーカイブ。プラットフォーム自体が、批評と制作の地続きであることの証。</p>
             <a href="#" class="btn-line">View archive →</a>
         </div>
         <div id="shop" class="dual__col dual__col--alt">
-            <span class="program__label">05 — Shop</span>
+            <span class="program__label">Shop</span>
             <h2 class="program__title">オンラインショップ</h2>
             <p class="dual__desc">作品・印刷物・限定アイテムなど。プラットフォームを存続させるための、もうひとつの場。</p>
             <a href="#" class="btn-line btn-line--white">Visit shop →</a>
@@ -498,6 +509,8 @@
                         merged.slice(0, 5).map(renderReelCard).join('')
                     );
                 }
+                // カルーセル初期化
+                if (window._initReel) window._initReel();
 
                 // TOP STORY エリアは空に（カルーセルに統合）
                 const topStory = document.getElementById('article-top-story');
@@ -906,6 +919,110 @@
             }
         });
     </script>
+
+    <script>
+        // ============================================================
+        //  Featured Reel — センターフォーカスカルーセル
+        // ============================================================
+        (function () {
+            let currentIndex = 0;
+
+            const track      = document.getElementById('featured-reel-track');
+            const pagination = document.getElementById('reel-pagination');
+            const prevBtn    = document.querySelector('.reel-arrow--prev');
+            const nextBtn    = document.querySelector('.reel-arrow--next');
+
+            function getCards() {
+                return track ? Array.from(track.querySelectorAll('.reel-card')) : [];
+            }
+
+            function update() {
+                if (!track) return;
+                const cards = getCards();
+                if (!cards.length) return;
+
+                const wrap        = track.parentElement;
+                const containerW  = wrap.offsetWidth;
+                const cardW       = cards[0].offsetWidth;
+                const gap         = parseFloat(window.getComputedStyle(track).columnGap) || 24;
+                const step        = cardW + gap;
+                const centerOff   = (containerW - cardW) / 2;
+                const tx          = centerOff - currentIndex * step;
+
+                track.style.transform = `translateX(${tx}px)`;
+
+                // Active / inactive state
+                cards.forEach((c, i) => c.classList.toggle('is-active', i === currentIndex));
+
+                // Arrow disabled state
+                if (prevBtn) prevBtn.disabled = currentIndex === 0;
+                if (nextBtn) nextBtn.disabled = currentIndex === cards.length - 1;
+
+                // Pagination
+                if (pagination) {
+                    Array.from(pagination.querySelectorAll('.reel-bar'))
+                         .forEach((b, i) => b.classList.toggle('is-active', i === currentIndex));
+                }
+            }
+
+            function buildPagination(count) {
+                if (!pagination) return;
+                pagination.innerHTML = Array.from({ length: count }, (_, i) =>
+                    `<button class="reel-bar" data-idx="${i}" aria-label="スライド${i + 1}へ"></button>`
+                ).join('');
+                pagination.querySelectorAll('.reel-bar').forEach(bar => {
+                    bar.addEventListener('click', () => {
+                        currentIndex = +bar.dataset.idx;
+                        update();
+                    });
+                });
+            }
+
+            // 記事カード挿入後（renderAll から）呼ばれる
+            window._initReel = function () {
+                const cards = getCards();
+                if (!cards.length) return;
+                currentIndex = 0;
+                buildPagination(cards.length);
+                update();
+            };
+
+            // Arrow click
+            if (prevBtn) prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) { currentIndex--; update(); }
+            });
+            if (nextBtn) nextBtn.addEventListener('click', () => {
+                const n = getCards().length;
+                if (currentIndex < n - 1) { currentIndex++; update(); }
+            });
+
+            // Touch swipe
+            if (track) {
+                let tx0 = 0;
+                track.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
+                track.addEventListener('touchend', e => {
+                    const diff = tx0 - e.changedTouches[0].clientX;
+                    const n = getCards().length;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0 && currentIndex < n - 1) currentIndex++;
+                        else if (diff < 0 && currentIndex > 0) currentIndex--;
+                        update();
+                    }
+                });
+            }
+
+            // Recompute on resize
+            window.addEventListener('resize', update);
+
+            // フォールバック: fetchが早期完了しても確実に初期化
+            window.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    if (pagination && !pagination.children.length) window._initReel();
+                }, 300);
+            });
+        })();
+    </script>
+
     <style>
         .tw-cursor {
             display: inline-block;

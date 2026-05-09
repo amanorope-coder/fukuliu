@@ -443,16 +443,16 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 
 /* ============================================================
-   FEATURED REEL — 横スクロールカルーセル
+   FEATURED REEL — センターフォーカスカルーセル
    ============================================================ */
 .featured-reel {
     background: var(--accent);
-    padding: 52px 0 64px;
+    padding: 52px 0 60px;
     overflow: hidden;
 }
 .featured-reel__head {
     max-width: var(--max);
-    margin: 0 auto 32px;
+    margin: 0 auto 36px;
     padding: 0 var(--pad-x);
 }
 .featured-reel__label {
@@ -460,9 +460,9 @@ ul { list-style: none; padding: 0; margin: 0; }
     font-size: 11px;
     letter-spacing: 0.24em;
     font-weight: 700;
-    color: rgba(255,255,255,0.55);
+    color: rgba(255,255,255,0.50);
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 .featured-reel__subtitle {
     margin: 0;
@@ -472,77 +472,148 @@ ul { list-style: none; padding: 0; margin: 0; }
     color: #fff;
     letter-spacing: -0.01em;
 }
+
+/* Stage: arrow + track-wrap */
+.featured-reel__stage {
+    position: relative;
+}
+.featured-reel__track-wrap {
+    overflow: hidden;
+}
 .featured-reel__track {
     display: flex;
-    gap: 14px;
-    padding-left: var(--pad-x);
-    padding-right: 32px; /* 右端: 最後のカードが少し切れて「続き」を示す */
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    cursor: grab;
+    gap: 24px;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+    user-select: none;
 }
-.featured-reel__track:active { cursor: grabbing; }
-.featured-reel__track::-webkit-scrollbar { display: none; }
 
-/* ---- Reel Card ---- */
+/* ---- Reel Card — dimmed default ---- */
 .reel-card {
-    flex: 0 0 clamp(240px, 26vw, 310px);
-    scroll-snap-align: start;
+    flex: 0 0 clamp(260px, 36vw, 440px);
     background: rgba(255,255,255,0.10);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 6px;
-    padding: 22px 24px 20px;
-    color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 32px 32px 26px;
+    color: rgba(255,255,255,0.45);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
     text-decoration: none;
-    transition: background 0.2s, transform 0.25s;
-    min-height: 175px;
+    opacity: 0.5;
+    transform: scale(0.92);
+    transition: opacity 0.45s ease, transform 0.45s ease,
+                background 0.45s ease, color 0.45s ease,
+                box-shadow 0.45s ease;
+    min-height: 210px;
+    pointer-events: none;
 }
-.reel-card:hover {
-    background: rgba(255,255,255,0.20);
-    transform: translateY(-3px);
+
+/* ---- Active card — 白く明るく ---- */
+.reel-card.is-active {
+    background: #fff;
+    border-color: transparent;
+    color: var(--fg);
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 24px 72px rgba(0,0,0,0.28);
+    pointer-events: auto;
 }
+
 .reel-card__type {
     display: flex;
     align-items: center;
     gap: 5px;
     font-size: 10px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     font-weight: 700;
-    color: rgba(255,255,255,0.50);
+    color: rgba(255,255,255,0.35);
+    transition: color 0.45s ease;
 }
-.reel-card--radio .reel-card__type { color: rgba(255,255,255,0.75); }
+.reel-card.is-active .reel-card__type { color: var(--accent); }
+
 .reel-card__title {
     font-family: var(--serif);
-    font-size: clamp(14px, 1.4vw, 17px);
+    font-size: clamp(15px, 1.6vw, 20px);
     font-weight: 700;
     line-height: 1.55;
     margin: 0;
     flex: 1;
-    color: #fff;
+    color: inherit;
 }
 .reel-card__meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 11px;
-    color: rgba(255,255,255,0.45);
+    color: inherit;
     margin-top: auto;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.10);
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    transition: border-color 0.45s ease;
+    opacity: 0.75;
 }
-.reel-card__platform { color: rgba(255,255,255,0.70); font-weight: 600; }
-.reel-card__author { opacity: 0.7; }
+.reel-card.is-active .reel-card__meta {
+    border-top-color: var(--line);
+    color: var(--fg-mute);
+    opacity: 1;
+}
+.reel-card__platform { font-weight: 600; }
+
+/* ---- Arrows ---- */
+.reel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, opacity 0.2s;
+    padding: 0;
+}
+.reel-arrow:hover:not(:disabled) { background: rgba(255,255,255,0.28); }
+.reel-arrow:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+.reel-arrow--prev { left: clamp(10px, 2.5vw, 44px); }
+.reel-arrow--next { right: clamp(10px, 2.5vw, 44px); }
+
+/* ---- Pagination bars ---- */
+.reel-pagination {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 40px;
+    padding: 0 var(--pad-x);
+}
+.reel-bar {
+    height: 3px;
+    flex: 0 0 22px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.22);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: flex 0.35s ease, background 0.25s;
+}
+.reel-bar.is-active {
+    flex: 0 0 52px;
+    background: #fff;
+}
 
 @media (max-width: 640px) {
-    .featured-reel { padding: 40px 0 52px; }
-    .featured-reel__track { padding-right: 16px; }
-    .reel-card { flex: 0 0 clamp(220px, 72vw, 280px); }
+    .featured-reel { padding: 40px 0 48px; }
+    .reel-card { flex: 0 0 clamp(240px, 70vw, 300px); min-height: 180px; padding: 24px; }
+    .reel-arrow { width: 36px; height: 36px; }
+    .reel-arrow--prev { left: 8px; }
+    .reel-arrow--next { right: 8px; }
 }
 
 /* ============================================================
