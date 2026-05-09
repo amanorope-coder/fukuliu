@@ -1,0 +1,37 @@
+{
+  "name": "shuffle-text",
+  "version": "0.5.2",
+  "scripts": {
+    "release": "rollup -c && uglifyjs ./build/shuffle-text.js --output build/shuffle-text.min.js",
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "build:d.ts": "tsc --emitDeclarationOnly --declarationDir ./build",
+    "build:docs": "typedoc --out ./docs ./src/ShuffleText.ts",
+    "format": "prettier --write 'src/**/*.ts'"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "12.3.0",
+    "prettier": "3.8.3",
+    "rollup": "4.60.2",
+    "tslib": "2.8.1",
+    "typedoc": "0.28.19",
+    "typescript": "6.0.3",
+    "uglify-js": "3.19.3"
+  },
+  "type": "module",
+  "main": "build/shuffle-text.js",
+  "jsnext:main": "build/shuffle-text.module.js",
+  "module": "build/shuffle-text.module.js",
+  "types": "build/ShuffleText.d.ts",
+  "license": "MIT",
+  "description": "This is the JavaScript library for text effect such as Flash contents.",
+  "repository": "ics-ikeda/shuffle-text",
+  "author": "IKEDA Yasunobu <ikeda@ics-web.jp> (https://clockmaker.jp/labs/)",
+  "homepage": "https://github.com/ics-ikeda/shuffle-text",
+  "keywords": [
+    "JavaScript",
+    "TypeScript",
+    "shuffle-text",
+    "text effect"
+  ]
+}
