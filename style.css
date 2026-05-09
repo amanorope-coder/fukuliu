@@ -1723,8 +1723,6 @@ ul { list-style: none; padding: 0; margin: 0; }
     .nav-toggle { display: flex; }
 
     .card-grid--radio { grid-template-columns: 1fr 1fr; }
-    .card-grid--video { grid-template-columns: 1fr 1fr; }
-    .card-grid--video .card--feature { grid-column: span 2; }
     .series-grid { grid-template-columns: 1fr 1fr; }
     .dual { grid-template-columns: 1fr; }
     .site-footer__inner { grid-template-columns: 1fr; }
@@ -1738,9 +1736,6 @@ ul { list-style: none; padding: 0; margin: 0; }
     .hero__tagline { white-space: normal; }
 
     .card-grid--radio { grid-template-columns: 1fr; }
-    .card-grid--video { grid-template-columns: 1fr; }
-    .card-grid--video .card--feature { grid-column: span 1; }
-
     .series-grid { grid-template-columns: 1fr; }
 
     .archive-list__link {
