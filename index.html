@@ -35,12 +35,12 @@
             </a>
             <nav class="global-nav">
                 <ul>
-                    <li><a href="#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
-                    <li><a href="#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
-                    <li><a href="dialogue-ichinen.html"><span class="nav-num">03</span><span class="nav-text">Dialogue</span></a></li>
-                    <li><a href="#works"><span class="nav-num">04</span><span class="nav-text">Works</span></a></li>
-                    <li><a href="#shop"><span class="nav-num">05</span><span class="nav-text">Shop</span></a></li>
-                    <li><a href="#about"><span class="nav-num">06</span><span class="nav-text">About</span></a></li>
+                    <li><a href="#radio">Radio</a></li>
+                    <li><a href="#article">Article</a></li>
+                    <li><a href="dialogue-ichinen.html">Dialogue</a></li>
+                    <li><a href="#works">Works</a></li>
+                    <li><a href="#shop">Shop</a></li>
+                    <li><a href="#about">About</a></li>
                 </ul>
             </nav>
             <button class="nav-toggle" aria-label="メニューを開く">
@@ -434,13 +434,13 @@
                 // カルーセル初期化
                 if (window._initReel) window._initReel();
 
-                // TOP STORY エリアは空に（カルーセルに統合）
+                // TOP STORY: 最新記事を大きく表示
                 const topStory = document.getElementById('article-top-story');
-                if (topStory) topStory.innerHTML = '';
+                if (topStory) topStory.innerHTML = merged.length > 0 ? renderFeatureCard(merged[0]) : '';
 
-                // 記事リスト（全件）
+                // 記事リスト（TOP STORY を除く残り）
                 const list = document.getElementById('articles-list');
-                if (list) list.innerHTML = merged.map(renderArticle).join('');
+                if (list) list.innerHTML = merged.slice(1).map(renderArticle).join('');
 
                 // バックナンバーにも動的記事を反映
                 if (window._updateArchiveArticles) window._updateArchiveArticles(dynamicArticles);
@@ -849,7 +849,22 @@
 
             function updateState() {
                 const ri = realIndex();
-                realCards().forEach((c, i) => c.classList.toggle('is-active', i === ri));
+                realCards().forEach((c, i) => {
+                    const active = i === ri;
+                    c.classList.toggle('is-active', active);
+                    if (active) {
+                        // アクティブカードは通常リンク動作に戻す
+                        c.onclick = null;
+                    } else {
+                        // 非アクティブカードはクリックで中央へ移動（PC/スマホ両対応）
+                        c.onclick = (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const idx = allCards().indexOf(c);
+                            if (idx >= 0) { setPos(idx, true); updateState(); }
+                        };
+                    }
+                });
                 if (pagination)
                     Array.from(pagination.querySelectorAll('.reel-bar'))
                          .forEach((b, i) => b.classList.toggle('is-active', i === ri));
@@ -917,15 +932,7 @@
             if (prevBtn) prevBtn.addEventListener('click', () => go(-1));
             if (nextBtn) nextBtn.addEventListener('click', () => go(+1));
 
-            // ---- 薄暗いカードをクリック → 中央へ移動（または遷移） ----
-            track.addEventListener('click', e => {
-                const card = e.target.closest('.reel-card');
-                if (!card) return;
-                if (card.classList.contains('is-active')) return; // アクティブは通常リンク動作
-                e.preventDefault();
-                const idx = allCards().indexOf(card); // クローン含む全カードでのindex
-                if (idx >= 0) { setPos(idx, true); updateState(); }
-            });
+            // ---- 薄暗いカードのクリックは updateState() 内で各カードに直接 onclick をセット ----
 
             // ---- タッチスワイプ ----
             let tx0 = 0;
