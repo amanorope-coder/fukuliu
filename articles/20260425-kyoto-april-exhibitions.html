@@ -109,10 +109,12 @@
         .article-toc a {
             display: block;
             margin-top: 14px;
+            transition: color .25s, font-weight .25s;
             letter-spacing: .06em;
             text-transform: none;
             color: var(--fg);
         }
+        .article-toc a.is-active { color: var(--accent); font-weight: 700; }
         .article-body {
             font-family: var(--serif);
             font-size: 17px;
@@ -356,6 +358,23 @@
         document.querySelector('.nav-toggle')?.addEventListener('click', () => {
             document.querySelector('.global-nav')?.classList.toggle('is-open');
         });
+        // TOC アクティブハイライト
+        (function () {
+            const links    = document.querySelectorAll('.article-toc a[href^="#"]');
+            const headings = Array.from(document.querySelectorAll('.article-body h2[id], .article-body h3[id]'));
+            if (!links.length || !headings.length) return;
+            function update() {
+                const offset = window.scrollY + 160;
+                let active = headings[0];
+                for (const h of headings) {
+                    if (h.offsetTop <= offset) active = h;
+                    else break;
+                }
+                links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active.id));
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
     </script>
 </body>
 </html>
