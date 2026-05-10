@@ -146,6 +146,7 @@
         .pv-body h3 { font-family: var(--serif); font-weight: 700; font-size: 16px; margin: 32px 0 12px; }
         .pv-body p  { margin-bottom: 22px; }
         .pv-body blockquote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 28px 0; color: var(--fg-mute); font-style: italic; }
+        .pv-body .callout { background: rgba(35,91,200,.07); border-left: 4px solid var(--accent); padding: 18px 22px; margin: 28px 0; border-radius: 0 6px 6px 0; }
         .pv-body hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
         .pv-body strong { font-weight: 700; }
         .pv-body em { font-style: italic; }
@@ -281,7 +282,8 @@
                     <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">**太字**</code>
                     <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">*斜体*</code>
                     <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">&gt; 引用</code><br>
-                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">[INDEX]</code> → 目次を自動生成
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">[INDEX]</code> → 目次を自動生成<br>
+                    <code style="background:var(--line);padding:1px 5px;border-radius:2px;font-family:monospace;">:::</code> → 強調ボックス（囲む）
                 </div>
             </aside>
 
@@ -300,6 +302,7 @@
                     <button class="tb-btn tb-btn--accent2" onclick="wrap('~~', '~~')" title="オレンジアクセント">A＋</button>
                     <div class="tb-sep"></div>
                     <button class="tb-btn" onclick="ins('> ', '')" title="引用">❝</button>
+                    <button class="tb-btn tb-btn--accent" onclick="wrapBlock(':::', ':::')" title="強調ボックス（青背景）">Box</button>
                     <button class="tb-btn" onclick="ins('---', '')" title="区切り線">—</button>
                     <button class="tb-btn" onclick="ins('[INDEX]', '')" title="目次を挿入">目次</button>
                     <div class="tb-sep"></div>
@@ -443,16 +446,36 @@ function ins(before, after) {
 }
 function wrap(open, close) { ins(open, close); }
 
+function wrapBlock(open, close) {
+    const ta = document.getElementById('f-body');
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    const sel = ta.value.slice(s, e).trim();
+    const insert = open + '\n' + (sel || 'ここにテキストを入力') + '\n' + close;
+    ta.value = ta.value.slice(0, s) + insert + ta.value.slice(e);
+    ta.selectionStart = s + open.length + 1;
+    ta.selectionEnd   = s + open.length + 1 + (sel || 'ここにテキストを入力').length;
+    ta.focus();
+    updatePreview();
+}
+
 // ═══════════════════════════════════════════════════════════
 //  Markdown パーサー（拡張版）
 // ═══════════════════════════════════════════════════════════
 function parseMarkdown(text, tocItems) {
     if (!text) return '';
     const lines = text.split('\n');
-    let html = '', inBQ = false;
+    let html = '', inBQ = false, inCallout = false;
     let h2count = 0;
 
     lines.forEach(line => {
+        // 強調ボックス（::: で囲む）
+        if (line.trim() === ':::') {
+            if (inBQ) { html += '</blockquote>'; inBQ = false; }
+            if (!inCallout) { html += '<callout>'; inCallout = true; }
+            else            { html += '</callout>'; inCallout = false; }
+            return;
+        }
+
         // 引用
         if (line.startsWith('> ')) {
             if (!inBQ) { html += '<blockquote>'; inBQ = true; }
@@ -482,18 +505,22 @@ function parseMarkdown(text, tocItems) {
         html += inlineFmt(line) + '<br>';
     });
     if (inBQ) html += '</blockquote>';
+    if (inCallout) html += '</callout>';
 
     html = '<p>' + html + '</p>';
     // 段落末尾・ブロック要素直前の余分な <br> を除去
     html = html.replace(/<br>\s*<\/p>/g, '</p>');
-    html = html.replace(/<br>\s*(<\/?(?:h2|h3|hr|blockquote)[^>]*>)/g, '$1');
+    html = html.replace(/<br>\s*(<\/?(?:h2|h3|hr|blockquote|callout)[^>]*>)/g, '$1');
     html = html.replace(/<p>\s*<\/p>/g, '');
-    ['h2','h3','hr','blockquote'].forEach(tag => {
+    ['h2','h3','hr','blockquote','callout'].forEach(tag => {
         html = html.replace(new RegExp(`<p>\\s*(<${tag}[^>]*>)`, 'g'), '$1');
         html = html.replace(new RegExp(`(</${tag}>)\\s*<\\/p>`, 'g'), '$1');
     });
     html = html.replace(/<p>\s*(__INDEX_PLACEHOLDER__)\s*<\/p>/g, '$1');
     html = html.replace(/__INDEX_PLACEHOLDER__/g, '{{TOC}}');
+    // <callout> → 実際の div に変換
+    html = html.replace(/<callout>/g, '<div class="callout">');
+    html = html.replace(/<\/callout>/g, '</div>');
     return html;
 }
 
@@ -672,6 +699,7 @@ function buildArticleHTML(data) {
         .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
         .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
         .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
+        .article-body .callout{background:rgba(35,91,200,.07);border-left:4px solid var(--accent);padding:22px 28px;margin:46px 0;border-radius:0 6px 6px 0}
         .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
         .article-body .accent{color:var(--accent);font-weight:600}
         .article-body .accent2{color:var(--accent2);font-weight:600}
