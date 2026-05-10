@@ -1169,26 +1169,18 @@ ul { list-style: none; padding: 0; margin: 0; }
     border-radius: 50%;
     display: inline-block;
 }
-.cat-dot--review   { background: var(--cat-review); }
-.cat-dot--essay    { background: var(--cat-essay); }
-.cat-dot--dialogue { background: var(--cat-dialogue); }
+.cat-dot--essay    { background: var(--accent); }
+.cat-dot--critique { background: #7b3fbf; }
+.cat-dot--blog     { background: #1a9e5c; }
+.cat-dot--art      { background: var(--accent2); }
+.cat-dot--dialogue { background: #1a1a1a; }
 
 /* category tag (記事行・記事カバー上) */
-.tag--review {
-    background: var(--cat-review);
-    color: #fff;
-    border-color: var(--cat-review);
-}
-.tag--essay {
-    background: var(--cat-essay);
-    color: #fff;
-    border-color: var(--cat-essay);
-}
-.tag--dialogue {
-    background: var(--cat-dialogue);
-    color: #fff;
-    border-color: var(--cat-dialogue);
-}
+.tag--essay    { background: var(--accent);  color: #fff; border-color: var(--accent); }
+.tag--critique { background: #7b3fbf;        color: #fff; border-color: #7b3fbf; }
+.tag--blog     { background: #1a9e5c;        color: #fff; border-color: #1a9e5c; }
+.tag--art      { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+.tag--dialogue { background: #1a1a1a;        color: #fff; border-color: #1a1a1a; }
 
 /* article feature / TOP STORY */
 .article-feature {

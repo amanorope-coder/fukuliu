@@ -141,11 +141,13 @@
             <div class="program__head-text">
                 <span class="program__label">Article</span>
                 <h2 class="program__title">記事</h2>
-                <p class="program__desc">展示レビュー・エッセイ・対談。制作実践者の正直な目線で書く、強度のあるテキストを蓄積する。</p>
+                <p class="program__desc">エッセイ・批評・美術・対談。制作実践者の正直な目線で書く、強度のあるテキストを蓄積する。</p>
 
                 <div class="cat-legend">
-                    <span class="cat-legend__item"><i class="cat-dot cat-dot--review"></i>展示レビュー</span>
                     <span class="cat-legend__item"><i class="cat-dot cat-dot--essay"></i>エッセイ</span>
+                    <span class="cat-legend__item"><i class="cat-dot cat-dot--critique"></i>批評</span>
+                    <span class="cat-legend__item"><i class="cat-dot cat-dot--blog"></i>ブログ</span>
+                    <span class="cat-legend__item"><i class="cat-dot cat-dot--art"></i>美術</span>
                     <span class="cat-legend__item"><i class="cat-dot cat-dot--dialogue"></i>対談</span>
                 </div>
             </div>
@@ -323,8 +325,10 @@
         ];
 
         const ARTICLE_CATEGORIES = {
-            review:   { label: '展示レビュー' },
             essay:    { label: 'エッセイ' },
+            critique: { label: '批評' },
+            blog:     { label: 'ブログ' },
+            art:      { label: '美術' },
             dialogue: { label: '対談' }
         };
 
