@@ -153,6 +153,8 @@
         .pv-body p  { margin-bottom: 22px; }
         .pv-body blockquote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 28px 0; color: var(--fg-mute); font-style: italic; }
         .pv-body .callout { background: rgba(35,91,200,.07); border-left: 4px solid var(--accent); padding: 18px 22px; margin: 28px 0; border-radius: 0 6px 6px 0; }
+        .pv-body u { text-decoration: underline; text-underline-offset: 3px; }
+        .pv-body .p-spacer { margin: 0; padding: 0; height: 1.4em; }
         .pv-body hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
         .pv-body strong { font-weight: 700; }
         .pv-body em { font-style: italic; }
@@ -310,6 +312,7 @@
                     <div class="tb-sep"></div>
                     <button class="tb-btn" onclick="wrap('**', '**')" title="太字"><strong>B</strong></button>
                     <button class="tb-btn" onclick="wrap('*', '*')" title="斜体"><em>I</em></button>
+                    <button class="tb-btn" onclick="wrap('__', '__')" title="下線" style="text-decoration:underline">U</button>
                     <div class="tb-sep"></div>
                     <button class="tb-btn tb-btn--accent" onclick="wrap('==', '==')" title="青アクセント（強調）">A＋</button>
                     <button class="tb-btn tb-btn--accent2" onclick="wrap('~~', '~~')" title="オレンジアクセント">A＋</button>
@@ -478,7 +481,7 @@ function parseMarkdown(text, tocItems) {
     if (!text) return '';
     const lines = text.split('\n');
     let html = '', inBQ = false, inCallout = false;
-    let h2count = 0;
+    let h2count = 0, blankCount = 0;
 
     lines.forEach(line => {
         // 強調ボックス（::: で囲む）
@@ -513,8 +516,13 @@ function parseMarkdown(text, tocItems) {
             html += `<h3 id="${id}">${inlineFmt(txt)}</h3>`;
             return;
         }
-        if (line.trim() === '---') { html += '<hr>'; return; }
-        if (line.trim() === '')    { html += '</p><p>'; return; }
+        if (line.trim() === '---') { blankCount = 0; html += '<hr>'; return; }
+        if (line.trim() === '') {
+            blankCount++;
+            html += blankCount === 1 ? '</p><p>' : '<p class="p-spacer"></p><p>';
+            return;
+        }
+        blankCount = 0;
         html += inlineFmt(line) + '<br>';
     });
     if (inBQ) html += '</blockquote>';
@@ -524,7 +532,7 @@ function parseMarkdown(text, tocItems) {
     // 段落末尾・ブロック要素直前の余分な <br> を除去
     html = html.replace(/<br>\s*<\/p>/g, '</p>');
     html = html.replace(/<br>\s*(<\/?(?:h2|h3|hr|blockquote|callout)[^>]*>)/g, '$1');
-    html = html.replace(/<p>\s*<\/p>/g, '');
+    html = html.replace(/<p(?! class="p-spacer")>\s*<\/p>/g, '');
     ['h2','h3','hr','blockquote','callout'].forEach(tag => {
         html = html.replace(new RegExp(`<p>\\s*(<${tag}[^>]*>)`, 'g'), '$1');
         html = html.replace(new RegExp(`(</${tag}>)\\s*<\\/p>`, 'g'), '$1');
@@ -543,7 +551,8 @@ function inlineFmt(t) {
         .replace(/==(.+?)==/g, '<span class="accent">$1</span>')
         .replace(/~~(.+?)~~/g, '<span class="accent2">$1</span>')
         .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-        .replace(/\*(.+?)\*/g,'<em>$1</em>');
+        .replace(/\*(.+?)\*/g,'<em>$1</em>')
+        .replace(/__(.+?)__/g,'<u>$1</u>');
 }
 
 function buildTOC(items) {
@@ -713,6 +722,10 @@ function buildArticleHTML(data) {
         .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
         .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
         .article-body .callout{background:rgba(35,91,200,.07);border-left:4px solid var(--accent);padding:22px 28px;margin:46px 0;border-radius:0 6px 6px 0}
+        .article-body u{text-decoration:underline;text-underline-offset:3px}
+        .article-body .p-spacer{margin:0;padding:0;height:1.4em}
+        .article-toc a{transition:color .25s,font-weight .25s}
+        .article-toc a.is-active{color:var(--accent);font-weight:700}
         .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
         .article-body .accent{color:var(--accent);font-weight:600}
         .article-body .accent2{color:var(--accent2);font-weight:600}
@@ -817,7 +830,27 @@ function buildArticleHTML(data) {
         </div>
         <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
     </footer>
-    <script>document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});<\/script>
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});
+        // TOC アクティブハイライト（スクロール連動）
+        (function(){
+            const links = document.querySelectorAll('.article-toc a[href^="#"]');
+            if (!links.length) return;
+            const headings = Array.from(document.querySelectorAll('.article-body h2[id], .article-body h3[id]'));
+            if (!headings.length) return;
+            function update() {
+                const offset = window.scrollY + 160;
+                let active = headings[0];
+                for (const h of headings) {
+                    if (h.offsetTop <= offset) active = h;
+                    else break;
+                }
+                links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active.id));
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
+    <\/script>
 </body>
 </html>`;
 }
