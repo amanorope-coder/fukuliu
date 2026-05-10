@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>読了、その時。。。— FUKURYU</title>
+    <meta name="description" content="本を読み終えた瞬間を、記録する。家・駅・旅先——その本、どこで読み終える？ 伏流 from art による番組型アーカイブ。">
+    <meta property="og:title" content="読了、その時。。。— FUKURYU">
+    <meta property="og:description" content="本を読み終えた瞬間を、記録する。伏流 from art Series #04">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── 読了ページ固有カラー・変数 ── */
+        :root {
+            --dr-bg:       #f7f4ee;
+            --dr-bg-soft:  #ede9e0;
+            --dr-fg:       #1c1a16;
+            --dr-mute:     #7a7060;
+            --dr-line:     #d0cabb;
+            --dr-green:    #2c5c3a;
+            --dr-green-lt: rgba(44,92,58,.09);
+            --dr-warm:     #8b6f47;
+        }
+
+        /* ── ページ全体 ── */
+        .dr-page { background: var(--dr-bg); color: var(--dr-fg); }
+
+        /* ── ヒーロー ── */
+        .dr-hero {
+            background: var(--dr-bg);
+            padding: 80px var(--pad-x) 72px;
+            max-width: var(--max);
+            margin: 0 auto;
+            border-bottom: 1px solid var(--dr-line);
+            position: relative;
+            overflow: hidden;
+        }
+        .dr-hero::before {
+            content: "読了";
+            position: absolute;
+            right: -0.05em;
+            top: -0.1em;
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: clamp(200px, 28vw, 400px);
+            color: var(--dr-bg-soft);
+            line-height: .85;
+            letter-spacing: -0.04em;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+        .dr-hero__inner { position: relative; z-index: 1; max-width: 760px; }
+        .dr-series-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--dr-green);
+            margin-bottom: 28px;
+        }
+        .dr-series-label::before {
+            content: "";
+            display: inline-block;
+            width: 28px;
+            height: 2px;
+            background: var(--dr-green);
+        }
+        .dr-title {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: clamp(48px, 8vw, 96px);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--dr-fg);
+            margin: 0 0 32px;
+        }
+        .dr-title__dots {
+            color: var(--dr-green);
+        }
+        .dr-concept {
+            font-family: var(--serif);
+            font-size: clamp(17px, 1.6vw, 22px);
+            line-height: 1.9;
+            color: var(--dr-fg);
+            margin: 0 0 36px;
+            max-width: 580px;
+        }
+        .dr-hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .dr-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            color: var(--dr-green);
+        }
+        .dr-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dr-green);
+            animation: pulse-green 2s ease-in-out infinite;
+        }
+        @keyframes pulse-green {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: .5; transform: scale(1.4); }
+        }
+        .dr-period {
+            font-size: 12px;
+            color: var(--dr-mute);
+            letter-spacing: .1em;
+        }
+
+        /* ── アーカイブ ── */
+        .dr-archive {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 72px var(--pad-x);
+        }
+        .dr-archive-head {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 48px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--dr-fg);
+        }
+        .dr-archive-head h2 {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: 28px;
+            letter-spacing: -.01em;
+            margin: 0;
+        }
+        .dr-record-count {
+            font-size: 12px;
+            color: var(--dr-mute);
+            letter-spacing: .1em;
+        }
+
+        /* エントリーグリッド */
+        .dr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 48px 36px;
+        }
+        .dr-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .dr-card__photo {
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background: var(--dr-bg-soft);
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .dr-card__photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .6s cubic-bezier(.2,.7,.2,1);
+        }
+        .dr-card:hover .dr-card__photo img {
+            transform: scale(1.03);
+        }
+        .dr-card__photo--placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            color: var(--dr-line);
+        }
+        .dr-card__photo--placeholder span {
+            font-size: 11px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--dr-mute);
+        }
+        .dr-card__record {
+            border-top: 1px solid var(--dr-line);
+            padding-top: 16px;
+            display: grid;
+            gap: 10px;
+        }
+        .dr-card__book {
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 17px;
+            line-height: 1.4;
+            color: var(--dr-fg);
+            margin: 0;
+        }
+        .dr-card__info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .dr-card__info-row {
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--dr-mute);
+            letter-spacing: .06em;
+        }
+        .dr-card__info-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            flex-shrink: 0;
+            width: 40px;
+        }
+        .dr-card__comment {
+            font-family: var(--serif);
+            font-size: 14px;
+            line-height: 1.85;
+            color: var(--dr-fg);
+            font-style: italic;
+            margin: 0;
+            padding-top: 4px;
+        }
+        .dr-card__participant {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dr-green);
+            letter-spacing: .08em;
+        }
+
+        /* 空状態 */
+        .dr-empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 0;
+            color: var(--dr-mute);
+        }
+        .dr-empty-state__icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 20px;
+            opacity: .4;
+        }
+        .dr-empty-state p {
+            font-family: var(--serif);
+            font-size: 17px;
+            line-height: 1.9;
+        }
+
+        /* ── 概要セクション ── */
+        .dr-about {
+            background: var(--dr-bg-soft);
+            padding: 80px var(--pad-x);
+        }
+        .dr-about__inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .dr-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--dr-green);
+            margin-bottom: 20px;
+            display: block;
+        }
+        .dr-about h2 {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: clamp(26px, 3.5vw, 38px);
+            line-height: 1.35;
+            letter-spacing: -.01em;
+            margin: 0 0 32px;
+        }
+        .dr-about__text {
+            font-family: var(--serif);
+            font-size: 17px;
+            line-height: 2.1;
+            color: var(--dr-fg);
+            margin: 0 0 20px;
+        }
+
+        /* 手順 */
+        .dr-steps {
+            margin-top: 48px;
+            display: grid;
+            gap: 24px;
+        }
+        .dr-step {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+        .dr-step__num {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: 32px;
+            color: var(--dr-line);
+            line-height: 1;
+        }
+        .dr-step__body h3 {
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 16px;
+            margin: 0 0 6px;
+        }
+        .dr-step__body p {
+            font-size: 14px;
+            color: var(--dr-mute);
+            line-height: 1.85;
+            margin: 0;
+        }
+
+        /* ── 参加セクション ── */
+        .dr-join {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 80px var(--pad-x);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 48px;
+            align-items: center;
+            border-top: 1px solid var(--dr-line);
+        }
+        .dr-join h2 {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: clamp(28px, 4vw, 46px);
+            line-height: 1.2;
+            margin: 0 0 20px;
+            letter-spacing: -.01em;
+        }
+        .dr-join__text {
+            font-family: var(--serif);
+            font-size: 16px;
+            line-height: 2;
+            color: var(--dr-mute);
+            margin: 0 0 32px;
+        }
+        .dr-join__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: var(--dr-green);
+            color: #fff;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: background .2s, transform .2s;
+        }
+        .dr-join__cta:hover {
+            background: #1e4229;
+            transform: translateY(-1px);
+        }
+        .dr-join__qr {
+            text-align: center;
+        }
+        .dr-join__qr-box {
+            width: 120px;
+            height: 120px;
+            background: var(--dr-bg-soft);
+            border: 1px solid var(--dr-line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--dr-mute);
+            letter-spacing: .1em;
+            text-align: center;
+            padding: 12px;
+        }
+        .dr-join__qr p {
+            font-size: 11px;
+            color: var(--dr-mute);
+            margin-top: 10px;
+            letter-spacing: .08em;
+        }
+
+        /* ── 記録用紙イメージ ── */
+        .dr-record-sheet {
+            background: #fff;
+            border: 1px solid var(--dr-line);
+            border-radius: 2px;
+            padding: 24px;
+            max-width: 320px;
+            margin-top: 32px;
+            font-family: var(--serif);
+        }
+        .dr-record-sheet__title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dr-mute);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--dr-line);
+        }
+        .dr-record-sheet__row {
+            display: grid;
+            grid-template-columns: 52px 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-size: 13px;
+        }
+        .dr-record-sheet__label {
+            color: var(--dr-mute);
+            font-weight: 700;
+        }
+        .dr-record-sheet__field {
+            border-bottom: 1px solid var(--dr-line);
+            min-height: 22px;
+            color: var(--dr-fg);
+        }
+        .dr-record-sheet__field--tall {
+            min-height: 60px;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 880px) {
+            .dr-hero { padding: 56px var(--pad-x) 52px; }
+            .dr-hero::before { font-size: 36vw; }
+            .dr-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 36px 24px; }
+            .dr-join { grid-template-columns: 1fr; }
+            .dr-join__qr { display: none; }
+        }
+        @media (max-width: 640px) {
+            .dr-title { font-size: 48px; }
+            .dr-grid { grid-template-columns: 1fr 1fr; gap: 28px 16px; }
+        }
+        @media (max-width: 440px) {
+            .dr-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="dr-page">
+
+    <!-- ヘッダー（メインサイト共通） -->
+    <header class="site-header">
+        <div class="site-header__status">
+            <div class="site-header__status-inner">
+                <span class="status-pulse" aria-hidden="true"></span>
+                <span class="status-label">ON AIR</span>
+                <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+                <span class="status-date">No. 005 · 2026 SPRING</span>
+            </div>
+        </div>
+        <div class="header-inner">
+            <a href="index.html" class="brand-mark">
+                <img src="fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav">
+                <ul>
+                    <li><a href="index.html#radio">Radio</a></li>
+                    <li><a href="index.html#article">Article</a></li>
+                    <li><a href="dialogue-ichinen.html">Dialogue</a></li>
+                    <li><a href="index.html#works">Works</a></li>
+                    <li><a href="index.html#shop">Shop</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" aria-label="メニューを開く">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+
+    <main>
+
+        <!-- ── ヒーロー ── -->
+        <section class="dr-hero">
+            <div class="dr-hero__inner">
+                <span class="dr-series-label">FUKURYU Series #04</span>
+                <h1 class="dr-title">読了、<br>その時<span class="dr-title__dots">。。。</span></h1>
+                <p class="dr-concept">本を読み終えた瞬間を、記録する。<br>家・駅・旅先——その本、どこで読み終える？</p>
+                <div class="dr-hero-meta">
+                    <span class="dr-status">参加者募集中</span>
+                    <span class="dr-period">2026.05 — 2026.11（予定）</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── アーカイブ ── -->
+        <section class="dr-archive">
+            <div class="dr-archive-head">
+                <h2>Archive</h2>
+                <span class="dr-record-count" id="dr-record-count">0 records</span>
+            </div>
+            <div class="dr-grid" id="dr-grid">
+                <!-- エントリーはJSで描画。追加は下の entries 配列に -->
+            </div>
+        </section>
+
+        <!-- ── 概要 ── -->
+        <section class="dr-about">
+            <div class="dr-about__inner">
+                <span class="dr-section-label">About this series</span>
+                <h2>本を読み終えた瞬間の、<br>静かな記録。</h2>
+                <p class="dr-about__text">
+                    10名ほどの参加者に、本を読み終えた瞬間の写真を撮影してもらいます。
+                    読み終えた本の表紙と、その背後に映る場所のぼやけた風景。
+                    それぞれのペースで送ってもらった写真と記録は、ここにアーカイブされていきます。
+                </p>
+                <p class="dr-about__text">
+                    半年間を経て、全参加者分の写真と記録をまとめたZINEを制作し、参加者へお返しします。
+                    天野紘寿×田代明向による番組型プラットフォーム「伏流」の連載番組です。
+                </p>
+
+                <div class="dr-steps">
+                    <div class="dr-step">
+                        <span class="dr-step__num">01</span>
+                        <div class="dr-step__body">
+                            <h3>読み終えた本を撮影する</h3>
+                            <p>読み終えた本の表紙と、その場所が写るように撮影してください。スマートフォンで構いません。</p>
+                        </div>
+                    </div>
+                    <div class="dr-step">
+                        <span class="dr-step__num">02</span>
+                        <div class="dr-step__body">
+                            <h3>記録用紙を提出する</h3>
+                            <p>日時・場所・コメントを記入した記録用紙を提出してください。手書きまたはDiscordのテキスト送信で受け付けます。</p>
+                        </div>
+                    </div>
+                    <div class="dr-step">
+                        <span class="dr-step__num">03</span>
+                        <div class="dr-step__body">
+                            <h3>アーカイブされる</h3>
+                            <p>提出された写真と記録は、このページおよびInstagramにて順次公開されます。半年後にZINEとしてまとめてお返しします。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 記録用紙イメージ -->
+                <div class="dr-record-sheet">
+                    <p class="dr-record-sheet__title">記録用紙</p>
+                    <div class="dr-record-sheet__row">
+                        <span class="dr-record-sheet__label">日時</span>
+                        <div class="dr-record-sheet__field"></div>
+                    </div>
+                    <div class="dr-record-sheet__row">
+                        <span class="dr-record-sheet__label">場所</span>
+                        <div class="dr-record-sheet__field"></div>
+                    </div>
+                    <div class="dr-record-sheet__row">
+                        <span class="dr-record-sheet__label">コメント</span>
+                        <div class="dr-record-sheet__field dr-record-sheet__field--tall"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 参加する ── -->
+        <section class="dr-join">
+            <div>
+                <span class="dr-section-label">Join us</span>
+                <h2>参加する</h2>
+                <p class="dr-join__text">
+                    Discordチャンネルに参加することで、このプロジェクトに加わることができます。<br>
+                    読み終えるたびに、記録を送ってください。参加者のペースで構いません。
+                </p>
+                <a href="https://discord.gg/Z4RWUWPCk" class="dr-join__cta" target="_blank" rel="noopener noreferrer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                    Discordに参加する
+                </a>
+            </div>
+            <div class="dr-join__qr" aria-hidden="true">
+                <div class="dr-join__qr-box">QRコード<br>準備中</div>
+                <p>discord.gg/<br>Z4RWUWPCk</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div>
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="index.html#radio">Radio</a></li>
+                        <li><a href="index.html#article">Article</a></li>
+                        <li><a href="dialogue-ichinen.html">Dialogue</a></li>
+                        <li><a href="dokuryo.html">読了、その時。。。</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Follow</h4>
+                    <ul>
+                        <li><a href="https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap" target="_blank" rel="noopener noreferrer">Spotify</a></li>
+                        <li><a href="https://www.instagram.com/fukuliu.from.art" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                        <li><a href="https://discord.gg/Z4RWUWPCk" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="site-footer__base">
+            <span>&copy; 2026 FUKURYU / ART Platform</span>
+            <span>Designed in Kansai.</span>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+            document.querySelector('.global-nav')?.classList.toggle('is-open');
+        });
+
+        // ============================================================
+        //  「読了、その時。。。」エントリーデータ
+        //  ★ 写真が届いたら下の entries 配列に追加してください
+        //
+        //  各フィールド:
+        //    participant : 参加者名（公開名）
+        //    book        : 本のタイトル
+        //    photo       : 写真ファイルパス (例: 'dokuryo-photos/01-amano.jpg')
+        //    date        : 読了日時 (例: '2026.06.12 / 14:30')
+        //    place       : 読み終えた場所
+        //    comment     : コメント（記録用紙のコメント欄）
+        // ============================================================
+        const entries = [
+            // ↓ ここに追加していく（最新が先頭）
+            // {
+            //     participant: '天野',
+            //     book: '書名',
+            //     photo: 'dokuryo-photos/00-example.jpg',
+            //     date: '2026.06.01 / 21:00',
+            //     place: '自宅',
+            //     comment: 'コメント'
+            // },
+        ];
+
+        // ── 描画ロジック（変更不要）──
+        (function () {
+            const grid  = document.getElementById('dr-grid');
+            const count = document.getElementById('dr-record-count');
+            if (!grid) return;
+
+            if (!entries.length) {
+                grid.innerHTML = `
+                    <div class="dr-empty-state">
+                        <span class="dr-empty-state__icon">📖</span>
+                        <p>参加者からの記録が届き次第、<br>ここに掲載されます。</p>
+                    </div>`;
+                if (count) count.textContent = '0 records';
+                return;
+            }
+
+            if (count) count.textContent = entries.length + ' record' + (entries.length !== 1 ? 's' : '');
+
+            grid.innerHTML = entries.map(e => `
+                <article class="dr-card">
+                    <div class="dr-card__photo${e.photo ? '' : ' dr-card__photo--placeholder'}">
+                        ${e.photo
+                            ? `<img src="${e.photo}" alt="${escH(e.book)}" loading="lazy">`
+                            : `<span>Photo coming soon</span>`}
+                    </div>
+                    <div class="dr-card__record">
+                        <p class="dr-card__book">${escH(e.book)}</p>
+                        <div class="dr-card__info">
+                            <div class="dr-card__info-row">
+                                <span class="dr-card__info-label">日時</span>
+                                <span>${escH(e.date)}</span>
+                            </div>
+                            <div class="dr-card__info-row">
+                                <span class="dr-card__info-label">場所</span>
+                                <span>${escH(e.place)}</span>
+                            </div>
+                        </div>
+                        ${e.comment ? `<p class="dr-card__comment">"${escH(e.comment)}"</p>` : ''}
+                        <span class="dr-card__participant">${escH(e.participant)}</span>
+                    </div>
+                </article>
+            `).join('');
+
+            function escH(s) {
+                return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            }
+        })();
+    </script>
+
+</body>
+</html>
