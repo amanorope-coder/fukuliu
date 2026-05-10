@@ -319,9 +319,8 @@
                     <div class="editor-pane">
                         <textarea id="f-body" placeholder="ここに本文を書いてください。
 
-Google Docs や Word からコピーした文章をそのまま貼り付けるだけでOKです。
-
-空行 → 段落区切り
+Enter → 改行
+空行（Enter×2）→ 段落区切り
 
 # 大見出し
 ## 小見出し
@@ -480,11 +479,14 @@ function parseMarkdown(text, tocItems) {
         }
         if (line.trim() === '---') { html += '<hr>'; return; }
         if (line.trim() === '')    { html += '</p><p>'; return; }
-        html += inlineFmt(line) + '\n';
+        html += inlineFmt(line) + '<br>';
     });
     if (inBQ) html += '</blockquote>';
 
     html = '<p>' + html + '</p>';
+    // 段落末尾・ブロック要素直前の余分な <br> を除去
+    html = html.replace(/<br>\s*<\/p>/g, '</p>');
+    html = html.replace(/<br>\s*(<\/?(?:h2|h3|hr|blockquote)[^>]*>)/g, '$1');
     html = html.replace(/<p>\s*<\/p>/g, '');
     ['h2','h3','hr','blockquote'].forEach(tag => {
         html = html.replace(new RegExp(`<p>\\s*(<${tag}[^>]*>)`, 'g'), '$1');
