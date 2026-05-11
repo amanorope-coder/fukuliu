@@ -1591,6 +1591,43 @@ ul { list-style: none; padding: 0; margin: 0; }
 .load-more:hover { background: var(--fg); color: #fff; }
 .load-more[hidden] { display: none; }
 
+/* ラジオ展開ボタン（◯に矢印） */
+.radio-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin: 32px auto 0;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.35);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .3s;
+    color: rgba(255,255,255,.7);
+}
+.radio-toggle-btn:hover {
+    border-color: rgba(30,215,96,.7);
+    background: rgba(30,215,96,.08);
+    color: #1ed760;
+}
+.radio-toggle-btn svg {
+    transition: transform .35s var(--t);
+}
+.radio-toggle-btn.is-open svg {
+    transform: rotate(180deg);
+}
+/* 過去エピソード 2カラムグリッド */
+.radio-more-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+}
+@media(max-width:640px){
+    .radio-more-grid { grid-template-columns: 1fr; }
+}
+
 /* ============================================================
    ABOUT
    ============================================================ */
