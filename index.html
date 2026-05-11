@@ -588,7 +588,20 @@
             }
 
             const list = document.getElementById('radio-episodes');
-            if (list) list.innerHTML = radioEpisodes.map(renderEpisode).join('');
+            if (list) {
+                const featured = radioEpisodes[0] ? renderEpisode(radioEpisodes[0], 0) : '';
+                const rest = radioEpisodes.slice(1).map((ep, i) => renderEpisode(ep, i + 1)).join('');
+                list.innerHTML = `
+                    ${featured}
+                    ${rest ? `
+                    <div id="radio-more-list" style="display:none">${rest}</div>
+                    <button id="radio-load-more" class="load-more" type="button" onclick="
+                        document.getElementById('radio-more-list').style.display='';
+                        this.style.display='none';
+                    ">過去のエピソードを見る ↓</button>
+                    ` : ''}
+                `;
+            }
 
             const cta = document.getElementById('radio-show-cta');
             const more = document.getElementById('radio-show-more');
