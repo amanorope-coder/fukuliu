@@ -606,14 +606,13 @@
 
                 if (rest && moreWrap && btn) {
                     moreWrap.innerHTML = rest;
-                    btn.style.display = 'flex';
                     btn.addEventListener('click', function() {
                         const isOpen = btn.classList.toggle('is-open');
                         moreWrap.style.display = isOpen ? '' : 'none';
                         btn.setAttribute('aria-label', isOpen ? '閉じる' : '過去のエピソードを開く');
                     });
                 } else if (btn) {
-                    btn.style.display = 'none';
+                    btn.closest('.radio-toggle-wrap').style.display = 'none';
                 }
             }
 
