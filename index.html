@@ -317,6 +317,8 @@
             {
                 cat: 'dialogue',
                 date: '2026.04.25 —',
+                updatedAt: '2026.05.11', // 対談ログ更新時にここの日付を変える
+                updated: true,           // 更新バッジ表示フラグ（古くなったらfalseに）
                 title: '一年対談 — マツモリ × タシロ',
                 excerpt: 'ペインター・マツモリと芸術家・タシロが、制作・生活・アートの現在地についてDiscordで日常的に言葉を交わす。一年をかけて続ける長期対話の記録。',
                 author: 'マツモリ・タシロ',
@@ -355,6 +357,7 @@
                         <div class="article-feature__label">
                             <span class="tag ${catTagClass(article.cat)}">${cat.label}</span>
                             <span class="article-feature__badge">TOP STORY</span>
+                            ${article.updated ? '<span class="article-feature__badge badge--updated">更新</span>' : ''}
                         </div>
                         <h2 class="article-feature__title">${article.title || ''}</h2>
                         ${article.excerpt ? `<p class="article-feature__excerpt">${article.excerpt}</p>` : ''}
@@ -382,6 +385,7 @@
                         <div class="article-row__body">
                             <div class="article-row__meta">
                                 ${tagHTML}
+                                ${article.updated ? '<span class="badge--updated">更新</span>' : ''}
                                 <span class="date">${article.date || ''}</span>
                                 ${!linked ? '<span class="article-row__pending">準備中</span>' : ''}
                             </div>
@@ -429,6 +433,8 @@
             function renderAll(dynamicArticles) {
                 // manifest.json から取得した新着を先頭に、固定記事を後ろに並べる
                 const merged = [...dynamicArticles, ...articles];
+                // updated:true の記事を先頭に浮かせる
+                merged.sort((a, b) => (b.updated ? 1 : 0) - (a.updated ? 1 : 0));
 
                 // カルーセル: 最大5件の記事カードを追加（ラジオカードはHTML固定）
                 const reelTrack = document.getElementById('featured-reel-track');

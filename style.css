@@ -1214,6 +1214,17 @@ ul { list-style: none; padding: 0; margin: 0; }
     text-transform: uppercase;
     color: var(--fg-mute);
 }
+.badge--updated {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #1a9e5c;
+    color: #fff;
+    vertical-align: middle;
+}
 .article-feature__title {
     font-family: var(--serif);
     font-size: clamp(26px, 3.5vw, 40px);
