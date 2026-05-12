@@ -325,8 +325,7 @@
             {
                 cat: 'dialogue',
                 date: '2026.04.25 —',
-                updatedAt: '2026.05.11', // 対談ログ更新時にここの日付を変える
-                updated: true,           // 更新バッジ表示フラグ（古くなったらfalseに）
+                updatedAt: '2026.05.11', // 対談ログ更新時にここの日付を変える（YYYY.MM.DD形式）
                 title: '一年対談 — マツモリ × タシロ',
                 excerpt: 'ペインター・マツモリと芸術家・タシロが、制作・生活・アートの現在地についてDiscordで日常的に言葉を交わす。一年をかけて続ける長期対話の記録。',
                 author: 'マツモリ・タシロ',
@@ -439,6 +438,20 @@
             }
 
             function renderAll(dynamicArticles) {
+                // manifest.json から取得した記事の中で最も新しい日付を求める
+                const latestArticleDate = dynamicArticles.reduce((max, a) => {
+                    const d = (a.date || '').slice(0, 10); // "2026.05.11" 形式の先頭10文字
+                    return d > max ? d : max;
+                }, '');
+
+                // updatedAt を持つ静的記事（一年対談など）の updated フラグを動的に計算:
+                // updatedAt が最新記事の日付より新しければバッジ表示 & TOP STORY、古ければ外れる
+                articles.forEach(a => {
+                    if (a.updatedAt !== undefined) {
+                        a.updated = a.updatedAt >= latestArticleDate;
+                    }
+                });
+
                 // manifest.json から取得した新着を先頭に、固定記事を後ろに並べる
                 const merged = [...dynamicArticles, ...articles];
                 // updated:true の記事を先頭に浮かせる
