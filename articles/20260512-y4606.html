@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>「いのちの未来」と絵画 — FUKURYU</title>
+    <meta name="description" content="なぜ今、絵画？">
+    <meta property="og:title" content="「いのちの未来」と絵画 — FUKURYU">
+    <meta property="og:description" content="なぜ今、絵画？">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
+    <style>
+        html{scroll-padding-top:120px}
+        .article-page{background:linear-gradient(90deg,rgba(35,91,200,.08),transparent 26%),linear-gradient(180deg,#fff 0,var(--bg) 520px)}
+        .article-hero{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 56px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.55fr);gap:56px;align-items:end;border-bottom:1px solid var(--line)}
+        .article-hero__eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+        .article-hero__title{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,68px);line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+        .article-hero__lead{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);line-height:1.85;color:var(--fg-mute);margin:0;max-width:760px}
+        .article-hero__side{border-left:1px solid var(--line);padding-left:28px}
+        .article-hero__mark{width:min(240px,70%);height:auto;margin:0 0 34px;opacity:.88}
+        .article-meta-stack{display:grid;gap:18px}
+        .article-meta-stack__item{border-top:1px solid var(--line);padding-top:14px}
+        .article-meta-stack__label{display:block;color:var(--fg-mute);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
+        .article-meta-stack__value{font-family:var(--serif);font-size:15px}
+        .article-shell{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 120px;display:grid;grid-template-columns:180px minmax(0,760px);gap:clamp(32px,7vw,96px);align-items:start}
+        .article-shell--no-toc{grid-template-columns:minmax(0,760px);justify-content:center}
+        .article-toc{position:sticky;top:132px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute);border-top:2px solid var(--fg);padding-top:18px}
+        .article-toc a{display:block;margin-top:14px;letter-spacing:.06em;text-transform:none;color:var(--fg);text-decoration:none}
+        .article-toc a:hover{color:var(--accent)}
+        .article-toc a.sub{margin-left:12px;font-size:11px;color:var(--fg-mute)}
+        .article-body{font-family:var(--serif);font-size:17px;line-height:2.12;color:var(--fg)}
+        .article-body p{margin:0 0 30px}
+        .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
+        .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
+        .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
+        .article-body .callout{background:rgba(35,91,200,.07);border-left:4px solid var(--accent);padding:22px 28px;margin:46px 0;border-radius:0 6px 6px 0}
+        .article-body u{text-decoration:underline;text-underline-offset:3px}
+        .article-body .p-spacer{margin:0;padding:0;height:1.4em}
+        .article-toc a{transition:color .25s,font-weight .25s}
+        .article-toc a.is-active{color:var(--accent);font-weight:700}
+        .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
+        .article-body .accent{color:var(--accent);font-weight:600}
+        .article-body .accent2{color:var(--accent2);font-weight:600}
+        .article-back{display:inline-flex;align-items:center;gap:10px;margin-top:52px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+        .article-back::before{content:"";width:28px;height:1px;background:currentColor}
+        .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .tag--critique{background:#7b3fbf;color:#fff;border-color:#7b3fbf}
+        .tag--blog{background:#1a9e5c;color:#fff;border-color:#1a9e5c}
+        .tag--art{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+        .tag--dialogue{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+        @media(max-width:880px){
+            .article-hero{grid-template-columns:1fr;gap:36px;padding-top:54px}
+            .article-hero__side{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
+            .article-hero__mark{display:none}
+            .article-shell,.article-shell--no-toc{grid-template-columns:1fr;padding-top:52px}
+            .article-toc{position:static;display:flex;gap:18px;flex-wrap:wrap}
+            .article-toc a{margin-top:0}
+        }
+        @media(max-width:640px){
+            .article-hero__title{font-size:34px}
+            .article-body{font-size:16px;line-height:2}
+            .article-body blockquote{padding:20px;font-size:16px}
+        }
+        /* ── いいね・コメント ── */
+        .article-reactions{max-width:var(--max);margin:0 auto;padding:56px var(--pad-x) 80px;border-top:1px solid var(--line)}
+        .reaction-like{margin-bottom:52px}
+        .like-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:2px solid var(--line);border-radius:999px;padding:10px 24px;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--fg-mute);transition:all .2s}
+        .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+        .like-btn.is-liked{background:var(--accent);border-color:var(--accent);color:#fff}
+        .like-btn svg{transition:transform .2s}
+        .like-btn.is-liked svg{fill:currentColor;transform:scale(1.15)}
+        .like-count{font-variant-numeric:tabular-nums}
+        .comments-head{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 28px;padding-bottom:16px;border-bottom:2px solid var(--fg)}
+        .comment-form{display:grid;gap:12px;margin-bottom:44px;max-width:640px}
+        .comment-form input,.comment-form textarea{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:2px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--fg);transition:border-color .2s}
+        .comment-form input:focus,.comment-form textarea:focus{outline:none;border-color:var(--accent)}
+        .comment-form textarea{min-height:100px;resize:vertical;line-height:1.7}
+        .comment-submit{justify-self:start;padding:12px 28px;background:var(--accent);color:#fff;border:none;border-radius:2px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background .2s}
+        .comment-submit:hover{background:#1a4aad}
+        .comment-item{padding:22px 0;border-top:1px solid var(--line);max-width:640px}
+        .comment-meta{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+        .comment-nick{font-weight:700;font-size:14px}
+        .comment-date{font-size:11px;color:var(--fg-mute);letter-spacing:.08em}
+        .comment-body{font-family:var(--serif);font-size:16px;line-height:1.9;margin:0;white-space:pre-wrap}
+        .no-comments{color:var(--fg-mute);font-size:14px;padding:20px 0;font-style:italic}
+        .reaction-note{font-size:11px;color:var(--fg-mute);margin-top:8px;letter-spacing:.04em}
+    </style>
+</head>
+<body class="article-page">
+    <header class="site-header">
+        <div class="site-header__status"><div class="site-header__status-inner">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <span class="status-label">ON AIR</span>
+            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+            <span class="status-date">No. 005 · 2026 SPRING</span>
+        </div></div>
+        <div class="header-inner">
+            <a href="../index.html" class="brand-mark">
+                <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav"><ul>
+                <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                <li><a href="../dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                <li><a href="../index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                <li><a href="../index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
+            </ul></nav>
+            <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+        </div>
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+    <main>
+        <section class="article-hero">
+            <div>
+                <div class="article-hero__eyebrow">
+                    <span class="tag tag--essay">エッセイ</span>
+                    <span class="date">2026.05.12</span>
+                </div>
+                <h1 class="article-hero__title">「いのちの未来」と絵画</h1>
+                <p class="article-hero__lead">なぜ今、絵画？</p>
+            </div>
+            <aside class="article-hero__side" aria-label="記事情報">
+                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
+                <div class="article-meta-stack">
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Author</span>
+                        <span class="article-meta-stack__value">天野 紘寿</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Category</span>
+                        <span class="article-meta-stack__value">エッセイ</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Published</span>
+                        <span class="article-meta-stack__value">2026.05.12</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+        <div class="article-shell">
+            
+        <nav class="article-toc" aria-label="本文内ナビゲーション">
+            Index
+            <a href="#h-1">「いのちの未来」パビリオン</a><a href="#h-2" class="sub">館内にて</a><a href="#h-3" class="sub">「ミレニアム＝ヒューマン」</a><a href="#h-4" class="sub">人の凄み、絵画の凄み</a>
+        </nav>
+            <article class="article-body">
+                <p><h2 id="h-1">「いのちの未来」パビリオン</h2> 2025年5月15日、大学の友達の山本と二人で大阪万博に行った。当日の気温は体感30度くらいで、あまりにも外が眩しかったので、母のつばが広いノースフェイスをかぶって電車に乗り、大阪・夢洲に向かった。</p><p>イタリア館の抽選が外れて彷徨ったこと、コモンズのトンガ館の樹皮の絵がものすごく良かったこと、ドイツ館の食事が学生には高すぎたこと、大屋根リングが思ったよりデカかったこと、色々あったが、一番印象に残ったのは、最後に入った<span class="accent">「いのちの未来」（石黒 浩）パビリオン</span>だった。</p><p>運よく当選したこの館は、当初行きたかったイタリア館の代替として選んだため、特段期待していたわけではなかった。ただ実際に行ってみると色々と自分に紐づけて考えることがあったので、その感想を書いておく。</p><p>午後6時過ぎ、それなりに万博を堪能したぼくと山本は、「いのちパーク」の霧が噴き出す公園で休憩をしていた。一日酷使した足は使い物にならなかったので、持参したおにぎりを食べながら、ぼんやりと霧を眺めていた。 「いのちの未来」パビリオンは完全予約制のため、開始時刻まで暇だろうと思っていた。しかしパビリオンの壁面にびっしりと施された網の上を一定時間ごとに上から伝ってくる水の順番、水流の連結の仕方、最後に水が一気に消える様子を見ていたら、時間はすぐに過ぎた。</p><h3 id="h-2">館内にて</h3>30分ほど待ち、ようやく予定時刻に。 中に入ると鮮やかなレッドの柱があり、それを取り囲むようにして大量の人が折り返し並んでいる。少し不自然さの残る案内用の機械音声が鳴り響き、右奥には今まさにイヤホンを装着しツアーに旅立つ、一つ前のグループが見えた。 </p><p> 館内は一見して、何か近未来的なワクワク感を惹起させたいという意図は理解できた。だが、ぼくはいまいち世界観に入り込むことが出来ていなかった。それはパビリオン全体にも及んだ建材高騰による部材の簡素化のせいなのか、あるいは網状の壁面によって外側の様子が透けて見え、別世界感が薄まっていたせいかもしれない。ともかく入館時には、入る前とさして期待感は変わらなかった。</p><p>そうこうするうちに、自分たちのグループの番になった。 ぼくらは言われるがまま謎のデバイスを受け取り、なにげに人生初の骨伝導イヤホンを装着する。思ったよりもよく聞こえるが、装着感は怪しい。皿を持った人型ロボットから一通りの案内を聞き終わると、すぐ横のフロアに移動し、ツアーが始まった。</p><p>ツアーは全部で３つのチャプターに分かれる。所要時間は約60分。 一つ目は、日本人の持つ精神史、つまりモノへ精神性、生命性を見出してきた歴史の先端にアンドロイドを位置付け、その正統な進歩性を演出する展示。ここはパビリオン全体のチュートリアルに当たり、全くアンドロイドに造詣のない人でも楽しめる工夫がなされている。  </p><p>それを終えると、鑑賞者は階段を登って2階に上がるよう促される。指示は全て耳元のイヤホンを通じて流れてくる。階段を上り切ると、ここで二つ目のチャプター、2075年の世界に遭遇する。現在からちょうど50年後の世界を再現した空間では、未来の電車からの眺めが投影され、鑑賞者は人間とアンドロイドが共存する街にたどり着く。</p><p>またこのチャプターから、ある家族の話が映し出されるようになる。 小さな女の子と、その祖母らしき女性がとりとめのない会話をしている様子が壁に映し出される横で、上下に伸縮しながら案内役のロボットが館内を動き回る。</p><p>女の子が海に行きたいと言えば、祖母が何かの操作をして住居全体を一瞬でビーチに隣接させたり、フレンチが食べたいと言えば、すぐさま美味しそうなコース料理が出てくる。<span class="accent">ほとんどドラえもんの世界が、少なくとも製作陣にとっては順当な未来の可能性として提示されている光景が、ぼくには一周回って新鮮に思えた。</span>かねてよりイメージしていた「万博」を初めて感じたのも、この時だった。</p><p>しかし、鑑賞者が歩みを進めるうちに、物語は少しずつシリアスになっていく。祖母が病気、それもおそらくガンに相当する重い病気に罹り、家族が集まった中で、担当医はある選択肢を提示する。それは、そのまま自然死するのか、あるいは脳の記憶をデータとして保持し、それを持って新たなアンドロイドの身体として生きながらえるのか、という二択だ。</p><p>これも、よくあるSF的な想像力と呼ぶことは容易い。しかし現実にその二択を自分、あるいは自分の家族が選ぶ可能性に晒されたときのことを考えると、既にぼくの中には、フィクションとは言い難い感情があった。<span class="accent">なぜなら、もしそのようにして「生きながらえさせる」選択肢が出来てしまった場合に、その世界で自然死を選択することは、すなわち能動的な自死、あるいは人を死なせる選択だと捉えることもできるからだ。</span>ここでは、現状、自然死という現象が受動態でしかあり得ないことの、正の側面について考えさせられた。</p><p>さて、その後、物語はより複雑になっていく。生きている人間だけではなく、純粋なアンドロイドの視点や、アンドロイドとして生きることを選んだ人たちの視線が交差しながら、ぼくたちはその世界を追体験することになるからだ。</p><p>その後もぼくらはナレーションと共にその展開を追うわけだが、ここでは物語の結末は書かないでおく。ただ、やはり展示の概ねの設計としては、こういう未来が到来します、と主張するよりも、そのような世界観に今のうちに慣れておいて、本当にそうしたSFじみた時代になった時に、あなたはどんな判断をするのか、を問う性格のものだった。</p><p>おそらく石黒自身にはかなり強固な未来のビジョンがあるのだろうが、それを声高に主張する危うさ、特にそれが国際的な舞台で行われることのリスクは十分に考えていたであろう。なので、本当はどれほどドラスティックな未来を見据えているのかには興味が出た。</p><h3 id="h-3">「ミレニアム＝ヒューマン」</h3>こうしてぼくは、想像していた以上に良いものが見れて嬉しい、という気持ちで帰ろうとしたが、展示にはまだ続きがあった。最初は一団となって動いていたグループもすっかりバラバラになっており、ぼくも一人で腕を組み、顔をしかめながら、最後の順路である階段を下っていった。</p><p>降りた先は真っ暗で、しかし、そこに強く３本の光の筋が落ちている。 全員が揃ったタイミングで、一気に部屋全体が赤紫の光で照らされた。部屋の中央には大きな円形の穴が空いていて、そこに設置された柵越しに、何か人間の上半身が貝のようなものに乗った機械的な生命体が３体、縦横無尽に動き出す。<span class="accent">ぼくは初め、それが未来の仏の姿なのかと思った。しかし後から説明を見ると、それは「MOMO」といって、1000年後における、アンドロイドと生身の人間の境がなくなった進化した人間＝ミレニアム・ヒューマンなのだという。</span></p><p>ともかく、ぼくはこの仕掛けにかなり大きな衝撃を受けた。それまでに50分かけて丁寧に世界観に没入させてくれたことも間違いなく影響はしているが、端的にとても感動した。実際、よくよく見ると、布の質感が見えていたり、顔が作り物っぽかったり、穴の中の機構が作る不自然なシワは目に入るものの、それらがどうでもよくなるくらいに、眩しい光の演出は刺激的で、ギャラリーや美術館で絵画や立体作品を見慣れていた自分にとっては、新鮮な驚きの感覚が呼び起こされた。</p><p>パビリオンの出口で合流したぼくと山本は、しばらく無言だったが、歩くうちにポツポツと感想を言い始めた。やはり彼もぼくと似た感覚を抱いたようで、それが普段の絵画制作に関して抱く感覚とも違うという話を、世界各国の国旗が立ち並ぶ退場ゲート前の通路で喋り合った。夢洲から出ている地下鉄に乗ってからも、その話題は尽きない。あの感覚はなんだったのか、それに納得するまでは、あのパビリオンの話は終わらないのだと感じた。</p><h3 id="h-4">人の凄み、絵画の凄み</h3>この時の感覚については、今になってある程度整理がついたので、それも書いておく。おそらく、ぼくが「いのちの未来」パビリオンで感じたのは、「今、人類にはここまでのことが出来るのか」という類の感動だったのだと思う。これは、厳密な意味での人類の持つ科学技術の最先端という意味ではない。</p><p>もし厳密な意味で考えれば、それは大国の軍事技術や、まだ一般には周知されていない研究室や巨大テック企業内での最新の実験の成果などに相当するだろう。 <span class="accent">そうではなく、ぼくが感じたのは、演出やストーリーが総合的に見せてくれた、ある種の「未来的な感覚」の集合であり、スペクタクルであった。</span>ぼくは決して、万博の提示する「命輝く未来社会」というステートメントを信奉しているわけではないが、そのようないかがわしさを抜きにしても、どのような未来を望むかについて考えること、期待することそのものについて考える機会を得たのは事実だ。</p><p><span class="accent">しかし一方で、ぼくが一人のペインターとして、優れた絵画を見て感じるのは、その感覚ではない。強いて言えばそれは、「一人の人間に、ここまでのことが出来るのか・考えられるのか」という類の感動だ。</span>だからぼくは、過去の巨匠と呼ばれる作家の絵を見て、形式が古いなと思うことは当然あっても、そのモノが持つ凄みが色褪せるとは全く思わない。</p><p>むしろ、なまじ自分が絵の具を使う分、その凄まじい練度の片鱗を察知して、怖くなる。<u>そこではどちらの時代が先か、コンセプトがどうとかの装飾はまったく意味をなさず、単純な力比べになる。裏を返せば、自分が戦うのは同世代の画家と過去の巨匠だけでなく、未来に生まれる画家たちでもある。それは、とてもワクワクする事実だ。</u></p><p>そういえば、デイヴィッド・ホックニーが自著の中で「これから人間がどんな発展を遂げようと、必ず絵は描かれ続ける」みたいなことを書いていたが、ぼくは今のところその主張にかなり賛成している。その自分なりの根拠が、まさか万博の「いのちの未来」パビリオンでの経験から見えてくるとはつゆも思っていなかった。</p><p>もちろん見方を変えれば、これは石黒浩という一人のアーティストが作り出した妄執的な世界観だと一蹴することも出来るだろう。しかし、コンピュータの登場が技術的な意味だけでなく、シリコンバレー出身者などに見られる思想的に巨大な影響を生み出したことを考えれば、アンドロイドの普及が、一個人としての世界観を優に超え、普遍的な認識の変化を作り出す可能性はある。</p><p>振り返ってみれば、絵画という個人史と公共性の紐帯を要請されるメディアを扱う人間にとって、現時点で、万博というきわめて公共的な技術革新の象徴と、個人的思想の一つの結節点であるこのパビリオンに出会えたことは、もしかしたらかなり幸運だったのかもしれない。</p>
+                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
+            </article>
+        </div>
+        <!-- いいね・コメント -->
+        <section class="article-reactions">
+            <div class="reaction-like">
+                <button class="like-btn" id="like-btn" onclick="toggleLike()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="like-count" id="like-count">0</span>
+                </button>
+                <p class="reaction-note">※ いいね数はこのブラウザのみに保存されます</p>
+            </div>
+            <h2 class="comments-head">コメント</h2>
+            <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" id="comment-nick" placeholder="ニックネーム（必須）" required maxlength="30">
+                <textarea id="comment-text" placeholder="コメントを書く..." required maxlength="500" rows="4"></textarea>
+                <button type="submit" class="comment-submit">送信する</button>
+            </form>
+            <div id="comments-list"></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="../fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div><h4>Programs</h4><ul>
+                    <li><a href="../index.html#radio">Radio</a></li>
+                    <li><a href="../index.html#article">Article</a></li>
+                    <li><a href="../index.html#video">Video</a></li>
+                    <li><a href="../dialogue-ichinen.html">Dialogue</a></li>
+                </ul></div>
+                <div><h4>Follow</h4><ul>
+                    <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                </ul></div>
+            </div>
+        </div>
+        <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
+    </footer>
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});
+        // ── いいね・コメント（LocalStorage）──
+        (function(){
+            const ID = location.pathname.replace(/.*//,'').replace('.html','') || 'article';
+            const LK = 'fk_likes_'+ID, LD = 'fk_liked_'+ID, CM = 'fk_comments_'+ID;
+            function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+            function getLikes(){return parseInt(localStorage.getItem(LK)||'0');}
+            function isLiked(){return localStorage.getItem(LD)==='1';}
+            function updateLikeUI(){
+                const btn=document.getElementById('like-btn'),cnt=document.getElementById('like-count');
+                if(!btn||!cnt)return;
+                btn.classList.toggle('is-liked',isLiked());
+                cnt.textContent=getLikes();
+            }
+            window.toggleLike=function(){
+                const liked=isLiked(),n=getLikes();
+                localStorage.setItem(LD,liked?'0':'1');
+                localStorage.setItem(LK,String(liked?Math.max(0,n-1):n+1));
+                updateLikeUI();
+            };
+            function getComments(){try{return JSON.parse(localStorage.getItem(CM)||'[]');}catch{return[];}}
+            function renderComments(){
+                const el=document.getElementById('comments-list');
+                if(!el)return;
+                const list=getComments();
+                el.innerHTML=list.length
+                    ?list.map(c=>`<div class="comment-item"><div class="comment-meta"><span class="comment-nick">${esc(c.nick)}</span><span class="comment-date">${c.date}</span></div><p class="comment-body">${esc(c.text)}</p></div>`).join('')
+                    :'<p class="no-comments">まだコメントはありません。最初のコメントを残しませんか？</p>';
+            }
+            window.submitComment=function(e){
+                e.preventDefault();
+                const nick=document.getElementById('comment-nick').value.trim();
+                const text=document.getElementById('comment-text').value.trim();
+                if(!nick||!text)return;
+                const now=new Date();
+                const date=now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
+                const list=getComments();
+                list.push({nick,text,date});
+                localStorage.setItem(CM,JSON.stringify(list));
+                document.getElementById('comment-nick').value='';
+                document.getElementById('comment-text').value='';
+                renderComments();
+            };
+            updateLikeUI();
+            renderComments();
+        })();
+        // TOC アクティブハイライト（スクロール連動）
+        (function(){
+            const links = document.querySelectorAll('.article-toc a[href^="#"]');
+            if (!links.length) return;
+            const headings = Array.from(document.querySelectorAll('.article-body h2[id], .article-body h3[id]'));
+            if (!headings.length) return;
+            function update() {
+                const offset = window.scrollY + 160;
+                let active = headings[0];
+                for (const h of headings) {
+                    if (h.offsetTop <= offset) active = h;
+                    else break;
+                }
+                links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active.id));
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
+    </script>
+</body>
+</html>
