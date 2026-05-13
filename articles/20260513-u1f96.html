@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アーティストは女好き — FUKURYU</title>
+    <meta name="description" content="2022/11/10">
+    <meta property="og:title" content="アーティストは女好き — FUKURYU">
+    <meta property="og:description" content="2022/11/10">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
+    <style>
+        html{scroll-padding-top:120px}
+        .article-page{background:linear-gradient(90deg,rgba(35,91,200,.08),transparent 26%),linear-gradient(180deg,#fff 0,var(--bg) 520px)}
+        .article-hero{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 56px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.55fr);gap:56px;align-items:end;border-bottom:1px solid var(--line)}
+        .article-hero__eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+        .article-hero__title{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,68px);line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+        .article-hero__lead{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);line-height:1.85;color:var(--fg-mute);margin:0;max-width:760px}
+        .article-hero__side{border-left:1px solid var(--line);padding-left:28px}
+        .article-hero__mark{width:min(240px,70%);height:auto;margin:0 0 34px;opacity:.88}
+        .article-meta-stack{display:grid;gap:18px}
+        .article-meta-stack__item{border-top:1px solid var(--line);padding-top:14px}
+        .article-meta-stack__label{display:block;color:var(--fg-mute);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
+        .article-meta-stack__value{font-family:var(--serif);font-size:15px}
+        .article-shell{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 120px;display:grid;grid-template-columns:180px minmax(0,760px);gap:clamp(32px,7vw,96px);align-items:start}
+        .article-shell--no-toc{grid-template-columns:minmax(0,760px);justify-content:center}
+        .article-toc{position:sticky;top:132px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute);border-top:2px solid var(--fg);padding-top:18px}
+        .article-toc a{display:block;margin-top:14px;letter-spacing:.06em;text-transform:none;color:var(--fg);text-decoration:none}
+        .article-toc a:hover{color:var(--accent)}
+        .article-toc a.sub{margin-left:12px;font-size:11px;color:var(--fg-mute)}
+        .article-body{font-family:var(--serif);font-size:17px;line-height:2.12;color:var(--fg)}
+        .article-body p{margin:0 0 30px}
+        .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
+        .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
+        .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
+        .article-body .callout{background:rgba(35,91,200,.07);border-left:4px solid var(--accent);padding:22px 28px;margin:46px 0;border-radius:0 6px 6px 0}
+        .article-body u{text-decoration:underline;text-underline-offset:3px}
+        .article-body .p-spacer{margin:0;padding:0;height:1.4em}
+        .article-toc a{transition:color .25s,font-weight .25s}
+        .article-toc a.is-active{color:var(--accent);font-weight:700}
+        .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
+        .article-body .accent{color:var(--accent);font-weight:600}
+        .article-body .accent2{color:var(--accent2);font-weight:600}
+        .article-back{display:inline-flex;align-items:center;gap:10px;margin-top:52px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+        .article-back::before{content:"";width:28px;height:1px;background:currentColor}
+        .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .tag--critique{background:#7b3fbf;color:#fff;border-color:#7b3fbf}
+        .tag--blog{background:#1a9e5c;color:#fff;border-color:#1a9e5c}
+        .tag--art{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+        .tag--dialogue{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+        @media(max-width:880px){
+            .article-hero{grid-template-columns:1fr;gap:36px;padding-top:54px}
+            .article-hero__side{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
+            .article-hero__mark{display:none}
+            .article-shell,.article-shell--no-toc{grid-template-columns:1fr;padding-top:52px}
+            .article-toc{position:static;display:flex;gap:18px;flex-wrap:wrap}
+            .article-toc a{margin-top:0}
+        }
+        @media(max-width:640px){
+            .article-hero__title{font-size:34px}
+            .article-body{font-size:16px;line-height:2}
+            .article-body blockquote{padding:20px;font-size:16px}
+        }
+        /* ── いいね・コメント ── */
+        .article-reactions{max-width:var(--max);margin:0 auto;padding:56px var(--pad-x) 80px;border-top:1px solid var(--line)}
+        .reaction-like{margin-bottom:52px}
+        .like-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:2px solid var(--line);border-radius:999px;padding:10px 24px;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--fg-mute);transition:all .2s}
+        .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+        .like-btn.is-liked{background:var(--accent);border-color:var(--accent);color:#fff}
+        .like-btn svg{transition:transform .2s}
+        .like-btn.is-liked svg{fill:currentColor;transform:scale(1.15)}
+        .like-count{font-variant-numeric:tabular-nums}
+        .comments-head{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 28px;padding-bottom:16px;border-bottom:2px solid var(--fg)}
+        .comment-form{display:grid;gap:12px;margin-bottom:44px;max-width:640px}
+        .comment-form input,.comment-form textarea{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:2px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--fg);transition:border-color .2s}
+        .comment-form input:focus,.comment-form textarea:focus{outline:none;border-color:var(--accent)}
+        .comment-form textarea{min-height:100px;resize:vertical;line-height:1.7}
+        .comment-submit{justify-self:start;padding:12px 28px;background:var(--accent);color:#fff;border:none;border-radius:2px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background .2s}
+        .comment-submit:hover{background:#1a4aad}
+        .comment-item{padding:22px 0;border-top:1px solid var(--line);max-width:640px}
+        .comment-meta{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+        .comment-nick{font-weight:700;font-size:14px}
+        .comment-date{font-size:11px;color:var(--fg-mute);letter-spacing:.08em}
+        .comment-body{font-family:var(--serif);font-size:16px;line-height:1.9;margin:0;white-space:pre-wrap}
+        .no-comments{color:var(--fg-mute);font-size:14px;padding:20px 0;font-style:italic}
+        .reaction-note{font-size:11px;color:var(--fg-mute);margin-top:8px;letter-spacing:.04em}
+    </style>
+</head>
+<body class="article-page">
+    <header class="site-header">
+        <div class="site-header__status"><div class="site-header__status-inner">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <span class="status-label">ON AIR</span>
+            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+            <span class="status-date">No. 005 · 2026 SPRING</span>
+        </div></div>
+        <div class="header-inner">
+            <a href="../index.html" class="brand-mark">
+                <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav"><ul>
+                <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                <li><a href="../dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                <li><a href="../index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                <li><a href="../index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
+            </ul></nav>
+            <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+        </div>
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+    <main>
+        <section class="article-hero">
+            <div>
+                <div class="article-hero__eyebrow">
+                    <span class="tag tag--essay">エッセイ</span>
+                    <span class="date">2026.05.13</span>
+                </div>
+                <h1 class="article-hero__title">アーティストは女好き</h1>
+                <p class="article-hero__lead">2022/11/10</p>
+            </div>
+            <aside class="article-hero__side" aria-label="記事情報">
+                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
+                <div class="article-meta-stack">
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Author</span>
+                        <span class="article-meta-stack__value">田代明向</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Category</span>
+                        <span class="article-meta-stack__value">エッセイ</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Published</span>
+                        <span class="article-meta-stack__value">2026.05.13</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+        <div class="article-shell article-shell--no-toc">
+            
+            <article class="article-body">
+                <p>以下の文章は、私が大学一回生（2022年）の時に書いた文章です。今読めば大雑把で乱暴なところがあるのですが、それなりに笑えるので掲載しておきます。<br>------------------------------------------------------------</p><h2 id="h-1">アーティストは女好き</h2>美術史に残る巨匠たちの女好きは有名で、例えばピカソは数多くの女性と恋を重ね、その度画風を変えた。岡本太郎も渡仏時代、次から次へと同棲相手を変えたと語っていた気がする。<br>変な髭で有名なサルヴァドール・ダリも、一途でこそあったけど妻のガラへの異常な愛を見せていたし、恩人の妻を寝取ったミレイとかラファエロやムンクも凄かった。全員とは言い切れないものの、アーティストは女好きが多いとよく言われている。<br>もちろん名声があったからモテたとかいろいろ理由はあると思うし、人それぞれ事情は違ったと思うけど、アーティストが恋人を渇望するのはすごく大切だと思う。<br>なぜならアーティストは孤独でないといけないから。それも常に！<br>アーティストの仕事は、小山田先生の言葉を借りるなら「未来の当たり前を作る」こと。（これはクールベ以降できた当たり前かもしれないけど..）作るのは"未来の"当たり前であって、今あるたり前を作ることじゃない。つまり新しい「美しい！」を提案し続けなければならない。（それがいつ認められるのかはわからないけれど。10年後なら運がいい。100年後でも運がいい方。2000年後の可能性もある。）<br>だからアーティストは決して今の社会に認められてはいけない。だって認められるってことは"今すでに当たり前”で、そんなものわざわざ提案 （表現） してもらわなくたって美しいのはみんな知ってるから。（ちなみにここがアートとデザインを隔てるものだと思う。）つまりアーティストは、常に"認められない、ir/regular”な存在として生きていかなければならない。すごく孤独な生き方だと思う。さらに言えば認められてなかったものが、時間が経って認められた時には、その認められた喜びなんか顧みず、もう別の"認められてないこと"をしてないといけないと思う。「美術館は作品の墓場」という有名な美術の格言は美術館に認められたという"当たり前入り"が生きた作品を過去の遺物にするという視点でうまくこの事を言い表していると思うし、マルセル・デュシャンの「アートは美しくあってはいけない」とか岡本太郎の「今日の芸術は、うまくあってはならない。きれいであってはならない。ここちよくあってはならない」という言葉も、そういうニュアンスを含む発言だと思う。<br>存在が認められないというのはめちゃくちゃ辛い！赤ちゃんを無視し続ける恐怖実験の話とか、宝くじで一生働かなくても暮らせる大金を手に入れた人がそれでも仕事を続けて社会に居場所を求めるように、人は自分の存在を認められないとすっごく辛く感じるらしい。（「存在とは知覚されることである」っていうバークリーの言葉はこういう事？？）だから！だからそんな孤独なアーティストは自分という存在を無条件に認めてくれるものを渇望するんだと思う。それも家族ではない、なんでもない他人でありながら自分の存在全てを肯定してくれる存在、つまり恋人を！<br>ということで、アーティストは恋人を渇望するくらい孤独でないといけない。偉大な芸術家になるためには女遊びをしなければ、ということではなく、恋人なんていいや...なんて思ってるうちはまだまだ甘いんだろうなと思う。</p><p>2022/11/10</p>
+                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
+            </article>
+        </div>
+        <!-- いいね・コメント -->
+        <section class="article-reactions">
+            <div class="reaction-like">
+                <button class="like-btn" id="like-btn" onclick="toggleLike()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="like-count" id="like-count">0</span>
+                </button>
+                <p class="reaction-note">※ いいね数はこのブラウザのみに保存されます</p>
+            </div>
+            <h2 class="comments-head">コメント</h2>
+            <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" id="comment-nick" placeholder="ニックネーム（必須）" required maxlength="30">
+                <textarea id="comment-text" placeholder="コメントを書く..." required maxlength="500" rows="4"></textarea>
+                <button type="submit" class="comment-submit">送信する</button>
+            </form>
+            <div id="comments-list"></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="../fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div><h4>Programs</h4><ul>
+                    <li><a href="../index.html#radio">Radio</a></li>
+                    <li><a href="../index.html#article">Article</a></li>
+                    <li><a href="../index.html#video">Video</a></li>
+                    <li><a href="../dialogue-ichinen.html">Dialogue</a></li>
+                </ul></div>
+                <div><h4>Follow</h4><ul>
+                    <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                </ul></div>
+            </div>
+        </div>
+        <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
+    </footer>
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});
+        // ── いいね・コメント（LocalStorage）──
+        (function(){
+            const ID = location.pathname.replace(/.*//,'').replace('.html','') || 'article';
+            const LK = 'fk_likes_'+ID, LD = 'fk_liked_'+ID, CM = 'fk_comments_'+ID;
+            function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+            function getLikes(){return parseInt(localStorage.getItem(LK)||'0');}
+            function isLiked(){return localStorage.getItem(LD)==='1';}
+            function updateLikeUI(){
+                const btn=document.getElementById('like-btn'),cnt=document.getElementById('like-count');
+                if(!btn||!cnt)return;
+                btn.classList.toggle('is-liked',isLiked());
+                cnt.textContent=getLikes();
+            }
+            window.toggleLike=function(){
+                const liked=isLiked(),n=getLikes();
+                localStorage.setItem(LD,liked?'0':'1');
+                localStorage.setItem(LK,String(liked?Math.max(0,n-1):n+1));
+                updateLikeUI();
+            };
+            function getComments(){try{return JSON.parse(localStorage.getItem(CM)||'[]');}catch{return[];}}
+            function renderComments(){
+                const el=document.getElementById('comments-list');
+                if(!el)return;
+                const list=getComments();
+                el.innerHTML=list.length
+                    ?list.map(c=>`<div class="comment-item"><div class="comment-meta"><span class="comment-nick">${esc(c.nick)}</span><span class="comment-date">${c.date}</span></div><p class="comment-body">${esc(c.text)}</p></div>`).join('')
+                    :'<p class="no-comments">まだコメントはありません。最初のコメントを残しませんか？</p>';
+            }
+            window.submitComment=function(e){
+                e.preventDefault();
+                const nick=document.getElementById('comment-nick').value.trim();
+                const text=document.getElementById('comment-text').value.trim();
+                if(!nick||!text)return;
+                const now=new Date();
+                const date=now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
+                const list=getComments();
+                list.push({nick,text,date});
+                localStorage.setItem(CM,JSON.stringify(list));
+                document.getElementById('comment-nick').value='';
+                document.getElementById('comment-text').value='';
+                renderComments();
+            };
+            updateLikeUI();
+            renderComments();
+        })();
+        // TOC アクティブハイライト（スクロール連動）
+        (function(){
+            const links = document.querySelectorAll('.article-toc a[href^="#"]');
+            if (!links.length) return;
+            const headings = Array.from(document.querySelectorAll('.article-body h2[id], .article-body h3[id]'));
+            if (!headings.length) return;
+            function update() {
+                const offset = window.scrollY + 160;
+                let active = headings[0];
+                for (const h of headings) {
+                    if (h.offsetTop <= offset) active = h;
+                    else break;
+                }
+                links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active.id));
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
+    </script>
+</body>
+</html>
