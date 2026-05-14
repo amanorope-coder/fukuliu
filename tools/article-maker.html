@@ -447,9 +447,9 @@
                         <input type="text" id="img-caption-file" placeholder="キャプション（任意）">
                         <label style="display:inline-block">
                             <input type="file" id="img-file" accept="image/*" style="display:none" onchange="insertImgFromFile(this)">
-                            <span class="img-insert-btn" style="cursor:pointer">ファイルを選択して挿入</span>
+                            <span class="img-insert-btn" style="cursor:pointer">ファイルを選択</span>
                         </label>
-                        <p class="img-note">※ base64で埋め込みます。大きな画像はURL挿入を推奨。</p>
+                        <p class="img-note">※ ファイル名から <code>./images/ファイル名</code> を挿入します。<br>記事HTMLと一緒に <code>articles/images/</code> に画像を置いてpushしてください。</p>
                     </div>
                 </div>
             </div>
@@ -605,14 +605,10 @@ Google Docs や Word からコピーした文章をそのまま貼り付ける�
         const file = input.files[0];
         if (!file) return;
         const cap = document.getElementById('img-caption-file').value.trim();
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            insertAtCursor(`![${cap}](${e.target.result})`);
-            document.getElementById('img-caption-file').value = '';
-            document.getElementById('img-insert-panel').hidden = true;
-            input.value = '';
-        };
-        reader.readAsDataURL(file);
+        insertAtCursor(`![${cap}](./images/${file.name})`);
+        document.getElementById('img-caption-file').value = '';
+        document.getElementById('img-insert-panel').hidden = true;
+        input.value = '';
     }
 
     let slugEdited = false;
