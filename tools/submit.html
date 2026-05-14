@@ -212,6 +212,42 @@
         .edit-note p  { font-size: 14px; color: var(--fg-mute); line-height: 1.85; margin-bottom: 10px; }
         .edit-note code { background: var(--bg-soft); padding: 2px 7px; border-radius: 2px; font-family: monospace; font-size: 12px; }
 
+        /* ── 画像挿入UI ── */
+        .img-insert { margin-bottom: 6px; padding: 6px 14px; border-bottom: 1px solid var(--line); background: var(--bg-soft); }
+        .img-insert__toggle {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border: 1px solid var(--line); border-radius: 2px;
+            background: var(--bg); font-family: var(--sans); font-size: 12px;
+            font-weight: 600; color: var(--fg-mute); cursor: pointer;
+            transition: border-color .2s, color .2s;
+        }
+        .img-insert__toggle:hover { border-color: var(--accent); color: var(--accent); }
+        .img-insert__panel {
+            margin-top: 8px; padding: 14px 16px;
+            border: 1px solid var(--line); border-radius: 2px; background: var(--bg);
+        }
+        .img-tabs { display: flex; gap: 0; margin-bottom: 12px; border-bottom: 1px solid var(--line); }
+        .img-tab {
+            padding: 6px 14px; border: none; background: none; font-family: var(--sans);
+            font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--fg-mute);
+            cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+        }
+        .img-tab.is-active { color: var(--accent); border-bottom-color: var(--accent); }
+        .img-row { display: grid; gap: 8px; }
+        .img-row input[type=text], .img-row input[type=url] {
+            width: 100%; padding: 8px 10px; border: 1px solid var(--line);
+            border-radius: 2px; font-family: var(--sans); font-size: 13px;
+            color: var(--fg); background: var(--bg-soft);
+        }
+        .img-row input:focus { outline: none; border-color: var(--accent); }
+        .img-insert-btn {
+            padding: 8px 18px; background: var(--accent); color: #fff; border: none;
+            border-radius: 2px; font-family: var(--sans); font-size: 12px;
+            font-weight: 700; cursor: pointer; transition: background .2s;
+        }
+        .img-insert-btn:hover { background: #1a4aad; }
+        .img-note { font-size: 11px; color: var(--fg-mute); margin-top: 4px; }
+
         /* レスポンシブ */
         @media (max-width: 1100px) { .editor-layout { grid-template-columns: 1fr; } .meta-panel { position: static; } }
         @media (max-width: 768px) {
@@ -340,6 +376,32 @@
                 <!-- 分割ビュー -->
                 <div class="split-view" id="split-view">
                     <div class="editor-pane">
+                        <!-- 画像挿入UI -->
+                        <div class="img-insert">
+                            <button class="img-insert__toggle" type="button" onclick="toggleImgInsert()">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                画像を挿入
+                            </button>
+                            <div class="img-insert__panel" id="img-insert-panel" hidden>
+                                <div class="img-tabs">
+                                    <button class="img-tab is-active" type="button" onclick="switchImgTab('url')">URL</button>
+                                    <button class="img-tab" type="button" onclick="switchImgTab('file')">ファイル</button>
+                                </div>
+                                <div id="img-tab-url" class="img-row">
+                                    <input type="url" id="img-url" placeholder="https://example.com/image.jpg">
+                                    <input type="text" id="img-caption-url" placeholder="キャプション（任意）">
+                                    <button class="img-insert-btn" type="button" onclick="insertImgFromUrl()">本文に挿入</button>
+                                </div>
+                                <div id="img-tab-file" class="img-row" hidden>
+                                    <input type="text" id="img-caption-file" placeholder="キャプション（任意）">
+                                    <label style="display:inline-block">
+                                        <input type="file" id="img-file" accept="image/*" style="display:none" onchange="insertImgFromFile(this)">
+                                        <span class="img-insert-btn" style="cursor:pointer">ファイルを選択</span>
+                                    </label>
+                                    <p class="img-note">※ ファイル名から <code>./images/ファイル名</code> を挿入します。<br>記事HTMLと一緒に <code>articles/images/</code> に画像を置いてpushしてください。</p>
+                                </div>
+                            </div>
+                        </div>
                         <textarea id="f-body" placeholder="ここに本文を書いてください。
 
 Enter → 改行
@@ -520,6 +582,14 @@ function parseMarkdown(text, tocItems) {
             html += `<h3 id="${id}">${inlineFmt(txt)}</h3>`;
             return;
         }
+        // 画像
+        const imgM = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+        if (imgM) {
+            if (inBQ) { html += '</blockquote>'; inBQ = false; }
+            const cap = imgM[1];
+            html += `<figure class="article-figure"><img src="${imgM[2]}" alt="${cap}" loading="lazy">${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
+            return;
+        }
         if (line.trim() === '---') { blankCount = 0; html += '<hr>'; return; }
         if (line.trim() === '') {
             blankCount++;
@@ -655,6 +725,15 @@ async function ghPut(path, token, message, content, sha) {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  画像挿入
+// ═══════════════════════════════════════════════════════════
+function toggleImgInsert() { const panel=document.getElementById('img-insert-panel'); panel.hidden=!panel.hidden; }
+function switchImgTab(tab) { document.getElementById('img-tab-url').hidden=tab!=='url'; document.getElementById('img-tab-file').hidden=tab!=='file'; document.querySelectorAll('.img-tab').forEach((btn,i)=>{btn.classList.toggle('is-active',(i===0&&tab==='url')||(i===1&&tab==='file'));}); }
+function insertAtCursor(text) { const ta=document.getElementById('f-body'); const start=ta.selectionStart; const before=ta.value.slice(0,start); const after=ta.value.slice(ta.selectionEnd); const prefix=before.length&&!before.endsWith('\n')?'\n':''; const suffix=after.length&&!after.startsWith('\n')?'\n':''; ta.value=before+prefix+text+suffix+after; const pos=start+prefix.length+text.length+suffix.length; ta.selectionStart=ta.selectionEnd=pos; ta.focus(); updatePreview(); }
+function insertImgFromUrl() { const url=document.getElementById('img-url').value.trim(); if(!url){alert('URLを入力してください');return;} const cap=document.getElementById('img-caption-url').value.trim(); insertAtCursor(`![${cap}](${url})`); document.getElementById('img-url').value=''; document.getElementById('img-caption-url').value=''; document.getElementById('img-insert-panel').hidden=true; }
+function insertImgFromFile(input) { const file=input.files[0]; if(!file)return; const cap=document.getElementById('img-caption-file').value.trim(); insertAtCursor(`![${cap}](./images/${file.name})`); document.getElementById('img-caption-file').value=''; document.getElementById('img-insert-panel').hidden=true; input.value=''; }
+
+// ═══════════════════════════════════════════════════════════
 //  記事HTMLを生成（フルページ）
 // ═══════════════════════════════════════════════════════════
 function buildArticleHTML(data) {
@@ -779,6 +858,9 @@ function buildArticleHTML(data) {
         .comment-body{font-family:var(--serif);font-size:16px;line-height:1.9;margin:0;white-space:pre-wrap}
         .no-comments{color:var(--fg-mute);font-size:14px;padding:20px 0;font-style:italic}
         .reaction-note{font-size:11px;color:var(--fg-mute);margin-top:8px;letter-spacing:.04em}
+        .article-figure{margin:44px 0}
+        .article-figure img{width:100%;height:auto;display:block;border-radius:2px}
+        .article-figure figcaption{margin-top:10px;font-size:13px;color:var(--fg-mute);font-family:var(--sans);line-height:1.6}
     </style>
 </head>
 <body class="article-page">
