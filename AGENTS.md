@@ -113,14 +113,18 @@ platform_web/
 
 | 優先度 | 項目 | 詳細 |
 |--------|------|------|
-| 高 | `articles/` フォルダの最初の記事を実際に公開する | 記事メーカーで生成したHTMLをコミットし、index.htmlのarticles配列のURLを`''`から実パスに変える |
-| 高 | バックナンバーのフィルタ機能 | 現状は見た目のみ。実際のコンテンツとの連動が未実装 |
+| 高 | **いいねボタンの共有化（Supabase）** | 現状はlocalStorage。Supabaseで全ユーザー共通のカウントに変更する（下記セクション参照） |
 | 中 | 対談ページのローカルプレビュー問題 | `file://` で直接開くと `fetch()` が失敗する。VS Code Live Server か GitHub Pages でのみ確認可能 |
-| 中 | ナビゲーションに「対談」リンクを追加 | グローバルナビに `dialogue-ichinen.html` へのリンクがない（連載セクションからのみ辿れる） |
 | 中 | モバイル対応の強化 | 基本的なレスポンシブは実装済みだが、対談ページのメッセージ吹き出しレイアウトにスマホでの崩れが出る可能性あり |
-| 低 | 記事メーカーのファイル名ロジック改善 | 現状は日付+`-article.html`固定。スラッグ（タイトルベース）のファイル名にしたい |
-| 低 | OGP / SNS シェア用メタタグ | 各記事ページの `<head>` に `og:title`, `og:image` 等を追加 |
 | 低 | `Load more` ボタンの実装 | バックナンバーセクションの「Load more」は現状ダミー |
+
+### 解決済み（2026-05-14）
+- ✅ `articles/` の記事を全て実パスで公開
+- ✅ バックナンバーのフィルタ機能（実データ連動済み）
+- ✅ ナビゲーションに「Dialogue」リンク追加
+- ✅ 記事メーカーのスラッグ対応（タイトルベース自動生成・手動上書き可）
+- ✅ OGP タグ（index.html に追加、全記事に `og:url` 追加）
+- ✅ シェアバー（URLコピー・Instagram・X）を全記事 + article-maker テンプレートに追加
 
 ---
 
@@ -186,4 +190,99 @@ platform_web/
 
 ---
 
-*最終更新: 2026-05-03*
+---
+
+## 8. 次の実装：いいねボタンの共有化（Supabase）
+
+### 概要
+現状のいいねボタンは `localStorage` 保存のため、ブラウザをまたいで共有されない。
+Supabase（無料tier）を使って全ユーザーが同じカウントを見られるようにする。
+コメント欄は引き続き localStorage のまま（スパム・モデレーション問題のため）。
+
+### 事前作業（人手が必要）
+1. [supabase.com](https://supabase.com) でアカウント作成・新規プロジェクト作成
+2. SQL エディタで以下を実行してテーブルを作成:
+   ```sql
+   create table likes (
+     article_id text primary key,
+     count      integer not null default 0
+   );
+   -- 誰でも読める・更新できる（ログイン不要）
+   alter table likes enable row level security;
+   create policy "public read"   on likes for select using (true);
+   create policy "public update" on likes for update using (true);
+   create policy "public insert" on likes for insert with check (true);
+   ```
+3. Project Settings → API から以下を控える:
+   - `Project URL`（例: `https://xxxx.supabase.co`）
+   - `anon public key`（公開鍵、コミットしてOK）
+
+### 実装内容（AIへの指示）
+上記の URL と anon key が手元にある状態でセッションを開始し、以下を依頼する:
+
+> 「Supabase のいいね実装をしてください。  
+> Project URL: `https://xxxx.supabase.co`  
+> anon key: `eyJ...`」
+
+**変更対象ファイル（計8本）:**
+- `articles/20260425-kyoto-april-exhibitions.html`
+- `articles/20260508-kl8jo.html`
+- `articles/20260509-02txu.html`
+- `articles/20260510-10ehz.html`
+- `articles/20260511-9d556.html`
+- `articles/20260512-y4606.html`
+- `articles/20260513-u1f96.html`
+- `tools/article-maker.html`（テンプレートに反映）
+
+**各ファイルの変更内容:**
+1. `<head>` に Supabase CDN を追加:
+   ```html
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+   ```
+2. `<script>` 内の Like/Comment ブロックを以下のロジックに置き換える:
+   ```js
+   // いいね（Supabase共有 + localStorage で1ブラウザ1票）
+   const SUPABASE_URL = 'https://xxxx.supabase.co';
+   const SUPABASE_KEY = 'eyJ...';
+   const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+   const ARTICLE_ID = location.pathname.replace(/.*\//, '').replace('.html', '');
+   const LIKED_KEY  = 'fk_liked_' + ARTICLE_ID;
+
+   async function loadLikes() {
+     const { data } = await _sb.from('likes').select('count').eq('article_id', ARTICLE_ID).single();
+     const count = data?.count ?? 0;
+     document.getElementById('like-count').textContent = count;
+     const liked = localStorage.getItem(LIKED_KEY) === '1';
+     document.getElementById('like-btn').classList.toggle('is-liked', liked);
+   }
+
+   window.toggleLike = async function() {
+     const liked = localStorage.getItem(LIKED_KEY) === '1';
+     if (liked) return; // 既にいいね済み → 何もしない
+     // upsert でカウント+1
+     await _sb.rpc('increment_likes', { p_article_id: ARTICLE_ID });
+     localStorage.setItem(LIKED_KEY, '1');
+     loadLikes();
+   };
+
+   loadLikes();
+   ```
+3. Supabase に RPC 関数を追加（SQL エディタで実行）:
+   ```sql
+   create or replace function increment_likes(p_article_id text)
+   returns void language plpgsql as $$
+   begin
+     insert into likes (article_id, count) values (p_article_id, 1)
+     on conflict (article_id) do update set count = likes.count + 1;
+   end;
+   $$;
+   ```
+
+### 注意
+- anon key はフロントエンドに公開するが問題ない（読み取り・カウント更新のみ許可）
+- 1ブラウザ1票は localStorage で管理（取り消し不可）
+- カウントのリセット・手動修正は Supabase ダッシュボードの Table Editor から直接編集する
+
+---
+
+*最終更新: 2026-05-14*
