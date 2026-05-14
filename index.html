@@ -354,7 +354,7 @@
             function hasUrl(url) { return url && url !== '#'; }
 
             function catTagClass(cat) {
-                return cat === 'review' ? 'tag--orange' : cat === 'dialogue' ? 'tag--dark' : 'tag--blue';
+                return 'tag--' + cat;
             }
 
             function renderFeatureCard(article) {

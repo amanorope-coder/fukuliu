@@ -1181,6 +1181,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .tag--blog     { background: #1a9e5c;        color: #fff; border-color: #1a9e5c; }
 .tag--art      { background: var(--accent2); color: #fff; border-color: var(--accent2); }
 .tag--dialogue { background: #1a1a1a;        color: #fff; border-color: #1a1a1a; }
+.tag--review   { background: var(--accent2); color: #fff; border-color: var(--accent2); }
 
 /* article feature / TOP STORY */
 .article-feature {
