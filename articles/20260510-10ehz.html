@@ -9,6 +9,7 @@
     <meta property="og:description" content="哲学と詩は、一体何を目指している？">
     <meta property="og:type" content="article">
     <meta property="og:image" content="../fukuryu-logo.png">
+    <meta property="og:url" content="https://fukuryu.art/articles/20260510-10ehz.html">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -88,6 +89,12 @@
         .comment-item__name{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--fg-mute);margin-bottom:8px}
         .comment-item__text{font-family:var(--serif);font-size:15px;line-height:1.9;white-space:pre-wrap}
         .comment-empty{color:var(--fg-mute);font-size:14px;font-family:var(--serif)}
+            /* シェアバー */
+        .share-bar{max-width:var(--max);margin:0 auto;padding:0 var(--pad-x) 48px;display:flex;align-items:center;gap:14px}
+        .share-bar__label{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--fg-mute);text-transform:uppercase;margin-right:4px}
+        .share-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:none;cursor:pointer;color:var(--fg-mute);text-decoration:none;transition:border-color .2s,color .2s}
+        .share-btn:hover{border-color:var(--fg);color:var(--fg)}
+        .share-btn--copy.is-copied{border-color:var(--accent);color:var(--accent)}
     </style>
 </head>
 <body class="article-page">
@@ -154,6 +161,12 @@
                 <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
             </article>
         </div>
+        <div class="share-bar">
+        <span class="share-bar__label">Share</span>
+        <button class="share-btn share-btn--copy" onclick="copyURL(this)" title="URLをコピー" aria-label="URLをコピー"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        <button class="share-btn share-btn--instagram" onclick="shareInstagram()" title="Instagramストーリーに追加" aria-label="Instagramストーリーに追加"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></button>
+        <a class="share-btn share-btn--x" id="share-x" href="#" target="_blank" rel="noopener noreferrer" title="Xでシェア" aria-label="Xでシェア"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
     <!-- reactions -->
     <div class="article-reactions">
         <div style="text-align:center">
@@ -253,6 +266,13 @@
         window.addEventListener('scroll',highlight,{passive:true});
         highlight();
     })();
-    </script>
+        // シェアバー
+    (function(){
+        const xBtn=document.getElementById('share-x');
+        if(xBtn){const t=document.title.replace(' — FUKURYU','');xBtn.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(location.href);}
+    })();
+    window.copyURL=function(btn){navigator.clipboard.writeText(location.href).then(function(){btn.classList.add('is-copied');setTimeout(function(){btn.classList.remove('is-copied');},2000);});};
+    window.shareInstagram=function(){if(navigator.share){navigator.share({title:document.title.replace(' — FUKURYU',''),url:location.href});}else{navigator.clipboard.writeText(location.href).then(function(){window.open('https://www.instagram.com/','_blank');});}};
+</script>
 </body>
 </html>
