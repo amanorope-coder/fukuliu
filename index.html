@@ -462,6 +462,14 @@
                 // updated:true の記事を先頭に浮かせる
                 merged.sort((a, b) => (b.updated ? 1 : 0) - (a.updated ? 1 : 0));
 
+                // TOP STORY: 最新記事を大きく表示（記事を先にレンダリングしてから reel を初期化）
+                const topStory = document.getElementById('article-top-story');
+                if (topStory) topStory.innerHTML = merged.length > 0 ? renderFeatureCard(merged[0]) : '';
+
+                // 記事リスト（TOP STORY を除く残り）
+                const list = document.getElementById('articles-list');
+                if (list) list.innerHTML = merged.slice(1).map(renderArticle).join('');
+
                 // カルーセル: 最大5件の記事カードを追加（ラジオカードはHTML固定）
                 const reelTrack = document.getElementById('featured-reel-track');
                 if (reelTrack) {
@@ -469,16 +477,12 @@
                         merged.slice(0, 5).map(renderReelCard).join('')
                     );
                 }
-                // カルーセル初期化
-                if (window._initReel) window._initReel();
-
-                // TOP STORY: 最新記事を大きく表示
-                const topStory = document.getElementById('article-top-story');
-                if (topStory) topStory.innerHTML = merged.length > 0 ? renderFeatureCard(merged[0]) : '';
-
-                // 記事リスト（TOP STORY を除く残り）
-                const list = document.getElementById('articles-list');
-                if (list) list.innerHTML = merged.slice(1).map(renderArticle).join('');
+                // カルーセル初期化（エラーが起きても記事表示には影響しないよう try-catch）
+                try {
+                    if (window._initReel) window._initReel();
+                } catch (e) {
+                    console.warn('reel init failed:', e);
+                }
 
                 // バックナンバーにも動的記事を反映
                 if (window._updateArchiveArticles) window._updateArchiveArticles(dynamicArticles);
@@ -488,7 +492,8 @@
             }
 
             // articles/manifest.json を読んで動的記事を追加（GitHub Pages 上で動作）
-            fetch('articles/manifest.json')
+            // cache: 'no-cache' でブラウザキャッシュをバイパスして常に最新を取得
+            fetch('articles/manifest.json', { cache: 'no-cache' })
                 .then(r => r.json())
                 .then(dynamic => renderAll(dynamic))
                 .catch(() => renderAll([])); // ローカルやエラー時は固定記事のみ表示
