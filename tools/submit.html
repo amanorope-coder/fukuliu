@@ -1008,23 +1008,20 @@ function buildArticleHTML(data) {
             updateLikeUI();
             renderComments();
         })();
-        // TOC アクティブハイライト（スクロール連動）
+        // TOC highlight
         (function(){
-            const links = document.querySelectorAll('.article-toc a[href^="#"]');
-            if (!links.length) return;
-            const headings = Array.from(document.querySelectorAll('.article-body h2[id], .article-body h3[id]'));
-            if (!headings.length) return;
-            function update() {
-                const offset = window.scrollY + 160;
-                let active = headings[0];
-                for (const h of headings) {
-                    if (h.offsetTop <= offset) active = h;
-                    else break;
-                }
-                links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active.id));
+            const toc=document.querySelector('.article-toc');
+            if(!toc)return;
+            const links=[...toc.querySelectorAll('a[href^="#"]')];
+            if(!links.length)return;
+            function highlight(){
+                const y=window.scrollY+160;
+                let active=null;
+                links.forEach(a=>{const t=document.querySelector(a.getAttribute('href'));if(t&&t.getBoundingClientRect().top+window.scrollY<=y)active=a;});
+                links.forEach(a=>a.classList.toggle('is-active',a===active));
             }
-            window.addEventListener('scroll', update, { passive: true });
-            update();
+            window.addEventListener('scroll',highlight,{passive:true});
+            highlight();
         })();
     <\/script>
 </body>
