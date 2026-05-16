@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情報の形と広さ — FUKURYU</title>
+    <meta name="description" content="情報の形と広さ">
+    <meta property="og:title" content="情報の形と広さ — FUKURYU">
+    <meta property="og:description" content="情報の形と広さ">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
+    <style>
+        html{scroll-padding-top:120px}
+        .article-page{background:linear-gradient(90deg,rgba(35,91,200,.08),transparent 26%),linear-gradient(180deg,#fff 0,var(--bg) 520px)}
+        .article-hero{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 56px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.55fr);gap:56px;align-items:end;border-bottom:1px solid var(--line)}
+        .article-hero__eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+        .article-hero__title{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,68px);line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+        .article-hero__lead{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);line-height:1.85;color:var(--fg-mute);margin:0;max-width:760px}
+        .article-hero__side{border-left:1px solid var(--line);padding-left:28px}
+        .article-hero__mark{width:min(240px,70%);height:auto;margin:0 0 34px;opacity:.88}
+        .article-meta-stack{display:grid;gap:18px}
+        .article-meta-stack__item{border-top:1px solid var(--line);padding-top:14px}
+        .article-meta-stack__label{display:block;color:var(--fg-mute);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
+        .article-meta-stack__value{font-family:var(--serif);font-size:15px}
+        .article-shell{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 120px;display:grid;grid-template-columns:180px minmax(0,760px);gap:clamp(32px,7vw,96px);align-items:start}
+        .article-shell--no-toc{grid-template-columns:minmax(0,760px);justify-content:center}
+        .article-toc{position:sticky;top:132px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute);border-top:2px solid var(--fg);padding-top:18px}
+        .article-toc a{display:block;margin-top:14px;letter-spacing:.06em;text-transform:none;color:var(--fg);text-decoration:none}
+        .article-toc a:hover{color:var(--accent)}
+        .article-toc a.sub{margin-left:12px;font-size:11px;color:var(--fg-mute)}
+        .article-body{font-family:var(--serif);font-size:17px;line-height:2.12;color:var(--fg)}
+        .article-body p{margin:0 0 30px}
+        .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
+        .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
+        .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
+        .article-body .callout{background:rgba(35,91,200,.07);border-left:4px solid var(--accent);padding:22px 28px;margin:46px 0;border-radius:0 6px 6px 0}
+        .article-body u{text-decoration:underline;text-underline-offset:3px}
+        .article-body .p-spacer{margin:0;padding:0;height:1.4em}
+        .article-toc a{transition:color .25s,font-weight .25s}
+        .article-toc a.is-active{color:var(--accent);font-weight:700}
+        .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
+        .article-body .accent{color:var(--accent);font-weight:600}
+        .article-body .accent2{color:var(--accent2);font-weight:600}
+        .article-back{display:inline-flex;align-items:center;gap:10px;margin-top:52px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+        .article-back::before{content:"";width:28px;height:1px;background:currentColor}
+        .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .tag--critique{background:#7b3fbf;color:#fff;border-color:#7b3fbf}
+        .tag--blog{background:#1a9e5c;color:#fff;border-color:#1a9e5c}
+        .tag--art{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+        .tag--dialogue{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+        @media(max-width:880px){
+            .article-hero{grid-template-columns:1fr;gap:36px;padding-top:54px}
+            .article-hero__side{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
+            .article-hero__mark{display:none}
+            .article-shell,.article-shell--no-toc{grid-template-columns:1fr;padding-top:52px}
+            .article-toc{position:static;display:flex;gap:18px;flex-wrap:wrap}
+            .article-toc a{margin-top:0}
+        }
+        @media(max-width:640px){
+            .article-hero__title{font-size:34px}
+            .article-body{font-size:16px;line-height:2}
+            .article-body blockquote{padding:20px;font-size:16px}
+        }
+        /* ── いいね・コメント ── */
+        .article-reactions{max-width:var(--max);margin:0 auto;padding:56px var(--pad-x) 80px;border-top:1px solid var(--line)}
+        .reaction-like{margin-bottom:52px}
+        .like-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:2px solid var(--line);border-radius:999px;padding:10px 24px;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--fg-mute);transition:all .2s}
+        .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+        .like-btn.is-liked{background:var(--accent);border-color:var(--accent);color:#fff}
+        .like-btn svg{transition:transform .2s}
+        .like-btn.is-liked svg{fill:currentColor;transform:scale(1.15)}
+        .like-count{font-variant-numeric:tabular-nums}
+        .comments-head{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 28px;padding-bottom:16px;border-bottom:2px solid var(--fg)}
+        .comment-form{display:grid;gap:12px;margin-bottom:44px;max-width:640px}
+        .comment-form input,.comment-form textarea{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:2px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--fg);transition:border-color .2s}
+        .comment-form input:focus,.comment-form textarea:focus{outline:none;border-color:var(--accent)}
+        .comment-form textarea{min-height:100px;resize:vertical;line-height:1.7}
+        .comment-submit{justify-self:start;padding:12px 28px;background:var(--accent);color:#fff;border:none;border-radius:2px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background .2s}
+        .comment-submit:hover{background:#1a4aad}
+        .comment-item{padding:22px 0;border-top:1px solid var(--line);max-width:640px}
+        .comment-meta{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+        .comment-nick{font-weight:700;font-size:14px}
+        .comment-date{font-size:11px;color:var(--fg-mute);letter-spacing:.08em}
+        .comment-body{font-family:var(--serif);font-size:16px;line-height:1.9;margin:0;white-space:pre-wrap}
+        .no-comments{color:var(--fg-mute);font-size:14px;padding:20px 0;font-style:italic}
+        .reaction-note{font-size:11px;color:var(--fg-mute);margin-top:8px;letter-spacing:.04em}
+        .article-figure{margin:44px 0}
+        .article-figure img{width:100%;height:auto;display:block;border-radius:2px}
+        .article-figure figcaption{margin-top:10px;font-size:13px;color:var(--fg-mute);font-family:var(--sans);line-height:1.6}
+    </style>
+</head>
+<body class="article-page">
+    <header class="site-header">
+        <div class="site-header__status"><div class="site-header__status-inner">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <span class="status-label">ON AIR</span>
+            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+            <span class="status-date">No. 005 · 2026 SPRING</span>
+        </div></div>
+        <div class="header-inner">
+            <a href="../index.html" class="brand-mark">
+                <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav"><ul>
+                <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                <li><a href="../dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                <li><a href="../index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                <li><a href="../index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
+            </ul></nav>
+            <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+        </div>
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+    <main>
+        <section class="article-hero">
+            <div>
+                <div class="article-hero__eyebrow">
+                    <span class="tag tag--essay">エッセイ</span>
+                    <span class="date">2026.05.16</span>
+                </div>
+                <h1 class="article-hero__title">情報の形と広さ</h1>
+                
+            </div>
+            <aside class="article-hero__side" aria-label="記事情報">
+                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
+                <div class="article-meta-stack">
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Author</span>
+                        <span class="article-meta-stack__value">天野 紘寿</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Category</span>
+                        <span class="article-meta-stack__value">エッセイ</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Published</span>
+                        <span class="article-meta-stack__value">2026.05.16</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+        <div class="article-shell">
+            
+        <nav class="article-toc" aria-label="本文内ナビゲーション">
+            Index
+            <a href="#h-1">形があるものは、形がない情報と何がどう違うと思いますか？</a><a href="#h-2">手で作るプロセスはコンピューターなどで作るプロセスと何がどう違うと思いますか？</a><a href="#h-3">現代社会においてどのような工芸をどのように制作したら意味あるものになるでしょう？</a>
+        </nav>
+            <article class="article-body">
+                <p>以下の文章は、自分が学部4年の時に工芸概説の授業で書いたものです。自然の素材から作品を作り、そこから考えたことを記述するという課題でした。</p><p>課題の文章なんてわざわざ人に見せるものでもないと思いますが、これは読み返すと特に自分の今の芸術観に繋がる内容だったので、公開したいと思います。<hr><h2 id="h-1">形があるものは、形がない情報と何がどう違うと思いますか？</h2>　私なりに、この二つの言葉について定義します。</p><p>　まず、形があるもの、というのは、五感を通して認識できるものとします。より具体的には、自分の目の届く、手の届く、音が聞こえる、匂いが分かる、食べられるものは、形があるものです。ここでいう「形」とは、いわゆる形象のことだけでなく、匂いから推察されるものが分かる、触った質感でその素材が分かるなど、必ずしも視覚的な意味での「形」がわからなくても良いものとします。その「存在感」とでもいうべきものが、何らかの生理的な機能により知覚できるものです。</p><p>　次に、形がない情報は、五感では直接アクセスできないものを指します。具体例としては、言語、信用、感情、記憶などです。これらは表象＝形にすること、あるいはそれを媒介としてのアクセスは可能ですが、それそのものについてアクセスすることはできません。</p><p>　私が思うに、形があるものと比べて、形がない情報は無限に展開することができます。これは言語を例にとると分かりやすいでしょう。<br>　例えば一つの絵画を鑑賞するとき、その豊かさは一見理解を超えるようでも、一度描かれたものが変化していくことはない(それは絵画と呼べるか？)ので、その存在は有限かつ、存在の制約(物理的な制約など)を受けます。しかし、その絵画についての解釈は無限です。絵画そのものの要素、色と形から順当に出発することもできるし、全く別の文脈に視座を置いてみることもできるし、その両方を合わせることもできます。そうやって、一つの作品、特に傑作と呼ばれるものにいかなる時代も批評がされていくことが、一つの証左でしょう。</p><p>　このように、形がない情報は、非常に広大な、ほとんど無限に発展する可能性を秘めています。しかし一方で、形がない情報の存在は形があるものに依存しています。<br>　これは、いわゆる「メディア」と呼んで差し支えないでしょう。紙、レコード、メモ...、様々な媒体を通して私たちは表象を記録しており、それは他人に共有可能であるということ＝形のあるもの、と言えます。反対に、他人に共有できないもの、つまり誰にも話したことのない記憶、感情、行為などは、メディアに映しとられていない状態では、形のない情報といえるかもしれません。<br>　さらに言えば、それぞれのメディアによって記録できる＝形にできるものは制約があります。例えば、音声を紙にそのまま写すことはできないし、レコードに絵画を記録することはできません。感情を、そのまま木に写すことも出来ないでしょう。しかしある意味、その垣根を越えようと挑戦した行為のことを、私たちは傑作と呼ぶのかもしれません。そして、そのメディアの可能性を広げていくことが、芸術と呼べるものなのだと思います。</p><p>　以上の考えをまとめると、このように言えると思います。</p><p>　<span class="accent">形があるものに比べて、形がない情報には無限に発展できる可能性がある＝存在の制約を受けないという特徴がある。一方で形がない情報は形があるもの＝メディアの制約にそのあり方を依存しており、その依存の中でも、何とかメディアの垣根を越えていこうとする行為を、私たちは芸術と呼んでいる。</span></p><p><p class="p-spacer"></p><h2 id="h-2">手で作るプロセスはコンピューターなどで作るプロセスと何がどう違うと思いますか？</h2>　上述の定義をもとに考えると、最も大きい違いとしては、手で作るというのは存在の情報を直に「感じる」ことができる点にあると思います。先ほどの定義では、形がない情報は認識することはできても、五感を通じて「感じる」ことはできません。<br>　例えばもし、小説や映画を見て感動や恐怖、怒りを「感じた」としても、それは直接存在を感じたのではなく、表象から誘導された体験＝脳内で形成されたイリュージョンを原因とした刺激によるものです。</p><p>　手でつくることは、ある意味「総合的な感動」です。単に視覚的な情報だけでなく、手触り、匂い、柔らかさ、重さ、様々な要素が複合的に「存在」として知覚され、それは表象ではない、五感を直に通じた体験だと言えます。これは、コンピュータなど、形がない情報を扱う装置では不可能です。なぜなら、現在コンピュータが表象できる要素には物理的かつ技術的な限界があり、それが表すのは端的に、実物が持つ情報量に、コンピュータは遥かに及ばないという事実です。</p><p>　なので、上記の話をより簡潔にするなら、以下のように記述できるでしょう。</p><p>　<span class="accent">手で作るプロセスとコンピュータ等で作るプロセスの最大の違いは、そのプロセスで知覚できる情報の圧倒的な量的な差である。</span></p><p>　しかしこれは裏を返せば、コンピュータ、特に昨今では量子コンピュータが最も可能性が高いですが、<u>コンピュータが現実の存在と変わらない情報量を扱えるようになった時、手で作るプロセスとコンピュータで作るプロセスは同じものと言えるようになる可能性がある</u>ということです。</p><h2 id="h-3">現代社会においてどのような工芸をどのように制作したら意味あるものになるでしょう？</h2>　まず、この現代社会でどのようなことが「意味あるもの」とするかは非常に多岐にわたるという前提での話になりますが、私が一つだけその定義を与えるとすれば、作ったものが個人的なものに留まらず、社会に何らかの形で還元される状態を指すもの、です。</p><p>　おそらく個人的に作ったもの、感じたこと、それらを個人史的な意味で「意味がある」とした場合、「何に意味があるか？」ではなく、「何に価値があるか？」の問題の方が強くなってくると思うので、今回はもう少し限定的に、社会、つまり共同体にその個人史が還元されることを「意味あるもの」とします。</p><p>　その観点で言えば、現代で意味のある工芸のあり方というのは、その作られ方が問題なのではなく、それがどのように社会に還元される＝発信され、受容されるか、の方が大事ではないでしょうか。</p><p>　なぜなら、このSNS時代においては、どのようなイメージ、表象であっても常に全く作り手の意図と違う受け取られ方をされる可能性にさらされており、言い換えれば、どんなに意図をこめていないものであっても、他人に勝手に意味を付与される可能性があるということです。</p><p>　そこで大事なのは、作り手がどのような意図を込めたか、というよりも、自分の作ったものから繋がっていく文化・表象・情報を、どれだけ限定できるか、あるいは意図して広げることができるか、だと思います。これはすでに工芸だけの問題ではないと思いますが、特に工芸はその性格上形のあるものであり、それはつまり無限の発展可能性を秘めているものと言えますから、よりその作品が持つ可能性に敏感になれるかが大事です。</p><p><p class="p-spacer"></p><p>　そして、制作に置いて最も大事なことは、おそらく「作品の強度」だと思います。<br>　これは、作品の存在としての強度であり、あらゆる文脈から剥がされても残る確固たるモノとしての魅力です。その作り方は、千差万別で良いと思いますが、何より重視すべきなのは「その工芸作品を見て心が動かされるか？」であり、ある意味そこに付与されたナラティブは(作るという点だけから見ると)どうでも良いと思います。その存在に対して、どれだけ深い、多くの考えを投影できるか、どれだけその作品が別の可能性を示唆できるかが根本的に大事で、その例としては、今こそ超絶技巧的な作品や、存在として凄みのある工芸作品が求められているのではないかと思います。</p><p>　それができれば、結果としてこの現代という解釈のみの世界で、その解釈の荒波に耐えていくことができ、その中で残り続け、保存され、検討される中で、「意味あるモノ」として、社会に還元されていくのではないかと考えます。</p>
+                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
+            </article>
+        </div>
+        <!-- いいね・コメント -->
+        <section class="article-reactions">
+            <div class="reaction-like">
+                <button class="like-btn" id="like-btn" onclick="toggleLike()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="like-count" id="like-count">0</span>
+                </button>
+                <p class="reaction-note">※ いいね数はこのブラウザのみに保存されます</p>
+            </div>
+            <h2 class="comments-head">コメント</h2>
+            <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" id="comment-nick" placeholder="ニックネーム（必須）" required maxlength="30">
+                <textarea id="comment-text" placeholder="コメントを書く..." required maxlength="500" rows="4"></textarea>
+                <button type="submit" class="comment-submit">送信する</button>
+            </form>
+            <div id="comments-list"></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="../fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div><h4>Programs</h4><ul>
+                    <li><a href="../index.html#radio">Radio</a></li>
+                    <li><a href="../index.html#article">Article</a></li>
+                    <li><a href="../index.html#video">Video</a></li>
+                    <li><a href="../dialogue-ichinen.html">Dialogue</a></li>
+                </ul></div>
+                <div><h4>Follow</h4><ul>
+                    <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                </ul></div>
+            </div>
+        </div>
+        <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
+    </footer>
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});
+        // ── いいね・コメント（LocalStorage）──
+        (function(){
+            const ID = location.pathname.replace(/.*//,'').replace('.html','') || 'article';
+            const LK = 'fk_likes_'+ID, LD = 'fk_liked_'+ID, CM = 'fk_comments_'+ID;
+            function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+            function getLikes(){return parseInt(localStorage.getItem(LK)||'0');}
+            function isLiked(){return localStorage.getItem(LD)==='1';}
+            function updateLikeUI(){
+                const btn=document.getElementById('like-btn'),cnt=document.getElementById('like-count');
+                if(!btn||!cnt)return;
+                btn.classList.toggle('is-liked',isLiked());
+                cnt.textContent=getLikes();
+            }
+            window.toggleLike=function(){
+                const liked=isLiked(),n=getLikes();
+                localStorage.setItem(LD,liked?'0':'1');
+                localStorage.setItem(LK,String(liked?Math.max(0,n-1):n+1));
+                updateLikeUI();
+            };
+            function getComments(){try{return JSON.parse(localStorage.getItem(CM)||'[]');}catch{return[];}}
+            function renderComments(){
+                const el=document.getElementById('comments-list');
+                if(!el)return;
+                const list=getComments();
+                el.innerHTML=list.length
+                    ?list.map(c=>`<div class="comment-item"><div class="comment-meta"><span class="comment-nick">${esc(c.nick)}</span><span class="comment-date">${c.date}</span></div><p class="comment-body">${esc(c.text)}</p></div>`).join('')
+                    :'<p class="no-comments">まだコメントはありません。最初のコメントを残しませんか？</p>';
+            }
+            window.submitComment=function(e){
+                e.preventDefault();
+                const nick=document.getElementById('comment-nick').value.trim();
+                const text=document.getElementById('comment-text').value.trim();
+                if(!nick||!text)return;
+                const now=new Date();
+                const date=now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
+                const list=getComments();
+                list.push({nick,text,date});
+                localStorage.setItem(CM,JSON.stringify(list));
+                document.getElementById('comment-nick').value='';
+                document.getElementById('comment-text').value='';
+                renderComments();
+            };
+            updateLikeUI();
+            renderComments();
+        })();
+        // TOC アクティブハイライト（スクロール連動）
+        (function(){
+            const links = document.querySelectorAll('.article-toc a[href^="#"]');
+            if (!links.length) return;
+            const headings = Array.from(document.querySelectorAll('.article-body h2[id], .article-body h3[id]'));
+            if (!headings.length) return;
+            function update() {
+                const offset = window.scrollY + 160;
+                let active = headings[0];
+                for (const h of headings) {
+                    if (h.offsetTop <= offset) active = h;
+                    else break;
+                }
+                links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active.id));
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        })();
+    </script>
+</body>
+</html>
