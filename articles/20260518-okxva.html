@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>「現代美術史　日本編」(中ザワヒデキ) — FUKURYU</title>
+    <meta name="description" content="「循環史観」の行く先は？">
+    <meta property="og:title" content="「現代美術史　日本編」(中ザワヒデキ) — FUKURYU">
+    <meta property="og:description" content="「循環史観」の行く先は？">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
+    <style>
+        html{scroll-padding-top:120px}
+        .article-page{background:linear-gradient(90deg,rgba(35,91,200,.08),transparent 26%),linear-gradient(180deg,#fff 0,var(--bg) 520px)}
+        .article-hero{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 56px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.55fr);gap:56px;align-items:end;border-bottom:1px solid var(--line)}
+        .article-hero__eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+        .article-hero__title{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,68px);line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+        .article-hero__lead{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);line-height:1.85;color:var(--fg-mute);margin:0;max-width:760px}
+        .article-hero__side{border-left:1px solid var(--line);padding-left:28px}
+        .article-hero__mark{width:min(240px,70%);height:auto;margin:0 0 34px;opacity:.88}
+        .article-meta-stack{display:grid;gap:18px}
+        .article-meta-stack__item{border-top:1px solid var(--line);padding-top:14px}
+        .article-meta-stack__label{display:block;color:var(--fg-mute);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
+        .article-meta-stack__value{font-family:var(--serif);font-size:15px}
+        .article-shell{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 120px;display:grid;grid-template-columns:180px minmax(0,760px);gap:clamp(32px,7vw,96px);align-items:start}
+        .article-shell--no-toc{grid-template-columns:minmax(0,760px);justify-content:center}
+        .article-toc{position:sticky;top:132px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute);border-top:2px solid var(--fg);padding-top:18px}
+        .article-toc a{display:block;margin-top:14px;letter-spacing:.06em;text-transform:none;color:var(--fg);text-decoration:none}
+        .article-toc a:hover{color:var(--accent)}
+        .article-toc a.sub{margin-left:12px;font-size:11px;color:var(--fg-mute)}
+        .article-body{font-family:var(--serif);font-size:17px;line-height:2.12;color:var(--fg)}
+        .article-body p{margin:0 0 30px}
+        .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
+        .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
+        .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
+        .article-body .callout{background:rgba(35,91,200,.07);border-left:4px solid var(--accent);padding:22px 28px;margin:46px 0;border-radius:0 6px 6px 0}
+        .article-body u{text-decoration:underline;text-underline-offset:3px}
+        .article-body .p-spacer{margin:0;padding:0;height:1.4em}
+        .article-toc a{transition:color .25s,font-weight .25s}
+        .article-toc a.is-active{color:var(--accent);font-weight:700}
+        .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
+        .article-body .accent{color:var(--accent);font-weight:600}
+        .article-body .accent2{color:var(--accent2);font-weight:600}
+        .article-back{display:inline-flex;align-items:center;gap:10px;margin-top:52px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+        .article-back::before{content:"";width:28px;height:1px;background:currentColor}
+        .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .tag--critique{background:#7b3fbf;color:#fff;border-color:#7b3fbf}
+        .tag--blog{background:#1a9e5c;color:#fff;border-color:#1a9e5c}
+        .tag--art{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+        .tag--dialogue{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+        @media(max-width:880px){
+            .article-hero{grid-template-columns:1fr;gap:36px;padding-top:54px}
+            .article-hero__side{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
+            .article-hero__mark{display:none}
+            .article-shell,.article-shell--no-toc{grid-template-columns:1fr;padding-top:52px}
+            .article-toc{position:static;display:flex;gap:18px;flex-wrap:wrap}
+            .article-toc a{margin-top:0}
+        }
+        @media(max-width:640px){
+            .article-hero__title{font-size:34px}
+            .article-body{font-size:16px;line-height:2}
+            .article-body blockquote{padding:20px;font-size:16px}
+        }
+        /* ── いいね・コメント ── */
+        .article-reactions{max-width:var(--max);margin:0 auto;padding:56px var(--pad-x) 80px;border-top:1px solid var(--line)}
+        .reaction-like{margin-bottom:52px}
+        .like-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:2px solid var(--line);border-radius:999px;padding:10px 24px;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--fg-mute);transition:all .2s}
+        .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+        .like-btn.is-liked{background:var(--accent);border-color:var(--accent);color:#fff}
+        .like-btn svg{transition:transform .2s}
+        .like-btn.is-liked svg{fill:currentColor;transform:scale(1.15)}
+        .like-count{font-variant-numeric:tabular-nums}
+        .comments-head{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 28px;padding-bottom:16px;border-bottom:2px solid var(--fg)}
+        .comment-form{display:grid;gap:12px;margin-bottom:44px;max-width:640px}
+        .comment-form input,.comment-form textarea{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:2px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--fg);transition:border-color .2s}
+        .comment-form input:focus,.comment-form textarea:focus{outline:none;border-color:var(--accent)}
+        .comment-form textarea{min-height:100px;resize:vertical;line-height:1.7}
+        .comment-submit{justify-self:start;padding:12px 28px;background:var(--accent);color:#fff;border:none;border-radius:2px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background .2s}
+        .comment-submit:hover{background:#1a4aad}
+        .comment-item{padding:22px 0;border-top:1px solid var(--line);max-width:640px}
+        .comment-meta{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+        .comment-nick{font-weight:700;font-size:14px}
+        .comment-date{font-size:11px;color:var(--fg-mute);letter-spacing:.08em}
+        .comment-body{font-family:var(--serif);font-size:16px;line-height:1.9;margin:0;white-space:pre-wrap}
+        .no-comments{color:var(--fg-mute);font-size:14px;padding:20px 0;font-style:italic}
+        .reaction-note{font-size:11px;color:var(--fg-mute);margin-top:8px;letter-spacing:.04em}
+        .article-figure{margin:44px 0}
+        .article-figure img{width:100%;height:auto;display:block;border-radius:2px}
+        .article-figure figcaption{margin-top:10px;font-size:13px;color:var(--fg-mute);font-family:var(--sans);line-height:1.6}
+    </style>
+</head>
+<body class="article-page">
+    <header class="site-header">
+        <div class="site-header__status"><div class="site-header__status-inner">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <span class="status-label">ON AIR</span>
+            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+            <span class="status-date">No. 005 · 2026 SPRING</span>
+        </div></div>
+        <div class="header-inner">
+            <a href="../index.html" class="brand-mark">
+                <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav"><ul>
+                <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                <li><a href="../dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                <li><a href="../index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                <li><a href="../index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
+            </ul></nav>
+            <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+        </div>
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+    <main>
+        <section class="article-hero">
+            <div>
+                <div class="article-hero__eyebrow">
+                    <span class="tag tag--art">美術</span>
+                    <span class="date">2026.05.18</span>
+                </div>
+                <h1 class="article-hero__title">「現代美術史　日本編」(中ザワヒデキ)</h1>
+                <p class="article-hero__lead">「循環史観」の行く先は？</p>
+            </div>
+            <aside class="article-hero__side" aria-label="記事情報">
+                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
+                <div class="article-meta-stack">
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Author</span>
+                        <span class="article-meta-stack__value">天野 紘寿</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Category</span>
+                        <span class="article-meta-stack__value">美術</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Published</span>
+                        <span class="article-meta-stack__value">2026.05.18</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+        <div class="article-shell">
+            
+        <nav class="article-toc" aria-label="本文内ナビゲーション">
+            Index
+            <a href="#h-1">はじめに</a><a href="#h-2">循環史観</a><a href="#h-3">身体から始める</a>
+        </nav>
+            <article class="article-body">
+                <p><h2 id="h-1">はじめに</h2>「現代美術史　日本編 1945-2014」(中ザワヒデキ、ART DIVER)を読んだので、少し紹介したい。<br>　本書は、1963年生まれの美術家・中ザワヒデキによる著作。題名の通り、日本の戦後から現代(発売当時の2014年)までの美術的動向を独特な史観で編纂した「日本美術史」の本である。中ザワは他にも、全て手書きで書いた美術史のハンドブック「近代美術史テキスト」など、作家活動と執筆活動を並行して行う。</p><h2 id="h-2">循環史観</h2>　さて、本書の最大の特徴は、現代美術史を<span class="accent">「循環史観」</span>として再考する点にある。そのサイクルとは、<span class="accent2">「前衛」→「反芸術」→「多様性」の3つのフェーズを1つの周期とする回転</span>である。中ザワによれば戦前の20世紀、1910年(ヒュウザン会、草土社＝岸田劉生)から数えて、2014年まで、一回転約30年として、実に3回サイクルが回っていて、4回転目の前衛(カオスラウンジ、梅沢和木)に突入している。<br>　例を挙げれば、3回目のサイクルは、<strong>1980-84「脱前衛(＝日本グラフィック展、80年代アヴァンギャルド)」1985-94「再現芸術(＝関西ニューウェーブ、東京シミュレーショニズム)」1995-2009「マニエリスムと多様性(＝悪い場所、スーパーフラット)」</strong>となっており、ほぼ30年である。</p><p>　もう少し、中ザワのいう「循環史観」について詳しく述べる。P79「ポストモダニズムと循環史観」において彼はこう述べている。</p><div class="callout">ポストモダニズムが可能にしたこと、それは循環史観でした。モダニズムでは直線的な進歩史観の立場しかあり得ないからです。（中略）単に近現代の芸術において、既視感を容認しオリジナリティを絶対視しない考え方のもとでは、「歴史は繰り返す」という法則性が一定程度認められるということです。（中略）説得力を持つイズムはありますが、正しいイズムというものはないのです。そのイズムが説得力を持つか持たないか、それが時代によって変遷するものであり、その変遷には一定程度の循環的な法則がある、それがここで言う循環史観です。</div><p>また、3つのフェーズに関しては以下のように述べている。</p><div class="callout">「前衛」→現実肯定的な時代精神のもと、熱さを伴った表現主義として顕れるもの（「生」のイメージ）<br>「反芸術」→その盛り上がりの頂点において一転、現実否定的な冷たさを伴うダダ等の運動（「死」のイメージ）</div><div class="callout">ここで言う「前衛」と「反芸術」は同じ「芸術のための芸術」の2相なので短期間に相前後して登場し、ともに時代支配的なイズムになります。</div><div class="callout">「多様性の時代」→時代支配的なイズムの後退による多様なイズムの乱立または不在、「人生のための芸術」の諸相の豊穣な滞留（「死後」のイメージ）<br>これらのサイクルの典型は20世紀前半の西欧美術史であるが、アメリカや日本でも同様のサイクルが見られると考えられる。</div><p>　一見すると、しっかりと構築された、かつ説得力のある歴史観だと思う。進歩史観はもちろんほとんど通用しない現状で、あるフェーズが循環していると言うのは肌感覚でも思うし、そこにある種の閉塞感が伴うからこそ次のイズムへ行きたいという鬱憤が溜まるのだと感じる。</p><p>　一方で、この本は2014年に書かれた本であるが、2026年のいま、この時間的な尺度を用いる循環史観がそのまま適用できるかは、かなり疑問が残る。ちなみに著者は2016年に「反芸術」期に入ったと明言しているが、これまでの計算で考えるなら、「反芸術」期は長くとも2016-2026くらいになって、その後「多様性」に突入、2040年ごろにその終わりを迎えるはずである。</p><p>　しかし今まさに制作をしている身としては、すでに「多様性」期、つまり時代支配的なイズムの不在期間に入っているように思う。それも最近ではなくて、コロナ禍と被る2020年ごろには、すでに「熱い前衛」としてのキャラクター絵画の残滓みたいなものがちらほら見えるくらいの、とてもイズムがあるとは呼べない状態が続いているのではないかと感じる。<br>　ちなみに、著者の中ザワヒデキの現在はというと、Alpha Goとイ・セドルの対局に衝撃を受けて設立した「AI美芸研」(2016年)で草刈ミカらとともに活動を行っている。</p><h2 id="h-3">身体から始める</h2>　<span class="accent">さて、以上の論点を踏まえた僕の感覚としては、今は循環が早まっており、すでに「前衛」に差し掛かっている過渡期なのではないか、と思う。</span>その表れの一つが、若い世代を中心とするオルタナティブ・スペースへの意志の広がりであったり、ローカルな関係を作り、そのクローズドな輪の中で何か新しいものを考えようとする人たちだろう。<br>　しかし一つこれまでと違うのは、やはりAIという、擬似的な人間以外の意思決定の主体の登場である。正直、まだAIを本当に道具として芸術に上手く取り込んだ作品を作っている人はほぼいないと思うし、特に絵画などの平面作品に限って言えばまだ誰もそれを達成していないと思う。無視することもできるだろうが、歴史を見ても、写真を無視した画家は消え、自分で写真に対するアンサーを捻り出した作家が生き残ってきたことを鑑みれば、やはり何かしらの関係は作るべきだと思う。</p><p>　それとはまた別に、そもそも自分が生きている時代を俯瞰して見ようとすること自体への疑問も強くある。<span class="accent">いま、芸術に限らず、何かと社会や自分の人生、行動や価値観を俯瞰視しようとすることへの推奨が強い</span>（COTENラジオの深井龍之介が言っていた「現代ほど自分の生きている時代に人が興味を持つ時代も珍しい」には深く同意する）。そうした自身の実践を歴史上のどのような系譜に位置づけるかという現代美術的な作法は必要だとしても、それだけではやっぱり何も進まい。特にAIがいくらでもメタ的な情報をリサーチして教え、選択肢を広げてくれる現在なら尚更そうだと思う。</p><p>　僕は最近、それへのカウンターとして、自分の、他人の身体について考えることから出発するのがいいと思っている。つまるところ、あまりに価値基準や思考の根拠、生活的地盤がいついかなる時に壊れるかわからない（ヒト・シュタイエル「グラウンド・レス(自由落下)」）時代には、もはや自分の身体くらい卑近で、確実なものに頼るかしかなく、整形や筋トレをするのだって、その表れじゃないのか、と感じる。「身体」とか「人間」とか、ちょっと前までなら主語が大きすぎてバカにされたようなものも、今なら大真面目に考えみてもいいんじゃないだろうか。</p>
+                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
+            </article>
+        </div>
+        <!-- いいね・コメント -->
+        <section class="article-reactions">
+            <div class="reaction-like">
+                <button class="like-btn" id="like-btn" onclick="toggleLike()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="like-count" id="like-count">0</span>
+                </button>
+                <p class="reaction-note">※ いいね数はこのブラウザのみに保存されます</p>
+            </div>
+            <h2 class="comments-head">コメント</h2>
+            <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" id="comment-nick" placeholder="ニックネーム（必須）" required maxlength="30">
+                <textarea id="comment-text" placeholder="コメントを書く..." required maxlength="500" rows="4"></textarea>
+                <button type="submit" class="comment-submit">送信する</button>
+            </form>
+            <div id="comments-list"></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="../fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div><h4>Programs</h4><ul>
+                    <li><a href="../index.html#radio">Radio</a></li>
+                    <li><a href="../index.html#article">Article</a></li>
+                    <li><a href="../index.html#video">Video</a></li>
+                    <li><a href="../dialogue-ichinen.html">Dialogue</a></li>
+                </ul></div>
+                <div><h4>Follow</h4><ul>
+                    <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                </ul></div>
+            </div>
+        </div>
+        <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
+    </footer>
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});
+        // ── いいね・コメント（LocalStorage）──
+        (function(){
+            const ID = location.pathname.replace(/.*//,'').replace('.html','') || 'article';
+            const LK = 'fk_likes_'+ID, LD = 'fk_liked_'+ID, CM = 'fk_comments_'+ID;
+            function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+            function getLikes(){return parseInt(localStorage.getItem(LK)||'0');}
+            function isLiked(){return localStorage.getItem(LD)==='1';}
+            function updateLikeUI(){
+                const btn=document.getElementById('like-btn'),cnt=document.getElementById('like-count');
+                if(!btn||!cnt)return;
+                btn.classList.toggle('is-liked',isLiked());
+                cnt.textContent=getLikes();
+            }
+            window.toggleLike=function(){
+                const liked=isLiked(),n=getLikes();
+                localStorage.setItem(LD,liked?'0':'1');
+                localStorage.setItem(LK,String(liked?Math.max(0,n-1):n+1));
+                updateLikeUI();
+            };
+            function getComments(){try{return JSON.parse(localStorage.getItem(CM)||'[]');}catch{return[];}}
+            function renderComments(){
+                const el=document.getElementById('comments-list');
+                if(!el)return;
+                const list=getComments();
+                el.innerHTML=list.length
+                    ?list.map(c=>`<div class="comment-item"><div class="comment-meta"><span class="comment-nick">${esc(c.nick)}</span><span class="comment-date">${c.date}</span></div><p class="comment-body">${esc(c.text)}</p></div>`).join('')
+                    :'<p class="no-comments">まだコメントはありません。最初のコメントを残しませんか？</p>';
+            }
+            window.submitComment=function(e){
+                e.preventDefault();
+                const nick=document.getElementById('comment-nick').value.trim();
+                const text=document.getElementById('comment-text').value.trim();
+                if(!nick||!text)return;
+                const now=new Date();
+                const date=now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
+                const list=getComments();
+                list.push({nick,text,date});
+                localStorage.setItem(CM,JSON.stringify(list));
+                document.getElementById('comment-nick').value='';
+                document.getElementById('comment-text').value='';
+                renderComments();
+            };
+            updateLikeUI();
+            renderComments();
+        })();
+        // TOC highlight
+        (function(){
+            const toc=document.querySelector('.article-toc');
+            if(!toc)return;
+            const links=[...toc.querySelectorAll('a[href^="#"]')];
+            if(!links.length)return;
+            function highlight(){
+                const y=window.scrollY+160;
+                let active=null;
+                links.forEach(a=>{const t=document.querySelector(a.getAttribute('href'));if(t&&t.getBoundingClientRect().top+window.scrollY<=y)active=a;});
+                links.forEach(a=>a.classList.toggle('is-active',a===active));
+            }
+            window.addEventListener('scroll',highlight,{passive:true});
+            highlight();
+        })();
+    </script>
+</body>
+</html>
