@@ -398,7 +398,8 @@
                                         <input type="file" id="img-file" accept="image/*" style="display:none" onchange="insertImgFromFile(this)">
                                         <span class="img-insert-btn" style="cursor:pointer">ファイルを選択</span>
                                     </label>
-                                    <p class="img-note">※ ファイル名から <code>./images/ファイル名</code> を挿入します。<br>記事HTMLと一緒に <code>articles/images/</code> に画像を置いてpushしてください。</p>
+                                    <span id="img-file-status" style="font-size:12px;margin-left:8px"></span>
+                                    <p class="img-note">※ 大きい画像は自動で圧縮されます。公開時に <code>articles/images/</code> へ自動アップロードされます。</p>
                                 </div>
                             </div>
                         </div>
@@ -462,6 +463,7 @@ Enter → 改行
 const REPO   = 'amanorope-coder/fukuliu';
 const BRANCH = 'main';
 const CAT_LABELS = { essay: 'エッセイ', critique: '批評', blog: 'ブログ', art: '美術', dialogue: '対談' };
+const pendingImages = new Map(); // filename → { blob, objectUrl }
 
 document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
 
@@ -680,6 +682,10 @@ function updatePreview() {
     let bodyHTML = parseMarkdown(body, tocItems);
     const tocHTML = buildTOC(tocItems);
     bodyHTML = bodyHTML.replace('{{TOC}}', tocHTML);
+    // プレビューでは pending 画像のパスを Blob URL に差し替え
+    for (const [filename, { objectUrl }] of pendingImages) {
+        bodyHTML = bodyHTML.split(`src="./images/${filename}"`).join(`src="${objectUrl}"`);
+    }
 
     const dateJP = fmtDate(date);
     const pv = document.getElementById('preview-pane');
@@ -724,6 +730,52 @@ async function ghPut(path, token, message, content, sha) {
     return res.json();
 }
 
+async function ghPutBinary(path, token, message, base64Content, sha) {
+    const body = { message, content: base64Content, branch: BRANCH };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `GitHub PUT binary ${path} → ${res.status}`);
+    }
+    return res.json();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  画像ヘルパー
+// ═══════════════════════════════════════════════════════════
+function compressImage(file, maxPx = 1920, quality = 0.82) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            const ratio = Math.min(1, maxPx / Math.max(img.naturalWidth, img.naturalHeight));
+            const w = Math.round(img.naturalWidth * ratio);
+            const h = Math.round(img.naturalHeight * ratio);
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('圧縮に失敗しました')), 'image/jpeg', quality);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('画像の読み込みに失敗しました')); };
+        img.src = url;
+    });
+}
+
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = () => reject(new Error('base64変換に失敗しました'));
+        reader.readAsDataURL(blob);
+    });
+}
+
 // ═══════════════════════════════════════════════════════════
 //  画像挿入
 // ═══════════════════════════════════════════════════════════
@@ -731,7 +783,42 @@ function toggleImgInsert() { const panel=document.getElementById('img-insert-pan
 function switchImgTab(tab) { document.getElementById('img-tab-url').hidden=tab!=='url'; document.getElementById('img-tab-file').hidden=tab!=='file'; document.querySelectorAll('.img-tab').forEach((btn,i)=>{btn.classList.toggle('is-active',(i===0&&tab==='url')||(i===1&&tab==='file'));}); }
 function insertAtCursor(text) { const ta=document.getElementById('f-body'); const start=ta.selectionStart; const before=ta.value.slice(0,start); const after=ta.value.slice(ta.selectionEnd); const prefix=before.length&&!before.endsWith('\n')?'\n':''; const suffix=after.length&&!after.startsWith('\n')?'\n':''; ta.value=before+prefix+text+suffix+after; const pos=start+prefix.length+text.length+suffix.length; ta.selectionStart=ta.selectionEnd=pos; ta.focus(); updatePreview(); }
 function insertImgFromUrl() { const url=document.getElementById('img-url').value.trim(); if(!url){alert('URLを入力してください');return;} const cap=document.getElementById('img-caption-url').value.trim(); insertAtCursor(`![${cap}](${url})`); document.getElementById('img-url').value=''; document.getElementById('img-caption-url').value=''; document.getElementById('img-insert-panel').hidden=true; }
-function insertImgFromFile(input) { const file=input.files[0]; if(!file)return; const cap=document.getElementById('img-caption-file').value.trim(); insertAtCursor(`![${cap}](./images/${file.name})`); document.getElementById('img-caption-file').value=''; document.getElementById('img-insert-panel').hidden=true; input.value=''; }
+
+async function insertImgFromFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const status = document.getElementById('img-file-status');
+    status.textContent = '処理中…';
+    status.style.color = 'var(--fg-mute)';
+    try {
+        // 500KB超は Canvas で圧縮・リサイズ
+        let blob = file;
+        if (file.size > 500 * 1024) {
+            blob = await compressImage(file);
+        }
+        // タイムスタンプ付きの安全なファイル名を生成
+        const ts = Date.now();
+        const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+        const base = safe.replace(/\.[^.]+$/, '') || 'image';
+        const filename = `${ts}-${base}.jpg`;
+        // プレビュー用 Blob URL を保持
+        const objectUrl = URL.createObjectURL(blob);
+        pendingImages.set(filename, { blob, objectUrl });
+        // マークダウンに挿入
+        const cap = document.getElementById('img-caption-file').value.trim();
+        insertAtCursor(`![${cap}](./images/${filename})`);
+        const sizeMB = (blob.size / 1024 / 1024).toFixed(1);
+        status.textContent = `✓ ${filename}（${sizeMB} MB）`;
+        status.style.color = '#1a9e5c';
+    } catch(e) {
+        status.textContent = `✗ ${e.message}`;
+        status.style.color = '#e03e3e';
+    } finally {
+        document.getElementById('img-caption-file').value = '';
+        document.getElementById('img-insert-panel').hidden = true;
+        input.value = '';
+    }
+}
 
 // ═══════════════════════════════════════════════════════════
 //  記事HTMLを生成（フルページ）
@@ -1059,6 +1146,16 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
         const filepath = isEdit ? existingPath : `articles/${dateSlug}-${Math.random().toString(36).slice(2,7)}.html`;
         const fileSha  = isEdit ? existingFileSha : undefined;
 
+        // 画像ファイルを先にアップロード
+        if (pendingImages.size > 0) {
+            for (const [filename, { blob }] of pendingImages) {
+                const imgPath = `articles/images/${filename}`;
+                const existingImg = await ghGet(imgPath, token);
+                const base64 = await blobToBase64(blob);
+                await ghPutBinary(imgPath, token, `画像追加: ${filename}`, base64, existingImg?.sha);
+            }
+        }
+
         // 記事HTMLを生成してコミット
         const articleHTML = buildArticleHTML({ cat, title, subtitle, author, date, body });
         await ghPut(filepath, token, `${isEdit?'記事更新':'記事追加'}: ${title}`, articleHTML, fileSha);
@@ -1088,6 +1185,11 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
         result.className = 'result result--success is-visible';
         result.innerHTML = `✓ <strong>「${title}」を${isEdit?'更新':'公開'}しました。</strong> 反映まで1〜2分。 <a href="${siteUrl}" target="_blank">確認する →</a>`;
         result.style.display = 'block';
+
+        // アップロード済み画像をクリア
+        for (const { objectUrl } of pendingImages.values()) URL.revokeObjectURL(objectUrl);
+        pendingImages.clear();
+        document.getElementById('img-file-status').textContent = '';
 
         if (!isEdit) {
             // 新規の場合はフォームリセット
