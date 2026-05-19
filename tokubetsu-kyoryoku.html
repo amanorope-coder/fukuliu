@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特別協力 — FUKURYU</title>
+    <meta name="description" content="FUKURYUにご協力いただいた方々のご紹介。">
+    <meta property="og:title" content="特別協力 — FUKURYU">
+    <meta property="og:description" content="FUKURYUにご協力いただいた方々のご紹介。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
+    <style>
+        /* ── 特別協力ページ ── */
+        .collab-hero {
+            background: linear-gradient(120deg, #F15A22 0%, #c44010 55%, #a83000 100%);
+            padding: 80px 0 68px;
+            color: #fff;
+        }
+        .collab-hero__inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad-x); }
+        .collab-hero__eyebrow {
+            display: block; font-size: 10px; font-weight: 700; letter-spacing: .22em;
+            text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 18px;
+        }
+        .collab-hero__title {
+            font-family: var(--serif); font-size: clamp(40px,6vw,80px);
+            font-weight: 900; line-height: 1.1; letter-spacing: -.02em; color: #fff; margin: 0 0 20px;
+        }
+        .collab-hero__desc {
+            font-family: var(--serif); font-size: clamp(15px,1.5vw,18px);
+            line-height: 1.85; color: rgba(255,255,255,.85); max-width: 520px; margin: 0;
+        }
+        .collab-hero__count {
+            margin-top: 28px; font-size: 12px; letter-spacing: .1em; color: rgba(255,255,255,.65);
+        }
+        .collab-hero__count strong {
+            font-size: 26px; font-family: var(--serif); font-weight: 900; color: #fff; margin-right: 4px;
+        }
+
+        /* ── Section wrapper ── */
+        .collab-section { max-width: var(--max); margin: 0 auto; padding: 72px var(--pad-x) 120px; }
+
+        /* ── Grid ── */
+        .collab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+        @media (max-width: 760px) { .collab-grid { grid-template-columns: 1fr; } }
+
+        /* ── Card ── */
+        .collab-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-top: 4px solid #F15A22;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .collab-card__top {
+            display: flex; align-items: flex-start; gap: 16px; padding: 24px 24px 0;
+        }
+        .collab-card__photo {
+            width: 76px; height: 76px; border-radius: 50%;
+            object-fit: cover; flex-shrink: 0;
+            border: 3px solid rgba(241,90,34,.18); display: block;
+        }
+        .collab-card__photo-placeholder {
+            width: 76px; height: 76px; border-radius: 50%; flex-shrink: 0;
+            background: rgba(241,90,34,.08);
+            border: 3px solid rgba(241,90,34,.18);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--serif); font-size: 28px; font-weight: 700; color: #F15A22;
+        }
+        .collab-card__info { flex: 1; min-width: 0; }
+        .collab-card__name {
+            font-family: var(--serif); font-size: 19px; font-weight: 700;
+            margin: 0 0 8px; line-height: 1.3;
+        }
+        .collab-card__role {
+            display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .1em;
+            padding: 3px 10px; border-radius: 999px; background: #F15A22; color: #fff;
+        }
+        .collab-card__bio {
+            padding: 16px 24px; font-family: var(--serif);
+            font-size: 14px; line-height: 1.9; color: var(--fg-mute); flex: 1;
+        }
+        .collab-links {
+            display: flex; flex-wrap: wrap; gap: 8px; padding: 0 24px 24px;
+        }
+        .collab-link {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 11px; font-weight: 700; letter-spacing: .08em;
+            padding: 5px 12px; border-radius: 999px;
+            border: 1.5px solid #F15A22; color: #F15A22;
+            text-decoration: none; transition: background .15s, color .15s;
+        }
+        .collab-link:hover { background: #F15A22; color: #fff; }
+
+        /* ── Empty ── */
+        .collab-empty {
+            text-align: center; padding: 80px 0;
+            color: var(--fg-mute); font-family: var(--serif); font-size: 16px;
+            grid-column: 1 / -1;
+        }
+
+        /* ── Back link ── */
+        .collab-back {
+            display: inline-flex; align-items: center; gap: 10px; margin-top: 56px;
+            font-family: var(--sans); font-size: 12px; font-weight: 700;
+            letter-spacing: .16em; color: #F15A22; text-decoration: none;
+        }
+        .collab-back::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+
+        @media (max-width: 880px) { .collab-hero { padding: 56px 0 48px; } }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="site-header__status">
+        <div class="site-header__status-inner">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <span class="status-label">ON AIR</span>
+            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+            <span class="status-date">No. 005 · 2026 SPRING</span>
+        </div>
+    </div>
+    <div class="header-inner">
+        <a href="index.html" class="brand-mark">
+            <img src="fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+            <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+        </a>
+        <nav class="global-nav"><ul>
+            <li><a href="index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+            <li><a href="index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+            <li><a href="index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+            <li><a href="dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+            <li><a href="index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+            <li><a href="index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
+        </ul></nav>
+        <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+    </div>
+    <div class="site-header__bar" aria-hidden="true"></div>
+</header>
+
+<main>
+    <!-- Hero -->
+    <section class="collab-hero">
+        <div class="collab-hero__inner">
+            <span class="collab-hero__eyebrow">Special Thanks / FUKURYU</span>
+            <h1 class="collab-hero__title">特別協力</h1>
+            <p class="collab-hero__desc">これまでにご協力いただいた方々について。</p>
+            <p class="collab-hero__count" id="collab-count"></p>
+        </div>
+    </section>
+
+    <!-- Cards -->
+    <section class="collab-section">
+        <div id="collab-grid" class="collab-grid">
+            <p class="collab-empty">読み込み中…</p>
+        </div>
+        <a href="index.html" class="collab-back">トップに戻る</a>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer__inner">
+        <div class="site-footer__brand">
+            <img src="fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+            <p>関西発、領域横断的知のプラットフォーム。</p>
+        </div>
+        <div class="site-footer__cols">
+            <div><h4>Programs</h4><ul>
+                <li><a href="index.html#radio">Radio</a></li>
+                <li><a href="index.html#article">Article</a></li>
+                <li><a href="dialogue-ichinen.html">Dialogue</a></li>
+            </ul></div>
+            <div><h4>Follow</h4><ul>
+                <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
+            </ul></div>
+        </div>
+    </div>
+    <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
+</footer>
+
+<script>
+    document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+        document.querySelector('.global-nav')?.classList.toggle('is-open');
+    });
+
+    const SNS_LABELS = {
+        website: '🌐 Website',
+        instagram: 'Instagram',
+        twitter: 'X (Twitter)',
+        note: 'note',
+        youtube: 'YouTube',
+        other: 'Link'
+    };
+
+    function esc(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function renderCard(c) {
+        const photoHTML = c.photo
+            ? `<img class="collab-card__photo" src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy">`
+            : `<div class="collab-card__photo-placeholder">${esc((c.name||'?').charAt(0))}</div>`;
+
+        const linkEntries = ['website','instagram','twitter','note','youtube','other']
+            .filter(k => c[k] && c[k].trim());
+        const linksHTML = linkEntries.length
+            ? `<div class="collab-links">${linkEntries.map(k =>
+                `<a href="${esc(c[k])}" class="collab-link" target="_blank" rel="noopener noreferrer">${SNS_LABELS[k]}</a>`
+              ).join('')}</div>`
+            : '';
+
+        const bioHTML = c.bio
+            ? `<p class="collab-card__bio">${esc(c.bio).replace(/\n/g,'<br>')}</p>`
+            : '';
+
+        return `
+            <article class="collab-card">
+                <div class="collab-card__top">
+                    <div>${photoHTML}</div>
+                    <div class="collab-card__info">
+                        <h2 class="collab-card__name">${esc(c.name)}</h2>
+                        ${c.role ? `<span class="collab-card__role">${esc(c.role)}</span>` : ''}
+                    </div>
+                </div>
+                ${bioHTML}
+                ${linksHTML}
+            </article>`;
+    }
+
+    fetch('collaborators/manifest.json', { cache: 'no-cache' })
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(list => {
+            const grid = document.getElementById('collab-grid');
+            const countEl = document.getElementById('collab-count');
+            if (!Array.isArray(list) || list.length === 0) {
+                grid.innerHTML = '<p class="collab-empty">現在、登録されているご協力者はいません。</p>';
+                return;
+            }
+            grid.innerHTML = list.map(renderCard).join('');
+            if (countEl) countEl.innerHTML =
+                `現在 <strong>${list.length}</strong> 名の方々にご協力いただいています。`;
+        })
+        .catch(() => {
+            document.getElementById('collab-grid').innerHTML =
+                '<p class="collab-empty">読み込みに失敗しました。</p>';
+        });
+</script>
+</body>
+</html>

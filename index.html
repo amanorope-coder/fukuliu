@@ -209,6 +209,18 @@
         </div>
     </section>
 
+    <!-- ============================ 特別協力 ============================ -->
+    <section id="tokubetsu" class="tokubetsu-banner">
+        <div class="tokubetsu-banner__inner">
+            <div class="tokubetsu-banner__text">
+                <span class="program__label tokubetsu-banner__label">— Special Thanks</span>
+                <h2 class="program__title tokubetsu-banner__title">特別協力</h2>
+                <p class="tokubetsu-banner__desc">これまでにご協力いただいた方々について。</p>
+            </div>
+            <a href="tokubetsu-kyoryoku.html" class="tokubetsu-banner__cta">詳しく見る →</a>
+        </div>
+    </section>
+
     <!-- ============================ WORKS / SHOP ============================ -->
     <section class="dual">
         <div id="works" class="dual__col">
@@ -1053,6 +1065,16 @@
     </script>
 
     <style>
+        /* ── 特別協力バナー ── */
+        .tokubetsu-banner { background: linear-gradient(120deg, #F15A22 0%, #c44010 60%, #a83000 100%); padding: 56px 0; }
+        .tokubetsu-banner__inner { max-width: var(--max, 1200px); margin: 0 auto; padding: 0 var(--pad-x, 48px); display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+        .tokubetsu-banner__label { color: rgba(255,255,255,.65) !important; }
+        .tokubetsu-banner__title { color: #fff !important; }
+        .tokubetsu-banner__desc { font-family: var(--serif, serif); font-size: 14px; color: rgba(255,255,255,.82); margin-top: 6px; }
+        .tokubetsu-banner__cta { padding: 14px 32px; border: 2px solid rgba(255,255,255,.7); color: #fff; text-decoration: none; font-family: var(--sans, sans-serif); font-size: 12px; font-weight: 700; letter-spacing: .14em; border-radius: 2px; transition: background .2s; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; }
+        .tokubetsu-banner__cta:hover { background: rgba(255,255,255,.15); }
+        @media (max-width: 640px) { .tokubetsu-banner__inner { flex-direction: column; align-items: flex-start; } }
+
         /* ── 記事カテゴリフィルター ── */
         .cat-filter {
             display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;

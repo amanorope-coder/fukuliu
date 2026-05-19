@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特別協力メーカー — FUKURYU</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:      #fcfcfc;
+            --bg-soft: #f3f3f4;
+            --fg:      #111114;
+            --fg-mute: #5f6168;
+            --line:    #e3e3e6;
+            --accent:  #F15A22;
+            --accent-dark: #c44010;
+            --green:   #1a9e5c;
+            --red:     #d63a2f;
+            --sans:    "Inter","Noto Sans JP",sans-serif;
+            --serif:   "Noto Serif JP",serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--sans); background: var(--bg-soft); color: var(--fg); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+        /* ── ヘッダー ── */
+        .hd { background: #F15A22; color: #fff; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .hd__left { display: flex; align-items: center; gap: 20px; }
+        .hd__logo { font-family: var(--serif); font-size: 18px; font-weight: 900; }
+        .hd__sub  { font-size: 10px; letter-spacing: .2em; color: rgba(255,255,255,.55); text-transform: uppercase; }
+        .hd a { color: rgba(255,255,255,.6); font-size: 12px; letter-spacing: .1em; text-decoration: none; }
+        .hd a:hover { color: #fff; }
+
+        /* ── タブ ── */
+        .tabs { display: flex; border-bottom: 2px solid var(--line); background: #fff; padding: 0 32px; }
+        .tab-btn { padding: 14px 24px; background: none; border: none; font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: .06em; cursor: pointer; color: var(--fg-mute); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .2s, border-color .2s; }
+        .tab-btn.is-active { color: var(--accent); border-bottom-color: var(--accent); }
+        .tab-btn:hover { color: var(--fg); }
+
+        /* ── ページ ── */
+        .page { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+        /* ── トークンバー ── */
+        .token-bar { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .token-bar__label { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-mute); white-space: nowrap; }
+        .token-bar input { flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px; font-family: monospace; font-size: 13px; background: var(--bg-soft); }
+        .token-bar input:focus { outline: none; border-color: var(--accent); }
+        .btn-sm { padding: 10px 18px; background: var(--accent); color: #fff; border: none; border-radius: 2px; font-family: var(--sans); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .2s; }
+        .btn-sm:hover { background: var(--accent-dark); }
+        .btn-sm--ghost { background: transparent; color: var(--fg-mute); border: 1px solid var(--line); }
+        .btn-sm--ghost:hover { background: var(--bg-soft); color: var(--fg); }
+        .token-ok { font-size: 12px; color: var(--green); font-weight: 600; }
+
+        /* ── フォームパネル ── */
+        .form-panel { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 32px; }
+        .form-panel__title { font-family: var(--serif); font-weight: 700; font-size: 20px; margin-bottom: 6px; }
+        .form-panel__desc  { font-size: 13px; color: var(--fg-mute); margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+        .form-grid--full { grid-column: 1 / -1; }
+
+        .field { margin-bottom: 18px; }
+        .field label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-mute); margin-bottom: 6px; }
+        .field input, .field textarea {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px;
+            font-family: var(--sans); font-size: 14px; color: var(--fg); background: var(--bg);
+            transition: border-color .2s;
+        }
+        .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+        .field textarea { resize: vertical; min-height: 96px; line-height: 1.7; font-size: 13px; }
+        .field input[type="url"] { font-family: monospace; font-size: 12px; }
+
+        .section-divider { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-mute); padding: 18px 0 14px; border-bottom: 1px solid var(--line); margin-bottom: 18px; grid-column: 1 / -1; }
+
+        /* ── 写真アップロード ── */
+        .photo-upload-row { display: flex; align-items: flex-start; gap: 16px; }
+        .photo-preview { width: 76px; height: 76px; border-radius: 50%; border: 2px solid var(--line); background: rgba(241,90,34,.06); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; color: var(--fg-mute); font-size: 10px; text-align: center; }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .photo-upload-ctrl { flex: 1; }
+        .photo-upload-btn { display: inline-block; padding: 8px 18px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 2px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--fg-mute); transition: border-color .2s, color .2s; }
+        .photo-upload-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .photo-status { font-size: 11px; color: var(--fg-mute); margin-top: 6px; }
+
+        /* ── 送信エリア ── */
+        .submit-area { padding: 20px 0 0; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 8px; border-top: 1px solid var(--line); }
+        .btn-publish { padding: 14px 36px; background: var(--accent); color: #fff; border: none; border-radius: 2px; font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: .1em; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background .2s; }
+        .btn-publish:hover:not(:disabled) { background: var(--accent-dark); }
+        .btn-publish:disabled { opacity: .5; cursor: not-allowed; }
+        .btn-publish .spinner { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+        .btn-publish.is-loading .spinner { display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .btn-cancel { padding: 14px 24px; background: transparent; color: var(--fg-mute); border: 1px solid var(--line); border-radius: 2px; font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; }
+        .btn-cancel:hover { border-color: var(--fg); color: var(--fg); }
+        .result { padding: 14px 18px; border-radius: 2px; font-size: 13px; line-height: 1.8; display: none; flex: 1; }
+        .result.is-visible { display: block; }
+        .result--success { background: #fff8f5; border: 1px solid #f5c3a8; color: #8b3a10; }
+        .result--error   { background: #fff5f5; border: 1px solid #f5b8b4; color: #8b2a2a; }
+
+        /* ── 一覧タブ ── */
+        .list-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .list-head h2 { font-family: var(--serif); font-weight: 700; font-size: 18px; }
+        .collab-list { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: #fff; }
+        .collab-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+        .collab-item:last-child { border-bottom: none; }
+        .collab-item__photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid rgba(241,90,34,.18); background: rgba(241,90,34,.06); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 16px; font-weight: 700; color: #F15A22; overflow: hidden; }
+        .collab-item__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .collab-item__name { font-weight: 700; font-size: 14px; flex: 1; }
+        .collab-item__role { font-size: 11px; color: var(--fg-mute); flex-shrink: 0; }
+        .collab-item__edit { font-size: 11px; font-weight: 700; color: var(--accent); cursor: pointer; flex-shrink: 0; padding: 4px 8px; border: 1px solid var(--accent); border-radius: 2px; background: none; font-family: var(--sans); transition: all .15s; }
+        .collab-item__edit:hover { background: var(--accent); color: #fff; }
+        .collab-item__delete { font-size: 11px; font-weight: 700; color: var(--red); cursor: pointer; flex-shrink: 0; padding: 4px 8px; border: 1px solid var(--red); border-radius: 2px; background: none; font-family: var(--sans); transition: all .15s; }
+        .collab-item__delete:hover { background: var(--red); color: #fff; }
+        .list-empty { padding: 32px; text-align: center; color: var(--fg-mute); font-size: 13px; }
+        .list-loading { padding: 32px; text-align: center; color: var(--fg-mute); font-size: 13px; }
+
+        /* カードプレビュー */
+        .preview-section { margin-top: 28px; }
+        .preview-section__label { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--fg-mute); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .preview-section__label::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+        .preview-card { background: #fff; border: 1px solid var(--line); border-top: 4px solid #F15A22; border-radius: 6px; overflow: hidden; max-width: 400px; }
+        .preview-card__top { display: flex; align-items: flex-start; gap: 14px; padding: 20px 20px 0; }
+        .preview-card__photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(241,90,34,.18); flex-shrink: 0; display: block; }
+        .preview-card__photo-placeholder { width: 60px; height: 60px; border-radius: 50%; background: rgba(241,90,34,.08); border: 3px solid rgba(241,90,34,.18); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; font-weight: 700; color: #F15A22; flex-shrink: 0; }
+        .preview-card__name { font-family: var(--serif); font-size: 16px; font-weight: 700; margin: 0 0 6px; }
+        .preview-card__role { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .1em; padding: 2px 8px; border-radius: 999px; background: #F15A22; color: #fff; }
+        .preview-card__bio { padding: 12px 20px; font-family: var(--serif); font-size: 13px; line-height: 1.8; color: var(--fg-mute); }
+        .preview-card__links { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 20px 20px; }
+        .preview-card__link { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; border: 1.5px solid #F15A22; color: #F15A22; }
+
+        @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } .form-grid--full { grid-column: 1; } }
+    </style>
+</head>
+<body>
+
+<header class="hd">
+    <div class="hd__left">
+        <div>
+            <p class="hd__logo">FUKURYU</p>
+            <p class="hd__sub">特別協力メーカー</p>
+        </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:center">
+        <a href="submit.html">記事エディタ</a>
+        <a href="../tokubetsu-kyoryoku.html" target="_blank">ページを確認 →</a>
+        <a href="../index.html">← サイトに戻る</a>
+    </div>
+</header>
+
+<!-- タブ -->
+<div class="tabs">
+    <button class="tab-btn is-active" onclick="switchTab('add')">➕ 追加・編集</button>
+    <button class="tab-btn" onclick="switchTab('list')">📋 一覧</button>
+</div>
+
+<div class="page">
+
+    <!-- トークンバー -->
+    <div class="token-bar" id="token-bar">
+        <span class="token-bar__label">投稿キー</span>
+        <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx...">
+        <button class="btn-sm" onclick="saveToken()">保存</button>
+        <span id="token-ok" class="token-ok" style="display:none">✓ 設定済み</span>
+        <button class="btn-sm btn-sm--ghost" id="btn-reset-token" onclick="resetToken()" style="display:none">リセット</button>
+    </div>
+
+    <!-- ════ 追加・編集タブ ════ -->
+    <div id="tab-add">
+        <div class="form-panel">
+            <h2 class="form-panel__title" id="form-title">協力者を追加</h2>
+            <p class="form-panel__desc">フォームに入力して「追加して公開」を押すと、特別協力ページに即時反映されます。</p>
+
+            <div class="form-grid">
+                <!-- 名前 -->
+                <div class="field">
+                    <label>名前 <span style="color:#d63a2f">*</span></label>
+                    <input type="text" id="f-name" placeholder="例：山田太郎" oninput="updatePreview()">
+                </div>
+                <!-- 関わり方 -->
+                <div class="field">
+                    <label>関わり方 <span style="color:#d63a2f">*</span></label>
+                    <input type="text" id="f-role" placeholder="例：写真提供・展示協力" oninput="updatePreview()">
+                </div>
+                <!-- プロフィール -->
+                <div class="field form-grid--full">
+                    <label>プロフィール</label>
+                    <textarea id="f-bio" placeholder="活動内容・経歴など。改行もそのまま反映されます。" oninput="updatePreview()"></textarea>
+                </div>
+
+                <!-- 写真 -->
+                <div class="field form-grid--full">
+                    <label>写真</label>
+                    <div class="photo-upload-row">
+                        <div class="photo-preview" id="photo-preview">
+                            <span style="line-height:1.4">写真なし</span>
+                        </div>
+                        <div class="photo-upload-ctrl">
+                            <label class="photo-upload-btn">
+                                ファイルを選択
+                                <input type="file" id="f-photo" accept="image/*" style="display:none" onchange="handlePhotoSelect(this)">
+                            </label>
+                            <p class="photo-status" id="photo-status">JPG・PNG・HEIC対応。大きな画像は自動で圧縮されます。</p>
+                            <p style="font-size:11px;color:var(--fg-mute);margin-top:4px">写真を削除したい場合は「写真をクリア」を押してください。</p>
+                            <button type="button" onclick="clearPhoto()" style="margin-top:6px;font-size:11px;color:var(--fg-mute);background:none;border:none;cursor:pointer;text-decoration:underline">写真をクリア</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- リンク -->
+                <div class="section-divider">リンク（任意）</div>
+
+                <div class="field">
+                    <label>ウェブサイト</label>
+                    <input type="url" id="f-website" placeholder="https://example.com" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>Instagram</label>
+                    <input type="url" id="f-instagram" placeholder="https://instagram.com/ユーザー名" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>X (Twitter)</label>
+                    <input type="url" id="f-twitter" placeholder="https://x.com/ユーザー名" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>note</label>
+                    <input type="url" id="f-note" placeholder="https://note.com/ユーザー名" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>YouTube</label>
+                    <input type="url" id="f-youtube" placeholder="https://youtube.com/@チャンネル" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                    <label>その他リンク</label>
+                    <input type="url" id="f-other" placeholder="https://..." oninput="updatePreview()">
+                </div>
+            </div>
+
+            <!-- プレビュー -->
+            <div class="preview-section">
+                <p class="preview-section__label">カードプレビュー</p>
+                <div id="card-preview"></div>
+            </div>
+
+            <!-- 送信 -->
+            <div class="submit-area">
+                <button class="btn-publish" id="btn-publish" onclick="saveCollaborator()" disabled>
+                    <span class="spinner"></span>
+                    <span id="btn-label">追加して公開</span>
+                </button>
+                <button class="btn-cancel" id="btn-cancel" onclick="resetForm()" style="display:none">キャンセル</button>
+                <span style="font-size:12px;color:var(--fg-mute)" id="no-token-note">投稿キーを入力してください</span>
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════ 一覧タブ ════ -->
+    <div id="tab-list" style="display:none">
+        <div class="list-head">
+            <h2>協力者一覧</h2>
+            <button class="btn-sm" onclick="loadList()">更新</button>
+        </div>
+        <div id="list-wrap">
+            <p class="list-loading">投稿キーを設定すると一覧が表示されます。</p>
+        </div>
+    </div>
+
+</div><!-- /page -->
+
+<script>
+// ═══════════════════════════════════════════
+//  設定
+// ═══════════════════════════════════════════
+const REPO   = 'amanorope-coder/fukuliu';
+const BRANCH = 'main';
+const MANIFEST_PATH = 'collaborators/manifest.json';
+
+let _editingId      = null;   // 編集中の協力者ID（null = 新規）
+let _editingPhotoPath = null; // 既存の写真パス（編集時）
+let _pendingPhoto   = null;   // { blob, objectUrl } 新規アップロード待ち
+
+// ═══════════════════════════════════════════
+//  トークン管理
+// ═══════════════════════════════════════════
+function getToken() { return localStorage.getItem('fukuliu_publish_token') || ''; }
+function saveToken() {
+    const v = document.getElementById('token-input').value.trim();
+    if (!v) { alert('投稿キーを入力してください。'); return; }
+    localStorage.setItem('fukuliu_publish_token', v);
+    document.getElementById('token-input').value = '';
+    updateTokenUI();
+}
+function resetToken() {
+    if (!confirm('投稿キーをリセットしますか？')) return;
+    localStorage.removeItem('fukuliu_publish_token');
+    updateTokenUI();
+}
+function updateTokenUI() {
+    const has = !!getToken();
+    document.getElementById('token-ok').style.display        = has ? '' : 'none';
+    document.getElementById('btn-reset-token').style.display = has ? '' : 'none';
+    document.getElementById('token-input').style.display     = has ? 'none' : '';
+    document.querySelector('.token-bar .btn-sm:not(.btn-sm--ghost)').style.display = has ? 'none' : '';
+    document.getElementById('btn-publish').disabled          = !has;
+    document.getElementById('no-token-note').style.display   = has ? 'none' : 'inline';
+}
+updateTokenUI();
+
+// ═══════════════════════════════════════════
+//  タブ切り替え
+// ═══════════════════════════════════════════
+function switchTab(name) {
+    document.getElementById('tab-add').style.display  = name === 'add'  ? '' : 'none';
+    document.getElementById('tab-list').style.display = name === 'list' ? '' : 'none';
+    document.querySelectorAll('.tab-btn').forEach((b, i) =>
+        b.classList.toggle('is-active', (i === 0 && name === 'add') || (i === 1 && name === 'list')));
+    if (name === 'list') loadList();
+}
+
+// ═══════════════════════════════════════════
+//  写真処理
+// ═══════════════════════════════════════════
+function compressImage(file, maxPx = 1200, quality = 0.85) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            const ratio = Math.min(1, maxPx / Math.max(img.naturalWidth, img.naturalHeight));
+            const w = Math.round(img.naturalWidth * ratio);
+            const h = Math.round(img.naturalHeight * ratio);
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('圧縮失敗')), 'image/jpeg', quality);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('画像読み込み失敗')); };
+        img.src = url;
+    });
+}
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = () => reject(new Error('base64変換失敗'));
+        reader.readAsDataURL(blob);
+    });
+}
+
+async function handlePhotoSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const status = document.getElementById('photo-status');
+    status.textContent = '処理中…'; status.style.color = 'var(--fg-mute)';
+    try {
+        const blob = file.size > 400 * 1024 ? await compressImage(file) : file;
+        if (_pendingPhoto) URL.revokeObjectURL(_pendingPhoto.objectUrl);
+        const objectUrl = URL.createObjectURL(blob);
+        _pendingPhoto = { blob, objectUrl };
+        document.getElementById('photo-preview').innerHTML =
+            `<img src="${objectUrl}" alt="プレビュー">`;
+        const sizeMB = (blob.size / 1024 / 1024).toFixed(1);
+        status.textContent = `✓ ${file.name}（${sizeMB} MB）`;
+        status.style.color = 'var(--green)';
+        updatePreview();
+    } catch(e) {
+        status.textContent = `✗ ${e.message}`; status.style.color = 'var(--red)';
+    }
+    input.value = '';
+}
+
+function clearPhoto() {
+    if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
+    _editingPhotoPath = null;
+    document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
+    document.getElementById('photo-status').textContent = 'JPG・PNG・HEIC対応。大きな画像は自動で圧縮されます。';
+    document.getElementById('photo-status').style.color = '';
+    updatePreview();
+}
+
+// ═══════════════════════════════════════════
+//  プレビュー
+// ═══════════════════════════════════════════
+const SNS_LABELS = { website: '🌐 Website', instagram: 'Instagram', twitter: 'X (Twitter)', note: 'note', youtube: 'YouTube', other: 'Link' };
+
+function updatePreview() {
+    const name = document.getElementById('f-name').value.trim();
+    const role = document.getElementById('f-role').value.trim();
+    const bio  = document.getElementById('f-bio').value.trim();
+    const links = ['website','instagram','twitter','note','youtube','other']
+        .filter(k => document.getElementById('f-'+k).value.trim());
+
+    let photoHTML;
+    if (_pendingPhoto) {
+        photoHTML = `<img class="preview-card__photo" src="${_pendingPhoto.objectUrl}" alt="">`;
+    } else if (_editingPhotoPath) {
+        photoHTML = `<img class="preview-card__photo" src="../${_editingPhotoPath}" alt="">`;
+    } else {
+        photoHTML = `<div class="preview-card__photo-placeholder">${name ? name.charAt(0) : '?'}</div>`;
+    }
+
+    const linksHTML = links.length
+        ? `<div class="preview-card__links">${links.map(k =>
+            `<span class="preview-card__link">${SNS_LABELS[k]}</span>`
+          ).join('')}</div>`
+        : '';
+    const bioHTML = bio
+        ? `<p class="preview-card__bio">${bio.replace(/\n/g,'<br>').slice(0, 120)}${bio.length > 120 ? '…' : ''}</p>`
+        : '';
+
+    document.getElementById('card-preview').innerHTML = `
+        <div class="preview-card">
+            <div class="preview-card__top">
+                <div>${photoHTML}</div>
+                <div>
+                    <p class="preview-card__name">${name || '（名前未入力）'}</p>
+                    ${role ? `<span class="preview-card__role">${role}</span>` : ''}
+                </div>
+            </div>
+            ${bioHTML}
+            ${linksHTML}
+        </div>`;
+}
+updatePreview();
+
+// ═══════════════════════════════════════════
+//  GitHub API
+// ═══════════════════════════════════════════
+async function ghGet(path, token) {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}&t=${Date.now()}`, {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`GET ${path} → ${res.status}`);
+    return res.json();
+}
+async function ghPut(path, token, message, content, sha) {
+    const body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.message || `PUT ${path} → ${res.status}`); }
+    return res.json();
+}
+async function ghPutBinary(path, token, message, base64Content, sha) {
+    const body = { message, content: base64Content, branch: BRANCH };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.message || `PUT binary ${path} → ${res.status}`); }
+    return res.json();
+}
+async function ghDelete(path, token, message, sha) {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+        method: 'DELETE',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ message, sha, branch: BRANCH })
+    });
+    if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.message || `DELETE ${path} → ${res.status}`); }
+    return res.json();
+}
+
+// ═══════════════════════════════════════════
+//  保存
+// ═══════════════════════════════════════════
+async function saveCollaborator() {
+    const token = getToken();
+    if (!token) { alert('投稿キーを入力してください。'); return; }
+
+    const name = document.getElementById('f-name').value.trim();
+    const role = document.getElementById('f-role').value.trim();
+    if (!name) { alert('名前を入力してください。'); return; }
+    if (!role) { alert('関わり方を入力してください。'); return; }
+
+    const btn = document.getElementById('btn-publish');
+    const result = document.getElementById('result');
+    btn.classList.add('is-loading'); btn.disabled = true;
+    result.className = 'result'; result.style.display = 'none';
+
+    try {
+        const isEdit = !!_editingId;
+        const id = isEdit ? _editingId : `${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
+
+        // 写真をアップロード
+        let photoPath = _editingPhotoPath || null;
+        if (_pendingPhoto) {
+            const safe = id + '.jpg';
+            const imgGhPath = `collaborators/images/${safe}`;
+            const existingImg = await ghGet(imgGhPath, token);
+            const base64 = await blobToBase64(_pendingPhoto.blob);
+            await ghPutBinary(imgGhPath, token, `協力者写真追加: ${name}`, base64, existingImg?.sha);
+            photoPath = imgGhPath;
+        }
+
+        // manifest を更新
+        const manifestFile = await ghGet(MANIFEST_PATH, token);
+        let arr = manifestFile
+            ? JSON.parse(decodeURIComponent(escape(atob(manifestFile.content.replace(/\n/g,'')))))
+            : [];
+
+        const entry = {
+            id, name, role,
+            bio:       document.getElementById('f-bio').value.trim(),
+            photo:     photoPath || '',
+            website:   document.getElementById('f-website').value.trim(),
+            instagram: document.getElementById('f-instagram').value.trim(),
+            twitter:   document.getElementById('f-twitter').value.trim(),
+            note:      document.getElementById('f-note').value.trim(),
+            youtube:   document.getElementById('f-youtube').value.trim(),
+            other:     document.getElementById('f-other').value.trim(),
+        };
+
+        if (isEdit) {
+            arr = arr.map(a => a.id === id ? entry : a);
+        } else {
+            arr = [entry, ...arr];
+        }
+
+        await ghPut(MANIFEST_PATH, token, `特別協力${isEdit ? '更新' : '追加'}: ${name}`, JSON.stringify(arr, null, 2), manifestFile?.sha);
+
+        // 後処理
+        if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
+        result.className = 'result result--success is-visible';
+        result.innerHTML = `✓ 「${name}」を${isEdit ? '更新' : '追加'}しました。反映まで1〜2分。 <a href="../tokubetsu-kyoryoku.html" target="_blank" style="color:#c44010;font-weight:700">ページを確認 →</a>`;
+        result.style.display = 'block';
+
+        if (!isEdit) resetForm();
+        else {
+            _editingId = null;
+            _editingPhotoPath = null;
+            document.getElementById('form-title').textContent = '協力者を追加';
+            document.getElementById('btn-label').textContent = '追加して公開';
+            document.getElementById('btn-cancel').style.display = 'none';
+        }
+    } catch(e) {
+        result.className = 'result result--error is-visible';
+        result.innerHTML = `✗ 失敗しました: ${e.message}`;
+        result.style.display = 'block';
+    } finally {
+        btn.classList.remove('is-loading'); btn.disabled = !getToken();
+    }
+}
+
+// ═══════════════════════════════════════════
+//  フォームリセット
+// ═══════════════════════════════════════════
+function resetForm() {
+    _editingId = null; _editingPhotoPath = null;
+    if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
+    ['name','role','bio','website','instagram','twitter','note','youtube','other'].forEach(k => {
+        document.getElementById('f-'+k).value = '';
+    });
+    document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
+    document.getElementById('photo-status').textContent = 'JPG・PNG・HEIC対応。大きな画像は自動で圧縮されます。';
+    document.getElementById('photo-status').style.color = '';
+    document.getElementById('form-title').textContent = '協力者を追加';
+    document.getElementById('btn-label').textContent = '追加して公開';
+    document.getElementById('btn-cancel').style.display = 'none';
+    document.getElementById('result').className = 'result';
+    document.getElementById('result').style.display = 'none';
+    updatePreview();
+}
+
+// ═══════════════════════════════════════════
+//  一覧読み込み
+// ═══════════════════════════════════════════
+async function loadList() {
+    const token = getToken();
+    const wrap  = document.getElementById('list-wrap');
+    if (!token) { wrap.innerHTML = '<p class="list-loading">投稿キーを設定してください。</p>'; return; }
+
+    wrap.innerHTML = '<p class="list-loading">読み込み中…</p>';
+    try {
+        const file = await ghGet(MANIFEST_PATH, token);
+        if (!file) { wrap.innerHTML = '<p class="list-empty">まだ登録されていません。</p>'; return; }
+        const arr = JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,'')))));
+        wrap._manifest = arr;
+
+        if (!arr.length) { wrap.innerHTML = '<p class="list-empty">まだ登録されていません。</p>'; return; }
+
+        wrap.innerHTML = `<div class="collab-list">${arr.map((c, i) => {
+            const photoHTML = c.photo
+                ? `<img src="../${c.photo}" alt="">`
+                : c.name.charAt(0);
+            return `
+                <div class="collab-item">
+                    <div class="collab-item__photo">${typeof photoHTML === 'string' && c.photo ? photoHTML : (c.photo ? photoHTML : c.name.charAt(0))}</div>
+                    <span class="collab-item__name">${c.name}</span>
+                    <span class="collab-item__role">${c.role}</span>
+                    <button class="collab-item__edit" onclick="loadForEdit(${i})">編集</button>
+                    <button class="collab-item__delete" onclick="deleteCollaborator(${i})">削除</button>
+                </div>`;
+        }).join('')}</div>`;
+    } catch(e) {
+        wrap.innerHTML = `<p class="list-empty">読み込み失敗: ${e.message}</p>`;
+    }
+}
+
+// ═══════════════════════════════════════════
+//  編集モードで読み込む
+// ═══════════════════════════════════════════
+function loadForEdit(index) {
+    const wrap = document.getElementById('list-wrap');
+    const arr  = wrap._manifest;
+    if (!arr) return;
+    const c = arr[index];
+
+    _editingId = c.id;
+    _editingPhotoPath = c.photo || null;
+    if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
+
+    document.getElementById('f-name').value      = c.name      || '';
+    document.getElementById('f-role').value      = c.role      || '';
+    document.getElementById('f-bio').value       = c.bio       || '';
+    document.getElementById('f-website').value   = c.website   || '';
+    document.getElementById('f-instagram').value = c.instagram || '';
+    document.getElementById('f-twitter').value   = c.twitter   || '';
+    document.getElementById('f-note').value      = c.note      || '';
+    document.getElementById('f-youtube').value   = c.youtube   || '';
+    document.getElementById('f-other').value     = c.other     || '';
+
+    if (c.photo) {
+        document.getElementById('photo-preview').innerHTML =
+            `<img src="../${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    } else {
+        document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
+    }
+
+    document.getElementById('form-title').textContent = `「${c.name}」を編集`;
+    document.getElementById('btn-label').textContent  = '更新して公開';
+    document.getElementById('btn-cancel').style.display = '';
+    document.getElementById('result').className = 'result';
+    document.getElementById('result').style.display = 'none';
+
+    switchTab('add');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updatePreview();
+}
+
+// ═══════════════════════════════════════════
+//  削除
+// ═══════════════════════════════════════════
+async function deleteCollaborator(index) {
+    const token = getToken();
+    if (!token) { alert('投稿キーを設定してください。'); return; }
+    const wrap = document.getElementById('list-wrap');
+    const arr  = wrap._manifest;
+    if (!arr) return;
+    const c = arr[index];
+
+    if (!confirm(`「${c.name}」を削除しますか？\nこの操作は元に戻せません。`)) return;
+    if (!confirm(`もう一度確認します。\n「${c.name}」を本当に削除しますか？`)) return;
+
+    const btns = document.querySelectorAll('.collab-item__delete');
+    if (btns[index]) { btns[index].textContent = '削除中…'; btns[index].disabled = true; }
+
+    try {
+        const manifestFile = await ghGet(MANIFEST_PATH, token);
+        const currentArr = JSON.parse(decodeURIComponent(escape(atob(manifestFile.content.replace(/\n/g,'')))));
+        const newArr = currentArr.filter(a => a.id !== c.id);
+        await ghPut(MANIFEST_PATH, token, `特別協力削除: ${c.name}`, JSON.stringify(newArr, null, 2), manifestFile.sha);
+        await loadList();
+    } catch(e) {
+        alert(`削除に失敗しました: ${e.message}`);
+        if (btns[index]) { btns[index].textContent = '削除'; btns[index].disabled = false; }
+    }
+}
+</script>
+</body>
+</html>
