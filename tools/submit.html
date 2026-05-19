@@ -206,6 +206,8 @@
         .article-item__title { flex: 1; font-family: var(--serif); font-weight: 700; font-size: 15px; }
         .article-item__date  { font-size: 11px; color: var(--fg-mute); flex-shrink: 0; }
         .article-item__edit  { font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+        .article-item__delete { font-size:11px; font-weight:700; color:var(--red); flex-shrink:0; padding:4px 8px; border:1px solid var(--red); border-radius:2px; background:none; cursor:pointer; transition:all .15s; font-family:var(--sans); line-height:1; }
+        .article-item__delete:hover { background:var(--red); color:#fff; }
         .edit-loading { padding: 32px; text-align: center; color: var(--fg-mute); font-size: 13px; }
         .edit-note { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
         .edit-note h3 { font-family: var(--serif); font-weight: 700; font-size: 16px; margin-bottom: 12px; }
@@ -745,6 +747,19 @@ async function ghPut(path, token, message, content, sha) {
     return res.json();
 }
 
+async function ghDelete(path, token, message, sha) {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+        method: 'DELETE',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ message, sha, branch: BRANCH })
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `GitHub DELETE ${path} → ${res.status}`);
+    }
+    return res.json();
+}
+
 async function ghPutBinary(path, token, message, base64Content, sha) {
     const body = { message, content: base64Content, branch: BRANCH };
     if (sha) body.sha = sha;
@@ -1248,12 +1263,48 @@ async function loadEditList() {
                     <span class="article-item__title">${a.title}</span>
                     <span class="article-item__date">${a.date}</span>
                     <span class="article-item__edit">修正する →</span>
+                    <button class="article-item__delete" onclick="event.stopPropagation();deleteArticle(${i})">削除</button>
                 </div>`).join('') +
         `</div>`;
         wrap._manifest = arr;
         wrap._manifestSha = file.sha;
     } catch(e) {
         wrap.innerHTML = `<p class="edit-loading">読み込みに失敗しました: ${e.message}</p>`;
+    }
+}
+
+async function deleteArticle(index) {
+    const token = getToken();
+    if (!token) { alert('投稿キーを設定してください。'); return; }
+    const wrap = document.getElementById('edit-list-wrap');
+    const arr  = wrap._manifest;
+    if (!arr) return;
+    const entry = arr[index];
+
+    if (!confirm(`「${entry.title}」を削除しますか？\nこの操作は元に戻せません。`)) return;
+    if (!confirm(`もう一度確認します。\n「${entry.title}」を本当に削除しますか？`)) return;
+
+    // ボタンを無効化
+    const btn = document.querySelector(`.article-item:nth-child(${index+1}) .article-item__delete`);
+    if (btn) { btn.textContent = '削除中…'; btn.disabled = true; }
+
+    try {
+        // 記事HTMLファイルを削除
+        const fileData = await ghGet(entry.url, token);
+        if (fileData) {
+            await ghDelete(entry.url, token, `記事削除: ${entry.title}`, fileData.sha);
+        }
+        // manifest.json から除去
+        const manifestFile = await ghGet('articles/manifest.json', token);
+        const currentArr = JSON.parse(decodeURIComponent(escape(atob(manifestFile.content.replace(/\n/g,'')))));
+        const newArr = currentArr.filter(a => a.url !== entry.url);
+        await ghPut('articles/manifest.json', token, `マニフェスト更新: ${entry.title} を削除`, JSON.stringify(newArr, null, 2), manifestFile.sha);
+
+        // 一覧をリロード
+        await loadEditList();
+    } catch(e) {
+        alert(`削除に失敗しました: ${e.message}`);
+        if (btn) { btn.textContent = '削除'; btn.disabled = false; }
     }
 }
 
