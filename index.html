@@ -156,12 +156,13 @@
                 <h2 class="program__title">記事</h2>
                 <p class="program__desc">エッセイ・批評・美術・対談。制作実践者の正直な目線で書く、強度のあるテキストを蓄積する。</p>
 
-                <div class="cat-legend">
-                    <span class="cat-legend__item"><i class="cat-dot cat-dot--essay"></i>エッセイ</span>
-                    <span class="cat-legend__item"><i class="cat-dot cat-dot--critique"></i>批評</span>
-                    <span class="cat-legend__item"><i class="cat-dot cat-dot--blog"></i>ブログ</span>
-                    <span class="cat-legend__item"><i class="cat-dot cat-dot--art"></i>美術</span>
-                    <span class="cat-legend__item"><i class="cat-dot cat-dot--dialogue"></i>対談</span>
+                <div class="cat-filter" role="group" aria-label="カテゴリで絞り込む">
+                    <button class="cat-filter__btn is-active" type="button" data-cat="all"      onclick="window._filterArticles('all')">ALL</button>
+                    <button class="cat-filter__btn" type="button" data-cat="essay"    onclick="window._filterArticles('essay')">エッセイ</button>
+                    <button class="cat-filter__btn" type="button" data-cat="critique" onclick="window._filterArticles('critique')">批評</button>
+                    <button class="cat-filter__btn" type="button" data-cat="blog"     onclick="window._filterArticles('blog')">ブログ</button>
+                    <button class="cat-filter__btn" type="button" data-cat="art"      onclick="window._filterArticles('art')">美術</button>
+                    <button class="cat-filter__btn" type="button" data-cat="dialogue" onclick="window._filterArticles('dialogue')">対談</button>
                 </div>
             </div>
             <a href="#backnumbers" class="program__more">All articles →</a>
@@ -347,6 +348,9 @@
         };
 
         (function () {
+            let _allMergedArticles = [];
+            let _currentCatFilter  = 'all';
+
             function escapeAttr(s) {
                 return String(s || '').replace(/"/g, '&quot;');
             }
@@ -356,6 +360,31 @@
             function catTagClass(cat) {
                 return 'tag--' + cat;
             }
+
+            function renderArticleSection(cat) {
+                _currentCatFilter = cat;
+                const filtered = (cat === 'all')
+                    ? _allMergedArticles
+                    : _allMergedArticles.filter(a => a.cat === cat);
+
+                const topStory = document.getElementById('article-top-story');
+                const list     = document.getElementById('articles-list');
+
+                if (filtered.length === 0) {
+                    if (topStory) topStory.innerHTML = '';
+                    if (list)     list.innerHTML = '<p class="articles-empty">該当する記事はまだありません。</p>';
+                } else {
+                    if (topStory) topStory.innerHTML = renderFeatureCard(filtered[0]);
+                    if (list)     list.innerHTML = filtered.slice(1).map(renderArticle).join('');
+                }
+
+                // ボタンのアクティブ状態を同期
+                document.querySelectorAll('.cat-filter__btn').forEach(b => {
+                    b.classList.toggle('is-active', b.dataset.cat === cat);
+                });
+            }
+
+            window._filterArticles = renderArticleSection;
 
             function renderFeatureCard(article) {
                 const cat = ARTICLE_CATEGORIES[article.cat] || ARTICLE_CATEGORIES.essay;
@@ -462,13 +491,9 @@
                 // updated:true の記事を先頭に浮かせる
                 merged.sort((a, b) => (b.updated ? 1 : 0) - (a.updated ? 1 : 0));
 
-                // TOP STORY: 最新記事を大きく表示（記事を先にレンダリングしてから reel を初期化）
-                const topStory = document.getElementById('article-top-story');
-                if (topStory) topStory.innerHTML = merged.length > 0 ? renderFeatureCard(merged[0]) : '';
-
-                // 記事リスト（TOP STORY を除く残り）
-                const list = document.getElementById('articles-list');
-                if (list) list.innerHTML = merged.slice(1).map(renderArticle).join('');
+                // 記事をフィルター関数に渡す（TOP STORY + リスト両方を管理）
+                _allMergedArticles = merged;
+                renderArticleSection(_currentCatFilter);
 
                 // カルーセル: 最大5件の記事カードを追加（ラジオカードはHTML固定）
                 const reelTrack = document.getElementById('featured-reel-track');
@@ -1028,6 +1053,29 @@
     </script>
 
     <style>
+        /* ── 記事カテゴリフィルター ── */
+        .cat-filter {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+        }
+        .cat-filter__btn {
+            padding: 6px 16px; border-radius: 999px;
+            border: 1.5px solid var(--line);
+            font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .1em;
+            background: none; color: var(--fg-mute); cursor: pointer;
+            transition: background .18s, color .18s, border-color .18s;
+        }
+        .cat-filter__btn:hover { border-color: var(--fg); color: var(--fg); }
+        .cat-filter__btn.is-active                         { background: var(--fg);     border-color: var(--fg);     color: #fff; }
+        .cat-filter__btn[data-cat="essay"].is-active       { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .cat-filter__btn[data-cat="critique"].is-active    { background: #7b3fbf;        border-color: #7b3fbf;        color: #fff; }
+        .cat-filter__btn[data-cat="blog"].is-active        { background: #1a9e5c;        border-color: #1a9e5c;        color: #fff; }
+        .cat-filter__btn[data-cat="art"].is-active         { background: var(--accent2);border-color: var(--accent2);color: #fff; }
+        .cat-filter__btn[data-cat="dialogue"].is-active    { background: #1a1a1a;        border-color: #1a1a1a;        color: #fff; }
+        .articles-empty {
+            color: var(--fg-mute); font-size: 14px;
+            padding: 40px 0 20px; text-align: center;
+        }
+
         .tw-cursor {
             display: inline-block;
             width: 2px;
