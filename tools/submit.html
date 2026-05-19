@@ -247,6 +247,9 @@
         }
         .img-insert-btn:hover { background: #1a4aad; }
         .img-note { font-size: 11px; color: var(--fg-mute); margin-top: 4px; }
+        .img-size-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+        .img-size-label { font-size:11px; color:var(--fg-mute); letter-spacing:.08em; white-space:nowrap; }
+        .img-size-select { font-size:12px; padding:3px 6px; border:1px solid var(--line); border-radius:3px; background:var(--bg); color:var(--fg); cursor:pointer; }
 
         /* レスポンシブ */
         @media (max-width: 1100px) { .editor-layout { grid-template-columns: 1fr; } .meta-panel { position: static; } }
@@ -386,6 +389,15 @@
                                 <div class="img-tabs">
                                     <button class="img-tab is-active" type="button" onclick="switchImgTab('url')">URL</button>
                                     <button class="img-tab" type="button" onclick="switchImgTab('file')">ファイル</button>
+                                </div>
+                                <div class="img-size-row">
+                                    <label class="img-size-label" for="img-size">幅</label>
+                                    <select id="img-size" class="img-size-select">
+                                        <option value="">全幅（100%）</option>
+                                        <option value="70">大（70%）</option>
+                                        <option value="50">中（50%）</option>
+                                        <option value="35">小（35%）</option>
+                                    </select>
                                 </div>
                                 <div id="img-tab-url" class="img-row">
                                     <input type="url" id="img-url" placeholder="https://example.com/image.jpg">
@@ -588,8 +600,11 @@ function parseMarkdown(text, tocItems) {
         const imgM = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
         if (imgM) {
             if (inBQ) { html += '</blockquote>'; inBQ = false; }
-            const cap = imgM[1];
-            html += `<figure class="article-figure"><img src="${imgM[2]}" alt="${cap}" loading="lazy">${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
+            const rawAlt = imgM[1];
+            const wMatch = rawAlt.match(/\|w=(\d+)$/);
+            const cap = wMatch ? rawAlt.slice(0, -wMatch[0].length) : rawAlt;
+            const figStyle = wMatch ? ` style="max-width:${wMatch[1]}%;margin-left:auto;margin-right:auto"` : '';
+            html += `<figure class="article-figure"${figStyle}><img src="${imgM[2]}" alt="${cap}" loading="lazy">${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
             return;
         }
         if (line.trim() === '---') { blankCount = 0; html += '<hr>'; return; }
@@ -782,7 +797,7 @@ function blobToBase64(blob) {
 function toggleImgInsert() { const panel=document.getElementById('img-insert-panel'); panel.hidden=!panel.hidden; }
 function switchImgTab(tab) { document.getElementById('img-tab-url').hidden=tab!=='url'; document.getElementById('img-tab-file').hidden=tab!=='file'; document.querySelectorAll('.img-tab').forEach((btn,i)=>{btn.classList.toggle('is-active',(i===0&&tab==='url')||(i===1&&tab==='file'));}); }
 function insertAtCursor(text) { const ta=document.getElementById('f-body'); const start=ta.selectionStart; const before=ta.value.slice(0,start); const after=ta.value.slice(ta.selectionEnd); const prefix=before.length&&!before.endsWith('\n')?'\n':''; const suffix=after.length&&!after.startsWith('\n')?'\n':''; ta.value=before+prefix+text+suffix+after; const pos=start+prefix.length+text.length+suffix.length; ta.selectionStart=ta.selectionEnd=pos; ta.focus(); updatePreview(); }
-function insertImgFromUrl() { const url=document.getElementById('img-url').value.trim(); if(!url){alert('URLを入力してください');return;} const cap=document.getElementById('img-caption-url').value.trim(); insertAtCursor(`![${cap}](${url})`); document.getElementById('img-url').value=''; document.getElementById('img-caption-url').value=''; document.getElementById('img-insert-panel').hidden=true; }
+function insertImgFromUrl() { const url=document.getElementById('img-url').value.trim(); if(!url){alert('URLを入力してください');return;} const cap=document.getElementById('img-caption-url').value.trim(); const size=document.getElementById('img-size').value; const altStr=cap+(size?`|w=${size}`:''); insertAtCursor(`![${altStr}](${url})`); document.getElementById('img-url').value=''; document.getElementById('img-caption-url').value=''; document.getElementById('img-size').value=''; document.getElementById('img-insert-panel').hidden=true; }
 
 async function insertImgFromFile(input) {
     const file = input.files[0];
@@ -806,7 +821,9 @@ async function insertImgFromFile(input) {
         pendingImages.set(filename, { blob, objectUrl });
         // マークダウンに挿入
         const cap = document.getElementById('img-caption-file').value.trim();
-        insertAtCursor(`![${cap}](./images/${filename})`);
+        const size = document.getElementById('img-size').value;
+        const altStr = cap + (size ? `|w=${size}` : '');
+        insertAtCursor(`![${altStr}](./images/${filename})`);
         const sizeMB = (blob.size / 1024 / 1024).toFixed(1);
         status.textContent = `✓ ${filename}（${sizeMB} MB）`;
         status.style.color = '#1a9e5c';
@@ -815,6 +832,7 @@ async function insertImgFromFile(input) {
         status.style.color = '#e03e3e';
     } finally {
         document.getElementById('img-caption-file').value = '';
+        document.getElementById('img-size').value = '';
         document.getElementById('img-insert-panel').hidden = true;
         input.value = '';
     }
