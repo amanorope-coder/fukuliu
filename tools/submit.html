@@ -39,7 +39,7 @@
         .tab-btn {
             padding: 14px 24px; background: none; border: none; font-family: var(--sans); font-size: 13px; font-weight: 700;
             letter-spacing: .06em; cursor: pointer; color: var(--fg-mute); border-bottom: 2px solid transparent;
-            margin-bottom: -2px; transition: color .2s, border-color .2s;
+            margin-bottom: -2px; transition: color .2s, border-color .2s; text-decoration: none; display: inline-block;
         }
         .tab-btn.is-active { color: var(--accent); border-bottom-color: var(--accent); }
         .tab-btn:hover { color: var(--fg); }
@@ -284,6 +284,7 @@
 <div class="tabs">
     <button class="tab-btn is-active" onclick="switchTab('write')">✏️ 新規投稿</button>
     <button class="tab-btn" onclick="switchTab('edit')">📝 記事を修正</button>
+    <a class="tab-btn" href="collaborator-maker.html">🤝 コラボレーター</a>
 </div>
 
 <div class="page">
