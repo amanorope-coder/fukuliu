@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>特別協力メーカー — FUKURYU</title>
+    <title>コラボレーターメーカー — FUKURYU</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,7 +138,7 @@
     <div class="hd__left">
         <div>
             <p class="hd__logo">FUKURYU</p>
-            <p class="hd__sub">特別協力メーカー</p>
+            <p class="hd__sub">コラボレーターメーカー</p>
         </div>
     </div>
     <div style="display:flex;gap:16px;align-items:center">
@@ -169,7 +169,7 @@
     <div id="tab-add">
         <div class="form-panel">
             <h2 class="form-panel__title" id="form-title">協力者を追加</h2>
-            <p class="form-panel__desc">フォームに入力して「追加して公開」を押すと、特別協力ページに即時反映されます。</p>
+            <p class="form-panel__desc">フォームに入力して「追加して公開」を押すと、コラボレーターページに即時反映されます。</p>
 
             <div class="form-grid">
                 <!-- 名前 -->
@@ -523,7 +523,7 @@ async function saveCollaborator() {
             arr = [entry, ...arr];
         }
 
-        await ghPut(MANIFEST_PATH, token, `特別協力${isEdit ? '更新' : '追加'}: ${name}`, JSON.stringify(arr, null, 2), manifestFile?.sha);
+        await ghPut(MANIFEST_PATH, token, `コラボレーター${isEdit ? '更新' : '追加'}: ${name}`, JSON.stringify(arr, null, 2), manifestFile?.sha);
 
         // 後処理
         if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
@@ -665,7 +665,7 @@ async function deleteCollaborator(index) {
         const manifestFile = await ghGet(MANIFEST_PATH, token);
         const currentArr = JSON.parse(decodeURIComponent(escape(atob(manifestFile.content.replace(/\n/g,'')))));
         const newArr = currentArr.filter(a => a.id !== c.id);
-        await ghPut(MANIFEST_PATH, token, `特別協力削除: ${c.name}`, JSON.stringify(newArr, null, 2), manifestFile.sha);
+        await ghPut(MANIFEST_PATH, token, `コラボレーター削除: ${c.name}`, JSON.stringify(newArr, null, 2), manifestFile.sha);
         await loadList();
     } catch(e) {
         alert(`削除に失敗しました: ${e.message}`);
