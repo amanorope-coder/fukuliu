@@ -227,8 +227,10 @@
     }
 
     function renderCard(c) {
+        const photoX = c.photoX ?? 50;
+        const photoY = c.photoY ?? 50;
         const bannerHTML = c.photo
-            ? `<div class="collab-card__banner"><img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy"></div>`
+            ? `<div class="collab-card__banner"><img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${photoX}% ${photoY}%"></div>`
             : `<div class="collab-card__banner"><div class="collab-card__banner-placeholder">${esc((c.name||'?').charAt(0))}</div></div>`;
 
         const qaHTML = (c.question || c.answer)

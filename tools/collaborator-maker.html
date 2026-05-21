@@ -133,6 +133,36 @@
         .preview-card__links { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 20px 20px; }
         .preview-card__link { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; border: 1.5px solid #F15A22; color: #F15A22; }
 
+        /* ── 写真位置調整 ── */
+        .photo-pos-wrap { margin-top: 14px; display: none; }
+        .photo-pos-label { font-size: 11px; color: var(--fg-mute); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .photo-pos-label::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+        .photo-pos-box {
+            position: relative; width: 100%; aspect-ratio: 5 / 3;
+            overflow: hidden; cursor: crosshair; border: 1px solid var(--line);
+            border-radius: 4px; user-select: none; touch-action: none;
+            background: linear-gradient(135deg, rgba(241,90,34,.1), rgba(241,90,34,.04));
+        }
+        .photo-pos-box img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            pointer-events: none; transition: object-position .05s;
+        }
+        .photo-pos-crosshair {
+            position: absolute; width: 28px; height: 28px;
+            border-radius: 50%; pointer-events: none;
+            border: 2.5px solid #fff; background: rgba(241,90,34,.55);
+            box-shadow: 0 0 0 1.5px rgba(0,0,0,.25), 0 2px 6px rgba(0,0,0,.3);
+            transform: translate(-50%, -50%); top: 50%; left: 50%;
+        }
+        .photo-pos-crosshair::before,
+        .photo-pos-crosshair::after {
+            content: ''; position: absolute; background: #fff;
+            top: 50%; left: 50%; transform: translate(-50%,-50%);
+        }
+        .photo-pos-crosshair::before { width: 10px; height: 1.5px; }
+        .photo-pos-crosshair::after  { width: 1.5px; height: 10px; }
+        .photo-pos-hint { font-size: 10px; color: var(--fg-mute); margin-top: 6px; text-align: right; }
+
         @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } .form-grid--full { grid-column: 1; } }
     </style>
 </head>
@@ -219,6 +249,15 @@
                             <button type="button" onclick="clearPhoto()" style="margin-top:6px;font-size:11px;color:var(--fg-mute);background:none;border:none;cursor:pointer;text-decoration:underline">写真をクリア</button>
                         </div>
                     </div>
+                    <!-- 写真位置調整 -->
+                    <div class="photo-pos-wrap" id="photo-pos-wrap">
+                        <p class="photo-pos-label">表示位置を調整 — クリックまたはドラッグで中心点を移動</p>
+                        <div class="photo-pos-box" id="photo-pos-box">
+                            <img id="photo-pos-img" src="" alt="">
+                            <div class="photo-pos-crosshair" id="photo-pos-crosshair"></div>
+                        </div>
+                        <p class="photo-pos-hint">中心点: <span id="photo-pos-val">50%, 50%</span></p>
+                    </div>
                 </div>
 
                 <!-- リンク -->
@@ -293,6 +332,7 @@ const MANIFEST_PATH = 'collaborators/manifest.json';
 let _editingId      = null;   // 編集中の協力者ID（null = 新規）
 let _editingPhotoPath = null; // 既存の写真パス（編集時）
 let _pendingPhoto   = null;   // { blob, objectUrl } 新規アップロード待ち
+let _photoPos       = { x: 50, y: 50 }; // 写真表示位置（%）
 
 // ═══════════════════════════════════════════
 //  トークン管理
@@ -377,6 +417,8 @@ async function handlePhotoSelect(input) {
         const sizeMB = (blob.size / 1024 / 1024).toFixed(1);
         status.textContent = `✓ ${file.name}（${sizeMB} MB）`;
         status.style.color = 'var(--green)';
+        _photoPos = { x: 50, y: 50 };
+        showPhotoPosBox(objectUrl);
         updatePreview();
     } catch(e) {
         status.textContent = `✗ ${e.message}`; status.style.color = 'var(--red)';
@@ -387,9 +429,11 @@ async function handlePhotoSelect(input) {
 function clearPhoto() {
     if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
     _editingPhotoPath = null;
+    _photoPos = { x: 50, y: 50 };
     document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
     document.getElementById('photo-status').textContent = 'JPG・PNG・HEIC対応。大きな画像は自動で圧縮されます。';
     document.getElementById('photo-status').style.color = '';
+    document.getElementById('photo-pos-wrap').style.display = 'none';
     updatePreview();
 }
 
@@ -407,11 +451,12 @@ function updatePreview() {
     const links = ['website','instagram','twitter','note','youtube','other']
         .filter(k => document.getElementById('f-'+k).value.trim());
 
+    const posStyle = `object-position:${_photoPos.x}% ${_photoPos.y}%`;
     let bannerHTML;
     if (_pendingPhoto) {
-        bannerHTML = `<div class="preview-card__banner"><img src="${_pendingPhoto.objectUrl}" alt=""></div>`;
+        bannerHTML = `<div class="preview-card__banner"><img src="${_pendingPhoto.objectUrl}" alt="" style="${posStyle}"></div>`;
     } else if (_editingPhotoPath) {
-        bannerHTML = `<div class="preview-card__banner"><img src="../${_editingPhotoPath}" alt=""></div>`;
+        bannerHTML = `<div class="preview-card__banner"><img src="../${_editingPhotoPath}" alt="" style="${posStyle}"></div>`;
     } else {
         bannerHTML = `<div class="preview-card__banner"><div class="preview-card__banner-placeholder">${name ? name.charAt(0) : '?'}</div></div>`;
     }
@@ -532,6 +577,8 @@ async function saveCollaborator() {
             question:  document.getElementById('f-question').value.trim(),
             answer:    document.getElementById('f-answer').value.trim(),
             photo:     photoPath || '',
+            photoX:    _photoPos.x,
+            photoY:    _photoPos.y,
             website:   document.getElementById('f-website').value.trim(),
             instagram: document.getElementById('f-instagram').value.trim(),
             twitter:   document.getElementById('f-twitter').value.trim(),
@@ -575,8 +622,9 @@ async function saveCollaborator() {
 //  フォームリセット
 // ═══════════════════════════════════════════
 function resetForm() {
-    _editingId = null; _editingPhotoPath = null;
+    _editingId = null; _editingPhotoPath = null; _photoPos = { x: 50, y: 50 };
     if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
+    document.getElementById('photo-pos-wrap').style.display = 'none';
     ['name','role','bio','question','answer','website','instagram','twitter','note','youtube','other'].forEach(k => {
         document.getElementById('f-'+k).value = '';
     });
@@ -590,6 +638,66 @@ function resetForm() {
     document.getElementById('result').style.display = 'none';
     updatePreview();
 }
+
+// ═══════════════════════════════════════════
+//  写真位置調整
+// ═══════════════════════════════════════════
+function showPhotoPosBox(src) {
+    const wrap = document.getElementById('photo-pos-wrap');
+    const img  = document.getElementById('photo-pos-img');
+    wrap.style.display = '';
+    img.src = src;
+    applyPhotoPosUI();
+}
+
+function applyPhotoPosUI() {
+    const img       = document.getElementById('photo-pos-img');
+    const crosshair = document.getElementById('photo-pos-crosshair');
+    const val       = document.getElementById('photo-pos-val');
+    if (img)       img.style.objectPosition = `${_photoPos.x}% ${_photoPos.y}%`;
+    if (crosshair) { crosshair.style.left = `${_photoPos.x}%`; crosshair.style.top = `${_photoPos.y}%`; }
+    if (val)       val.textContent = `${_photoPos.x}%, ${_photoPos.y}%`;
+}
+
+(function initPhotoPosBox() {
+    const box = document.getElementById('photo-pos-box');
+    if (!box) return;
+
+    function calcPos(clientX, clientY) {
+        const r = box.getBoundingClientRect();
+        const x = Math.round(Math.min(100, Math.max(0, (clientX - r.left)  / r.width  * 100)));
+        const y = Math.round(Math.min(100, Math.max(0, (clientY - r.top)   / r.height * 100)));
+        return { x, y };
+    }
+
+    let dragging = false;
+
+    box.addEventListener('mousedown', e => {
+        dragging = true;
+        _photoPos = calcPos(e.clientX, e.clientY);
+        applyPhotoPosUI(); updatePreview();
+    });
+    document.addEventListener('mousemove', e => {
+        if (!dragging) return;
+        _photoPos = calcPos(e.clientX, e.clientY);
+        applyPhotoPosUI(); updatePreview();
+    });
+    document.addEventListener('mouseup', () => { dragging = false; });
+
+    box.addEventListener('touchstart', e => {
+        dragging = true;
+        const t = e.touches[0];
+        _photoPos = calcPos(t.clientX, t.clientY);
+        applyPhotoPosUI(); updatePreview();
+    }, { passive: true });
+    document.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const t = e.touches[0];
+        _photoPos = calcPos(t.clientX, t.clientY);
+        applyPhotoPosUI(); updatePreview();
+    }, { passive: true });
+    document.addEventListener('touchend', () => { dragging = false; });
+})();
 
 // ═══════════════════════════════════════════
 //  一覧読み込み
@@ -651,11 +759,14 @@ function loadForEdit(index) {
     document.getElementById('f-youtube').value   = c.youtube   || '';
     document.getElementById('f-other').value     = c.other     || '';
 
+    _photoPos = { x: c.photoX ?? 50, y: c.photoY ?? 50 };
     if (c.photo) {
         document.getElementById('photo-preview').innerHTML =
             `<img src="../${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+        showPhotoPosBox(`../${c.photo}`);
     } else {
         document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
+        document.getElementById('photo-pos-wrap').style.display = 'none';
     }
 
     document.getElementById('form-title').textContent = `「${c.name}」を編集`;
