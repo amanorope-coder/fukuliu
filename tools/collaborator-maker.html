@@ -120,13 +120,17 @@
         .preview-section__label { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--fg-mute); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .preview-section__label::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
         .preview-card { background: #fff; border: 1px solid var(--line); border-top: 4px solid #F15A22; border-radius: 6px; overflow: hidden; max-width: 400px; }
-        .preview-card__top { display: flex; align-items: flex-start; gap: 14px; padding: 20px 20px 0; }
-        .preview-card__photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(241,90,34,.18); flex-shrink: 0; display: block; }
-        .preview-card__photo-placeholder { width: 60px; height: 60px; border-radius: 50%; background: rgba(241,90,34,.08); border: 3px solid rgba(241,90,34,.18); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; font-weight: 700; color: #F15A22; flex-shrink: 0; }
+        .preview-card__banner { width: 100%; height: 160px; overflow: hidden; background: linear-gradient(135deg,rgba(241,90,34,.12),rgba(241,90,34,.04)); }
+        .preview-card__banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .preview-card__banner-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 56px; font-weight: 900; color: rgba(241,90,34,.2); }
+        .preview-card__info { padding: 16px 20px 0; }
         .preview-card__name { font-family: var(--serif); font-size: 16px; font-weight: 700; margin: 0 0 6px; }
         .preview-card__role { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .1em; padding: 2px 8px; border-radius: 999px; background: #F15A22; color: #fff; }
-        .preview-card__bio { padding: 12px 20px; font-family: var(--serif); font-size: 13px; line-height: 1.8; color: var(--fg-mute); }
-        .preview-card__links { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 20px 20px; }
+        .preview-card__bio { padding: 10px 20px 0; font-family: var(--serif); font-size: 13px; line-height: 1.8; color: var(--fg-mute); }
+        .preview-card__qa { margin: 10px 20px 0; padding: 10px 14px; background: rgba(241,90,34,.06); border-left: 3px solid #F15A22; border-radius: 0 3px 3px 0; }
+        .preview-card__question { font-size: 11px; font-weight: 700; color: #F15A22; margin-bottom: 5px; }
+        .preview-card__answer { font-family: var(--serif); font-size: 12px; line-height: 1.75; color: var(--fg); }
+        .preview-card__links { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 20px 20px; }
         .preview-card__link { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; border: 1.5px solid #F15A22; color: #F15A22; }
 
         @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } .form-grid--full { grid-column: 1; } }
@@ -186,6 +190,16 @@
                 <div class="field form-grid--full">
                     <label>プロフィール</label>
                     <textarea id="f-bio" placeholder="活動内容・経歴など。改行もそのまま反映されます。" oninput="updatePreview()"></textarea>
+                </div>
+
+                <!-- 質問・回答 -->
+                <div class="field form-grid--full">
+                    <label>質問</label>
+                    <input type="text" id="f-question" placeholder="例：FUKURYUとの出会いは？" oninput="updatePreview()">
+                </div>
+                <div class="field form-grid--full">
+                    <label>回答</label>
+                    <textarea id="f-answer" placeholder="質問への回答を入力してください。" oninput="updatePreview()"></textarea>
                 </div>
 
                 <!-- 写真 -->
@@ -385,19 +399,21 @@ function clearPhoto() {
 const SNS_LABELS = { website: '🌐 Website', instagram: 'Instagram', twitter: 'X (Twitter)', note: 'note', youtube: 'YouTube', other: 'Link' };
 
 function updatePreview() {
-    const name = document.getElementById('f-name').value.trim();
-    const role = document.getElementById('f-role').value.trim();
-    const bio  = document.getElementById('f-bio').value.trim();
+    const name     = document.getElementById('f-name').value.trim();
+    const role     = document.getElementById('f-role').value.trim();
+    const bio      = document.getElementById('f-bio').value.trim();
+    const question = document.getElementById('f-question').value.trim();
+    const answer   = document.getElementById('f-answer').value.trim();
     const links = ['website','instagram','twitter','note','youtube','other']
         .filter(k => document.getElementById('f-'+k).value.trim());
 
-    let photoHTML;
+    let bannerHTML;
     if (_pendingPhoto) {
-        photoHTML = `<img class="preview-card__photo" src="${_pendingPhoto.objectUrl}" alt="">`;
+        bannerHTML = `<div class="preview-card__banner"><img src="${_pendingPhoto.objectUrl}" alt=""></div>`;
     } else if (_editingPhotoPath) {
-        photoHTML = `<img class="preview-card__photo" src="../${_editingPhotoPath}" alt="">`;
+        bannerHTML = `<div class="preview-card__banner"><img src="../${_editingPhotoPath}" alt=""></div>`;
     } else {
-        photoHTML = `<div class="preview-card__photo-placeholder">${name ? name.charAt(0) : '?'}</div>`;
+        bannerHTML = `<div class="preview-card__banner"><div class="preview-card__banner-placeholder">${name ? name.charAt(0) : '?'}</div></div>`;
     }
 
     const linksHTML = links.length
@@ -408,17 +424,22 @@ function updatePreview() {
     const bioHTML = bio
         ? `<p class="preview-card__bio">${bio.replace(/\n/g,'<br>').slice(0, 120)}${bio.length > 120 ? '…' : ''}</p>`
         : '';
+    const qaHTML = (question || answer)
+        ? `<div class="preview-card__qa">
+            ${question ? `<p class="preview-card__question">Q. ${question}</p>` : ''}
+            ${answer   ? `<p class="preview-card__answer">${answer.slice(0,100)}${answer.length>100?'…':''}</p>` : ''}
+           </div>`
+        : '';
 
     document.getElementById('card-preview').innerHTML = `
         <div class="preview-card">
-            <div class="preview-card__top">
-                <div>${photoHTML}</div>
-                <div>
-                    <p class="preview-card__name">${name || '（名前未入力）'}</p>
-                    ${role ? `<span class="preview-card__role">${role}</span>` : ''}
-                </div>
+            ${bannerHTML}
+            <div class="preview-card__info">
+                <p class="preview-card__name">${name || '（名前未入力）'}</p>
+                ${role ? `<span class="preview-card__role">${role}</span>` : ''}
             </div>
             ${bioHTML}
+            ${qaHTML}
             ${linksHTML}
         </div>`;
 }
@@ -508,6 +529,8 @@ async function saveCollaborator() {
         const entry = {
             id, name, role,
             bio:       document.getElementById('f-bio').value.trim(),
+            question:  document.getElementById('f-question').value.trim(),
+            answer:    document.getElementById('f-answer').value.trim(),
             photo:     photoPath || '',
             website:   document.getElementById('f-website').value.trim(),
             instagram: document.getElementById('f-instagram').value.trim(),
@@ -554,7 +577,7 @@ async function saveCollaborator() {
 function resetForm() {
     _editingId = null; _editingPhotoPath = null;
     if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
-    ['name','role','bio','website','instagram','twitter','note','youtube','other'].forEach(k => {
+    ['name','role','bio','question','answer','website','instagram','twitter','note','youtube','other'].forEach(k => {
         document.getElementById('f-'+k).value = '';
     });
     document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
@@ -619,6 +642,8 @@ function loadForEdit(index) {
     document.getElementById('f-name').value      = c.name      || '';
     document.getElementById('f-role').value      = c.role      || '';
     document.getElementById('f-bio').value       = c.bio       || '';
+    document.getElementById('f-question').value  = c.question  || '';
+    document.getElementById('f-answer').value    = c.answer    || '';
     document.getElementById('f-website').value   = c.website   || '';
     document.getElementById('f-instagram').value = c.instagram || '';
     document.getElementById('f-twitter').value   = c.twitter   || '';
