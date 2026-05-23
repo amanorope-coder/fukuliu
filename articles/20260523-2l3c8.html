@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ロン・ミュエク展レポート１ — FUKURYU</title>
+    <meta name="description" content="森美術館「ロン・ミュエク」">
+    <meta property="og:title" content="ロン・ミュエク展レポート１ — FUKURYU">
+    <meta property="og:description" content="森美術館「ロン・ミュエク」">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../fukuryu-logo.png">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
+    <style>
+        html{scroll-padding-top:120px}
+        .article-page{background:linear-gradient(90deg,rgba(35,91,200,.08),transparent 26%),linear-gradient(180deg,#fff 0,var(--bg) 520px)}
+        .article-hero{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 56px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.55fr);gap:56px;align-items:end;border-bottom:1px solid var(--line)}
+        .article-hero__eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+        .article-hero__title{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,68px);line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+        .article-hero__lead{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);line-height:1.85;color:var(--fg-mute);margin:0;max-width:760px}
+        .article-hero__side{border-left:1px solid var(--line);padding-left:28px}
+        .article-hero__mark{width:min(240px,70%);height:auto;margin:0 0 34px;opacity:.88}
+        .article-meta-stack{display:grid;gap:18px}
+        .article-meta-stack__item{border-top:1px solid var(--line);padding-top:14px}
+        .article-meta-stack__label{display:block;color:var(--fg-mute);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
+        .article-meta-stack__value{font-family:var(--serif);font-size:15px}
+        .article-shell{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 120px;display:grid;grid-template-columns:180px minmax(0,760px);gap:clamp(32px,7vw,96px);align-items:start}
+        .article-shell--no-toc{grid-template-columns:minmax(0,760px);justify-content:center}
+        .article-toc{position:sticky;top:132px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute);border-top:2px solid var(--fg);padding-top:18px}
+        .article-toc a{display:block;margin-top:14px;letter-spacing:.06em;text-transform:none;color:var(--fg);text-decoration:none}
+        .article-toc a:hover{color:var(--accent)}
+        .article-toc a.sub{margin-left:12px;font-size:11px;color:var(--fg-mute)}
+        .article-body{font-family:var(--serif);font-size:17px;line-height:2.12;color:var(--fg)}
+        .article-body p{margin:0 0 30px}
+        .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
+        .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
+        .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
+        .article-body .callout{background:rgba(35,91,200,.07);border-left:4px solid var(--accent);padding:22px 28px;margin:46px 0;border-radius:0 6px 6px 0}
+        .article-body u{text-decoration:underline;text-underline-offset:3px}
+        .article-body .p-spacer{margin:0;padding:0;height:1.4em}
+        .article-toc a{transition:color .25s,font-weight .25s}
+        .article-toc a.is-active{color:var(--accent);font-weight:700}
+        .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
+        .article-body .accent{color:var(--accent);font-weight:600}
+        .article-body .accent2{color:var(--accent2);font-weight:600}
+        .article-back{display:inline-flex;align-items:center;gap:10px;margin-top:52px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+        .article-back::before{content:"";width:28px;height:1px;background:currentColor}
+        .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .tag--critique{background:#7b3fbf;color:#fff;border-color:#7b3fbf}
+        .tag--blog{background:#1a9e5c;color:#fff;border-color:#1a9e5c}
+        .tag--art{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+        .tag--dialogue{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+        @media(max-width:880px){
+            .article-hero{grid-template-columns:1fr;gap:36px;padding-top:54px}
+            .article-hero__side{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
+            .article-hero__mark{display:none}
+            .article-shell,.article-shell--no-toc{grid-template-columns:1fr;padding-top:52px}
+            .article-toc{position:static;display:flex;gap:18px;flex-wrap:wrap}
+            .article-toc a{margin-top:0}
+        }
+        @media(max-width:640px){
+            .article-hero__title{font-size:34px}
+            .article-body{font-size:16px;line-height:2}
+            .article-body blockquote{padding:20px;font-size:16px}
+        }
+        /* ── いいね・コメント ── */
+        .article-reactions{max-width:var(--max);margin:0 auto;padding:56px var(--pad-x) 80px;border-top:1px solid var(--line)}
+        .reaction-like{margin-bottom:52px}
+        .like-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:2px solid var(--line);border-radius:999px;padding:10px 24px;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--fg-mute);transition:all .2s}
+        .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+        .like-btn.is-liked{background:var(--accent);border-color:var(--accent);color:#fff}
+        .like-btn svg{transition:transform .2s}
+        .like-btn.is-liked svg{fill:currentColor;transform:scale(1.15)}
+        .like-count{font-variant-numeric:tabular-nums}
+        .comments-head{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 28px;padding-bottom:16px;border-bottom:2px solid var(--fg)}
+        .comment-form{display:grid;gap:12px;margin-bottom:44px;max-width:640px}
+        .comment-form input,.comment-form textarea{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:2px;font-family:var(--sans);font-size:14px;background:var(--bg);color:var(--fg);transition:border-color .2s}
+        .comment-form input:focus,.comment-form textarea:focus{outline:none;border-color:var(--accent)}
+        .comment-form textarea{min-height:100px;resize:vertical;line-height:1.7}
+        .comment-submit{justify-self:start;padding:12px 28px;background:var(--accent);color:#fff;border:none;border-radius:2px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background .2s}
+        .comment-submit:hover{background:#1a4aad}
+        .comment-item{padding:22px 0;border-top:1px solid var(--line);max-width:640px}
+        .comment-meta{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+        .comment-nick{font-weight:700;font-size:14px}
+        .comment-date{font-size:11px;color:var(--fg-mute);letter-spacing:.08em}
+        .comment-body{font-family:var(--serif);font-size:16px;line-height:1.9;margin:0;white-space:pre-wrap}
+        .no-comments{color:var(--fg-mute);font-size:14px;padding:20px 0;font-style:italic}
+        .reaction-note{font-size:11px;color:var(--fg-mute);margin-top:8px;letter-spacing:.04em}
+        .article-figure{margin:44px 0}
+        .article-figure img{width:100%;height:auto;display:block;border-radius:2px}
+        .article-figure figcaption{margin-top:10px;font-size:13px;color:var(--fg-mute);font-family:var(--sans);line-height:1.6}
+    </style>
+</head>
+<body class="article-page">
+    <header class="site-header">
+        <div class="site-header__status"><div class="site-header__status-inner">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <span class="status-label">ON AIR</span>
+            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
+            <span class="status-date">No. 005 · 2026 SPRING</span>
+        </div></div>
+        <div class="header-inner">
+            <a href="../index.html" class="brand-mark">
+                <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
+                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
+            </a>
+            <nav class="global-nav"><ul>
+                <li><a href="../index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
+                <li><a href="../index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
+                <li><a href="../index.html#video"><span class="nav-num">03</span><span class="nav-text">Video</span></a></li>
+                <li><a href="../dialogue-ichinen.html"><span class="nav-num">04</span><span class="nav-text">Dialogue</span></a></li>
+                <li><a href="../index.html#works"><span class="nav-num">05</span><span class="nav-text">Works</span></a></li>
+                <li><a href="../index.html#about"><span class="nav-num">07</span><span class="nav-text">About</span></a></li>
+            </ul></nav>
+            <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+        </div>
+        <div class="site-header__bar" aria-hidden="true"></div>
+    </header>
+    <main>
+        <section class="article-hero">
+            <div>
+                <div class="article-hero__eyebrow">
+                    <span class="tag tag--art">美術</span>
+                    <span class="date">2026.05.23</span>
+                </div>
+                <h1 class="article-hero__title">ロン・ミュエク展レポート１</h1>
+                <p class="article-hero__lead">森美術館「ロン・ミュエク」</p>
+            </div>
+            <aside class="article-hero__side" aria-label="記事情報">
+                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
+                <div class="article-meta-stack">
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Author</span>
+                        <span class="article-meta-stack__value">田代明向</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Category</span>
+                        <span class="article-meta-stack__value">美術</span>
+                    </div>
+                    <div class="article-meta-stack__item">
+                        <span class="article-meta-stack__label">Published</span>
+                        <span class="article-meta-stack__value">2026.05.23</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+        <div class="article-shell article-shell--no-toc">
+            
+            <article class="article-body">
+                <p>ロン・ミュエクを初めて知ったのは、確か高校一年生の時だった。（今はもう手元にないので確認できないが、）美術の資料集に彼の作品とその制作プロセスが見開きで掲載されていた。（おそらく《スタンディング・ウーマン》という題の巨大な熟年女性の立像だったと思う。）あまりに精巧なその作りと、それゆえ余計にぎょっとする大きさが強く印象に残っている。</p><p>大学に入学し、本格的に美術史を学び始めてから、彼がYBAと呼ばれるイギリス現代美術の潮流を代表する作家の一人であったことや、その評価を改めて認識した。彼の作品は図版では何度も見たことがあったが、実物を見るのは今回が初めてだった。</p><p>はっきり言ってしまえば、<span class="accent2">彼の作品は図版で見るほどリアルではなかった。</span>図版では人も作品も同じように静止しているからなのか、あるいは普段私たちが無意識に認識している毛穴や肌の微妙な色調変化が、写真の中では作品も人間も同じように潰れてしまうからなのか、理由は定かではない。だが、とにかく彼の作品には、人間と見紛うような生々しさよりも、どこか正気の欠けた無機質さがあった。むしろマネキンに近い印象だったと言ってもいい。</p><p>先述のように、彼の彫刻は人間と等身大であることがほとんどない。大抵は人よりもずっと小さいか、あるいは逆に巨大である。これもまた、彼の彫刻がリアルな人間と見紛うために作られているわけではないことの証拠だろう。</p><p>しかし、大きさの変化というものは、デジタルイメージが流布する今日において、鑑賞者自身が無意識に補正して認識してしまう危険性がある。iPhone上の数センチのヒカキンも、テレビ画面上の数十センチのヒカキンも、渋谷スクランブル交差点に映し出される数十メートルのヒカキンも、すべて「ヒカキン」として認識されるように、現代の私たちにとって多くのイメージは、フィジカルな大きさの制限から解き放たれている。指先一つで自在に拡大縮小できるそれらのイメージにとって、絶対的なスケールはもはや重要ではない。</p><p>ロン・ミュエクの彫刻作品もまた例外ではない。展覧会でも言及されていたように、《イン・ベッド》などは多くの広告媒体で使用された経験から、その絶対的な大きさよりも先に、ビジュアルイメージとして独り歩きしているように思われる。写真撮影とSNS上での拡散が推奨されている森美術館ではなおさら、彫刻作品は絶対的なスケールを失い、相対的なイメージとして消費される。</p><div class="callout">本作は東京都現代美術館で開催された「カルティエ現代美術財団コレクション展」（2006年）で展示され、作品の画像がその展覧会のキービジュアルに使用されたこともあり、日本でも知られた作品です。<br>（森美術館ウェブサイトより引用）</div><p>その上で、彼が作品に散りばめる、いわば「大きさの基準」とも言うべき要素が気になった。これは、ジオラマを撮影する際、その技巧や緻密さを伝えるために一円玉が比較対象として置かれることに似ている。</p><p>例えば、《買い物中の女》が持つ買い物袋の中身はミニチュアではない。そこには実際の商品が詰められている。また、《エンジェル》が座る椅子も、おそらく実際にアトリエにあった椅子なのだろう。《舟の中の男》が乗る船もまた、彼の小さな身体とは対照的に原寸大で作られている。</p><p>彼の制作には、一貫したテーマのようなものはあまり感じられない。むしろ、「リアルで精巧な人物像を選択することで、何か語りたいことがあるタイプの作家」というより、<span class="accent2">「リアルで精巧な人物像を作れることで、そこから何を語れるのかを探求しているタイプの作家」</span>のように思える。</p><p>確かに、彼の作品が表現する孤独や脆さ、不安といった人間の内面性の表現は見事だ。<span class="accent">しかし個人的には、それらは失恋ソングほどには感情の再現性を持たないようにも感じられる。</span>少なくとも僕は、彼の作品を見て感情移入し、深く落ち込んだり涙を流したりすることはなかった。</p><p>むしろ、彼の作品が持つこうした「寄せ付けなさ」こそが、一つの魅力なのではないかと思う。</p><p>多くの彫刻作品が神話や歴史的エピソードといった明確な文脈を伴って設置されるのに対し、彼の作品の多くは、その背景が語られない。なぜ船に乗っているのか。そこは海なのか川なのか。その日は晴れなのか雨なのか。そもそも現代なのか、中世なのか。彼の作品はいつも孤独に浮かんでいる。</p><p>薪やベッド、チキンといった断片的なモチーフから物語を想像し、「わかった」という快感を得たくなるのに、どこかうまく掴みきれない。そんなもどかしさがある。</p><p>だからこそ、<span class="accent">彼の作品は20年後の観客にも、100年後の観客にも、今とそれほど変わらず映るのではないだろうか。</span>彼自身が作品について多くを語りたがらないのも、作品に意味が固定されることを避けているからなのかもしれない。</p><p>私たちは、意味が失われたはるか昔の芸術作品――例えばヴィレンドルフのヴィーナスやサモトラケのニケを見る時と同じように、「何のために作られたのかは分からないけれど、なんだかいい」と感じながら、現代の彼の作品を鑑賞することができる。</p><p>一方で、こうした余白の多い作品は、短期的にはさまざまな物語を引き受ける。彼の作品と見つめ合っている鑑賞者を見ていると不思議な気分になるし、彫刻の後ろに立っているヨーロッパ系の鑑賞者と作品の人物像があまりに似ていて、思わず笑いそうにもなった。</p><p>《エンジェル》は、当館の「キメ」ポイントの一つでもある大窓の部屋に展示されていた。窓の向こうの景色が時間や天気によって変化することで、作品が語る内容もまた大きく変わる。快晴か曇天かによって、彼の憂鬱の理由も変わって見えることだろう。</p><p>このように、彼の作品は表面的には容易に物語を引き受ける一方で、そのどの物語にも決して完全には回収されない。親しみやすいのに、どこか掴みどころがない。その、人間にも似た印象こそが、僕にとっての彼の作品の魅力である。</p><p>最後に、おそらく今回の展示の目玉である、100体の巨大な頭蓋骨彫刻によって構成された《マス》について触れたい。</p><p>多くの批評では、この作品をヨーロッパ美術史で語られる「メメント・モリ」と結びつけて論じていた。しかし少なくとも僕は、この作品から死にまつわる感覚をあまり受け取らなかった。</p><p>それは、この部屋から漂う樹脂の匂いのせいかもしれないし、頭蓋骨があまりにも綺麗すぎたからかもしれない。あるいは、高く積まれた頭蓋骨が崩れないか心配になったり、もし固定されているのなら毎回の設営は大変そうだ、などという俗っぽいことばかり考えてしまったせいかもしれない。</p><p>いずれにせよ、死の恐怖や儚さ、「死ねば皆同じ」といったメメント・モリ的な感覚よりも、むしろ無機質な量産品のような印象の方が強かった。</p><p>大量生産が支配する現代社会において、死と消費社会を重ね合わせた作品である可能性もある。しかし、彼がそこまで単純な社会批判をするだろうか、という疑問も残る。</p><p><span class="accent">いずれにしても、僕はこの作品についてこれからも考え続けるつもりだ。考え続けられることこそ、美術作品鑑賞の面白さでもあるのだから。</span></p><p>だから今回書いた感想も、あくまでファーストインプレッションに過ぎない。考えがもう少しまとまった時、またどこかで改めて語るかもしれない。</p>
+                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
+            </article>
+        </div>
+        <!-- いいね・コメント -->
+        <section class="article-reactions">
+            <div class="reaction-like">
+                <button class="like-btn" id="like-btn" onclick="toggleLike()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="like-count" id="like-count">0</span>
+                </button>
+                <p class="reaction-note">※ いいね数はこのブラウザのみに保存されます</p>
+            </div>
+            <h2 class="comments-head">コメント</h2>
+            <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" id="comment-nick" placeholder="ニックネーム（必須）" required maxlength="30">
+                <textarea id="comment-text" placeholder="コメントを書く..." required maxlength="500" rows="4"></textarea>
+                <button type="submit" class="comment-submit">送信する</button>
+            </form>
+            <div id="comments-list"></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <img src="../fukuryu-logo.png" alt="伏流" class="site-footer__logo">
+                <p>関西発、領域横断的知のプラットフォーム。</p>
+            </div>
+            <div class="site-footer__cols">
+                <div><h4>Programs</h4><ul>
+                    <li><a href="../index.html#radio">Radio</a></li>
+                    <li><a href="../index.html#article">Article</a></li>
+                    <li><a href="../index.html#video">Video</a></li>
+                    <li><a href="../dialogue-ichinen.html">Dialogue</a></li>
+                </ul></div>
+                <div><h4>Follow</h4><ul>
+                    <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                </ul></div>
+            </div>
+        </div>
+        <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
+    </footer>
+    <script>
+        document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});
+        // ── いいね・コメント（LocalStorage）──
+        (function(){
+            const ID = location.pathname.replace(/.*//,'').replace('.html','') || 'article';
+            const LK = 'fk_likes_'+ID, LD = 'fk_liked_'+ID, CM = 'fk_comments_'+ID;
+            function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+            function getLikes(){return parseInt(localStorage.getItem(LK)||'0');}
+            function isLiked(){return localStorage.getItem(LD)==='1';}
+            function updateLikeUI(){
+                const btn=document.getElementById('like-btn'),cnt=document.getElementById('like-count');
+                if(!btn||!cnt)return;
+                btn.classList.toggle('is-liked',isLiked());
+                cnt.textContent=getLikes();
+            }
+            window.toggleLike=function(){
+                const liked=isLiked(),n=getLikes();
+                localStorage.setItem(LD,liked?'0':'1');
+                localStorage.setItem(LK,String(liked?Math.max(0,n-1):n+1));
+                updateLikeUI();
+            };
+            function getComments(){try{return JSON.parse(localStorage.getItem(CM)||'[]');}catch{return[];}}
+            function renderComments(){
+                const el=document.getElementById('comments-list');
+                if(!el)return;
+                const list=getComments();
+                el.innerHTML=list.length
+                    ?list.map(c=>`<div class="comment-item"><div class="comment-meta"><span class="comment-nick">${esc(c.nick)}</span><span class="comment-date">${c.date}</span></div><p class="comment-body">${esc(c.text)}</p></div>`).join('')
+                    :'<p class="no-comments">まだコメントはありません。最初のコメントを残しませんか？</p>';
+            }
+            window.submitComment=function(e){
+                e.preventDefault();
+                const nick=document.getElementById('comment-nick').value.trim();
+                const text=document.getElementById('comment-text').value.trim();
+                if(!nick||!text)return;
+                const now=new Date();
+                const date=now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
+                const list=getComments();
+                list.push({nick,text,date});
+                localStorage.setItem(CM,JSON.stringify(list));
+                document.getElementById('comment-nick').value='';
+                document.getElementById('comment-text').value='';
+                renderComments();
+            };
+            updateLikeUI();
+            renderComments();
+        })();
+        // TOC highlight
+        (function(){
+            const toc=document.querySelector('.article-toc');
+            if(!toc)return;
+            const links=[...toc.querySelectorAll('a[href^="#"]')];
+            if(!links.length)return;
+            function highlight(){
+                const y=window.scrollY+160;
+                let active=null;
+                links.forEach(a=>{const t=document.querySelector(a.getAttribute('href'));if(t&&t.getBoundingClientRect().top+window.scrollY<=y)active=a;});
+                links.forEach(a=>a.classList.toggle('is-active',a===active));
+            }
+            window.addEventListener('scroll',highlight,{passive:true});
+            highlight();
+        })();
+    </script>
+</body>
+</html>
