@@ -285,4 +285,15 @@ Supabase（無料tier）を使って全ユーザーが同じカウントを見�
 
 ---
 
-*最終更新: 2026-05-14*
+---
+
+## 9. サイト写真・CV（2026-11 追加）
+
+- 編集ツール: `tools/site-editor.html`（「写真配置」「CV」タブ。右側に実際のトップページを `index.html?preview=1` で表示してライブプレビュー）
+- 写真の配置: `site/photos.json`（スロット: `hero` / `band1` / `band2` / `collab` / `band3`。`x`,`y` は表示中心 %）
+- CV: `site/cv.json`（共同代表2名。`history` は「年 + スペース + 内容」の1行1項目）
+- 写真本体: `site/images/`（ツールの写真ライブラリからアップロード。最大2400px・JPEGに自動圧縮）
+- フォント: 全体を角ゴシック「Zen Kaku Gothic New」に統一（`--serif` 変数も同フォントを指す。ロゴ画像のみ明朝）
+- 廃止: 一年対談・読了、その時。。。・Works・Shop・About セクション
+
+*最終更新: 2026-11-11*

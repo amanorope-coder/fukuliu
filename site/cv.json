@@ -1,0 +1,28 @@
+{
+  "members": [
+    {
+      "id": "amano",
+      "name": "天野 紘寿",
+      "nameEn": "",
+      "role": "共同代表",
+      "photo": "",
+      "photoX": 50,
+      "photoY": 50,
+      "instagram": "",
+      "bio": "",
+      "history": ""
+    },
+    {
+      "id": "tashiro",
+      "name": "田代 明向",
+      "nameEn": "",
+      "role": "共同代表",
+      "photo": "",
+      "photoX": 50,
+      "photoY": 50,
+      "instagram": "",
+      "bio": "",
+      "history": ""
+    }
+  ]
+}

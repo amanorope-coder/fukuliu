@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
@@ -45,10 +45,8 @@
                 <ul>
                     <li><a href="#radio">Radio</a></li>
                     <li><a href="#article">Article</a></li>
-                    <li><a href="dialogue-ichinen.html">Dialogue</a></li>
-                    <li><a href="#works">Works</a></li>
-                    <li><a href="#shop">Shop</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="tokubetsu-kyoryoku.html">Collaborators</a></li>
+                    <li><a href="#cv">CV</a></li>
                 </ul>
             </nav>
             <button class="nav-toggle" aria-label="メニューを開く">
@@ -61,13 +59,15 @@
     </header>
 
     <!-- ============================ HERO ============================ -->
-    <section class="hero">
+    <!-- 写真は tools/site-editor.html の「写真配置」で設定（site/photos.json） -->
+    <section class="hero" data-slot="hero">
+        <div class="hero__media" aria-hidden="true"><img class="hero__img" alt=""></div>
+        <div class="hero__shade" aria-hidden="true"></div>
         <div class="hero__main">
             <p class="hero__eyebrow">Kansai Art Platform / Est. 2026</p>
             <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 - Kansai Art Platform" class="hero__logo-img"></h1>
             <p class="hero__tagline">文化の関西、次代の若手を照らす。<span class="accent">京都発“番組型プラットフォーム”</span>。</p>
         </div>
-
     </section>
 
     <!-- ============================ FEATURED REEL ============================ -->
@@ -113,6 +113,9 @@
             </div>
         </div>
     </section>
+
+    <!-- 写真帯①（未設定なら非表示） -->
+    <figure class="photo-band" data-slot="band1" hidden><img alt=""><figcaption class="photo-band__cap"></figcaption></figure>
 
     <!-- ============================ RADIO (Spotify Embed) ============================ -->
     <!-- ★ エピソードの追加・編集はこのファイル末尾の <script> ブロックの radioEpisodes 配列を編集してください ★ -->
@@ -173,6 +176,8 @@
         <div id="articles-list" class="article-list"></div>
     </section>
 
+    <!-- 写真帯②（未設定なら非表示） -->
+    <figure class="photo-band" data-slot="band2" hidden><img alt=""><figcaption class="photo-band__cap"></figcaption></figure>
 
 
     <!-- ============================ SERIES ============================ -->
@@ -194,23 +199,12 @@
                 <p>美術を軸にした、他分野との交歓。</p>
                 <span class="series-card__type">Podcast</span>
             </a>
-            <a href="dialogue-ichinen.html" class="series-card">
-                <span class="series-card__no">#03</span>
-                <h3>一年対談</h3>
-                <p>マツモリ×タシロ、一年がかりの対話。</p>
-                <span class="series-card__type">対談</span>
-            </a>
-            <a href="dokuryo.html" class="series-card">
-                <span class="series-card__no">#04</span>
-                <h3>読了、その時。。。</h3>
-                <p>家・駅・旅先...。その本、どこで読み終える？</p>
-                <span class="series-card__type">記事</span>
-            </a>
         </div>
     </section>
 
     <!-- ============================ コラボレーター ============================ -->
-    <section id="tokubetsu" class="tokubetsu-banner">
+    <section id="tokubetsu" class="tokubetsu-banner" data-slot="collab">
+        <div class="tokubetsu-banner__media" aria-hidden="true"><img alt=""></div>
         <div class="tokubetsu-banner__inner">
             <div class="tokubetsu-banner__text">
                 <span class="program__label tokubetsu-banner__label">— Special Thanks</span>
@@ -221,20 +215,18 @@
         </div>
     </section>
 
-    <!-- ============================ WORKS / SHOP ============================ -->
-    <section class="dual">
-        <div id="works" class="dual__col">
-            <span class="program__label">Works</span>
-            <h2 class="program__title">作品</h2>
-            <p class="dual__desc">FUKURYUに関わる作家による作品アーカイブ。プラットフォーム自体が、批評と制作の地続きであることの証。</p>
-            <a href="#" class="btn-line">View archive →</a>
+    <!-- 写真帯③（未設定なら非表示） -->
+    <figure class="photo-band" data-slot="band3" hidden><img alt=""><figcaption class="photo-band__cap"></figcaption></figure>
+
+    <!-- ============================ CV ============================ -->
+    <!-- 内容は tools/site-editor.html の「CV」で編集（site/cv.json） -->
+    <section id="cv" class="cv">
+        <div class="cv__head">
+            <span class="program__label">— Members</span>
+            <h2 class="program__title">CV</h2>
+            <p class="program__desc">伏流を運営する、共同代表のふたり。</p>
         </div>
-        <div id="shop" class="dual__col dual__col--alt">
-            <span class="program__label">Shop</span>
-            <h2 class="program__title">オンラインショップ</h2>
-            <p class="dual__desc">作品・印刷物・限定アイテムなど。プラットフォームを存続させるための、もうひとつの場。</p>
-            <a href="#" class="btn-line btn-line--white">Visit shop →</a>
-        </div>
+        <div id="cv-grid" class="cv-grid"></div>
     </section>
 
     <!-- ============================ BACKNUMBERS ============================ -->
@@ -249,28 +241,12 @@
             <button class="archive-filter__btn is-active" type="button" data-filter="all">All</button>
             <button class="archive-filter__btn" type="button" data-filter="radio">Radio</button>
             <button class="archive-filter__btn" type="button" data-filter="article">Article</button>
-            <button class="archive-filter__btn" type="button" data-filter="series">Series</button>
         </div>
 
         <p id="archive-status" class="archive-status" aria-live="polite"></p>
         <ul id="archive-list" class="archive-list"></ul>
 
         <button id="archive-load-more" class="load-more" type="button">Load more</button>
-    </section>
-
-    <!-- ============================ ABOUT / RESPONSE ============================ -->
-    <section id="about" class="about">
-        <div class="about__inner">
-            <span class="program__label">— About</span>
-            <h2 class="about__title">天野紘寿×田代明向<br><span class="accent">番組型プラットフォーム</span></h2>
-            <p class="about__text">
-                京都市芸大/天野紘寿×田代明向による番組型プラットフォーム。美術外のゲストを迎える美術史ラジオ、インタビュー動画、少し変わった展覧会レビュー、参加型読書記録、ZINEなど様々な番組を通じて、関西の文化を担う若手の今を紹介します。
-            </p>
-            <div class="about__cta">
-                <a href="#" class="btn-fill">お便りを送る</a>
-                <a href="#" class="btn-line">Discordに参加</a>
-            </div>
-        </div>
     </section>
 
     <!-- ============================ FOOTER ============================ -->
@@ -286,18 +262,15 @@
                     <ul>
                         <li><a href="#radio">Radio</a></li>
                         <li><a href="#article">Article</a></li>
-                        <li><a href="#video">Video</a></li>
-                        <li><a href="dialogue-ichinen.html">Dialogue</a></li>
                         <li><a href="#series">Series</a></li>
+                        <li><a href="#backnumbers">Backnumbers</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4>Platform</h4>
                     <ul>
-                        <li><a href="#works">Works</a></li>
-                        <li><a href="#shop">Shop</a></li>
-                        <li><a href="#backnumbers">Backnumbers</a></li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="tokubetsu-kyoryoku.html">Collaborators</a></li>
+                        <li><a href="#cv">CV</a></li>
                     </ul>
                 </div>
                 <div>
@@ -339,17 +312,7 @@
         //              - 'https://note.com/...' のような外部URL
         //              - 空文字なら「準備中」表示
         // ============================================================
-        const articles = [
-            {
-                cat: 'dialogue',
-                date: '2026.04.25 —',
-                updatedAt: '2026.05.11', // 対談ログ更新時にここの日付を変える（YYYY.MM.DD形式）
-                title: '一年対談 — マツモリ × タシロ',
-                excerpt: 'ペインター・マツモリと芸術家・タシロが、制作・生活・アートの現在地についてDiscordで日常的に言葉を交わす。一年をかけて続ける長期対話の記録。',
-                author: 'マツモリ・タシロ',
-                url: 'dialogue-ichinen.html'
-            },
-        ];
+        const articles = [];
 
         const ARTICLE_CATEGORIES = {
             essay:    { label: 'エッセイ' },
@@ -696,14 +659,7 @@
         // ============================================================
         const videoArchiveItems = [];
 
-        const seriesArchiveItems = [
-            {
-                type: 'series',
-                date: '2026.04.25',
-                title: '一年対談 — マツモリ × タシロ',
-                url: 'dialogue-ichinen.html'
-            }
-        ];
+        const seriesArchiveItems = [];
 
         (function () {
             const ARCHIVE_PAGE_SIZE = 6;
@@ -1064,10 +1020,129 @@
         })();
     </script>
 
+    <script>
+        // ============================================================
+        //  サイト写真 & CV — site/photos.json / site/cv.json
+        //  編集は tools/site-editor.html から（?preview=1 のときはエディタからの指示を待つ）
+        // ============================================================
+        (function () {
+            const PREVIEW = new URLSearchParams(location.search).has('preview');
+
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            }
+            function pos(o) { return `${o && o.x != null ? o.x : 50}% ${o && o.y != null ? o.y : 50}%`; }
+
+            function applyPhotos(cfg) {
+                cfg = cfg || {};
+                // HERO
+                const hero = document.querySelector('[data-slot="hero"]');
+                if (hero) {
+                    const h = cfg.hero || {};
+                    const img = hero.querySelector('.hero__img');
+                    const has = !!h.src;
+                    hero.classList.toggle('has-photo', has);
+                    hero.dataset.text = h.text || 'center';
+                    hero.dataset.tone = h.tone || 'light';
+                    hero.style.setProperty('--hero-shade', ((h.shade != null ? h.shade : 30) / 100).toFixed(2));
+                    if (img) {
+                        if (has) { img.src = h.src; img.style.objectPosition = pos(h); }
+                        else img.removeAttribute('src');
+                    }
+                }
+                // 写真帯
+                document.querySelectorAll('.photo-band[data-slot]').forEach(fig => {
+                    const b = cfg[fig.dataset.slot] || {};
+                    const img = fig.querySelector('img');
+                    const cap = fig.querySelector('.photo-band__cap');
+                    fig.hidden = !b.src;
+                    fig.dataset.size = b.size || 'm';
+                    if (b.src) { img.src = b.src; img.style.objectPosition = pos(b); }
+                    if (cap) { cap.textContent = b.caption || ''; cap.hidden = !b.caption; }
+                });
+                // コラボレーターバナー背景
+                const collab = document.querySelector('[data-slot="collab"]');
+                if (collab) {
+                    const c = cfg.collab || {};
+                    const img = collab.querySelector('.tokubetsu-banner__media img');
+                    collab.classList.toggle('has-photo', !!c.src);
+                    collab.style.setProperty('--collab-tint', ((c.tint != null ? c.tint : 70) / 100).toFixed(2));
+                    if (img) {
+                        if (c.src) { img.src = c.src; img.style.objectPosition = pos(c); }
+                        else img.removeAttribute('src');
+                    }
+                }
+            }
+
+            const IG_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
+
+            function historyHTML(text) {
+                const lines = String(text || '').split('\n').map(l => l.trim()).filter(Boolean);
+                if (!lines.length) return '';
+                return `<dl class="cv-card__history">${lines.map(l => {
+                    // 先頭の「年」部分（例: 2024 / 2024.04 / 2023–2024 / 2024年）と本文を分ける
+                    const m = l.match(/^([0-9０-９]{4}[0-9０-９.\/年月\-–〜~ ]*?)[\s　:：]+(.+)$/);
+                    return m
+                        ? `<div class="cv-card__row"><dt>${esc(m[1].trim())}</dt><dd>${esc(m[2])}</dd></div>`
+                        : `<div class="cv-card__row cv-card__row--plain"><dt></dt><dd>${esc(l)}</dd></div>`;
+                }).join('')}</dl>`;
+            }
+
+            function renderMember(m) {
+                const photo = m.photo
+                    ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos({x:m.photoX,y:m.photoY})}">`
+                    : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`;
+                return `
+                    <article class="cv-card">
+                        <div class="cv-card__photo">${photo}</div>
+                        <div class="cv-card__body">
+                            ${m.role ? `<span class="cv-card__role">${esc(m.role)}</span>` : ''}
+                            <h3 class="cv-card__name">${esc(m.name)}</h3>
+                            ${m.nameEn ? `<p class="cv-card__name-en">${esc(m.nameEn)}</p>` : ''}
+                            ${m.instagram ? `<a class="cv-card__ig" href="${esc(m.instagram)}" target="_blank" rel="noopener noreferrer">${IG_ICON}Instagram</a>` : ''}
+                            ${m.bio ? `<p class="cv-card__bio">${esc(m.bio).replace(/\n/g, '<br>')}</p>` : ''}
+                            ${m.history ? `<h4 class="cv-card__sub">経歴</h4>${historyHTML(m.history)}` : ''}
+                        </div>
+                    </article>`;
+            }
+
+            function applyCV(data) {
+                const grid = document.getElementById('cv-grid');
+                if (!grid) return;
+                const members = (data && data.members) || [];
+                grid.innerHTML = members.length
+                    ? members.map(renderMember).join('')
+                    : '<p class="cv-empty">準備中です。</p>';
+            }
+
+            function scrollToSlot(name) {
+                const el = name === 'cv' ? document.getElementById('cv') : document.querySelector(`[data-slot="${name}"]`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: name === 'hero' ? 'start' : 'center' });
+            }
+
+            window.FK_SITE = { applyPhotos, applyCV, scrollToSlot };
+
+            if (PREVIEW) {
+                // エディタ内プレビュー: リンクで別ページに飛ばないようにする
+                document.addEventListener('click', e => { if (e.target.closest('a')) e.preventDefault(); }, true);
+                window.parent && window.parent.postMessage({ type: 'fk-preview-ready' }, '*');
+                return;
+            }
+            fetch('site/photos.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).then(applyPhotos).catch(() => applyPhotos({}));
+            fetch('site/cv.json',     { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).then(applyCV).catch(() => applyCV({}));
+        })();
+    </script>
+
     <style>
         /* ── コラボレーターバナー ── */
-        .tokubetsu-banner { background: linear-gradient(120deg, #F15A22 0%, #c44010 60%, #a83000 100%); padding: 56px 0; }
-        .tokubetsu-banner__inner { max-width: var(--max, 1200px); margin: 0 auto; padding: 0 var(--pad-x, 48px); display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+        .tokubetsu-banner { position: relative; overflow: hidden; background: linear-gradient(120deg, #F15A22 0%, #c44010 60%, #a83000 100%); padding: 56px 0; }
+        .tokubetsu-banner__media { display: none; position: absolute; inset: 0; }
+        .tokubetsu-banner__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .tokubetsu-banner.has-photo { padding: 96px 0; }
+        .tokubetsu-banner.has-photo .tokubetsu-banner__media { display: block; }
+        /* 写真の上にオレンジを重ねる（濃さは --collab-tint） */
+        .tokubetsu-banner.has-photo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(120deg, #F15A22 0%, #c44010 60%, #a83000 100%); opacity: var(--collab-tint, .7); }
+        .tokubetsu-banner__inner { position: relative; z-index: 2; max-width: var(--max, 1200px); margin: 0 auto; padding: 0 var(--pad-x, 48px); display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
         .tokubetsu-banner__label { color: rgba(255,255,255,.65) !important; }
         .tokubetsu-banner__title { color: #fff !important; }
         .tokubetsu-banner__desc { font-family: var(--serif, serif); font-size: 14px; color: rgba(255,255,255,.82); margin-top: 6px; }

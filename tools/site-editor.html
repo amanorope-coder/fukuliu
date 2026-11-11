@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サイト編集 — FUKURYU</title>
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fcfcfc;--soft:#f3f3f4;--fg:#111114;--mute:#5f6168;--line:#e3e3e6;--accent:#235BC8;--orange:#F15A22;--green:#1a9e5c;--red:#d63a2f;
+--sans:"Inter","Zen Kaku Gothic New",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--soft);color:var(--fg);-webkit-font-smoothing:antialiased;height:100vh;display:flex;flex-direction:column}
+button{font-family:inherit}
+.hd{background:var(--fg);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.hd__logo{font-weight:900;font-size:16px}.hd__sub{font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.5)}
+.hd nav{display:flex;gap:16px;margin-left:auto;align-items:center}
+.hd nav a{color:rgba(255,255,255,.65);font-size:12px;text-decoration:none}.hd nav a:hover{color:#fff}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--line);padding:0 16px;align-items:center;gap:4px}
+.tab{padding:13px 18px;border:0;background:none;font-size:13px;font-weight:700;color:var(--mute);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.is-active{color:var(--accent);border-color:var(--accent)}
+.tabs__right{margin-left:auto;display:flex;align-items:center;gap:10px;padding:6px 0}
+.dirty{font-size:11px;color:var(--orange);font-weight:700;display:none}.dirty.on{display:inline}
+.btn{padding:9px 18px;border:0;border-radius:2px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn--ghost{background:#fff;color:var(--fg);border:1px solid var(--line)}
+.btn--sm{padding:6px 12px;font-size:11px}
+.btn--danger{background:#fff;color:var(--red);border:1px solid var(--red)}
+.main{flex:1;display:flex;min-height:0}
+.panel{width:420px;flex-shrink:0;overflow-y:auto;background:#fff;border-right:1px solid var(--line);padding:20px}
+.preview{flex:1;display:flex;flex-direction:column;min-width:0}
+.pv-bar{display:flex;gap:8px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:#fff;font-size:11px;color:var(--mute)}
+.pv-bar .seg{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.pv-bar .seg button{border:0;background:#fff;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;color:var(--mute)}
+.pv-bar .seg button.on{background:var(--fg);color:#fff}
+.pv{flex:1;position:relative;overflow:hidden;background:#d9d9dc}
+.pv iframe{position:absolute;top:0;left:50%;border:0;background:#fff;transform-origin:top center}
+.pv.mobile iframe{box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--mute);margin:20px 0 10px}
+.sec-title:first-child{margin-top:0}
+.token{display:flex;gap:8px;align-items:center;padding:12px;background:var(--soft);border-radius:3px;margin-bottom:16px;font-size:12px}
+.token input{flex:1;padding:7px 9px;border:1px solid var(--line);font-family:monospace;font-size:12px}
+.ok{color:var(--green);font-weight:700}
+.slots{display:flex;flex-direction:column;gap:6px}
+.slot{display:flex;gap:10px;align-items:center;padding:8px;border:1.5px solid var(--line);border-radius:4px;cursor:pointer;background:#fff;text-align:left;width:100%}
+.slot:hover{border-color:#bbb}.slot.is-active{border-color:var(--accent);background:#f3f6fd}
+.slot__thumb{width:64px;height:40px;border-radius:2px;background:var(--soft) center/cover no-repeat;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:#aaa}
+.slot__name{font-size:13px;font-weight:700}.slot__hint{font-size:10px;color:var(--mute);margin-top:2px}
+.editor{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.focal{position:relative;display:block;cursor:crosshair;user-select:none;touch-action:none;border-radius:3px;overflow:hidden;background:var(--soft);line-height:0}
+.focal img{width:100%;height:auto;display:block;pointer-events:none;max-height:340px;object-fit:contain}
+.focal__dot{position:absolute;width:26px;height:26px;border-radius:50%;border:2.5px solid #fff;background:rgba(35,91,200,.6);box-shadow:0 0 0 1.5px rgba(0,0,0,.3);transform:translate(-50%,-50%);pointer-events:none}
+.focal__empty{padding:40px 0;text-align:center;font-size:12px;color:var(--mute);line-height:1.6}
+.help{font-size:11px;color:var(--mute);margin:6px 0 0;line-height:1.6}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.field{margin-top:14px}
+.field label{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--mute);margin-bottom:6px}
+.field input[type=text],.field input[type=url],.field textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:2px;font-family:inherit;font-size:13px;background:var(--bg)}
+.field textarea{min-height:90px;resize:vertical;line-height:1.7}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.choices{display:flex;gap:6px;flex-wrap:wrap}
+.choices button{padding:6px 12px;border:1.5px solid var(--line);border-radius:999px;background:#fff;font-size:11px;font-weight:700;cursor:pointer;color:var(--mute)}
+.choices button.on{border-color:var(--fg);background:var(--fg);color:#fff}
+.range{display:flex;align-items:center;gap:10px}.range input{flex:1}.range span{font-size:11px;width:36px;text-align:right;color:var(--mute)}
+.member-tabs{display:flex;gap:6px;margin-bottom:6px}
+.lib{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:10;padding:20px}
+.lib.on{display:flex}
+.lib__box{background:#fff;border-radius:6px;width:min(920px,100%);max-height:88vh;display:flex;flex-direction:column}
+.lib__head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.lib__head h3{font-size:15px;margin-right:auto}
+.lib__grid{padding:16px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.lib__item{position:relative;aspect-ratio:3/2;border-radius:3px;overflow:hidden;cursor:pointer;border:2px solid transparent;background:var(--soft)}
+.lib__item:hover{border-color:var(--accent)}
+.lib__item img{width:100%;height:100%;object-fit:cover;display:block}
+.lib__del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:12px;cursor:pointer;line-height:22px}
+.lib__used{position:absolute;left:4px;bottom:4px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px}
+.lib__msg{padding:30px;text-align:center;color:var(--mute);font-size:13px;grid-column:1/-1}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--fg);color:#fff;padding:11px 20px;border-radius:4px;font-size:13px;display:none;z-index:20;max-width:90vw}
+.toast.on{display:block}.toast.err{background:var(--red)}
+@media(max-width:860px){body{height:auto}.main{flex-direction:column-reverse}.panel{width:100%;border-right:0}.preview{flex:none;height:58vh;position:sticky;top:0;z-index:5}}
+</style>
+</head>
+<body>
+<header class="hd">
+  <div><p class="hd__logo">FUKURYU</p><p class="hd__sub">サイト編集（写真・CV）</p></div>
+  <nav><a href="submit.html">記事エディタ</a><a href="collaborator-maker.html">コラボレーター</a><a href="../index.html" target="_blank">サイトを開く →</a></nav>
+</header>
+<div class="tabs">
+  <button class="tab is-active" data-tab="photos" onclick="switchTab('photos')">🖼 写真配置</button>
+  <button class="tab" data-tab="cv" onclick="switchTab('cv')">👤 CV</button>
+  <div class="tabs__right">
+    <span class="dirty" id="dirty">● 未公開の変更があります</span>
+    <button class="btn" id="btn-save" onclick="publish()" disabled>変更を公開</button>
+  </div>
+</div>
+<div class="main">
+  <aside class="panel">
+    <div class="token" id="token-box"></div>
+
+    <!-- ===== 写真配置 ===== -->
+    <div id="tab-photos">
+      <p class="sec-title">写真を置く場所</p>
+      <div class="slots" id="slots"></div>
+      <div class="editor" id="slot-editor"></div>
+    </div>
+
+    <!-- ===== CV ===== -->
+    <div id="tab-cv" style="display:none">
+      <p class="sec-title">メンバー</p>
+      <div class="member-tabs choices" id="member-tabs"></div>
+      <div id="member-editor"></div>
+    </div>
+  </aside>
+
+  <section class="preview">
+    <div class="pv-bar">
+      <div class="seg"><button class="on" data-dev="pc" onclick="setDevice('pc')">PC</button><button data-dev="mobile" onclick="setDevice('mobile')">スマホ</button></div>
+      <span>実際のトップページに、編集中の内容を重ねて表示しています（まだ公開されていません）</span>
+    </div>
+    <div class="pv" id="pv"><iframe id="frame" src="../index.html?preview=1" title="プレビュー"></iframe></div>
+  </section>
+</div>
+
+<!-- 写真ライブラリ -->
+<div class="lib" id="lib" onclick="if(event.target===this)closeLib()">
+  <div class="lib__box">
+    <div class="lib__head">
+      <h3>写真ライブラリ</h3>
+      <label class="btn btn--sm">写真をアップロード<input type="file" accept="image/*" multiple hidden onchange="uploadFiles(this)"></label>
+      <button class="btn btn--ghost btn--sm" onclick="closeLib()">閉じる</button>
+    </div>
+    <div class="lib__grid" id="lib-grid"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════ 設定 ═══════════════
+const REPO = 'amanorope-coder/fukuliu', BRANCH = 'main';
+const PHOTOS_PATH = 'site/photos.json', CV_PATH = 'site/cv.json', IMG_DIR = 'site/images';
+
+const SLOTS = [
+  { key: 'hero',   label: 'トップバナー（伏流）', hint: 'ページ最上部。横長の写真向け', opts: ['text', 'tone', 'shade'] },
+  { key: 'band1',  label: '写真帯①',             hint: '最新コンテンツ帯の下・ラジオの前', opts: ['size', 'caption'] },
+  { key: 'band2',  label: '写真帯②',             hint: '記事一覧の下', opts: ['size', 'caption'] },
+  { key: 'collab', label: 'コラボレーター背景',   hint: 'オレンジのバナーの背景', opts: ['tint'] },
+  { key: 'band3',  label: '写真帯③',             hint: 'CVの前', opts: ['size', 'caption'] },
+];
+const DEFAULTS = {
+  hero:  { x: 50, y: 50, text: 'center', tone: 'light', shade: 30 },
+  band:  { x: 50, y: 50, size: 'm', caption: '' },
+  collab:{ x: 50, y: 50, tint: 70 },
+};
+
+let photos = {}, cv = { members: [] };
+let shas = {};                 // path -> sha
+let dirty = { photos: false, cv: false };
+let curSlot = 'hero', curMember = 0, device = 'pc';
+let libItems = [];             // [{path, url}]
+const urlMap = {};             // path -> 表示用URL（未デプロイの写真用）
+let libPick = null;            // 選択時のコールバック
+
+// ═══════════════ ユーティリティ ═══════════════
+const $ = id => document.getElementById(id);
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function toast(msg, err){const t=$('toast');t.textContent=msg;t.className='toast on'+(err?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',err?6000:2800)}
+function getToken(){return localStorage.getItem('fukuliu_publish_token')||''}
+function viewUrl(path){ if(!path) return ''; return urlMap[path] || ('../' + path); }   // ツール内表示用
+function frameUrl(path){ if(!path) return ''; return urlMap[path] || path; }            // iframe（ルート）用
+function slotDefaults(key){ return key==='hero'?DEFAULTS.hero:key==='collab'?DEFAULTS.collab:DEFAULTS.band; }
+function slotData(key){ return photos[key] = Object.assign({}, slotDefaults(key), photos[key] || {}); }
+function markDirty(which){ dirty[which]=true; $('dirty').classList.add('on'); $('btn-save').disabled=!getToken(); }
+
+// ═══════════════ GitHub API ═══════════════
+const H = t => ({ Authorization:`token ${t}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' });
+async function ghGet(path){
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}&t=${Date.now()}`, { headers: H(getToken()) });
+  if (r.status===404) return null;
+  if (!r.ok) throw new Error(`読み込み失敗 ${path} (${r.status})`);
+  return r.json();
+}
+async function ghPut(path, base64, message, sha){
+  const body = { message, content: base64, branch: BRANCH }; if (sha) body.sha = sha;
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, { method:'PUT', headers:H(getToken()), body:JSON.stringify(body) });
+  if (!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.message||`保存失敗 ${path} (${r.status})`); }
+  return r.json();
+}
+async function ghDelete(path, sha, message){
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, { method:'DELETE', headers:H(getToken()), body:JSON.stringify({ message, sha, branch:BRANCH }) });
+  if (!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.message||`削除失敗 (${r.status})`); }
+}
+const b64enc = s => btoa(unescape(encodeURIComponent(s)));
+const b64dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g,''))));
+
+// ═══════════════ トークン ═══════════════
+function renderToken(){
+  const box=$('token-box');
+  if (getToken()){
+    box.innerHTML = `<span class="ok">✓ 投稿キー設定済み</span><button class="btn btn--ghost btn--sm" style="margin-left:auto" onclick="resetToken()">リセット</button>`;
+  } else {
+    box.innerHTML = `<input type="password" id="token-in" placeholder="投稿キー（ghp_...）"><button class="btn btn--sm" onclick="saveToken()">保存</button>`;
+  }
+  $('btn-save').disabled = !getToken() || !(dirty.photos||dirty.cv);
+}
+function saveToken(){ const v=$('token-in').value.trim(); if(!v) return; localStorage.setItem('fukuliu_publish_token', v); renderToken(); loadAll(); }
+function resetToken(){ if(confirm('投稿キーをリセットしますか？')){ localStorage.removeItem('fukuliu_publish_token'); renderToken(); } }
+
+// ═══════════════ 読み込み ═══════════════
+async function loadJSON(path){
+  if (getToken()){
+    const f = await ghGet(path);
+    if (!f) return null;
+    shas[path] = f.sha;
+    return JSON.parse(b64dec(f.content));
+  }
+  const r = await fetch('../' + path, { cache:'no-cache' });
+  return r.ok ? r.json() : null;
+}
+async function loadAll(){
+  try {
+    photos = (await loadJSON(PHOTOS_PATH)) || {};
+    cv = (await loadJSON(CV_PATH)) || { members: [] };
+  } catch(e){ toast(e.message, true); }
+  dirty = { photos:false, cv:false }; $('dirty').classList.remove('on');
+  renderSlots(); renderSlotEditor(); renderMemberTabs(); renderMemberEditor(); pushPreview();
+  renderToken();
+}
+
+// ═══════════════ プレビュー ═══════════════
+function resolvedPhotos(){
+  const out = {};
+  SLOTS.forEach(s => { const d = photos[s.key]; if (d) out[s.key] = Object.assign({}, d, { src: frameUrl(d.src) }); });
+  return out;
+}
+function resolvedCV(){
+  return { members: (cv.members||[]).map(m => Object.assign({}, m, { photo: frameUrl(m.photo) })) };
+}
+function fk(){ try { return $('frame').contentWindow.FK_SITE; } catch(e){ return null; } }
+function pushPreview(){ const f=fk(); if(!f) return; f.applyPhotos(resolvedPhotos()); f.applyCV(resolvedCV()); }
+function scrollPreview(name){ const f=fk(); if(f) f.scrollToSlot(name); }
+window.addEventListener('message', e => { if (e.data && e.data.type==='fk-preview-ready'){ pushPreview(); scrollPreview(activeTab==='cv'?'cv':curSlot); } });
+
+function layoutFrame(){
+  const pv=$('pv'), fr=$('frame'), W=pv.clientWidth, Hh=pv.clientHeight;
+  const base = device==='pc' ? 1280 : 390;
+  const scale = device==='pc' ? W/base : Math.min(1, (W-24)/base, 1);
+  fr.style.width = base+'px';
+  fr.style.height = (device==='pc' ? Hh/scale : Math.min(Hh-24, 844)/scale) + 'px';
+  fr.style.transform = `translateX(-50%) scale(${scale})`;
+  fr.style.top = device==='pc' ? '0' : '12px';
+  pv.classList.toggle('mobile', device==='mobile');
+}
+function setDevice(d){ device=d; document.querySelectorAll('[data-dev]').forEach(b=>b.classList.toggle('on', b.dataset.dev===d)); layoutFrame(); }
+window.addEventListener('resize', layoutFrame);
+
+// ═══════════════ タブ ═══════════════
+let activeTab = 'photos';
+function switchTab(t){
+  activeTab = t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('is-active', b.dataset.tab===t));
+  $('tab-photos').style.display = t==='photos'?'':'none';
+  $('tab-cv').style.display = t==='cv'?'':'none';
+  scrollPreview(t==='cv'?'cv':curSlot);
+}
+
+// ═══════════════ 焦点（表示位置）ボックス ═══════════════
+function focalHTML(src, x, y, id){
+  if (!src) return `<div class="focal__empty">写真が未設定です。<br>下のボタンからライブラリで選んでください。</div>`;
+  return `<div class="focal" id="${id}"><img src="${esc(src)}" alt=""><div class="focal__dot" style="left:${x}%;top:${y}%"></div></div>
+          <p class="help">クリック／ドラッグで「見せたい中心」を指定。トリミングされても、この点がなるべく画面に残ります。</p>`;
+}
+function attachFocal(id, onChange){
+  const box = $(id); if (!box) return;
+  const dot = box.querySelector('.focal__dot'), img = box.querySelector('img');
+  let drag=false;
+  const calc = (cx, cy) => {
+    const r = img.getBoundingClientRect();
+    return { x: Math.round(Math.min(100,Math.max(0,(cx-r.left)/r.width*100))), y: Math.round(Math.min(100,Math.max(0,(cy-r.top)/r.height*100))) };
+  };
+  const move = (cx, cy) => { const p=calc(cx,cy); dot.style.left=p.x+'%'; dot.style.top=p.y+'%'; onChange(p); };
+  box.addEventListener('pointerdown', e => { drag=true; box.setPointerCapture(e.pointerId); move(e.clientX,e.clientY); });
+  box.addEventListener('pointermove', e => { if(drag) move(e.clientX,e.clientY); });
+  box.addEventListener('pointerup', () => drag=false);
+  box.addEventListener('pointercancel', () => drag=false);
+}
+
+// ═══════════════ 写真配置 ═══════════════
+function renderSlots(){
+  $('slots').innerHTML = SLOTS.map(s => {
+    const src = photos[s.key] && photos[s.key].src;
+    return `<button class="slot${s.key===curSlot?' is-active':''}" onclick="selectSlot('${s.key}')">
+      <span class="slot__thumb" style="${src?`background-image:url('${esc(viewUrl(src))}')`:''}">${src?'':'なし'}</span>
+      <span><span class="slot__name">${s.label}</span><span class="slot__hint" style="display:block">${s.hint}</span></span>
+    </button>`;
+  }).join('');
+}
+function selectSlot(k){ curSlot=k; renderSlots(); renderSlotEditor(); scrollPreview(k); }
+
+function choiceRow(label, field, options, val){
+  return `<div class="field"><label>${label}</label><div class="choices">${options.map(([v,l]) =>
+    `<button class="${v===val?'on':''}" onclick="setSlot('${field}','${v}')">${l}</button>`).join('')}</div></div>`;
+}
+function renderSlotEditor(){
+  const s = SLOTS.find(x=>x.key===curSlot), d = slotData(curSlot);
+  let html = `<p class="sec-title">${s.label}</p>${focalHTML(viewUrl(d.src), d.x, d.y, 'slot-focal')}
+    <div class="row"><button class="btn btn--sm" onclick="openLib(p=>{setSlot('src',p);renderSlotEditor();})">ライブラリから選ぶ／アップロード</button>
+    ${d.src?`<button class="btn btn--ghost btn--sm" onclick="setSlot('src','');renderSlotEditor()">写真を外す</button>`:''}</div>`;
+  if (s.opts.includes('text'))  html += choiceRow('文字の位置','text',[['center','中央'],['bottom','下・中央'],['bottom-left','左下']], d.text);
+  if (s.opts.includes('tone'))  html += choiceRow('ロゴ・文字の色','tone',[['light','白（暗い写真向け）'],['dark','黒（明るい写真向け）']], d.tone);
+  if (s.opts.includes('shade')) html += rangeRow('写真の暗さ／明るさの調整（文字を読みやすく）','shade',d.shade,0,80);
+  if (s.opts.includes('tint'))  html += rangeRow('オレンジの重ね具合','tint',d.tint,0,100);
+  if (s.opts.includes('size'))  html += choiceRow('高さ','size',[['s','低め'],['m','標準'],['l','高め']], d.size);
+  if (s.opts.includes('caption')) html += `<div class="field"><label>キャプション（任意）</label><input type="text" value="${esc(d.caption)}" oninput="setSlot('caption',this.value,true)" placeholder="例：撮影 ◯◯"></div>`;
+  $('slot-editor').innerHTML = html;
+  attachFocal('slot-focal', p => { d.x=p.x; d.y=p.y; markDirty('photos'); pushPreview(); });
+}
+function rangeRow(label, field, val, min, max){
+  return `<div class="field"><label>${label}</label><div class="range"><input type="range" min="${min}" max="${max}" value="${val}"
+    oninput="this.nextElementSibling.textContent=this.value+'%';setSlot('${field}',+this.value,true)"><span>${val}%</span></div></div>`;
+}
+function setSlot(field, val, quiet){
+  const d = slotData(curSlot);
+  d[field] = val;
+  if (field==='src' && !val) { d.x=50; d.y=50; }
+  markDirty('photos'); pushPreview(); renderSlots();
+  if (!quiet && field!=='src') renderSlotEditor();
+}
+
+// ═══════════════ CV ═══════════════
+function renderMemberTabs(){
+  $('member-tabs').innerHTML = (cv.members||[]).map((m,i)=>`<button class="${i===curMember?'on':''}" onclick="curMember=${i};renderMemberTabs();renderMemberEditor();scrollPreview('cv')">${esc(m.name||'メンバー'+(i+1))}</button>`).join('');
+}
+function renderMemberEditor(){
+  const m = (cv.members||[])[curMember];
+  if (!m){ $('member-editor').innerHTML = '<p class="help">メンバーデータがありません。</p>'; return; }
+  const f = (key, label, type='text', ph='') => `<div class="field"><label>${label}</label>${type==='area'
+      ? `<textarea oninput="setMember('${key}',this.value)" placeholder="${ph}">${esc(m[key])}</textarea>`
+      : `<input type="${type}" value="${esc(m[key])}" oninput="setMember('${key}',this.value)" placeholder="${ph}">`}</div>`;
+  $('member-editor').innerHTML = `
+    <p class="sec-title">アーティスト写真</p>
+    ${focalHTML(viewUrl(m.photo), m.photoX??50, m.photoY??50, 'cv-focal')}
+    <div class="row"><button class="btn btn--sm" onclick="openLib(p=>{setMember('photo',p);renderMemberEditor();})">ライブラリから選ぶ／アップロード</button>
+    ${m.photo?`<button class="btn btn--ghost btn--sm" onclick="setMember('photo','');renderMemberEditor()">写真を外す</button>`:''}</div>
+    <p class="sec-title">基本情報</p>
+    ${f('name','名前')}
+    ${f('nameEn','ローマ字表記（任意）','text','例：Hirotoshi Amano')}
+    ${f('role','肩書き','text','例：共同代表')}
+    ${f('instagram','Instagram URL','url','https://www.instagram.com/...')}
+    ${f('bio','プロフィール（短い紹介文）','area')}
+    ${f('history','経歴','area','1行に1項目。年を先頭に書くと左に揃います。\n2024　京都市立芸術大学 入学\n2025　個展「〇〇」（京都）')}
+    <p class="help">経歴は「年 + 全角/半角スペース + 内容」で1行ずつ。年がない行もそのまま表示されます。</p>`;
+  attachFocal('cv-focal', p => { m.photoX=p.x; m.photoY=p.y; markDirty('cv'); pushPreview(); });
+}
+function setMember(key, val){
+  const m = cv.members[curMember]; m[key] = val;
+  if (key==='photo' && !val){ m.photoX=50; m.photoY=50; }
+  markDirty('cv'); pushPreview();
+  if (key==='name') renderMemberTabs();
+}
+
+// ═══════════════ 写真ライブラリ ═══════════════
+function usedPaths(){
+  const s = new Set();
+  Object.values(photos).forEach(d => d && d.src && s.add(d.src));
+  (cv.members||[]).forEach(m => m.photo && s.add(m.photo));
+  return s;
+}
+async function openLib(cb){
+  libPick = cb; $('lib').classList.add('on');
+  if (!getToken()){ $('lib-grid').innerHTML = '<p class="lib__msg">写真のアップロード・一覧には投稿キーが必要です。</p>'; return; }
+  $('lib-grid').innerHTML = '<p class="lib__msg">読み込み中…</p>';
+  try {
+    const list = (await ghGet(IMG_DIR)) || [];
+    libItems = list.filter(f => /\.(jpe?g|png|webp|avif|gif)$/i.test(f.name))
+      .sort((a,b)=>b.name.localeCompare(a.name))
+      .map(f => { if (!urlMap[f.path]) urlMap[f.path] = f.download_url; return { path:f.path, sha:f.sha }; });
+    renderLib();
+  } catch(e){ $('lib-grid').innerHTML = `<p class="lib__msg">${esc(e.message)}</p>`; }
+}
+function renderLib(){
+  const used = usedPaths();
+  $('lib-grid').innerHTML = libItems.length ? libItems.map((it,i)=>`
+    <div class="lib__item" onclick="pickLib(${i})">
+      <img src="${esc(viewUrl(it.path))}" alt="" loading="lazy">
+      ${used.has(it.path)?'<span class="lib__used">使用中</span>':`<button class="lib__del" title="削除" onclick="event.stopPropagation();delLib(${i})">✕</button>`}
+    </div>`).join('') : '<p class="lib__msg">まだ写真がありません。右上の「写真をアップロード」から追加してください（複数選択できます）。</p>';
+}
+function closeLib(){ $('lib').classList.remove('on'); libPick=null; }
+function pickLib(i){ const p = libItems[i].path; const cb=libPick; closeLib(); if (cb) cb(p); }
+async function delLib(i){
+  const it = libItems[i];
+  if (!confirm('この写真をライブラリから削除しますか？（元に戻せません）')) return;
+  try { await ghDelete(it.path, it.sha, `サイト写真削除: ${it.path}`); libItems.splice(i,1); renderLib(); toast('削除しました'); }
+  catch(e){ toast(e.message, true); }
+}
+function compress(file, maxPx=2400, q=0.85){
+  return new Promise((res, rej) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(u);
+      const r = Math.min(1, maxPx/Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas'); c.width=Math.round(img.naturalWidth*r); c.height=Math.round(img.naturalHeight*r);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      res(c.toDataURL('image/jpeg', q));
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); rej(new Error('画像を読み込めません: '+file.name)); };
+    img.src = u;
+  });
+}
+async function uploadFiles(input){
+  const files = [...input.files]; input.value='';
+  if (!files.length) return;
+  let done=0;
+  for (const file of files){
+    toast(`アップロード中… ${done+1}/${files.length}`);
+    try {
+      const dataUrl = await compress(file);
+      const d = new Date(), stamp = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+      const path = `${IMG_DIR}/photo-${stamp}-${Date.now().toString(36)}${Math.random().toString(36).slice(2,5)}.jpg`;
+      const res = await ghPut(path, dataUrl.split(',')[1], `サイト写真追加: ${file.name}`);
+      urlMap[path] = dataUrl;
+      libItems.unshift({ path, sha: res.content.sha });
+      done++;
+    } catch(e){ toast(e.message, true); }
+  }
+  renderLib();
+  if (done) toast(`${done}枚アップロードしました。使う写真をクリックして選んでください。`);
+}
+
+// ═══════════════ 公開 ═══════════════
+async function publish(){
+  if (!getToken()) return;
+  const btn=$('btn-save'); btn.disabled=true; btn.textContent='公開中…';
+  try {
+    if (dirty.photos){
+      const cur = await ghGet(PHOTOS_PATH);
+      await ghPut(PHOTOS_PATH, b64enc(JSON.stringify(photos, null, 2)+'\n'), 'サイト写真の配置を更新', cur && cur.sha);
+    }
+    if (dirty.cv){
+      const cur = await ghGet(CV_PATH);
+      await ghPut(CV_PATH, b64enc(JSON.stringify(cv, null, 2)+'\n'), 'CVを更新', cur && cur.sha);
+    }
+    dirty = { photos:false, cv:false }; $('dirty').classList.remove('on');
+    toast('公開しました。サイトへの反映まで1〜2分かかります。');
+  } catch(e){ toast('失敗しました: '+e.message, true); btn.disabled=false; }
+  btn.textContent='変更を公開';
+}
+window.addEventListener('beforeunload', e => { if (dirty.photos||dirty.cv){ e.preventDefault(); e.returnValue=''; } });
+
+// ═══════════════ 起動 ═══════════════
+$('frame').addEventListener('load', () => { pushPreview(); });
+renderToken(); layoutFrame(); loadAll();
+</script>
+</body>
+</html>
