@@ -1,0 +1,57 @@
+/* ===== 案C 刷り・ZINE / PRINT ROOM ===== */
+.cc{--paper:#efe8d8;--ink:#1d1a16;--blue:#0a5cc2;--orange:#ff5a1f;--mx:0px;--my:0px;
+  background:var(--paper);color:var(--ink);font-family:"Zen Kaku Gothic New",sans-serif;font-feature-settings:"palt";position:relative;overflow:hidden;cursor:crosshair}
+.cc *{box-sizing:border-box}
+.cc::before{content:"";position:absolute;inset:0;z-index:20;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .3 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* リソグラフ2色 + 版ズレ */
+.cc-riso{position:relative;display:inline-block;line-height:0}
+.cc-riso>*{display:block}
+.cc-riso>.l2{position:absolute;inset:0;mix-blend-mode:multiply;transform:translate(calc(4px + var(--mx)),calc(3px + var(--my)));transition:transform .15s}
+.cc-logo{position:relative;width:490px;height:250px}
+.cc-logo i{position:absolute;inset:0;-webkit-mask:url(../fukuryu-logo.png) left center/contain no-repeat;mask:url(../fukuryu-logo.png) left center/contain no-repeat}
+.cc-logo .l1{background:var(--blue)}
+.cc-logo .l2{background:var(--orange);mix-blend-mode:multiply;transform:translate(calc(6px + var(--mx)),calc(4px + var(--my)));transition:transform .15s}
+.cc-ht{position:absolute;overflow:hidden;background:#fff}
+.cc-ht img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.35) brightness(1.05)}
+.cc-ht::after{content:"";position:absolute;inset:0;mix-blend-mode:screen;background:radial-gradient(circle,transparent 1.2px,var(--tint,var(--blue)) 1.6px) 0 0/4px 4px}
+.cc-ht.o{--tint:var(--orange)}
+.cc-ht:hover img{filter:none}.cc-ht:hover::after{opacity:0}
+.cc-tape{position:absolute;z-index:6;width:92px;height:24px;background:rgba(240,226,180,.75);box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.cc-stamp{position:absolute;z-index:9;width:78px;height:78px;border:3px solid var(--orange);border-radius:50%;color:var(--orange);display:grid;place-items:center;font:400 40px/1 "Dela Gothic One",sans-serif;mix-blend-mode:multiply;opacity:.85}
+.cc-stamp::after{content:"";position:absolute;inset:4px;border:1px solid var(--orange);border-radius:50%}
+.cc-click{position:absolute;z-index:9;width:58px;height:58px;margin:-29px 0 0 -29px;border:2.5px solid var(--orange);border-radius:50%;color:var(--orange);display:grid;place-items:center;font:400 28px/1 "Dela Gothic One";mix-blend-mode:multiply;pointer-events:none;animation:cc-stamp .25s ease-out}
+@keyframes cc-stamp{from{transform:scale(1.6) rotate(var(--r));opacity:0}to{transform:scale(1) rotate(var(--r));opacity:.85}}
+
+.cc-mast{position:absolute;left:36px;right:36px;top:24px;display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px solid var(--ink);padding-bottom:10px;z-index:5}
+.cc-mast .issue{font:400 13px "Dela Gothic One";letter-spacing:.05em}
+.cc-mast .issue small{display:block;font:600 10px "IBM Plex Mono",monospace;letter-spacing:.16em}
+.cc-mast nav{display:flex;gap:20px;font:400 14px "Dela Gothic One"}
+.cc-mast nav a{color:inherit;text-decoration:none}
+.cc-mast nav a:nth-child(2){color:var(--blue)}
+.cc-cover{position:absolute;left:36px;top:96px;z-index:4}
+.cc-catch{position:absolute;left:44px;top:368px;z-index:5;font:400 30px/1.35 "Dela Gothic One",sans-serif;letter-spacing:.02em}
+.cc-catch span{background:var(--blue);color:var(--paper);padding:0 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.cc-catch small{display:block;margin-top:12px;font:500 13px/1.8 "Zen Kaku Gothic New";letter-spacing:.06em}
+.cc-toc{position:absolute;left:44px;top:520px;width:420px;z-index:5}
+.cc-toc b{font:600 10px "IBM Plex Mono",monospace;letter-spacing:.2em;display:block;border-bottom:1.5px solid var(--ink);padding-bottom:6px;margin-bottom:4px}
+.cc-toc div{display:flex;align-items:baseline;gap:8px;padding:6px 0;font-size:13.5px;font-weight:700}
+.cc-toc div::after{content:"";order:2;flex:1;border-bottom:2px dotted var(--ink);transform:translateY(-4px)}
+.cc-toc em{order:3;font:400 13px "Dela Gothic One";font-style:normal;color:var(--orange)}
+.cc-toc i{font-style:normal;font-size:10px;font-weight:700;color:var(--paper);background:var(--ink);padding:1px 5px}
+.cc-slip{position:absolute;z-index:7;background:#fbf7ee;padding:16px 18px 18px;box-shadow:0 1px 0 rgba(0,0,0,.12),0 12px 24px -12px rgba(0,0,0,.35);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.cc-slip:hover{transform:rotate(0deg) translateY(-6px)!important}
+.cc-slip .pg{font:400 22px "Dela Gothic One";color:var(--orange)}
+.cc-slip .cat{font-size:10px;font-weight:700;border:1.5px solid var(--ink);padding:1px 6px;margin-left:6px;vertical-align:4px}
+.cc-slip h5{font:400 19px/1.35 "Dela Gothic One";margin:6px 0 6px}
+.cc-slip p{font-size:11px;line-height:1.7;margin:0}
+.cc-tear{clip-path:polygon(0 3%,8% 0,17% 2%,26% 0,38% 3%,49% 1%,60% 3%,71% 0,82% 2%,92% 0,100% 2%,100% 100%,0 100%)}
+.cc-big{position:absolute;right:-30px;bottom:-60px;z-index:1;font:400 300px/1 "Dela Gothic One";color:transparent;-webkit-text-stroke:2px rgba(10,92,194,.25);letter-spacing:-.04em}
+
+/* phone */
+.cc-ph .cc-mast{left:18px;right:18px;top:16px}
+.cc-ph .cc-mast nav{display:none}
+.cc-ph .cc-cover{left:18px;top:80px}
+.cc-ph .cc-logo{width:300px;height:153px}
+.cc-ph .cc-catch{left:20px;top:420px;font-size:24px}
+.cc-ph .cc-toc{left:20px;right:20px;width:auto;top:560px}
