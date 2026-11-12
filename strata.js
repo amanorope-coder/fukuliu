@@ -599,7 +599,7 @@
         { id: 'article', name: '記事層', d: 8 },
         { id: 'radio', name: '配信層', d: 20 },
         { id: 'people', name: '人物層', d: 34 },
-        { id: 'bedrock', name: '岩盤', d: 50 }
+        { id: 'bedrock', name: '古層', d: 50 }
     ];
     const END_DEPTH = 64;
     const Gauge = {
