@@ -90,7 +90,8 @@ button{font-family:inherit}
 .lib__msg{padding:30px;text-align:center;color:var(--mute);font-size:13px;grid-column:1/-1}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--fg);color:#fff;padding:11px 20px;border-radius:4px;font-size:13px;display:none;z-index:20;max-width:90vw}
 .toast.on{display:block}.toast.err{background:var(--red)}
-@media(max-width:860px){body{height:auto}.main{flex-direction:column-reverse}.panel{width:100%;border-right:0}.preview{flex:none;height:58vh;position:sticky;top:0;z-index:5}}
+@media(max-width:1100px){.panel{width:340px;padding:16px}}
+@media(max-width:700px){body{height:auto}.main{flex-direction:column-reverse}.panel{width:100%;border-right:0}.preview{flex:none;height:58vh;position:sticky;top:0;z-index:5}}
 </style>
 </head>
 <body>
@@ -137,7 +138,7 @@ button{font-family:inherit}
       <div class="seg"><button class="on" data-dev="pc" onclick="setDevice('pc')">PC</button><button data-dev="mobile" onclick="setDevice('mobile')">スマホ</button></div>
       <span>実際のトップページに、編集中の内容を重ねて表示しています（まだ公開されていません）</span>
     </div>
-    <div class="pv" id="pv"><iframe id="frame" src="../index.html?preview=1" title="プレビュー"></iframe></div>
+    <div class="pv" id="pv"><iframe id="frame" title="プレビュー"></iframe></div>
   </section>
 </div>
 
@@ -260,7 +261,7 @@ function resolvedCV(){
 function fk(){ try { return $('frame').contentWindow.FK_SITE; } catch(e){ return null; } }
 function pushPreview(){ const f=fk(); if(!f) return; f.applyPhotos(resolvedPhotos()); f.applyCV(resolvedCV()); if (f.applyTexts) f.applyTexts(texts); }
 function scrollPreview(name){ const f=fk(); if(f) f.scrollToSlot(name); }
-window.addEventListener('message', e => { if (e.data && e.data.type==='fk-preview-ready'){ pushPreview(); scrollPreview(activeTab==='cv'?'cv':curSlot); } });
+window.addEventListener('message', e => { if (e.data && e.data.type==='fk-preview-ready'){ pushPreview(); renderTexts(); if (activeTab!=='texts') scrollPreview(activeTab==='cv'?'cv':curSlot); } });
 
 function layoutFrame(){
   const pv=$('pv'), fr=$('frame'), W=pv.clientWidth, Hh=pv.clientHeight;
@@ -291,7 +292,13 @@ const TEXT_GROUPS = { hero:'トップ（地上・写真）', surface:'地上の�
 let textDefs = [];
 function renderTexts(){
   const f = fk();
-  if (!f || !f.textFields){ $('text-list').innerHTML = '<p class="help">プレビューを読み込み中…</p>'; return; }
+  if (!f){ $('text-list').innerHTML = '<p class="help">プレビューを読み込み中…</p>'; return; }
+  if (!f.textFields){
+    // ブラウザが古いトップページを使い回している
+    $('text-list').innerHTML = `<p class="help" style="color:var(--red);font-weight:700">プレビューが古いままです。下のボタンで読み込み直してください。</p>
+      <div class="row"><button class="btn btn--sm" onclick="reloadPreview()">プレビューを読み込み直す</button></div>`;
+    return;
+  }
   textDefs = f.textFields();
   const groups = {};
   textDefs.forEach(d => { const g = d.key.split('.')[0]; (groups[g] = groups[g] || []).push(d); });
@@ -553,7 +560,10 @@ async function publish(){
 window.addEventListener('beforeunload', e => { if (anyDirty()){ e.preventDefault(); e.returnValue=''; } });
 
 // ═══════════════ 起動 ═══════════════
+// プレビューは毎回最新を読み込む（ブラウザのキャッシュを使わせない）
+function reloadPreview(){ $('text-list').innerHTML = '<p class="help">プレビューを読み込み中…</p>'; $('frame').src = '../index.html?preview=1&t=' + Date.now(); }
 $('frame').addEventListener('load', () => { pushPreview(); renderTexts(); });
+reloadPreview();
 renderToken(); layoutFrame(); loadAll();
 </script>
 </body>
