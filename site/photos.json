@@ -1,1 +1,11 @@
-{}
+{
+  "hero": {
+    "x": 52,
+    "y": 67,
+    "text": "bottom",
+    "tone": "light",
+    "shade": 30,
+    "src": "site/images/photo-20261112-mwdff3qpcjt.jpg",
+    "zoom": 105
+  }
+}
