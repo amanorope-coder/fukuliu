@@ -306,7 +306,9 @@ function renderSlotEditor(){
   const s = SLOTS.find(x=>x.key===curSlot), d = slotData(curSlot);
   let html = `<p class="sec-title">${s.label}</p>${focalHTML(viewUrl(d.src), d.x, d.y, 'slot-focal')}
     <div class="row"><button class="btn btn--sm" onclick="openLib(p=>{setSlot('src',p);renderSlotEditor();})">ライブラリから選ぶ／アップロード</button>
-    ${d.src?`<button class="btn btn--ghost btn--sm" onclick="setSlot('src','');renderSlotEditor()">写真を外す</button>`:''}</div>`;
+    <label class="btn btn--ghost btn--sm">パソコンの写真で試す<input type="file" accept="image/*" hidden onchange="trialFile(this)"></label>
+    ${d.src?`<button class="btn btn--ghost btn--sm" onclick="setSlot('src','');renderSlotEditor()">写真を外す</button>`:''}</div>
+    ${isTrial(d.src)?'<p class="help" style="color:var(--orange);font-weight:700">お試し表示中の写真です（どこにも保存・公開されません）。使うと決めたら「ライブラリから選ぶ／アップロード」で同じ写真を入れ直してください。</p>':'<p class="help">「パソコンの写真で試す」は、投稿キーなしでプレビューだけ確認できます（保存・公開はされません）。</p>'}`;
   if (s.opts.includes('text'))  html += choiceRow('文字の位置','text',[['center','中央'],['bottom','下・中央'],['bottom-left','左下']], d.text);
   if (s.opts.includes('tone'))  html += choiceRow('ロゴ・文字の色','tone',[['light','白（暗い写真向け）'],['dark','黒（明るい写真向け）']], d.tone);
   if (s.opts.includes('shade')) html += rangeRow('写真の暗さ／明るさの調整（文字を読みやすく）','shade',d.shade,0,80);
@@ -429,9 +431,26 @@ async function uploadFiles(input){
   if (done) toast(`${done}枚アップロードしました。使う写真をクリックして選んでください。`);
 }
 
+// ═══════════════ お試し（端末内だけで表示） ═══════════════
+let trialN = 0;
+function isTrial(p){ return /^trial:/.test(p || ''); }
+async function trialFile(input){
+  const f = input.files[0]; input.value='';
+  if (!f) return;
+  try {
+    const dataUrl = await compress(f);
+    const key = `trial:${++trialN}:${f.name}`;
+    urlMap[key] = dataUrl;
+    setSlot('src', key); renderSlotEditor();
+    toast('お試し表示中です（この写真は公開されません）');
+  } catch(e){ toast(e.message, true); }
+}
+
 // ═══════════════ 公開 ═══════════════
 async function publish(){
   if (!getToken()) return;
+  const trial = SLOTS.filter(s => photos[s.key] && isTrial(photos[s.key].src)).map(s => s.label);
+  if (trial.length){ toast(`「${trial.join('」「')}」はお試し写真のままです。ライブラリからアップロードした写真に入れ替えてから公開してください。`, true); return; }
   const btn=$('btn-save'); btn.disabled=true; btn.textContent='公開中…';
   try {
     if (dirty.photos){
