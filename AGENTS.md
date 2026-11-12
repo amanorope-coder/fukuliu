@@ -292,6 +292,7 @@ Supabase（無料tier）を使って全ユーザーが同じカウントを見�
 - 編集ツール: `tools/site-editor.html`（「写真配置」「CV」タブ。右側に実際のトップページを `index.html?preview=1` で表示してライブプレビュー）
 - 写真の配置: `site/photos.json`（スロット: `hero` / `band1` / `band2` / `collab` / `band3`。`x`,`y` は表示中心 %）
 - CV: `site/cv.json`（共同代表2名。`history` は「年 + スペース + 内容」の1行1項目）
+- ページの文章: `site/texts.json`（site-editor の「文章」タブ。変更した分だけ `{ "article.desc": "…" }` の形で入る）。対象は index.html の `data-text="キー" data-label="表示名"` が付いた要素。新しく編集できる文章を増やすときは、要素にこの2つの属性を足すだけでよい
 - 写真本体: `site/images/`（ツールの写真ライブラリからアップロード。最大2400px・JPEGに自動圧縮）
 - フォント: 全体を角ゴシック「Zen Kaku Gothic New」に統一（`--serif` 変数も同フォントを指す。ロゴ画像のみ明朝）
 - 廃止: 一年対談・読了、その時。。。・Works・Shop・About セクション

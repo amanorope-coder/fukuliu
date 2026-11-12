@@ -65,6 +65,17 @@ button{font-family:inherit}
 .choices button.on{border-color:var(--fg);background:var(--fg);color:#fff}
 .range{display:flex;align-items:center;gap:10px}.range input{flex:1}.range span{font-size:11px;width:36px;text-align:right;color:var(--mute)}
 .member-tabs{display:flex;gap:6px;margin-bottom:6px}
+.tgroup{margin-top:22px}
+.tgroup__h{font-size:12px;font-weight:900;letter-spacing:.08em;padding-bottom:6px;border-bottom:2px solid var(--fg);margin-bottom:4px}
+.tf{padding:10px 8px;border-radius:4px;transition:background .3s}
+.tf.is-on{background:#fff6e8;box-shadow:inset 3px 0 0 var(--orange)}
+.tf__head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.tf__head label{font-size:11px;font-weight:700;color:var(--mute)}
+.tf__mark{font-size:10px;font-weight:700;color:var(--orange)}
+.tf__reset{margin-left:auto;border:0;background:none;font-size:11px;color:var(--accent);cursor:pointer;text-decoration:underline}
+.tf textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:2px;font-family:inherit;font-size:13.5px;line-height:1.7;background:var(--bg);resize:vertical;min-height:40px}
+.tf textarea:focus{outline:none;border-color:var(--accent)}
+.tf__def{font-size:10.5px;color:#999;margin-top:4px;line-height:1.5}
 .lib{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:10;padding:20px}
 .lib.on{display:flex}
 .lib__box{background:#fff;border-radius:6px;width:min(920px,100%);max-height:88vh;display:flex;flex-direction:column}
@@ -84,12 +95,13 @@ button{font-family:inherit}
 </head>
 <body>
 <header class="hd">
-  <div><p class="hd__logo">FUKURYU</p><p class="hd__sub">サイト編集（写真・CV）</p></div>
+  <div><p class="hd__logo">FUKURYU</p><p class="hd__sub">サイト編集（写真・CV・文章）</p></div>
   <nav><a href="submit.html">記事エディタ</a><a href="collaborator-maker.html">コラボレーター</a><a href="../index.html" target="_blank">サイトを開く →</a></nav>
 </header>
 <div class="tabs">
   <button class="tab is-active" data-tab="photos" onclick="switchTab('photos')">🖼 写真配置</button>
   <button class="tab" data-tab="cv" onclick="switchTab('cv')">👤 CV</button>
+  <button class="tab" data-tab="texts" onclick="switchTab('texts')">✏️ 文章</button>
   <div class="tabs__right">
     <span class="dirty" id="dirty">● 未公開の変更があります</span>
     <button class="btn" id="btn-save" onclick="publish()" disabled>変更を公開</button>
@@ -104,6 +116,12 @@ button{font-family:inherit}
       <p class="sec-title">写真を置く場所</p>
       <div class="slots" id="slots"></div>
       <div class="editor" id="slot-editor"></div>
+    </div>
+
+    <!-- ===== 文章 ===== -->
+    <div id="tab-texts" style="display:none">
+      <p class="help" style="margin:0 0 4px">右のプレビューで<b>直したい文章をクリック</b>すると、その入力欄に移動します。改行はそのまま改行になります。空にすると、その文章は非表示になります。</p>
+      <div id="text-list"></div>
     </div>
 
     <!-- ===== CV ===== -->
@@ -139,7 +157,7 @@ button{font-family:inherit}
 <script>
 // ═══════════════ 設定 ═══════════════
 const REPO = 'amanorope-coder/fukuliu', BRANCH = 'main';
-const PHOTOS_PATH = 'site/photos.json', CV_PATH = 'site/cv.json', IMG_DIR = 'site/images';
+const PHOTOS_PATH = 'site/photos.json', CV_PATH = 'site/cv.json', TEXTS_PATH = 'site/texts.json', IMG_DIR = 'site/images';
 
 const SLOTS = [
   { key: 'hero',   label: 'トップ（地上）',       hint: 'ページ最上部の風景。横長の写真向け', opts: ['text', 'tone', 'shade'] },
@@ -154,9 +172,10 @@ const DEFAULTS = {
   collab:{ x: 50, y: 50, tint: 70 },
 };
 
-let photos = {}, cv = { members: [] };
+let photos = {}, cv = { members: [] }, texts = {};
 let shas = {};                 // path -> sha
-let dirty = { photos: false, cv: false };
+let dirty = { photos: false, cv: false, texts: false };
+const anyDirty = () => dirty.photos || dirty.cv || dirty.texts;
 let curSlot = 'hero', curMember = 0, device = 'pc';
 let libItems = [];             // [{path, url}]
 const urlMap = {};             // path -> 表示用URL（未デプロイの写真用）
@@ -202,7 +221,7 @@ function renderToken(){
   } else {
     box.innerHTML = `<input type="password" id="token-in" placeholder="投稿キー（ghp_...）"><button class="btn btn--sm" onclick="saveToken()">保存</button>`;
   }
-  $('btn-save').disabled = !getToken() || !(dirty.photos||dirty.cv);
+  $('btn-save').disabled = !getToken() || !anyDirty();
 }
 function saveToken(){ const v=$('token-in').value.trim(); if(!v) return; localStorage.setItem('fukuliu_publish_token', v); renderToken(); loadAll(); }
 function resetToken(){ if(confirm('投稿キーをリセットしますか？')){ localStorage.removeItem('fukuliu_publish_token'); renderToken(); } }
@@ -222,9 +241,10 @@ async function loadAll(){
   try {
     photos = (await loadJSON(PHOTOS_PATH)) || {};
     cv = (await loadJSON(CV_PATH)) || { members: [] };
+    texts = (await loadJSON(TEXTS_PATH)) || {};
   } catch(e){ toast(e.message, true); }
-  dirty = { photos:false, cv:false }; $('dirty').classList.remove('on');
-  renderSlots(); renderSlotEditor(); renderMemberTabs(); renderMemberEditor(); pushPreview();
+  dirty = { photos:false, cv:false, texts:false }; $('dirty').classList.remove('on');
+  renderSlots(); renderSlotEditor(); renderMemberTabs(); renderMemberEditor(); pushPreview(); renderTexts();
   renderToken();
 }
 
@@ -238,7 +258,7 @@ function resolvedCV(){
   return { members: (cv.members||[]).map(m => Object.assign({}, m, { photo: frameUrl(m.photo) })) };
 }
 function fk(){ try { return $('frame').contentWindow.FK_SITE; } catch(e){ return null; } }
-function pushPreview(){ const f=fk(); if(!f) return; f.applyPhotos(resolvedPhotos()); f.applyCV(resolvedCV()); }
+function pushPreview(){ const f=fk(); if(!f) return; f.applyPhotos(resolvedPhotos()); f.applyCV(resolvedCV()); if (f.applyTexts) f.applyTexts(texts); }
 function scrollPreview(name){ const f=fk(); if(f) f.scrollToSlot(name); }
 window.addEventListener('message', e => { if (e.data && e.data.type==='fk-preview-ready'){ pushPreview(); scrollPreview(activeTab==='cv'?'cv':curSlot); } });
 
@@ -262,8 +282,61 @@ function switchTab(t){
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('is-active', b.dataset.tab===t));
   $('tab-photos').style.display = t==='photos'?'':'none';
   $('tab-cv').style.display = t==='cv'?'':'none';
-  scrollPreview(t==='cv'?'cv':curSlot);
+  $('tab-texts').style.display = t==='texts'?'':'none';
+  if (t==='texts') renderTexts(); else scrollPreview(t==='cv'?'cv':curSlot);
 }
+
+// ═══════════════ 文章 ═══════════════
+const TEXT_GROUPS = { hero:'トップ（地上・写真）', surface:'地上の層（最新）', article:'記事層', radio:'配信層', people:'人物層', bedrock:'岩盤', footer:'フッター' };
+let textDefs = [];
+function renderTexts(){
+  const f = fk();
+  if (!f || !f.textFields){ $('text-list').innerHTML = '<p class="help">プレビューを読み込み中…</p>'; return; }
+  textDefs = f.textFields();
+  const groups = {};
+  textDefs.forEach(d => { const g = d.key.split('.')[0]; (groups[g] = groups[g] || []).push(d); });
+  $('text-list').innerHTML = Object.keys(groups).map(g => `
+    <div class="tgroup"><p class="tgroup__h">${esc(TEXT_GROUPS[g] || g)}</p>
+      ${groups[g].map(d => {
+        const has = Object.prototype.hasOwnProperty.call(texts, d.key);
+        const v = has ? texts[d.key] : d.def;
+        const rows = Math.min(8, Math.max(1, v.split('\n').length + Math.floor(v.length / 34)));
+        return `<div class="tf" id="tf-${d.key.replace('.', '-')}">
+          <div class="tf__head"><label>${esc(d.label)}</label><span class="tf__mark">${has ? '● 変更あり' : ''}</span>
+            ${has ? `<button class="tf__reset" onclick="resetText('${d.key}')">元に戻す</button>` : ''}</div>
+          <textarea rows="${rows}" oninput="setText('${d.key}', this.value)" onfocus="focusTextField('${d.key}', true)">${esc(v)}</textarea>
+          ${has ? `<p class="tf__def">元の文章：${esc(d.def).replace(/\n/g, ' / ')}</p>` : ''}
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+function setText(key, val){
+  const d = textDefs.find(x => x.key === key);
+  const was = Object.prototype.hasOwnProperty.call(texts, key);
+  if (d && val === d.def) delete texts[key]; else texts[key] = val;
+  markDirty('texts');
+  const f = fk(); if (f && f.applyTexts) f.applyTexts(texts);
+  const now = Object.prototype.hasOwnProperty.call(texts, key);
+  if (was !== now){ const box = document.getElementById('tf-' + key.replace('.', '-')); const pos = box && box.querySelector('textarea').selectionStart; renderTexts(); focusTextField(key, false, pos); }
+}
+function resetText(key){ delete texts[key]; markDirty('texts'); const f = fk(); if (f && f.applyTexts) f.applyTexts(texts); renderTexts(); focusTextField(key, true); }
+function focusTextField(key, preview, caret){
+  document.querySelectorAll('.tf.is-on').forEach(x => x.classList.remove('is-on'));
+  const box = document.getElementById('tf-' + key.replace('.', '-'));
+  if (box){
+    box.classList.add('is-on');
+    const ta = box.querySelector('textarea');
+    if (document.activeElement !== ta){ ta.focus({ preventScroll: true }); if (caret != null) ta.setSelectionRange(caret, caret); }
+    box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  if (preview){ const f = fk(); if (f && f.focusText) f.focusText(key); }
+}
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'fk-text-click'){
+    if (activeTab !== 'texts') switchTab('texts');
+    focusTextField(e.data.key, false);
+  }
+});
 
 // ═══════════════ 焦点（表示位置）ボックス ═══════════════
 function focalHTML(src, x, y, id){
@@ -464,19 +537,23 @@ async function publish(){
       const cur = await ghGet(PHOTOS_PATH);
       await ghPut(PHOTOS_PATH, b64enc(JSON.stringify(photos, null, 2)+'\n'), 'サイト写真の配置を更新', cur && cur.sha);
     }
+    if (dirty.texts){
+      const cur = await ghGet(TEXTS_PATH);
+      await ghPut(TEXTS_PATH, b64enc(JSON.stringify(texts, null, 2)+'\n'), 'ページの文章を更新', cur && cur.sha);
+    }
     if (dirty.cv){
       const cur = await ghGet(CV_PATH);
       await ghPut(CV_PATH, b64enc(JSON.stringify(cv, null, 2)+'\n'), 'CVを更新', cur && cur.sha);
     }
-    dirty = { photos:false, cv:false }; $('dirty').classList.remove('on');
+    dirty = { photos:false, cv:false, texts:false }; $('dirty').classList.remove('on');
     toast('公開しました。サイトへの反映まで1〜2分かかります。');
   } catch(e){ toast('失敗しました: '+e.message, true); btn.disabled=false; }
   btn.textContent='変更を公開';
 }
-window.addEventListener('beforeunload', e => { if (dirty.photos||dirty.cv){ e.preventDefault(); e.returnValue=''; } });
+window.addEventListener('beforeunload', e => { if (anyDirty()){ e.preventDefault(); e.returnValue=''; } });
 
 // ═══════════════ 起動 ═══════════════
-$('frame').addEventListener('load', () => { pushPreview(); });
+$('frame').addEventListener('load', () => { pushPreview(); renderTexts(); });
 renderToken(); layoutFrame(); loadAll();
 </script>
 </body>

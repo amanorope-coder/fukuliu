@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="strata.css">
+    <link rel="stylesheet" href="strata.css?v=4">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
@@ -65,7 +65,7 @@
         <div id="top" class="layer-top" data-layer="top" data-depth="0">
 
             <!-- 写真は tools/site-editor.html の「写真配置」で設定（site/photos.json） -->
-            <section class="hero" data-slot="hero" data-text="bottom-left" data-tone="dark">
+            <section class="hero" data-slot="hero" data-pos="bottom-left" data-tone="dark">
                 <div class="hero__media" aria-hidden="true"><img class="hero__img" alt=""></div>
                 <div class="hero__shade" aria-hidden="true"></div>
                 <svg class="hero__land" viewBox="0 0 1440 420" preserveAspectRatio="none" aria-hidden="true">
@@ -78,7 +78,7 @@
 
                 <div class="hero__copy">
                     <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 FUKURYU"></h1>
-                    <p class="hero__tagline">京都発、番組型プラットフォーム</p>
+                    <p class="hero__tagline" data-text="hero.tagline" data-label="ロゴの下の一行">京都発、番組型プラットフォーム</p>
                 </div>
                 <a class="hero__dig" href="#surface"><span>掘る</span><i></i></a>
             </section>
@@ -90,14 +90,14 @@
                 <div class="wrap">
                     <header class="surface__head">
                         <div>
-                            <p class="kicker">SURFACE — 地上の層</p>
-                            <h2 class="surface__h">いま、<wbr>地表に<wbr>出ているもの。</h2>
+                            <p class="kicker" data-text="surface.kicker" data-label="見出しの上の小さな文字">SURFACE — 地上の層</p>
+                            <h2 class="surface__h" data-text="surface.title" data-label="見出し">いま、<wbr>地表に<wbr>出ているもの。</h2>
                         </div>
-                        <p class="surface__lead">記事・配信・人物、それぞれの層からいちばん新しく湧き出たもの。<br>気になったら、その層まで潜ってみてください。</p>
+                        <p class="surface__lead" data-text="surface.lead" data-label="見出しの横の説明文">記事・配信・人物、それぞれの層からいちばん新しく湧き出たもの。<br>気になったら、その層まで潜ってみてください。</p>
                     </header>
                     <div class="now" id="now"></div>
                     <div class="log">
-                        <p class="log__h"><span>更新ログ</span><span>RECENT</span></p>
+                        <p class="log__h"><span data-text="surface.log" data-label="更新ログの見出し">更新ログ</span><span>RECENT</span></p>
                         <ol id="log"></ol>
                     </div>
                 </div>
@@ -115,11 +115,11 @@
             <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −8.0m　記事層 上面</span></div>
             <div class="wrap">
                 <header class="sh">
-                    <p class="sh__depth"><b>−8.0 〜 −20.0m</b>砂層 / SAND</p>
-                    <h2 class="sh__name">記事層</h2>
+                    <p class="sh__depth"><b>−8.0 〜 −20.0m</b><span data-text="article.soil" data-label="深さの横の地層名">砂層 / SAND</span></p>
+                    <h2 class="sh__name" data-text="article.name" data-label="層の名前（大きな文字）">記事層</h2>
                     <div class="sh__side">
-                        <p class="sh__en">ARTICLE STRATUM</p>
-                        <p class="sh__desc">エッセイ・批評・美術・対談。制作する側の正直な目線で書かれたテキストが、少しずつ積もっていく層。</p>
+                        <p class="sh__en" data-text="article.en" data-label="英字の小見出し">ARTICLE STRATUM</p>
+                        <p class="sh__desc" data-text="article.desc" data-label="説明文">エッセイ・批評・美術・対談。制作する側の正直な目線で書かれたテキストが、少しずつ積もっていく層。</p>
                     </div>
                 </header>
                 <div class="filters" id="article-filters" role="group" aria-label="カテゴリで絞り込む"></div>
@@ -142,12 +142,12 @@
             <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −20.0m　配信層 上面</span></div>
             <div class="wrap">
                 <header class="sh">
-                    <p class="sh__depth"><b>−20.0 〜 −34.0m</b>シルト層 / SILT</p>
-                    <h2 class="sh__name">配信層</h2>
+                    <p class="sh__depth"><b>−20.0 〜 −34.0m</b><span data-text="radio.soil" data-label="深さの横の地層名">シルト層 / SILT</span></p>
+                    <h2 class="sh__name" data-text="radio.name" data-label="層の名前（大きな文字）">配信層</h2>
                     <div class="sh__side">
-                        <p class="sh__en">BROADCAST STRATUM — 美術史ラジオ</p>
-                        <p class="sh__desc">他分野のゲストを呼び、いっしょに美術史を読み解く。耳で聴くアトリエ。Spotifyで配信中。</p>
-                        <a class="radio-cta" id="radio-show-cta" href="#" target="_blank" rel="noopener noreferrer">Spotifyで番組を開く →</a>
+                        <p class="sh__en" data-text="radio.en" data-label="英字の小見出し">BROADCAST STRATUM — 美術史ラジオ</p>
+                        <p class="sh__desc" data-text="radio.desc" data-label="説明文">他分野のゲストを呼び、いっしょに美術史を読み解く。耳で聴くアトリエ。Spotifyで配信中。</p>
+                        <a class="radio-cta" id="radio-show-cta" href="#" target="_blank" rel="noopener noreferrer" data-text="radio.cta" data-label="Spotifyボタンの文字">Spotifyで番組を開く →</a>
                     </div>
                 </header>
                 <div class="station">
@@ -168,11 +168,11 @@
             <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −34.0m　人物層 上面</span></div>
             <div class="wrap">
                 <header class="sh">
-                    <p class="sh__depth"><b>−34.0 〜 −50.0m</b>礫層 / GRAVEL</p>
-                    <h2 class="sh__name">人物層</h2>
+                    <p class="sh__depth"><b>−34.0 〜 −50.0m</b><span data-text="people.soil" data-label="深さの横の地層名">礫層 / GRAVEL</span></p>
+                    <h2 class="sh__name" data-text="people.name" data-label="層の名前（大きな文字）">人物層</h2>
                     <div class="sh__side">
-                        <p class="sh__en">PEOPLE STRATUM</p>
-                        <p class="sh__desc">伏流に関わってくれた人たちと、運営するふたり。ひとつひとつ形の違う礫が、流れを支えている。</p>
+                        <p class="sh__en" data-text="people.en" data-label="英字の小見出し">PEOPLE STRATUM</p>
+                        <p class="sh__desc" data-text="people.desc" data-label="説明文">伏流に関わってくれた人たちと、運営するふたり。ひとつひとつ形の違う礫が、流れを支えている。</p>
                     </div>
                 </header>
 
@@ -182,10 +182,10 @@
                     <div class="collab__in">
                         <div class="collab__head">
                             <div>
-                                <h3>コラボレーター</h3>
-                                <p>これまでにご協力いただいた方々。</p>
+                                <h3 data-text="people.collabTitle" data-label="コラボレーター欄の見出し">コラボレーター</h3>
+                                <p data-text="people.collabDesc" data-label="コラボレーター欄の説明">これまでにご協力いただいた方々。</p>
                             </div>
-                            <a class="more-link" href="tokubetsu-kyoryoku.html">すべて見る →</a>
+                            <a class="more-link" href="tokubetsu-kyoryoku.html" data-text="people.collabMore" data-label="「すべて見る」ボタンの文字">すべて見る →</a>
                         </div>
                         <ul class="pebbles" id="collab-list"></ul>
                     </div>
@@ -193,7 +193,7 @@
 
                 <!-- CV（内容は site-editor の「CV」で編集 → site/cv.json） -->
                 <div class="cv" id="cv">
-                    <div class="cv__head"><h3>CV</h3><span>共同代表 / CO-DIRECTORS</span></div>
+                    <div class="cv__head"><h3 data-text="people.cvTitle" data-label="CV欄の見出し">CV</h3><span data-text="people.cvSub" data-label="CV見出しの横の小さな文字">共同代表 / CO-DIRECTORS</span></div>
                     <div id="cv-grid" class="cv-grid"></div>
                 </div>
 
@@ -212,11 +212,11 @@
             <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −50.0m　基盤岩</span></div>
             <div class="wrap" id="backnumbers">
                 <header class="sh">
-                    <p class="sh__depth"><b>−50.0m 〜</b>基盤岩・帯水層 / BEDROCK</p>
-                    <h2 class="sh__name">岩盤</h2>
+                    <p class="sh__depth"><b>−50.0m 〜</b><span data-text="bedrock.soil" data-label="深さの横の地層名">基盤岩・帯水層 / BEDROCK</span></p>
+                    <h2 class="sh__name" data-text="bedrock.name" data-label="層の名前（大きな文字）">岩盤</h2>
                     <div class="sh__side">
-                        <p class="sh__en">ARCHIVE — すべての記録</p>
-                        <p class="sh__desc">これまでに公開した記事・配信のすべて。いちばん深いところで、水はいまも少しずつ流れている。</p>
+                        <p class="sh__en" data-text="bedrock.en" data-label="英字の小見出し">ARCHIVE — すべての記録</p>
+                        <p class="sh__desc" data-text="bedrock.desc" data-label="説明文">これまでに公開した記事・配信のすべて。いちばん深いところで、水はいまも少しずつ流れている。</p>
                     </div>
                 </header>
                 <div class="filters" id="archive-filters" role="group" aria-label="種類で絞り込む">
@@ -238,7 +238,7 @@
             <div class="ft__grid">
                 <div class="ft__brand">
                     <img src="fukuryu-logo.png" alt="伏流" class="ft__logo">
-                    <p>関西発、領域横断的知のプラットフォーム。</p>
+                    <p data-text="footer.about" data-label="ロゴの下の紹介文">関西発、領域横断的知のプラットフォーム。</p>
                 </div>
                 <div>
                     <h4>LAYERS</h4>
@@ -361,6 +361,6 @@
             
         ];
     </script>
-    <script src="strata.js"></script>
+    <script src="strata.js?v=4"></script>
 </body>
 </html>

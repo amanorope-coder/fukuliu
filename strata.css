@@ -173,12 +173,12 @@ button { font-family: inherit; }
 .hero.has-photo .hero__land { display: none; }
 
 .hero__copy { position: absolute; z-index: 3; left: var(--pad); bottom: clamp(100px, 17vh, 180px); max-width: min(640px, 80vw); }
-.hero[data-text="center"] .hero__copy { left: 50%; top: 50%; bottom: auto; transform: translate(-50%, -56%); text-align: center; }
-.hero[data-text="bottom"] .hero__copy { left: 50%; transform: translateX(-50%); text-align: center; }
+.hero[data-pos="center"] .hero__copy { left: 50%; top: 50%; bottom: auto; transform: translate(-50%, -56%); text-align: center; }
+.hero[data-pos="bottom"] .hero__copy { left: 50%; transform: translateX(-50%); text-align: center; }
 .hero__logo { margin: 0; line-height: 0; }
 .hero__logo img { width: clamp(220px, 32vw, 500px); height: auto; }
 .hero:not([data-tone="dark"]) .hero__logo img { filter: invert(1); }
-.hero[data-text="center"] .hero__logo img, .hero[data-text="bottom"] .hero__logo img { margin: 0 auto; }
+.hero[data-pos="center"] .hero__logo img, .hero[data-pos="bottom"] .hero__logo img { margin: 0 auto; }
 .hero__tagline { margin: 20px 0 0; font-size: clamp(13px, 1.15vw, 16px); font-weight: 700; letter-spacing: .14em; line-height: 1.95; }
 .hero__catch {
     position: absolute; z-index: 3; margin: 0;
@@ -516,6 +516,13 @@ button { font-family: inherit; }
 .ac.rv.is-in { transition: opacity .9s var(--ease), transform .45s var(--ease); }
 .ac.rv.is-in:hover { transform: translateY(-4px); }
 
+/* ------------------------------------------------------------ 文章エディタのプレビュー用 */
+[data-text][hidden] { display: none !important; }
+.is-preview [data-text] { cursor: text; }
+.is-preview [data-text]:hover { outline: 1.5px dashed var(--water); outline-offset: 4px; }
+.fk-flash { animation: fkflash 1.6s ease-out; }
+@keyframes fkflash { 0%, 40% { outline: 3px solid var(--orange); outline-offset: 6px; } 100% { outline: 3px solid transparent; outline-offset: 6px; } }
+
 /* ------------------------------------------------------------ RESPONSIVE */
 @media (max-width: 1100px) {
     .now { grid-template-columns: 1fr 1fr; }
@@ -547,8 +554,8 @@ button { font-family: inherit; }
 @media (max-width: 640px) {
     .sp { display: inline; }
     .now { grid-template-columns: 1fr; }
-    .hero__copy, .hero[data-text] .hero__copy { left: var(--pad); right: var(--pad); bottom: 128px; transform: none; top: auto; text-align: left; max-width: none; }
-    .hero[data-text] .hero__logo img { margin: 0; width: min(72vw, 300px); }
+    .hero__copy, .hero[data-pos] .hero__copy { left: var(--pad); right: var(--pad); bottom: 128px; transform: none; top: auto; text-align: left; max-width: none; }
+    .hero[data-pos] .hero__logo img { margin: 0; width: min(72vw, 300px); }
     .hero__catch { right: 18px; top: 92px; font-size: 19px; }
     .hero__tagline { font-size: 12.5px; }
     .log li a { grid-template-columns: 74px 46px minmax(0, 1fr); gap: 10px; font-size: 13.5px; }

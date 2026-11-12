@@ -319,7 +319,7 @@
             const has = !!h.src;
             const img = hero.querySelector('.hero__img');
             hero.classList.toggle('has-photo', has);
-            hero.dataset.text = h.text || 'bottom-left';
+            hero.dataset.pos = h.text || 'bottom-left';
             hero.dataset.tone = has ? (h.tone || 'light') : 'dark';
             hero.style.setProperty('--hero-shade', ((h.shade != null ? h.shade : 30) / 100).toFixed(2));
             heroZoom = has ? zoom(h.zoom) : 1;
@@ -355,7 +355,43 @@
         target.scrollIntoView({ behavior: 'smooth', block: name === 'hero' ? 'start' : 'center' });
     }
 
-    window.FK_SITE = { applyPhotos, applyCV, scrollToSlot };
+    // ================================================================
+    //  ページの文章（site/texts.json）
+    //  HTML の data-text="キー" が付いた要素が対象。texts.json には変更した分だけ入る
+    // ================================================================
+    const TEXT_DEFAULTS = {};
+    function textOf(el) {
+        const t = document.createElement('div');
+        t.innerHTML = el.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<wbr\s*\/?>/gi, '');
+        return t.textContent.trim();
+    }
+    function textHTML(v) {
+        // 改行はそのまま改行に。「、」「。」の後ろは折り返してよい位置にする
+        return esc(v).replace(/\n/g, '<br>').replace(/([、。])(?!<br>|$)/g, '$1<wbr>');
+    }
+    function initTexts() { $$('[data-text]').forEach(el => { TEXT_DEFAULTS[el.dataset.text] = textOf(el); }); }
+    function applyTexts(map) {
+        map = map || {};
+        $$('[data-text]').forEach(el => {
+            const k = el.dataset.text;
+            const v = Object.prototype.hasOwnProperty.call(map, k) ? String(map[k]) : TEXT_DEFAULTS[k];
+            el.innerHTML = textHTML(v || '');
+            el.hidden = !String(v || '').trim();
+        });
+        afterRender();
+    }
+    function textFields() {
+        return $$('[data-text]').map(el => ({ key: el.dataset.text, label: el.dataset.label || el.dataset.text, def: TEXT_DEFAULTS[el.dataset.text] || '' }));
+    }
+    function focusText(key) {
+        const el = $(`[data-text="${key}"]`);
+        if (!el) return;
+        const target = el.hidden ? el.parentElement : el;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.remove('fk-flash'); void el.offsetWidth; el.classList.add('fk-flash');
+    }
+
+    window.FK_SITE = { applyPhotos, applyCV, scrollToSlot, applyTexts, textFields, focusText };
 
     // ================================================================
     //  境界のギザギザ（つなぎの層・接触面）
@@ -792,7 +828,12 @@
         document.fonts && document.fonts.ready.then(relayout);
 
         if (PREVIEW) {
-            document.addEventListener('click', e => { if (e.target.closest('a')) e.preventDefault(); }, true);
+            document.documentElement.classList.add('is-preview');
+            document.addEventListener('click', e => {
+                const t = e.target.closest('[data-text]');
+                if (t) { e.preventDefault(); e.stopPropagation(); window.parent.postMessage({ type: 'fk-text-click', key: t.dataset.text }, '*'); return; }
+                if (e.target.closest('a')) e.preventDefault();
+            }, true);
         }
     }
 
@@ -800,6 +841,7 @@
     //  起動
     // ================================================================
     function start() {
+        initTexts();
         seepText();
         drawEdges();
         drawRidge();
@@ -832,6 +874,7 @@
         } else {
             json('site/photos.json', {}).then(applyPhotos);
             json('site/cv.json', {}).then(applyCV);
+            json('site/texts.json', {}).then(applyTexts);
         }
         onScroll();
     }
