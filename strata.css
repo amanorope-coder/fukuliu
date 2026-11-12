@@ -165,7 +165,16 @@ button { font-family: inherit; }
 .hero[data-tone="dark"] { color: var(--ink); }
 .hero__media { position: absolute; inset: 0; display: none; }
 .hero.has-photo .hero__media { display: block; }
-.hero__img { width: 100%; height: 108%; object-fit: cover; will-change: transform; }
+/* PCは --hx/--hy、縦長の画面（スマホ・縦向きタブレット）は --mx/--my が見せたい中心 */
+.hero__media picture { display: block; width: 100%; height: 100%; }
+.hero__img { width: 100%; height: 108%; object-fit: cover; will-change: transform; object-position: var(--hx, 50%) var(--hy, 50%); transform-origin: var(--hx, 50%) var(--hy, 50%); }
+.hero__blur { display: none; }
+@media (orientation: portrait) {
+    .hero__img { object-position: var(--mx, 50%) var(--my, 50%); transform-origin: var(--mx, 50%) var(--my, 50%); }
+    /* 写真全体を見せる：まわりは同じ写真をぼかして埋める */
+    .hero[data-mmode="fit"] .hero__blur { display: block; position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); object-fit: cover; filter: blur(24px) saturate(1.1); }
+    .hero[data-mmode="fit"] .hero__img { position: relative; object-fit: contain; object-position: 50% 26%; }
+}
 .hero__shade { position: absolute; inset: 0; pointer-events: none; display: none; background: rgba(0, 0, 0, var(--hero-shade, .3)); }
 .hero.has-photo .hero__shade { display: block; }
 .hero.has-photo[data-tone="dark"] .hero__shade { background: rgba(255, 255, 255, var(--hero-shade, .3)); }

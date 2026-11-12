@@ -45,7 +45,8 @@
         img.style.transformOrigin = pos(x, y);
         img.style.transform = zoom(z) > 1 ? `scale(${zoom(z)})` : '';
     }
-    let heroZoom = 1;
+    let heroZoom = 1, heroZoomM = 1;
+    const PORTRAIT = matchMedia('(orientation: portrait)');
     function idDate(id) {
         const t = parseInt(String(id || ''), 10);
         if (!t || t < 1e12) return '';
@@ -322,8 +323,22 @@
             hero.dataset.pos = h.text || 'bottom-left';
             hero.dataset.tone = has ? (h.tone || 'light') : 'dark';
             hero.style.setProperty('--hero-shade', ((h.shade != null ? h.shade : 30) / 100).toFixed(2));
+            // スマホ（縦長の画面）: crop=同じ写真を別の中心で / fit=全体を見せる / photo=別の写真
+            const m = h.mobile || {};
+            const mode = has ? (m.mode === 'photo' && !m.src ? 'crop' : (m.mode || 'crop')) : 'crop';
+            hero.dataset.mmode = mode;
+            const num = (v, d) => (v != null && v !== '' ? v : d);
+            const px = num(h.x, 50), py = num(h.y, 50);
+            const mx = mode === 'photo' ? num(m.x, 50) : num(m.x, px);
+            const my = mode === 'photo' ? num(m.y, 50) : num(m.y, py);
+            hero.style.setProperty('--hx', px + '%'); hero.style.setProperty('--hy', py + '%');
+            hero.style.setProperty('--mx', mx + '%'); hero.style.setProperty('--my', my + '%');
             heroZoom = has ? zoom(h.zoom) : 1;
-            if (img) { if (has) { img.src = h.src; img.style.objectPosition = pos(h.x, h.y); img.style.transformOrigin = pos(h.x, h.y); } else img.removeAttribute('src'); }
+            heroZoomM = !has || mode === 'fit' ? 1 : zoom(mode === 'photo' ? num(m.zoom, 100) : num(m.zoom, h.zoom));
+            const srcM = hero.querySelector('.hero__src-m'), blur = hero.querySelector('.hero__blur');
+            if (srcM) { if (mode === 'photo') srcM.srcset = m.src; else srcM.removeAttribute('srcset'); }
+            if (blur) { if (has && mode === 'fit') blur.src = h.src; else blur.removeAttribute('src'); }
+            if (img) { img.style.objectPosition = ''; img.style.transformOrigin = ''; if (has) img.src = h.src; else img.removeAttribute('src'); }
             heroTransform();
             const hd = $('#hd');
             if (hd) hd.dataset.tone = hero.dataset.tone;
@@ -775,7 +790,8 @@
         const img = $('.hero__img');
         if (!img) return;
         const ty = REDUCED ? 0 : Math.min(scrollY, innerHeight * 1.2) * 0.28;
-        img.style.transform = `translate3d(0, ${ty.toFixed(1)}px, 0)${heroZoom > 1 ? ` scale(${heroZoom})` : ''}`;
+        const z = PORTRAIT.matches ? heroZoomM : heroZoom;
+        img.style.transform = `translate3d(0, ${ty.toFixed(1)}px, 0)${z > 1 ? ` scale(${z})` : ''}`;
     }
 
     let ticking = false;
@@ -821,6 +837,7 @@
         addEventListener('scroll', onScroll, { passive: true });
         addEventListener('resize', () => {
             if (colCount() !== state.cols) renderArticles();
+            heroTransform();
             relayout();
         });
         if ('ResizeObserver' in window) new ResizeObserver(relayout).observe($('#strata'));

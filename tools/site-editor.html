@@ -65,6 +65,8 @@ button{font-family:inherit}
 .choices button.on{border-color:var(--fg);background:var(--fg);color:#fff}
 .range{display:flex;align-items:center;gap:10px}.range input{flex:1}.range span{font-size:11px;width:36px;text-align:right;color:var(--mute)}
 .member-tabs{display:flex;gap:6px;margin-bottom:6px}
+.mbox{margin-top:18px;padding:14px;border:1.5px solid var(--line);border-radius:4px;background:#fafafb}
+.mbox .focal{margin-top:10px}
 .tgroup{margin-top:22px}
 .tgroup__h{font-size:12px;font-weight:900;letter-spacing:.08em;padding-bottom:6px;border-bottom:2px solid var(--fg);margin-bottom:4px}
 .tf{padding:10px 8px;border-radius:4px;transition:background .3s}
@@ -252,7 +254,12 @@ async function loadAll(){
 // ═══════════════ プレビュー ═══════════════
 function resolvedPhotos(){
   const out = {};
-  SLOTS.forEach(s => { const d = photos[s.key]; if (d) out[s.key] = Object.assign({}, d, { src: frameUrl(d.src) }); });
+  SLOTS.forEach(s => {
+    const d = photos[s.key];
+    if (!d) return;
+    out[s.key] = Object.assign({}, d, { src: frameUrl(d.src) });
+    if (d.mobile) out[s.key].mobile = Object.assign({}, d.mobile, { src: frameUrl(d.mobile.src) });
+  });
   return out;
 }
 function resolvedCV(){
@@ -390,6 +397,7 @@ function renderSlotEditor(){
     ${d.src?`<button class="btn btn--ghost btn--sm" onclick="setSlot('src','');renderSlotEditor()">写真を外す</button>`:''}</div>
     ${isTrial(d.src)?'<p class="help" style="color:var(--orange);font-weight:700">お試し表示中の写真です（どこにも保存・公開されません）。使うと決めたら「ライブラリから選ぶ／アップロード」で同じ写真を入れ直してください。</p>':'<p class="help">「パソコンの写真で試す」は、投稿キーなしでプレビューだけ確認できます（保存・公開はされません）。</p>'}`;
   if (d.src) html += zoomRow(d.zoom, "setSlot('zoom',+this.value,true)");
+  if (curSlot === 'hero' && d.src) html += mobileHeroHTML(d);
   if (s.opts.includes('text'))  html += choiceRow('文字の位置','text',[['center','中央'],['bottom','下・中央'],['bottom-left','左下']], d.text);
   if (s.opts.includes('tone'))  html += choiceRow('ロゴ・文字の色','tone',[['light','白（暗い写真向け）'],['dark','黒（明るい写真向け）']], d.tone);
   if (s.opts.includes('shade')) html += rangeRow('写真の暗さ／明るさの調整（文字を読みやすく）','shade',d.shade,0,80);
@@ -398,6 +406,43 @@ function renderSlotEditor(){
   if (s.opts.includes('caption')) html += `<div class="field"><label>キャプション（任意）</label><input type="text" value="${esc(d.caption)}" oninput="setSlot('caption',this.value,true)" placeholder="例：撮影 ◯◯"></div>`;
   $('slot-editor').innerHTML = html;
   attachFocal('slot-focal', p => { d.x=p.x; d.y=p.y; markDirty('photos'); pushPreview(); });
+  if (curSlot === 'hero' && d.src){
+    const m = heroM();
+    attachFocal('m-focal', p => { m.x=p.x; m.y=p.y; markDirty('photos'); pushPreview(); });
+  }
+}
+
+// ── トップ写真：スマホ（縦長の画面）での見せ方 ──
+function heroM(){ const d = slotData('hero'); return d.mobile = Object.assign({ mode:'crop' }, d.mobile || {}); }
+function mobileHeroHTML(d){
+  const m = heroM();
+  const modes = [['crop','同じ写真を切り抜く'],['fit','写真全体を見せる'],['photo','別の写真を使う']];
+  let h = `<div class="mbox"><p class="sec-title" style="margin-top:0">スマホ（縦長の画面）での見せ方</p>
+    <div class="choices">${modes.map(([v,l]) => `<button class="${m.mode===v?'on':''}" onclick="setHeroM('mode','${v}')">${l}</button>`).join('')}</div>`;
+  if (m.mode === 'crop'){
+    h += `<p class="help">スマホでは写真の一部を縦長に切り抜きます。PCとは別に「見せたい中心」と拡大を決められます。</p>
+      ${focalHTML(viewUrl(d.src), m.x ?? d.x, m.y ?? d.y, 'm-focal')}
+      ${zoomRow(m.zoom ?? d.zoom, "setHeroM('zoom',+this.value,true)")}`;
+  } else if (m.mode === 'fit'){
+    h += `<p class="help">写真を切らずに全体を表示します。上下の空いたところは、同じ写真をぼかして埋めます。横長の写真で、写っている人や物を全部見せたいとき向けです。</p>`;
+  } else {
+    h += `<p class="help">スマホのときだけ、別の写真に差し替えます（縦長の写真がおすすめ）。</p>
+      ${m.src ? focalHTML(viewUrl(m.src), m.x ?? 50, m.y ?? 50, 'm-focal') : '<div class="focal__empty">スマホ用の写真が未設定です。</div>'}
+      <div class="row"><button class="btn btn--sm" onclick="openLib(p=>setHeroM('src',p))">ライブラリから選ぶ／アップロード</button>
+      <label class="btn btn--ghost btn--sm">パソコンの写真で試す<input type="file" accept="image/*" hidden onchange="trialFile(this, p=>setHeroM('src',p))"></label></div>
+      ${isTrial(m.src)?'<p class="help" style="color:var(--orange);font-weight:700">お試し表示中の写真です（公開されません）。</p>':''}
+      ${m.src ? zoomRow(m.zoom ?? 100, "setHeroM('zoom',+this.value,true)") : ''}`;
+  }
+  return h + '</div>';
+}
+function setHeroM(field, val, quiet){
+  const m = heroM();
+  m[field] = val;
+  if (field === 'src'){ m.x = 50; m.y = 50; m.zoom = 100; }
+  if (field === 'mode' && val === 'crop'){ delete m.x; delete m.y; delete m.zoom; }
+  markDirty('photos'); pushPreview(); renderSlots();
+  if (device !== 'mobile') setDevice('mobile');
+  if (!quiet) renderSlotEditor();
 }
 function zoomRow(val, handler){
   val = val || 100;
@@ -452,7 +497,7 @@ function setMember(key, val){
 // ═══════════════ 写真ライブラリ ═══════════════
 function usedPaths(){
   const s = new Set();
-  Object.values(photos).forEach(d => d && d.src && s.add(d.src));
+  Object.values(photos).forEach(d => { if (d && d.src) s.add(d.src); if (d && d.mobile && d.mobile.src) s.add(d.mobile.src); });
   (cv.members||[]).forEach(m => m.photo && s.add(m.photo));
   return s;
 }
@@ -521,14 +566,14 @@ async function uploadFiles(input){
 // ═══════════════ お試し（端末内だけで表示） ═══════════════
 let trialN = 0;
 function isTrial(p){ return /^trial:/.test(p || ''); }
-async function trialFile(input){
+async function trialFile(input, cb){
   const f = input.files[0]; input.value='';
   if (!f) return;
   try {
     const dataUrl = await compress(f);
     const key = `trial:${++trialN}:${f.name}`;
     urlMap[key] = dataUrl;
-    setSlot('src', key); renderSlotEditor();
+    if (cb) cb(key); else { setSlot('src', key); renderSlotEditor(); }
     toast('お試し表示中です（この写真は公開されません）');
   } catch(e){ toast(e.message, true); }
 }
@@ -536,7 +581,7 @@ async function trialFile(input){
 // ═══════════════ 公開 ═══════════════
 async function publish(){
   if (!getToken()) return;
-  const trial = SLOTS.filter(s => photos[s.key] && isTrial(photos[s.key].src)).map(s => s.label);
+  const trial = SLOTS.filter(s => photos[s.key] && (isTrial(photos[s.key].src) || (photos[s.key].mobile && photos[s.key].mobile.mode === 'photo' && isTrial(photos[s.key].mobile.src)))).map(s => s.label);
   if (trial.length){ toast(`「${trial.join('」「')}」はお試し写真のままです。ライブラリからアップロードした写真に入れ替えてから公開してください。`, true); return; }
   const btn=$('btn-save'); btn.disabled=true; btn.textContent='公開中…';
   try {
