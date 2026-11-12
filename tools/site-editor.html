@@ -309,6 +309,7 @@ function renderSlotEditor(){
     <label class="btn btn--ghost btn--sm">パソコンの写真で試す<input type="file" accept="image/*" hidden onchange="trialFile(this)"></label>
     ${d.src?`<button class="btn btn--ghost btn--sm" onclick="setSlot('src','');renderSlotEditor()">写真を外す</button>`:''}</div>
     ${isTrial(d.src)?'<p class="help" style="color:var(--orange);font-weight:700">お試し表示中の写真です（どこにも保存・公開されません）。使うと決めたら「ライブラリから選ぶ／アップロード」で同じ写真を入れ直してください。</p>':'<p class="help">「パソコンの写真で試す」は、投稿キーなしでプレビューだけ確認できます（保存・公開はされません）。</p>'}`;
+  if (d.src) html += zoomRow(d.zoom, "setSlot('zoom',+this.value,true)");
   if (s.opts.includes('text'))  html += choiceRow('文字の位置','text',[['center','中央'],['bottom','下・中央'],['bottom-left','左下']], d.text);
   if (s.opts.includes('tone'))  html += choiceRow('ロゴ・文字の色','tone',[['light','白（暗い写真向け）'],['dark','黒（明るい写真向け）']], d.tone);
   if (s.opts.includes('shade')) html += rangeRow('写真の暗さ／明るさの調整（文字を読みやすく）','shade',d.shade,0,80);
@@ -318,6 +319,11 @@ function renderSlotEditor(){
   $('slot-editor').innerHTML = html;
   attachFocal('slot-focal', p => { d.x=p.x; d.y=p.y; markDirty('photos'); pushPreview(); });
 }
+function zoomRow(val, handler){
+  val = val || 100;
+  return `<div class="field"><label>拡大・縮小（100%＝枠いっぱい。大きくすると、見せたい中心に向かって寄ります）</label><div class="range">
+    <input type="range" min="100" max="300" step="5" value="${val}" oninput="this.nextElementSibling.textContent=this.value+'%';${handler}"><span>${val}%</span></div></div>`;
+}
 function rangeRow(label, field, val, min, max){
   return `<div class="field"><label>${label}</label><div class="range"><input type="range" min="${min}" max="${max}" value="${val}"
     oninput="this.nextElementSibling.textContent=this.value+'%';setSlot('${field}',+this.value,true)"><span>${val}%</span></div></div>`;
@@ -325,7 +331,7 @@ function rangeRow(label, field, val, min, max){
 function setSlot(field, val, quiet){
   const d = slotData(curSlot);
   d[field] = val;
-  if (field==='src' && !val) { d.x=50; d.y=50; }
+  if (field==='src' && !val) { d.x=50; d.y=50; d.zoom=100; }
   markDirty('photos'); pushPreview(); renderSlots();
   if (!quiet && field!=='src') renderSlotEditor();
 }
@@ -345,6 +351,7 @@ function renderMemberEditor(){
     ${focalHTML(viewUrl(m.photo), m.photoX??50, m.photoY??50, 'cv-focal')}
     <div class="row"><button class="btn btn--sm" onclick="openLib(p=>{setMember('photo',p);renderMemberEditor();})">ライブラリから選ぶ／アップロード</button>
     ${m.photo?`<button class="btn btn--ghost btn--sm" onclick="setMember('photo','');renderMemberEditor()">写真を外す</button>`:''}</div>
+    ${m.photo ? zoomRow(m.photoZoom, "setMember('photoZoom',+this.value)") : ''}
     <p class="sec-title">基本情報</p>
     ${f('name','名前')}
     ${f('nameEn','ローマ字表記（任意）','text','例：Hirotoshi Amano')}
@@ -357,7 +364,7 @@ function renderMemberEditor(){
 }
 function setMember(key, val){
   const m = cv.members[curMember]; m[key] = val;
-  if (key==='photo' && !val){ m.photoX=50; m.photoY=50; }
+  if (key==='photo' && !val){ m.photoX=50; m.photoY=50; m.photoZoom=100; }
   markDirty('cv'); pushPreview();
   if (key==='name') renderMemberTabs();
 }

@@ -38,6 +38,14 @@
     function spotifyUrl(v) { return isExt(v) ? String(v).trim() : (v ? `https://open.spotify.com/episode/${spotifyId(v)}` : ''); }
     function catLabel(c) { return (CATS[c] && CATS[c].label) || '記事'; }
     function pos(x, y) { return `${x != null ? x : 50}% ${y != null ? y : 50}%`; }
+    function zoom(z) { const v = +z || 100; return Math.max(1, Math.min(3, v / 100)); }
+    // 写真の表示位置＋拡大（拡大は「見せたい中心」に向かって寄る）
+    function frame(img, x, y, z) {
+        img.style.objectPosition = pos(x, y);
+        img.style.transformOrigin = pos(x, y);
+        img.style.transform = zoom(z) > 1 ? `scale(${zoom(z)})` : '';
+    }
+    let heroZoom = 1;
     function idDate(id) {
         const t = parseInt(String(id || ''), 10);
         if (!t || t < 1e12) return '';
@@ -256,7 +264,7 @@
         const ms = (data && data.members) || [];
         grid.innerHTML = ms.length ? ms.map((m, i) => `
             <article class="cv-card rv" style="--rd:${i * 0.08}s">
-                <div class="cv-card__photo">${m.photo ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos(m.photoX, m.photoY)}">` : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`}</div>
+                <div class="cv-card__photo">${m.photo ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos(m.photoX, m.photoY)};transform-origin:${pos(m.photoX, m.photoY)};transform:scale(${zoom(m.photoZoom)})">` : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`}</div>
                 <div>
                     ${m.role ? `<span class="cv-card__role">${esc(m.role)}</span>` : ''}
                     <h4 class="cv-card__name">${esc(m.name)}</h4>
@@ -314,7 +322,9 @@
             hero.dataset.text = h.text || 'bottom-left';
             hero.dataset.tone = has ? (h.tone || 'light') : 'dark';
             hero.style.setProperty('--hero-shade', ((h.shade != null ? h.shade : 30) / 100).toFixed(2));
-            if (img) { if (has) { img.src = h.src; img.style.objectPosition = pos(h.x, h.y); } else img.removeAttribute('src'); }
+            heroZoom = has ? zoom(h.zoom) : 1;
+            if (img) { if (has) { img.src = h.src; img.style.objectPosition = pos(h.x, h.y); img.style.transformOrigin = pos(h.x, h.y); } else img.removeAttribute('src'); }
+            heroTransform();
             const hd = $('#hd');
             if (hd) hd.dataset.tone = hero.dataset.tone;
         }
@@ -324,7 +334,7 @@
             const cap = fig.querySelector('.outcrop__cap');
             fig.hidden = !b.src;
             fig.dataset.size = b.size || 'm';
-            if (b.src) { img.src = b.src; img.style.objectPosition = pos(b.x, b.y); }
+            if (b.src) { img.src = b.src; frame(img, b.x, b.y, b.zoom); }
             if (cap) { cap.textContent = b.caption || ''; cap.hidden = !b.caption; }
         });
         const collab = $('[data-slot="collab"]');
@@ -333,7 +343,7 @@
             const img = collab.querySelector('.collab__media img');
             collab.classList.toggle('has-photo', !!c.src);
             collab.style.setProperty('--collab-tint', ((c.tint != null ? c.tint : 70) / 100).toFixed(2));
-            if (img) { if (c.src) { img.src = c.src; img.style.objectPosition = pos(c.x, c.y); } else img.removeAttribute('src'); }
+            if (img) { if (c.src) { img.src = c.src; frame(img, c.x, c.y, c.zoom); } else img.removeAttribute('src'); }
         }
         afterRender();
     }
@@ -381,6 +391,52 @@
             svg.appendChild(pl);
             el.appendChild(svg);
         });
+    }
+
+    // ================================================================
+    //  ヘッダー下の仕切り：直線をベースに、山の稜線（右のメニューの下は直線）
+    // ================================================================
+    function drawRidge() {
+        const hd = $('#hd');
+        if (!hd) return;
+        const W = hd.clientWidth, H = hd.offsetHeight, base = H - 1;
+        const nav = $('.hd__nav'), btn = $('.hd__menu');
+        const right = nav && nav.offsetWidth ? nav : btn && btn.offsetWidth ? btn : null;
+        const stop = right ? right.getBoundingClientRect().left - 28 : W;
+        const r = rng(1859);
+        // 山（ふもとが広く、頂がとがった形）をいくつか置く
+        const peaks = [];
+        let x = 18 + r() * 40;
+        while (x < stop - 50) {
+            const w = 70 + r() * 190, h = 6 + r() * 9;
+            peaks.push({ c: x + w * 0.5, w, h });
+            if (r() < 0.75) peaks.push({ c: x + w * (0.15 + r() * 0.7), w: w * (0.35 + r() * 0.2), h: h * (0.5 + r() * 0.35) });   // 前山・肩
+            x += w * (0.45 + r() * 0.55) + r() * 70;
+        }
+        const pts = [];
+        for (let px = 0; px <= W; px += 3) {
+            let h = 0;
+            if (px < stop) {
+                peaks.forEach(p => { const t = Math.abs(px - p.c) / (p.w / 2); if (t < 1) h = Math.max(h, p.h * Math.pow(1 - t, 1.25)); });
+                if (h > 1) h += (r() - 0.5) * 1.8;             // 稜線の細かなギザギザ
+                h *= Math.min(1, (stop - px) / 60);            // メニュー手前で直線に戻す
+            }
+            pts.push([px, base - Math.max(0, h)]);
+        }
+        if (pts[pts.length - 1][0] < W) pts.push([W, base]);
+        const d = 'M' + pts.map(p => `${p[0]} ${p[1].toFixed(1)}`).join(' L');
+        let svg = $('.hd__ridge', hd);
+        if (!svg) {
+            svg = document.createElementNS(NS, 'svg');
+            svg.setAttribute('class', 'hd__ridge');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.innerHTML = '<path pathLength="1"/>';
+            hd.appendChild(svg);
+        }
+        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+        $('path', svg).setAttribute('d', d);
+        // ヘッダーの背景も稜線で切る（稜線より下はページが見える）
+        hd.style.clipPath = `polygon(0 0, ${W}px 0, ${W}px ${H + 1}px, ${pts.slice().reverse().map(p => `${p[0]}px ${(p[1] + 1).toFixed(1)}px`).join(', ')})`;
     }
 
     // ================================================================
@@ -676,8 +732,15 @@
         $$('.rv:not(.is-in):not([data-obs])').forEach(el => { el.dataset.obs = '1'; io.observe(el); });
     }
 
-    const relayout = debounce(() => { Vein.build(); Gauge.build(); }, 120);
+    const relayout = debounce(() => { Vein.build(); Gauge.build(); drawRidge(); }, 120);
     function afterRender() { reveal(); relayout(); }
+
+    function heroTransform() {
+        const img = $('.hero__img');
+        if (!img) return;
+        const ty = REDUCED ? 0 : Math.min(scrollY, innerHeight * 1.2) * 0.28;
+        img.style.transform = `translate3d(0, ${ty.toFixed(1)}px, 0)${heroZoom > 1 ? ` scale(${heroZoom})` : ''}`;
+    }
 
     let ticking = false;
     function onScroll() {
@@ -687,8 +750,7 @@
             ticking = false;
             Vein.update();
             Gauge.update();
-            const img = $('.hero__img');
-            if (img && !REDUCED && scrollY < innerHeight * 1.2) img.style.transform = `translate3d(0, ${(scrollY * 0.28).toFixed(1)}px, 0)`;
+            if (scrollY < innerHeight * 1.2) heroTransform();
         });
     }
 
@@ -740,6 +802,7 @@
     function start() {
         seepText();
         drawEdges();
+        drawRidge();
         drawAquifer();
         Vein.init();
         bind();
