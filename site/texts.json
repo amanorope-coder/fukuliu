@@ -1,1 +1,22 @@
-{}
+{
+  "hero.tagline": "京都発・番組型プラットフォーム",
+  "surface.title": "TOP",
+  "surface.kicker": "SURFACE:湧水",
+  "surface.lead": "",
+  "article.desc": "エッセイ・批評・美術・対談、なんでも書きます\n週１更新",
+  "radio.name": "配信",
+  "article.name": "記事",
+  "radio.desc": "他分野のゲストを呼び、いっしょに美術史を読み解く\nSpotifyで配信中",
+  "article.soil": "SAND:砂層",
+  "radio.soil": "SILT:シルト層",
+  "people.name": "人物",
+  "people.soil": "MUD:泥層",
+  "bedrock.soil": "AQUIFER:帯水層",
+  "people.collabDesc": "これまでにご協力いただいた方々",
+  "bedrock.name": "古層",
+  "bedrock.en": "ARCHIVE — 過去のコンテンツ",
+  "bedrock.desc": "これまでに公開した記事・配信の全て\n",
+  "people.desc": "伏流に関わってくれた人たちと、運営メンバー",
+  "people.cvTitle": "主宰",
+  "footer.about": "関西発、領域横断的知のプラットフォーム"
+}
