@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUKURYU — 関西発、領域横断の知のプラットフォーム</title>
+    <title>伏流 FUKURYU — 関西発、番組型アートプラットフォーム</title>
     <meta name="description" content="FUKURYU｜ラジオ・動画・記事で構成される、制作実践者によるアートプラットフォーム。関西の美術シーンを再解釈する。">
     <meta property="og:title" content="FUKURYU — 関西発、領域横断の知のプラットフォーム">
     <meta property="og:description" content="FUKURYU｜ラジオ・動画・記事で構成される、制作実践者によるアートプラットフォーム。関西の美術シーンを再解釈する。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fukuryu.art/">
     <meta property="og:image" content="https://fukuryu.art/fukuryu-logo.png">
+    <meta name="theme-color" content="#15171b">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="theme.css">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="strata.css">
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
@@ -25,312 +26,268 @@
 <body>
 
     <!-- ============================ HEADER ============================ -->
-    <header class="site-header">
-        <!-- 上部: ON AIR ステータスバー -->
-        <div class="site-header__status">
-            <div class="site-header__status-inner">
-                <span class="status-pulse" aria-hidden="true"></span>
-                <span class="status-label">ON AIR</span>
-                <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
-                <span class="status-date">No. 005 · 2026 SPRING</span>
-            </div>
-        </div>
-
-        <!-- メインヘッダー -->
-        <div class="header-inner">
-            <a href="/" class="brand-mark">
-                <img src="fukuryu-logo.png" alt="伏流" class="brand-mark__img">
-                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
-            </a>
-            <nav class="global-nav">
-                <ul>
-                    <li><a href="#radio">Radio</a></li>
-                    <li><a href="#article">Article</a></li>
-                    <li><a href="tokubetsu-kyoryoku.html">Collaborators</a></li>
-                    <li><a href="#cv">CV</a></li>
-                </ul>
-            </nav>
-            <button class="nav-toggle" aria-label="メニューを開く">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-
-        <!-- 下部: アクセントストリップ -->
-        <div class="site-header__bar" aria-hidden="true"></div>
+    <header class="hd" id="hd">
+        <a class="hd__logo" href="#top" aria-label="伏流 トップへ"><img src="fukuryu-logo.png" alt="伏流"></a>
+        <nav class="hd__nav" aria-label="層の一覧">
+            <a href="#top" data-layer="top"><b>地上</b><small>±0</small></a>
+            <a href="#article" data-layer="article"><b>記事</b><small>−8m</small></a>
+            <a href="#radio" data-layer="radio"><b>配信</b><small>−20m</small></a>
+            <a href="#people" data-layer="people"><b>人物</b><small>−34m</small></a>
+            <a href="#bedrock" data-layer="bedrock"><b>岩盤</b><small>−50m</small></a>
+        </nav>
+        <button class="hd__menu" id="menu-open" type="button" aria-expanded="false" aria-controls="menu"><i></i>潜る</button>
     </header>
 
-    <!-- ============================ HERO ============================ -->
-    <!-- 写真は tools/site-editor.html の「写真配置」で設定（site/photos.json） -->
-    <section class="hero" data-slot="hero">
-        <div class="hero__media" aria-hidden="true"><img class="hero__img" alt=""></div>
-        <div class="hero__shade" aria-hidden="true"></div>
-        <div class="hero__main">
-            <p class="hero__eyebrow">Kansai Art Platform / Est. 2026</p>
-            <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 - Kansai Art Platform" class="hero__logo-img"></h1>
-            <p class="hero__tagline">文化の関西、次代の若手を照らす。<span class="accent">京都発“番組型プラットフォーム”</span>。</p>
+    <!-- スマホ用メニュー（柱状図） -->
+    <div class="menu" id="menu" aria-hidden="true">
+        <div class="menu__top">
+            <img src="fukuryu-logo.png" alt="伏流">
+            <button class="menu__close" id="menu-close" type="button" aria-label="メニューを閉じる">閉じる</button>
         </div>
-        <p class="hero__vertical" aria-hidden="true">関西発・番組型アートプラットフォーム</p>
-        <p class="hero__index" aria-hidden="true"><span>No.</span>005<br><span>2026</span></p>
-        <a href="#radio" class="hero__scroll" aria-label="下へスクロール"><span>Scroll</span><i></i></a>
-        <i class="crop" aria-hidden="true"></i>
-    </section>
-    <div class="marquee marquee--hero" aria-hidden="true"><div class="marquee__track"><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>KANSAI ART PLATFORM</span><b>✳︎</b><span>美術史ラジオ</span><b>✳︎</b><span>ARTICLE</span><b>✳︎</b><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>KANSAI ART PLATFORM</span><b>✳︎</b><span>美術史ラジオ</span><b>✳︎</b><span>ARTICLE</span><b>✳︎</b><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>KANSAI ART PLATFORM</span><b>✳︎</b><span>美術史ラジオ</span><b>✳︎</b><span>ARTICLE</span><b>✳︎</b><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>KANSAI ART PLATFORM</span><b>✳︎</b><span>美術史ラジオ</span><b>✳︎</b><span>ARTICLE</span><b>✳︎</b></div></div>
+        <nav class="menu__col">
+            <a href="#top" class="m-top">地上<small>GL ±0.0m</small></a>
+            <a href="#article" class="m-article">記事層<small>−8.0m</small></a>
+            <a href="#radio" class="m-radio">配信層<small>−20.0m</small></a>
+            <a href="#people" class="m-people">人物層<small>−34.0m</small></a>
+            <a href="#bedrock" class="m-bedrock">岩盤<small>−50.0m</small></a>
+        </nav>
+    </div>
 
-    <!-- ============================ FEATURED REEL ============================ -->
-    <section class="featured-reel">
-        <div class="featured-reel__head">
-            <span class="featured-reel__label">New Arrivals</span>
-            <p class="featured-reel__subtitle">記事・ラジオ・対談 — 最新コンテンツ</p>
-        </div>
-        <div class="featured-reel__stage">
-            <button class="reel-arrow reel-arrow--prev" aria-label="前のコンテンツ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <div class="featured-reel__track-wrap">
-                <div class="featured-reel__track" id="featured-reel-track">
-                    <!-- ラジオ: 最新エピソード（固定） -->
-                    <a href="https://open.spotify.com/episode/5Up5gCMdyZd8pAlVJwZp0b" class="reel-card reel-card--radio" target="_blank" rel="noopener noreferrer">
-                        <div class="reel-card__type">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-                            Radio
-                        </div>
-                        <h3 class="reel-card__title">美術史ラジオ EP.05<br>鑑賞授業！慧可断臂図</h3>
-                        <div class="reel-card__meta">
-                            <span class="reel-card__date">2026.04.21</span>
-                            <span class="reel-card__platform">Spotify →</span>
-                        </div>
-                    </a>
-                    <!-- 記事カードはJSで追加 -->
-                </div>
-            </div>
-            <button class="reel-arrow reel-arrow--next" aria-label="次のコンテンツ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-        </div>
-        <div class="reel-pagination" id="reel-pagination"></div>
-    </section>
+    <!-- 深度計（PCは右端、スマホは左下） -->
+    <aside class="gauge" id="gauge" aria-hidden="true">
+        <div class="gauge__read"><span class="gauge__num" id="gauge-num">±0.0m</span><span class="gauge__name" id="gauge-name">地上</span></div>
+        <div class="gauge__col" id="gauge-col"><i class="gauge__ptr" id="gauge-ptr"></i></div>
+    </aside>
 
-    <!-- ============================ FEATURE STRIP ============================ -->
-    <section id="feature" class="feature-strip">
-        <div class="feature-strip__inner">
-            <div class="feature-strip__label">Now on air</div>
-            <div class="ticker" id="feature-ticker">
-                <span>読み込み中…</span>
-            </div>
-        </div>
-    </section>
+    <main class="strata" id="strata">
 
-    <!-- 写真帯①（未設定なら非表示） -->
-    <figure class="photo-band" data-slot="band1" hidden><img alt=""><figcaption class="photo-band__cap"></figcaption></figure>
+        <!-- ================= 地上 ================= -->
+        <div id="top" class="layer-top" data-layer="top" data-depth="0">
 
-    <!-- ============================ RADIO (Spotify Embed) ============================ -->
-    <!-- ★ エピソードの追加・編集はこのファイル末尾の <script> ブロックの radioEpisodes 配列を編集してください ★ -->
-    <section id="radio" class="program program--spotify">
-        <div class="program__bg" aria-hidden="true"></div>
-        <div class="sec-mark" aria-hidden="true"><span class="sec-mark__no">01</span><span class="sec-mark__word">RADIO</span></div>
-        <i class="crop" aria-hidden="true"></i>
-
-        <div class="program__head">
-            <div class="program__head-text">
-                <span class="program__label">
-                    <svg class="spotify-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-                    Podcast on Spotify
-                </span>
-                <h2 class="program__title">美術史ラジオ</h2>
-                <p class="program__desc">他分野のゲストを呼び、共同作業によって美術史を読み解く。耳で聴くアトリエ。Spotifyで配信中。</p>
-                <a id="radio-show-cta" href="#" target="_blank" rel="noopener noreferrer" class="spotify-cta">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-                    Spotifyで番組を開く
-                </a>
-            </div>
-            <a id="radio-show-more" href="#" target="_blank" rel="noopener noreferrer" class="program__more">All episodes →</a>
-        </div>
-
-        <!-- エピソードはJSで自動生成。配列の先頭が「Latest」として大きく表示されます -->
-        <div id="radio-episodes" class="radio-episodes"></div>
-        <div id="radio-more-list" class="radio-more-grid" style="display:none"></div>
-        <div class="radio-toggle-wrap">
-            <button id="radio-toggle-btn" class="radio-toggle-btn" aria-label="過去のエピソードを開く">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"/>
+            <!-- 写真は tools/site-editor.html の「写真配置」で設定（site/photos.json） -->
+            <section class="hero" data-slot="hero" data-text="bottom-left" data-tone="dark">
+                <div class="hero__media" aria-hidden="true"><img class="hero__img" alt=""></div>
+                <div class="hero__shade" aria-hidden="true"></div>
+                <svg class="hero__land" viewBox="0 0 1440 420" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0 236C110 206 200 168 330 182S560 118 720 150 1010 96 1160 136 1360 160 1440 138V420H0Z" fill="#c8cfd1"/>
+                    <path d="M0 236C110 206 200 168 330 182S560 118 720 150 1010 96 1160 136 1360 160 1440 138" fill="none" stroke="#1b1a17" stroke-opacity=".35" stroke-width="1.2"/>
+                    <path d="M0 300C150 262 300 252 470 280S770 226 930 262 1220 246 1440 284V420H0Z" fill="#b3bbb3"/>
+                    <path d="M0 300C150 262 300 252 470 280S770 226 930 262 1220 246 1440 284" fill="none" stroke="#1b1a17" stroke-opacity=".5" stroke-width="1.4"/>
+                    <path d="M0 360C220 336 420 350 640 340S1080 320 1440 346V420H0Z" fill="#9da79b"/>
                 </svg>
-            </button>
-        </div>
-    </section>
 
-    <!-- ============================ ARTICLE ============================ -->
-    <!-- ★ 記事の追加・編集はこのファイル末尾の <script> ブロックの articles 配列を編集してください ★ -->
-    <section id="article" class="program">
-        <div class="sec-mark" aria-hidden="true"><span class="sec-mark__no">02</span><span class="sec-mark__word">ARTICLE</span></div>
-        <i class="crop" aria-hidden="true"></i>
-        <div class="program__head">
-            <div class="program__head-text">
-                <span class="program__label">Article</span>
-                <h2 class="program__title">記事</h2>
-                <p class="program__desc">エッセイ・批評・美術・対談。制作実践者の正直な目線で書く、強度のあるテキストを蓄積する。</p>
-
-                <div class="cat-filter" role="group" aria-label="カテゴリで絞り込む">
-                    <button class="cat-filter__btn is-active" type="button" data-cat="all"      onclick="window._filterArticles('all')">ALL</button>
-                    <button class="cat-filter__btn" type="button" data-cat="essay"    onclick="window._filterArticles('essay')">エッセイ</button>
-                    <button class="cat-filter__btn" type="button" data-cat="critique" onclick="window._filterArticles('critique')">批評</button>
-                    <button class="cat-filter__btn" type="button" data-cat="blog"     onclick="window._filterArticles('blog')">ブログ</button>
-                    <button class="cat-filter__btn" type="button" data-cat="art"      onclick="window._filterArticles('art')">美術</button>
-                    <button class="cat-filter__btn" type="button" data-cat="dialogue" onclick="window._filterArticles('dialogue')">対談</button>
+                <div class="hero__copy">
+                    <h1 class="hero__logo"><img src="fukuryu-logo.png" alt="伏流 FUKURYU"></h1>
+                    <p class="hero__tagline">文化の関西、次代の若手を照らす。<br>京都発・番組型アートプラットフォーム。</p>
                 </div>
+                <p class="hero__catch">見えないところで、<br>流れている。</p>
+                <dl class="hero__station" id="hero-station">
+                    <div><dt>観測点</dt><dd>FUKURYU / 京都</dd></div>
+                    <div><dt>最終更新</dt><dd id="st-date">—</dd></div>
+                    <div><dt>記事・配信・人物</dt><dd id="st-count">—</dd></div>
+                </dl>
+                <a class="hero__dig" href="#surface"><span>掘る</span><i></i></a>
+            </section>
+
+            <!-- 地表：いちばん新しいもの -->
+            <section class="surface" id="surface">
+                <div class="contact" style="--bg:var(--l-surface)"><i class="contact__fill"></i><span class="contact__label">GL ±0.0m　地表</span></div>
+                <span class="spring" id="spring" aria-hidden="true"><em>伏流</em></span>
+                <div class="wrap">
+                    <header class="surface__head">
+                        <div>
+                            <p class="kicker">SURFACE — 地上の層</p>
+                            <h2 class="surface__h">いま、<wbr>地表に<wbr>出ているもの。</h2>
+                        </div>
+                        <p class="surface__lead">記事・配信・人物、それぞれの層からいちばん新しく湧き出たもの。<br>気になったら、その層まで潜ってみてください。</p>
+                    </header>
+                    <div class="now" id="now"></div>
+                    <div class="log">
+                        <p class="log__h"><span>更新ログ</span><span>RECENT</span></p>
+                        <ol id="log"></ol>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="seam" aria-hidden="true">
+            <i class="p-fine" style="--c:#e6dfcf;--h:21px"></i>
+            <i class="p-lines" style="--c:#d3c7ab;--h:39px" data-n="ローム"></i>
+        </div>
+
+        <!-- ================= 記事層 ================= -->
+        <!-- ★ 記事は tools/submit.html から公開（articles/manifest.json）。固定記事はこのファイル末尾の articles 配列 ★ -->
+        <section class="stratum stratum--article" id="article" data-layer="article" data-depth="8">
+            <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −8.0m　記事層 上面</span></div>
+            <div class="wrap">
+                <header class="sh">
+                    <p class="sh__depth"><b>−8.0 〜 −20.0m</b>砂層 / SAND</p>
+                    <h2 class="sh__name">記事層</h2>
+                    <div class="sh__side">
+                        <p class="sh__en">ARTICLE STRATUM</p>
+                        <p class="sh__desc">エッセイ・批評・美術・対談。制作する側の正直な目線で書かれたテキストが、少しずつ積もっていく層。</p>
+                    </div>
+                </header>
+                <div class="filters" id="article-filters" role="group" aria-label="カテゴリで絞り込む"></div>
+                <div id="article-feature"></div>
+                <div class="deposit" id="articles-list"></div>
+                <button class="dig" id="article-more" type="button" hidden>もっと掘る<small></small><i></i></button>
+                <figure class="outcrop" data-slot="band1" hidden><span class="outcrop__tag">露頭 / OUTCROP</span><div class="outcrop__win"><img alt=""></div><figcaption class="outcrop__cap"></figcaption></figure>
             </div>
-            <a href="#backnumbers" class="program__more">All articles →</a>
+        </section>
+
+        <div class="seam" aria-hidden="true">
+            <i class="p-dash" style="--c:#c8b998;--h:27px" data-n="細砂"></i>
+            <i class="p-fine" style="--c:#a7a291;--h:18px"></i>
+            <i class="p-lines" style="--c:#bebaa9;--h:36px" data-n="シルト質砂"></i>
         </div>
 
-        <!-- 最新記事はTOP STORYとして大きく表示。残りはリスト形式 -->
-        <div id="article-top-story"></div>
-        <div id="articles-list" class="article-list"></div>
-    </section>
-
-    <!-- 写真帯②（未設定なら非表示） -->
-    <figure class="photo-band" data-slot="band2" hidden><img alt=""><figcaption class="photo-band__cap"></figcaption></figure>
-
-
-    <!-- ============================ SERIES ============================ -->
-    <section id="series" class="series">
-        <div class="sec-mark" aria-hidden="true"><span class="sec-mark__no">03</span><span class="sec-mark__word">PROGRAMS</span></div>
-        
-        <div class="series__head">
-            <span class="program__label">— Programs</span>
-            <h2 class="program__title">連載番組</h2>
-        </div>
-        <div class="series-grid">
-            <a href="#article" class="series-card">
-                <span class="series-card__no">#01</span>
-                <h3>記事</h3>
-                <p>展示レビュー・エッセイ・対談。制作実践者の目線でつむぐ、強度のあるテキスト。</p>
-                <span class="series-card__type">記事</span>
-            </a>
-            <a href="#radio" class="series-card series-card--accent">
-                <span class="series-card__no">#02</span>
-                <h3>美術史ラジオ</h3>
-                <p>美術を軸にした、他分野との交歓。</p>
-                <span class="series-card__type">Podcast</span>
-            </a>
-        </div>
-    </section>
-
-<div class="marquee marquee--orange" aria-hidden="true"><div class="marquee__track"><span>COLLABORATORS</span><b>✳︎</b><span>コラボレーター</span><b>✳︎</b><span>THANK YOU</span><b>✳︎</b><span>ありがとう</span><b>✳︎</b><span>COLLABORATORS</span><b>✳︎</b><span>コラボレーター</span><b>✳︎</b><span>THANK YOU</span><b>✳︎</b><span>ありがとう</span><b>✳︎</b><span>COLLABORATORS</span><b>✳︎</b><span>コラボレーター</span><b>✳︎</b><span>THANK YOU</span><b>✳︎</b><span>ありがとう</span><b>✳︎</b><span>COLLABORATORS</span><b>✳︎</b><span>コラボレーター</span><b>✳︎</b><span>THANK YOU</span><b>✳︎</b><span>ありがとう</span><b>✳︎</b></div></div>
-
-    <!-- ============================ コラボレーター ============================ -->
-    <section id="tokubetsu" class="tokubetsu-banner" data-slot="collab">
-        <div class="tokubetsu-banner__media" aria-hidden="true"><img alt=""></div>
-        <div class="tokubetsu-banner__inner">
-            <div class="tokubetsu-banner__text">
-                <span class="program__label tokubetsu-banner__label">— Special Thanks</span>
-                <h2 class="program__title tokubetsu-banner__title">コラボレーター</h2>
-                <p class="tokubetsu-banner__desc">これまでにご協力いただいた方々について。</p>
+        <!-- ================= 配信層 ================= -->
+        <!-- ★ エピソードの追加・編集はこのファイル末尾の radioEpisodes 配列 ★ -->
+        <section class="stratum stratum--radio" id="radio" data-layer="radio" data-depth="20">
+            <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −20.0m　配信層 上面</span></div>
+            <div class="wrap">
+                <header class="sh">
+                    <p class="sh__depth"><b>−20.0 〜 −34.0m</b>シルト層 / SILT</p>
+                    <h2 class="sh__name">配信層</h2>
+                    <div class="sh__side">
+                        <p class="sh__en">BROADCAST STRATUM — 美術史ラジオ</p>
+                        <p class="sh__desc">他分野のゲストを呼び、いっしょに美術史を読み解く。耳で聴くアトリエ。Spotifyで配信中。</p>
+                        <a class="radio-cta" id="radio-show-cta" href="#" target="_blank" rel="noopener noreferrer">Spotifyで番組を開く →</a>
+                    </div>
+                </header>
+                <div class="station">
+                    <div class="player" id="radio-player"></div>
+                    <ol class="eps" id="radio-list"></ol>
+                </div>
+                <figure class="outcrop" data-slot="band2" hidden><span class="outcrop__tag">露頭 / OUTCROP</span><div class="outcrop__win"><img alt=""></div><figcaption class="outcrop__cap"></figcaption></figure>
             </div>
-            <a href="tokubetsu-kyoryoku.html" class="tokubetsu-banner__cta">詳しく見る →</a>
-        </div>
-    </section>
+        </section>
 
-    <!-- 写真帯③（未設定なら非表示） -->
-    <figure class="photo-band" data-slot="band3" hidden><img alt=""><figcaption class="photo-band__cap"></figcaption></figure>
-
-    <!-- ============================ CV ============================ -->
-    <!-- 内容は tools/site-editor.html の「CV」で編集（site/cv.json） -->
-    <section id="cv" class="cv">
-        <div class="sec-mark" aria-hidden="true"><span class="sec-mark__no">04</span><span class="sec-mark__word">MEMBERS</span></div>
-        <i class="crop" aria-hidden="true"></i>
-        <div class="cv__head">
-            <span class="program__label">— Members</span>
-            <h2 class="program__title">CV</h2>
-            <p class="program__desc">伏流を運営する、共同代表のふたり。</p>
-        </div>
-        <div id="cv-grid" class="cv-grid"></div>
-    </section>
-
-    <!-- ============================ BACKNUMBERS ============================ -->
-    <section id="backnumbers" class="backnumbers">
-        <div class="sec-mark" aria-hidden="true"><span class="sec-mark__no">05</span><span class="sec-mark__word">ARCHIVE</span></div>
-        
-        <div class="backnumbers__head">
-            <span class="program__label">— Archive</span>
-            <h2 class="program__title">バックナンバー</h2>
-            <p class="program__desc">これまでに公開されたエピソード・記事・動画のすべて。</p>
+        <div class="seam" aria-hidden="true">
+            <i class="p-hatch" style="--c:#8e8a7b;--h:24px" data-n="泥岩"></i>
+            <i class="p-grit" style="--c:#957f66;--h:42px" data-n="砂礫"></i>
         </div>
 
-        <div class="archive-filter">
-            <button class="archive-filter__btn is-active" type="button" data-filter="all">All</button>
-            <button class="archive-filter__btn" type="button" data-filter="radio">Radio</button>
-            <button class="archive-filter__btn" type="button" data-filter="article">Article</button>
-        </div>
+        <!-- ================= 人物層 ================= -->
+        <section class="stratum stratum--people" id="people" data-layer="people" data-depth="34">
+            <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −34.0m　人物層 上面</span></div>
+            <div class="wrap">
+                <header class="sh">
+                    <p class="sh__depth"><b>−34.0 〜 −50.0m</b>礫層 / GRAVEL</p>
+                    <h2 class="sh__name">人物層</h2>
+                    <div class="sh__side">
+                        <p class="sh__en">PEOPLE STRATUM</p>
+                        <p class="sh__desc">伏流に関わってくれた人たちと、運営するふたり。ひとつひとつ形の違う礫が、流れを支えている。</p>
+                    </div>
+                </header>
 
-        <p id="archive-status" class="archive-status" aria-live="polite"></p>
-        <ul id="archive-list" class="archive-list"></ul>
+                <!-- コラボレーター（背景写真は site-editor の「コラボレーター背景」） -->
+                <div class="collab" data-slot="collab">
+                    <div class="collab__media" aria-hidden="true"><img alt=""></div>
+                    <div class="collab__in">
+                        <div class="collab__head">
+                            <div>
+                                <h3>コラボレーター</h3>
+                                <p>これまでにご協力いただいた方々。</p>
+                            </div>
+                            <a class="more-link" href="tokubetsu-kyoryoku.html">すべて見る →</a>
+                        </div>
+                        <ul class="pebbles" id="collab-list"></ul>
+                    </div>
+                </div>
 
-        <button id="archive-load-more" class="load-more" type="button">Load more</button>
-    </section>
+                <!-- CV（内容は site-editor の「CV」で編集 → site/cv.json） -->
+                <div class="cv" id="cv">
+                    <div class="cv__head"><h3>CV</h3><span>共同代表 / CO-DIRECTORS</span></div>
+                    <div id="cv-grid" class="cv-grid"></div>
+                </div>
 
-    <!-- ============================ FOOTER ============================ -->
-<div class="marquee marquee--ink" aria-hidden="true"><div class="marquee__track"><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>SEE YOU NEXT EPISODE</span><b>✳︎</b><span>また次回</span><b>✳︎</b><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>SEE YOU NEXT EPISODE</span><b>✳︎</b><span>また次回</span><b>✳︎</b><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>SEE YOU NEXT EPISODE</span><b>✳︎</b><span>また次回</span><b>✳︎</b><span>伏流</span><b>✳︎</b><span>FUKURYU</span><b>✳︎</b><span>SEE YOU NEXT EPISODE</span><b>✳︎</b><span>また次回</span><b>✳︎</b></div></div>
-    <footer class="site-footer">
-        <div class="site-footer__inner">
-            <div class="site-footer__brand">
-                <img src="fukuryu-logo.png" alt="伏流" class="site-footer__logo">
-                <p>関西発、領域横断的知のプラットフォーム。</p>
+                <figure class="outcrop" data-slot="band3" hidden><span class="outcrop__tag">露頭 / OUTCROP</span><div class="outcrop__win"><img alt=""></div><figcaption class="outcrop__cap"></figcaption></figure>
             </div>
-            <div class="site-footer__cols">
+        </section>
+
+        <div class="seam" aria-hidden="true">
+            <i class="p-peb" style="--c:#4b3e34;--h:33px" data-n="礫岩"></i>
+            <i class="p-crack" style="--c:#33302d;--h:24px" data-n="風化岩"></i>
+            <i class="p-crack" style="--c:#24262a;--h:18px"></i>
+        </div>
+
+        <!-- ================= 岩盤（アーカイブ） ================= -->
+        <section class="bedrock" id="bedrock" data-layer="bedrock" data-depth="50">
+            <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −50.0m　基盤岩</span></div>
+            <div class="wrap" id="backnumbers">
+                <header class="sh">
+                    <p class="sh__depth"><b>−50.0m 〜</b>基盤岩・帯水層 / BEDROCK</p>
+                    <h2 class="sh__name">岩盤</h2>
+                    <div class="sh__side">
+                        <p class="sh__en">ARCHIVE — すべての記録</p>
+                        <p class="sh__desc">これまでに公開した記事・配信のすべて。いちばん深いところで、水はいまも少しずつ流れている。</p>
+                    </div>
+                </header>
+                <div class="filters" id="archive-filters" role="group" aria-label="種類で絞り込む">
+                    <button type="button" class="is-on" data-filter="all">すべて</button>
+                    <button type="button" data-filter="article">記事</button>
+                    <button type="button" data-filter="radio">配信</button>
+                </div>
+                <p class="arch-status" id="archive-status" aria-live="polite"></p>
+                <ul class="arch" id="archive-list"></ul>
+                <button class="dig" id="archive-more" type="button" hidden>もっと掘る<small></small><i></i></button>
+            </div>
+            <div class="aquifer" id="aquifer" aria-hidden="true"></div>
+        </section>
+    </main>
+
+    <!-- ============================ FOOTER（帯水層） ============================ -->
+    <footer class="pool">
+        <div class="ft">
+            <div class="ft__grid">
+                <div class="ft__brand">
+                    <img src="fukuryu-logo.png" alt="伏流" class="ft__logo">
+                    <p>関西発、領域横断的知のプラットフォーム。<br>見えないところで、流れている。</p>
+                </div>
                 <div>
-                    <h4>Programs</h4>
+                    <h4>LAYERS</h4>
                     <ul>
-                        <li><a href="#radio">Radio</a></li>
-                        <li><a href="#article">Article</a></li>
-                        <li><a href="#series">Series</a></li>
-                        <li><a href="#backnumbers">Backnumbers</a></li>
+                        <li><a href="#top">地上</a></li>
+                        <li><a href="#article">記事層</a></li>
+                        <li><a href="#radio">配信層</a></li>
+                        <li><a href="#people">人物層</a></li>
+                        <li><a href="#bedrock">岩盤（アーカイブ）</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Platform</h4>
+                    <h4>PLATFORM</h4>
                     <ul>
-                        <li><a href="tokubetsu-kyoryoku.html">Collaborators</a></li>
+                        <li><a href="tokubetsu-kyoryoku.html">コラボレーター</a></li>
                         <li><a href="#cv">CV</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Follow</h4>
+                    <h4>FOLLOW</h4>
                     <ul>
                         <li><a href="https://www.youtube.com/@%E4%BC%8F%E6%B5%81-r1j" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-                        <li><a href="https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap?si=1b46e9fb428348eb">Spotify<a></li>
-                        <li><a href="https://www.instagram.com/fukuliu.from.art">Instagram</a></li>
+                        <li><a href="https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap?si=1b46e9fb428348eb" target="_blank" rel="noopener noreferrer">Spotify</a></li>
+                        <li><a href="https://www.instagram.com/fukuliu.from.art" target="_blank" rel="noopener noreferrer">Instagram</a></li>
                         <li><a href="#">Discord</a></li>
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="site-footer__giant" aria-hidden="true"><img src="fukuryu-logo.png" alt=""></div>
-        <div class="site-footer__base">
-            <span>&copy; 2026 FUKURYU / ART Platform</span>
-            <span>Designed in Kansai.</span>
+            <div class="ft__base">
+                <span>&copy; 2026 FUKURYU / ART Platform</span>
+                <span>最深部 GL −64.0m　Designed in Kansai.</span>
+            </div>
         </div>
     </footer>
 
     <script>
         // ============================================================
-        //  記事 — articles データ
+        //  記事 — 固定記事（ふだんは tools/submit.html から公開するので空でOK）
         //  ------------------------------------------------------------
-        //  ★ 新しい記事を追加するときは、↓ articles 配列のいちばん上に
-        //    オブジェクトを1つ足すだけ。配列の先頭が最新（一番上）に
-        //    表示されます。
-        //
-        //  各フィールド:
-        //    cat     : 'review' | 'essay' | 'dialogue'  ← カテゴリ
-        //              review   = 展示レビュー (オレンジ)
-        //              essay    = エッセイ     (ブルー)
-        //              dialogue = 対談         (チャコール)
-        //    date    : 公開日                (例: '2026.04.25')
-        //    title   : 記事タイトル
-        //    excerpt : 概要文                (任意)
-        //    author  : 著者名                (任意。省略可)
-        //    url     : 記事本体へのリンク     (任意)
-        //              - 'articles/20260425-article.html' のような相対パス
-        //              - 'https://note.com/...' のような外部URL
-        //              - 空文字なら「準備中」表示
+        //  manifest.json に載らない記事を出したいときだけ、ここに足す。
+        //    cat     : 'essay' | 'critique' | 'blog' | 'art' | 'dialogue'
+        //    date    : 公開日 (例: '2026.04.25')
+        //    title / excerpt / author / url
         // ============================================================
         const articles = [];
 
@@ -342,203 +299,18 @@
             dialogue: { label: '対談' }
         };
 
-        (function () {
-            let _allMergedArticles = [];
-            let _currentCatFilter  = 'all';
-
-            function escapeAttr(s) {
-                return String(s || '').replace(/"/g, '&quot;');
-            }
-            function isExternal(url) { return /^https?:\/\//.test(url); }
-            function hasUrl(url) { return url && url !== '#'; }
-
-            function catTagClass(cat) {
-                return 'tag--' + cat;
-            }
-
-            function renderArticleSection(cat) {
-                _currentCatFilter = cat;
-                const filtered = (cat === 'all')
-                    ? _allMergedArticles
-                    : _allMergedArticles.filter(a => a.cat === cat);
-
-                const topStory = document.getElementById('article-top-story');
-                const list     = document.getElementById('articles-list');
-
-                if (filtered.length === 0) {
-                    if (topStory) topStory.innerHTML = '';
-                    if (list)     list.innerHTML = '<p class="articles-empty">該当する記事はまだありません。</p>';
-                } else {
-                    if (topStory) topStory.innerHTML = renderFeatureCard(filtered[0]);
-                    if (list)     list.innerHTML = filtered.slice(1).map(renderArticle).join('');
-                }
-
-                // ボタンのアクティブ状態を同期
-                document.querySelectorAll('.cat-filter__btn').forEach(b => {
-                    b.classList.toggle('is-active', b.dataset.cat === cat);
-                });
-            }
-
-            window._filterArticles = renderArticleSection;
-
-            function renderFeatureCard(article) {
-                const cat = ARTICLE_CATEGORIES[article.cat] || ARTICLE_CATEGORIES.essay;
-                const linked = hasUrl(article.url);
-                const tag = linked ? 'a' : 'div';
-                const attrs = linked
-                    ? `href="${escapeAttr(article.url)}"${isExternal(article.url) ? ' target="_blank" rel="noopener noreferrer"' : ''}`
-                    : '';
-                return `
-                    <${tag} class="article-feature article-feature--${article.cat}${linked ? ' article-feature--link' : ''}" ${attrs}>
-                        <div class="article-feature__label">
-                            <span class="tag ${catTagClass(article.cat)}">${cat.label}</span>
-                            <span class="article-feature__badge">TOP STORY</span>
-                            ${article.updated ? '<span class="article-feature__badge badge--updated">更新</span>' : ''}
-                        </div>
-                        <h2 class="article-feature__title">${article.title || ''}</h2>
-                        ${article.excerpt ? `<p class="article-feature__excerpt">${article.excerpt}</p>` : ''}
-                        <div class="article-feature__foot">
-                            ${article.author ? `<span class="article-feature__author">By ${article.author}</span>` : ''}
-                            <span class="date">${article.date || ''}</span>
-                        </div>
-                    </${tag}>
-                `;
-            }
-
-            function renderArticle(article, index) {
-                const num = String(index + 1).padStart(3, '0');
-                const cat = ARTICLE_CATEGORIES[article.cat] || ARTICLE_CATEGORIES.essay;
-                const tagHTML = `<span class="tag tag--${article.cat}">${cat.label}</span>`;
-                const linked  = hasUrl(article.url);
-                const tag = linked ? 'a' : 'div';
-                const attrs = linked
-                    ? `href="${escapeAttr(article.url)}"${isExternal(article.url) ? ' target="_blank" rel="noopener noreferrer"' : ''}`
-                    : '';
-
-                return `
-                    <${tag} class="article-row article-row--${article.cat}${linked ? ' article-row--link' : ''}" ${attrs}>
-                        <span class="article-row__num">${num}</span>
-                        <div class="article-row__body">
-                            <div class="article-row__meta">
-                                ${tagHTML}
-                                ${article.updated ? '<span class="badge--updated">更新</span>' : ''}
-                                <span class="date">${article.date || ''}</span>
-                                ${!linked ? '<span class="article-row__pending">準備中</span>' : ''}
-                            </div>
-                            <h3 class="article-row__title">${article.title || ''}</h3>
-                            ${article.excerpt ? `<p class="article-row__excerpt">${article.excerpt}</p>` : ''}
-                        </div>
-                        ${article.author ? `<span class="article-row__author">By ${article.author}</span>` : ''}
-                    </${tag}>
-                `;
-            }
-
-            function renderReelCard(article) {
-                const cat = ARTICLE_CATEGORIES[article.cat] || ARTICLE_CATEGORIES.essay;
-                const linked = hasUrl(article.url);
-                const tag = linked ? 'a' : 'div';
-                const attrs = linked
-                    ? `href="${escapeAttr(article.url)}"${isExternal(article.url) ? ' target="_blank" rel="noopener noreferrer"' : ''}`
-                    : '';
-                return `
-                    <${tag} class="reel-card reel-card--${article.cat}" ${attrs}>
-                        <div class="reel-card__type">${cat.label}</div>
-                        <h3 class="reel-card__title">${article.title || ''}</h3>
-                        <div class="reel-card__meta">
-                            <span class="reel-card__date">${article.date || ''}</span>
-                            ${article.author ? `<span class="reel-card__author">${article.author}</span>` : ''}
-                        </div>
-                    </${tag}>
-                `;
-            }
-
-            function updateTicker(merged) {
-                const ticker = document.getElementById('feature-ticker');
-                if (!ticker) return;
-                // 最新ラジオ（radioEpisodes[0]）と最新記事（merged[0]）のタイトルを表示
-                const latestRadio = typeof radioEpisodes !== 'undefined' && radioEpisodes[0]
-                    ? radioEpisodes[0].ep + ' ' + radioEpisodes[0].title.replace(/<[^>]+>/g, '')
-                    : null;
-                const latestArticle = merged[0] ? merged[0].title : null;
-                const items = [latestRadio, latestArticle].filter(Boolean);
-                // 3回くり返して途切れずに流れるようにする（CSS アニメーション）
-                const once = items.map(t => `<span>${t}</span><span class="ticker__sep">✳︎</span>`).join('');
-                ticker.innerHTML = `<div class="ticker__track">${once}${once}${once}${once}</div>`;
-            }
-
-            function renderAll(dynamicArticles) {
-                // manifest.json から取得した記事の中で最も新しい日付を求める
-                const latestArticleDate = dynamicArticles.reduce((max, a) => {
-                    const d = (a.date || '').slice(0, 10); // "2026.05.11" 形式の先頭10文字
-                    return d > max ? d : max;
-                }, '');
-
-                // updatedAt を持つ静的記事（一年対談など）の updated フラグを動的に計算:
-                // updatedAt が最新記事の日付より新しければバッジ表示 & TOP STORY、古ければ外れる
-                articles.forEach(a => {
-                    if (a.updatedAt !== undefined) {
-                        a.updated = a.updatedAt >= latestArticleDate;
-                    }
-                });
-
-                // manifest.json から取得した新着を先頭に、固定記事を後ろに並べる
-                const merged = [...dynamicArticles, ...articles];
-                // updated:true の記事を先頭に浮かせる
-                merged.sort((a, b) => (b.updated ? 1 : 0) - (a.updated ? 1 : 0));
-
-                // 記事をフィルター関数に渡す（TOP STORY + リスト両方を管理）
-                _allMergedArticles = merged;
-                renderArticleSection(_currentCatFilter);
-
-                // カルーセル: 最大5件の記事カードを追加（ラジオカードはHTML固定）
-                const reelTrack = document.getElementById('featured-reel-track');
-                if (reelTrack) {
-                    reelTrack.insertAdjacentHTML('beforeend',
-                        merged.slice(0, 5).map(renderReelCard).join('')
-                    );
-                }
-                // カルーセル初期化（エラーが起きても記事表示には影響しないよう try-catch）
-                try {
-                    if (window._initReel) window._initReel();
-                } catch (e) {
-                    console.warn('reel init failed:', e);
-                }
-
-                // バックナンバーにも動的記事を反映
-                if (window._updateArchiveArticles) window._updateArchiveArticles(dynamicArticles);
-
-                // ティッカー更新（最新ラジオ＋最新記事）
-                updateTicker(merged);
-            }
-
-            // articles/manifest.json を読んで動的記事を追加（GitHub Pages 上で動作）
-            // cache: 'no-cache' でブラウザキャッシュをバイパスして常に最新を取得
-            fetch('articles/manifest.json', { cache: 'no-cache' })
-                .then(r => r.json())
-                .then(dynamic => renderAll(dynamic))
-                .catch(() => renderAll([])); // ローカルやエラー時は固定記事のみ表示
-        })();
-
         // ============================================================
         //  美術史ラジオ — エピソードデータ
         //  ------------------------------------------------------------
-        //  ★ 新しいエピソードを追加するときは、↓ radioEpisodes 配列の
-        //    いちばん上にオブジェクトを1つ足すだけ。
-        //    配列の先頭が自動的に "Latest" として大きく表示されます。
-        //
-        //  各フィールド:
-        //    id      : Spotify の エピソードURL / 埋め込みURL / IDのいずれでもOK
-        //              例) '5Up5gCMdyZd8pAlVJwZp0b'
-        //                  'https://open.spotify.com/episode/14TZlIz...?si=...'
-        //    ep      : 表示用エピソード番号  (例: 'EP.05')
-        //    date    : 公開日                (例: '2026.04.21')
-        //    title   : タイトル(改行は<br>OK)
-        //    guest   : ゲスト情報            (任意)
-        //    excerpt : 概要文                (任意)
-        //    cover   : カバー画像のファイル名(任意。空ならグラデのみ)
+        //  ★ 新しいエピソードは radioEpisodes 配列のいちばん上に足すだけ。
+        //    先頭が「受信中」として配信層のプレイヤーに表示されます。
+        //    id      : Spotify のエピソードURL / ID
+        //    ep      : 'EP.07' など
+        //    date    : '2026.06.01'
+        //    title   : タイトル（改行は<br>OK）
+        //    guest / excerpt : 任意
+        //    cover   : カバー画像のファイル名（任意）
         // ============================================================
-
-        // 番組ページのURL（CTA / All episodes リンク用）
         const RADIO_SHOW_URL = 'https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap?si=1fe3026650de4eb9';
 
         const radioEpisodes = [
@@ -594,642 +366,7 @@
 
             
         ];
-
-        // ============================================================
-        //  描画ロジック（基本的には変更不要）
-        // ============================================================
-        (function () {
-            // URL/ID どちらでも受け取れるようにする
-            function extractSpotifyId(input) {
-                if (!input) return '';
-                const m = String(input).match(/episode\/([a-zA-Z0-9]+)/);
-                return m ? m[1] : String(input).split('?')[0];
-            }
-            function escapeAttr(s) {
-                return String(s || '').replace(/"/g, '&quot;');
-            }
-
-            function renderEpisode(ep, index) {
-                const id = extractSpotifyId(ep.id);
-                const isFeatured = index === 0;
-                const isPlaceholder = !id || id.startsWith('REPLACE_');
-                const embedHeight = isFeatured ? 232 : 152;
-
-                const embedHTML = isPlaceholder
-                    ? `<div class="radio-card__embed-placeholder">Coming soon — Spotify ID 未設定</div>`
-                    : `<iframe class="radio-card__iframe"
-                               src="https://open.spotify.com/embed/episode/${id}?utm_source=generator"
-                               width="100%" height="${embedHeight}" frameBorder="0"
-                               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                               loading="lazy"
-                               title="${escapeAttr(ep.title.replace(/<[^>]+>/g, ' '))}"></iframe>`;
-
-                const coverHTML = ep.cover
-                    ? `<img src="${escapeAttr(ep.cover)}" alt="${escapeAttr(ep.title.replace(/<[^>]+>/g, ' '))}" loading="lazy">`
-                    : '';
-
-                return `
-                    <article class="radio-card${isFeatured ? ' radio-card--featured' : ''}">
-                        <div class="radio-card__cover">
-                            ${coverHTML}
-                            ${isFeatured ? '<span class="radio-card__badge"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Latest Episode</span>' : ''}
-                        </div>
-                        <div class="radio-card__body">
-                            <div class="radio-card__meta">
-                                <span class="date">${ep.ep || ''} · ${ep.date || ''}</span>
-                            </div>
-                            <h3 class="radio-card__title">${ep.title || ''}</h3>
-                            ${ep.guest ? `<p class="radio-card__guest">ゲスト：${ep.guest}</p>` : ''}
-                            ${ep.excerpt ? `<p class="radio-card__excerpt">${ep.excerpt}</p>` : ''}
-                            ${embedHTML}
-                        </div>
-                    </article>
-                `;
-            }
-
-            const list = document.getElementById('radio-episodes');
-            if (list) {
-                const featured = radioEpisodes[0] ? renderEpisode(radioEpisodes[0], 0) : '';
-                const rest = radioEpisodes.slice(1).map((ep, i) => renderEpisode(ep, i + 1)).join('');
-                list.innerHTML = featured;
-
-                const moreWrap = document.getElementById('radio-more-list');
-                const btn = document.getElementById('radio-toggle-btn');
-
-                if (rest && moreWrap && btn) {
-                    moreWrap.innerHTML = rest;
-                    btn.addEventListener('click', function() {
-                        const isOpen = btn.classList.toggle('is-open');
-                        moreWrap.style.display = isOpen ? '' : 'none';
-                        btn.setAttribute('aria-label', isOpen ? '閉じる' : '過去のエピソードを開く');
-                    });
-                } else if (btn) {
-                    btn.closest('.radio-toggle-wrap').style.display = 'none';
-                }
-            }
-
-            const cta = document.getElementById('radio-show-cta');
-            const more = document.getElementById('radio-show-more');
-            if (cta)  cta.href  = RADIO_SHOW_URL;
-            if (more) more.href = RADIO_SHOW_URL;
-        })();
-
-        // ============================================================
-        //  バックナンバー — 実データ連動フィルタ
-        // ============================================================
-        const videoArchiveItems = [];
-
-        const seriesArchiveItems = [];
-
-        (function () {
-            const ARCHIVE_PAGE_SIZE = 6;
-            const typeLabels = {
-                radio: 'RADIO',
-                video: 'VIDEO',
-                article: 'ARTICLE',
-                series: 'SERIES'
-            };
-            let currentFilter = 'all';
-            let visibleCount = ARCHIVE_PAGE_SIZE;
-
-            function stripHTML(value) {
-                return String(value || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-            }
-            function escapeHTML(value) {
-                return String(value || '')
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;');
-            }
-            function escapeAttr(value) {
-                return escapeHTML(value).replace(/"/g, '&quot;');
-            }
-            function sortKey(date) {
-                return String(date || '').replace(/\D/g, '').slice(0, 8);
-            }
-            function isExternal(url) {
-                return /^https?:\/\//.test(url);
-            }
-            function hasUrl(url) {
-                return url && url !== '#';
-            }
-            function spotifyEpisodeUrl(input) {
-                if (!input) return '';
-                const value = String(input).trim();
-                if (isExternal(value)) return value;
-                const id = value.split('?')[0];
-                return id ? `https://open.spotify.com/episode/${id}` : '';
-            }
-
-            const radioArchiveItems = radioEpisodes.map(ep => ({
-                type: 'radio',
-                date: ep.date,
-                title: `${ep.ep || ''} ${stripHTML(ep.title)}`.trim(),
-                url: spotifyEpisodeUrl(ep.id)
-            }));
-
-            const articleArchiveItems = articles.map(article => ({
-                type: 'article',
-                date: article.date,
-                title: article.title,
-                url: article.url
-            }));
-
-            let allItems = [
-                ...articleArchiveItems,
-                ...radioArchiveItems,
-                ...videoArchiveItems,
-                ...seriesArchiveItems
-            ].sort((a, b) => sortKey(b.date).localeCompare(sortKey(a.date)));
-
-            function getFilteredItems() {
-                return currentFilter === 'all'
-                    ? allItems
-                    : allItems.filter(item => item.type === currentFilter);
-            }
-
-            function renderArchiveItem(item) {
-                const linked = hasUrl(item.url);
-                const tag = linked ? 'a' : 'span';
-                const attrs = linked
-                    ? `href="${escapeAttr(item.url)}"${isExternal(item.url) ? ' target="_blank" rel="noopener noreferrer"' : ''}`
-                    : '';
-                const pending = linked ? '' : '<span class="archive-list__pending">準備中</span>';
-
-                return `
-                    <li class="archive-list__item archive-list__item--${item.type}${linked ? ' archive-list__item--link' : ' archive-list__item--pending'}">
-                        <${tag} class="archive-list__link" ${attrs}>
-                            <span class="archive-list__date">${escapeHTML(item.date)}</span>
-                            <span class="archive-list__cat">${typeLabels[item.type] || item.type}</span>
-                            <span class="archive-list__title">${escapeHTML(item.title)}</span>
-                            ${pending}
-                        </${tag}>
-                    </li>
-                `;
-            }
-
-            function renderArchive() {
-                const list = document.getElementById('archive-list');
-                const more = document.getElementById('archive-load-more');
-                const status = document.getElementById('archive-status');
-                if (!list || !more) return;
-
-                const items = getFilteredItems();
-                const visibleItems = items.slice(0, visibleCount);
-                list.innerHTML = visibleItems.length
-                    ? visibleItems.map(renderArchiveItem).join('')
-                    : '<li class="archive-list__empty">該当するバックナンバーはまだありません。</li>';
-
-                if (status) {
-                    const label = currentFilter === 'all' ? 'All' : typeLabels[currentFilter];
-                    status.textContent = `${label} / ${items.length} items`;
-                }
-
-                more.hidden = visibleCount >= items.length;
-            }
-
-            document.querySelectorAll('.archive-filter__btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.archive-filter__btn').forEach(b => b.classList.remove('is-active'));
-                    btn.classList.add('is-active');
-                    currentFilter = btn.dataset.filter || 'all';
-                    visibleCount = ARCHIVE_PAGE_SIZE;
-                    renderArchive();
-                });
-            });
-
-            document.getElementById('archive-load-more')?.addEventListener('click', () => {
-                visibleCount += ARCHIVE_PAGE_SIZE;
-                renderArchive();
-            });
-
-            renderArchive();
-
-            // 動的記事（manifest.json）をバックナンバーにも反映する
-            window._updateArchiveArticles = function(dynamicArticles) {
-                const dynItems = dynamicArticles.map(a => ({
-                    type: 'article',
-                    date: a.date,
-                    title: a.title,
-                    url: a.url
-                }));
-                allItems = [
-                    ...dynItems,
-                    ...articleArchiveItems,
-                    ...radioArchiveItems,
-                    ...videoArchiveItems,
-                    ...seriesArchiveItems
-                ].sort((a, b) => sortKey(b.date).localeCompare(sortKey(a.date)));
-                visibleCount = ARCHIVE_PAGE_SIZE;
-                renderArchive();
-            };
-        })();
-
-        // ============================================================
-        //  ナビ・フィルタ（ラジオ以外）
-        // ============================================================
-        // 簡易的なナビ開閉（モバイル）
-        document.querySelector('.nav-toggle')?.addEventListener('click', () => {
-            document.querySelector('.global-nav')?.classList.toggle('is-open');
-        });
     </script>
-
-    <script src="shuffle-text.js"></script>
-    <script>
-        // ============================================================
-        //  ShuffleText エフェクト
-        // ============================================================
-
-        const SHUFFLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789アイウエオカキクケコサシスセソタチツテトナニヌネノ';
-
-        window.addEventListener('DOMContentLoaded', () => {
-
-            // ① シャッフル：hero__eyebrow（読み込み時スクランブル）
-            const eyebrow = document.querySelector('.hero__eyebrow');
-            if (eyebrow) {
-                const st = new ShuffleText(eyebrow);
-                st.duration = 2200;
-                st.sourceRandomCharacter = SHUFFLE_CHARS;
-                st.start();
-            }
-
-            // ② タイプライター：hero__tagline（1文字ずつ、遅め）
-            const tagline = document.querySelector('.hero__tagline');
-            if (tagline) {
-                const html = tagline.innerHTML;
-                tagline.innerHTML = '';
-                let i = 0;
-                let current = '';
-
-                function typeNext() {
-                    if (i >= html.length) {
-                        tagline.innerHTML = html;
-                        return;
-                    }
-                    if (html[i] === '<') {
-                        const end = html.indexOf('>', i);
-                        current += html.slice(i, end + 1);
-                        tagline.innerHTML = current + '<span class="tw-cursor"></span>';
-                        i = end + 1;
-                        typeNext();
-                    } else {
-                        current += html[i];
-                        tagline.innerHTML = current + '<span class="tw-cursor"></span>';
-                        i++;
-                        setTimeout(typeNext, 95);
-                    }
-                }
-                setTimeout(typeNext, 300);
-            }
-        });
-
-        // ③ ホバーシャッフル：無効化
-    </script>
-
-    <script>
-        // ============================================================
-        //  Featured Reel — センターフォーカスカルーセル（無限ループ）
-        // ============================================================
-        (function () {
-            const track      = document.getElementById('featured-reel-track');
-            const pagination = document.getElementById('reel-pagination');
-            const prevBtn    = document.querySelector('.reel-arrow--prev');
-            const nextBtn    = document.querySelector('.reel-arrow--next');
-            if (!track) return;
-
-            let pos       = 1;  // 現在位置（0=末尾クローン, 1..n=実カード, n+1=先頭クローン）
-            let realCount = 0;
-
-            // ---- ユーティリティ ----
-            function allCards()  { return Array.from(track.querySelectorAll('.reel-card')); }
-            function realCards() { return Array.from(track.querySelectorAll('.reel-card:not(.reel-clone)')); }
-
-            function calcTx(p) {
-                const cards = allCards();
-                if (!cards.length) return 0;
-                const cW  = cards[0].offsetWidth;
-                const gap = parseFloat(window.getComputedStyle(track).columnGap) || 24;
-                const containerW = track.parentElement.offsetWidth;
-                return (containerW - cW) / 2 - p * (cW + gap);
-            }
-
-            function setPos(p, animate) {
-                pos = p;
-                if (!animate) track.style.transition = 'none';
-                track.style.transform = `translateX(${calcTx(p)}px)`;
-                if (!animate) { track.offsetHeight; track.style.transition = ''; }
-            }
-
-            function realIndex() { return pos - 1; }   // 0-based 実カードindex
-
-            function updateState() {
-                const ri = realIndex();
-                realCards().forEach((c, i) => {
-                    const active = i === ri;
-                    c.classList.toggle('is-active', active);
-                    if (active) {
-                        // アクティブカードは通常リンク動作に戻す
-                        c.onclick = null;
-                    } else {
-                        // 非アクティブカードはクリックで中央へ移動（PC/スマホ両対応）
-                        c.onclick = (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const idx = allCards().indexOf(c);
-                            if (idx >= 0) { setPos(idx, true); updateState(); }
-                        };
-                    }
-                });
-                if (pagination)
-                    Array.from(pagination.querySelectorAll('.reel-bar'))
-                         .forEach((b, i) => b.classList.toggle('is-active', i === ri));
-            }
-
-            // アニメーション → 無限ループ処理
-            track.addEventListener('transitionend', () => {
-                if (pos === 0) {
-                    setPos(realCount, false);   // 末尾クローン → 実末尾へ瞬間移動
-                    updateState();
-                } else if (pos === realCount + 1) {
-                    setPos(1, false);           // 先頭クローン → 実先頭へ瞬間移動
-                    updateState();
-                }
-            });
-
-            // ---- クローン生成 ----
-            function preventCloneNav(clone) {
-                clone.onclick = (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const idx = allCards().indexOf(clone);
-                    if (idx >= 0) { setPos(idx, true); updateState(); }
-                };
-            }
-
-            function setupClones(cards) {
-                realCount = cards.length;
-                // 末尾の複製を先頭に
-                const lastClone = cards[realCount - 1].cloneNode(true);
-                lastClone.classList.add('reel-clone');
-                lastClone.setAttribute('aria-hidden', 'true');
-                track.insertBefore(lastClone, cards[0]);
-                preventCloneNav(lastClone);
-                // 先頭の複製を末尾に
-                const firstClone = cards[0].cloneNode(true);
-                firstClone.classList.add('reel-clone');
-                firstClone.setAttribute('aria-hidden', 'true');
-                track.appendChild(firstClone);
-                preventCloneNav(firstClone);
-            }
-
-            // ---- ページネーション ----
-            function buildPagination(n) {
-                if (!pagination) return;
-                pagination.innerHTML = Array.from({ length: n }, (_, i) =>
-                    `<button class="reel-bar" data-idx="${i}" aria-label="スライド${i + 1}へ"></button>`
-                ).join('');
-                pagination.querySelectorAll('.reel-bar').forEach(bar => {
-                    bar.addEventListener('click', () => {
-                        setPos(+bar.dataset.idx + 1, true);
-                        updateState();
-                    });
-                });
-            }
-
-            // ---- 移動 ----
-            function go(delta) {
-                setPos(pos + delta, true);
-                // 実カード範囲内のときだけ即時 updateState（cloneへの移動はtransitionend後）
-                if (pos >= 1 && pos <= realCount) updateState();
-            }
-
-            // ---- 初期化 ----
-            window._initReel = function () {
-                const cards = realCards();
-                if (!cards.length) return;
-                setupClones(cards);
-                buildPagination(cards.length);
-                pos = 1;
-                setPos(pos, false);
-                updateState();
-            };
-
-            // ---- 矢印 ----
-            if (prevBtn) prevBtn.addEventListener('click', () => go(-1));
-            if (nextBtn) nextBtn.addEventListener('click', () => go(+1));
-
-            // ---- 薄暗いカードのクリックは updateState() 内で各カードに直接 onclick をセット ----
-
-            // ---- タッチスワイプ ----
-            let tx0 = 0;
-            track.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
-            track.addEventListener('touchend', e => {
-                const diff = tx0 - e.changedTouches[0].clientX;
-                if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1);
-            });
-
-            // ---- リサイズ ----
-            window.addEventListener('resize', () => setPos(pos, false));
-
-            // ---- フォールバック ----
-            window.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    if (pagination && !pagination.children.length) window._initReel();
-                }, 300);
-            });
-        })();
-    </script>
-
-    <script>
-        // ============================================================
-        //  スクロールで要素をふわっと出す（theme.css の .reveal / .is-in）
-        // ============================================================
-        (function () {
-            if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-            const SEL = '.sec-mark, .program__head, .radio-card, .article-feature, .article-row, .series-card, .cv-card, .archive-list__item, .tokubetsu-banner__inner, .photo-band img';
-            const io = new IntersectionObserver(es => es.forEach(e => {
-                if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-            }), { rootMargin: '0px 0px -8% 0px' });
-            function scan() {
-                document.querySelectorAll(SEL).forEach(el => {
-                    if (el.classList.contains('reveal')) return;
-                    // 既に画面内にあるものはそのまま表示
-                    const r = el.getBoundingClientRect();
-                    el.classList.add('reveal');
-                    if (r.top < innerHeight * 0.92) el.classList.add('is-in'); else io.observe(el);
-                });
-            }
-            window.FK_REVEAL = scan;
-            addEventListener('load', scan);
-            let raf = 0;
-            new MutationObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(scan); }).observe(document.body, { childList: true, subtree: true });
-        })();
-    </script>
-
-    <script>
-        // ============================================================
-        //  サイト写真 & CV — site/photos.json / site/cv.json
-        //  編集は tools/site-editor.html から（?preview=1 のときはエディタからの指示を待つ）
-        // ============================================================
-        (function () {
-            const PREVIEW = new URLSearchParams(location.search).has('preview');
-
-            function esc(s) {
-                return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-            }
-            function pos(o) { return `${o && o.x != null ? o.x : 50}% ${o && o.y != null ? o.y : 50}%`; }
-
-            function applyPhotos(cfg) {
-                cfg = cfg || {};
-                // HERO
-                const hero = document.querySelector('[data-slot="hero"]');
-                if (hero) {
-                    const h = cfg.hero || {};
-                    const img = hero.querySelector('.hero__img');
-                    const has = !!h.src;
-                    hero.classList.toggle('has-photo', has);
-                    hero.dataset.text = h.text || 'center';
-                    hero.dataset.tone = h.tone || 'light';
-                    hero.style.setProperty('--hero-shade', ((h.shade != null ? h.shade : 30) / 100).toFixed(2));
-                    if (img) {
-                        if (has) { img.src = h.src; img.style.objectPosition = pos(h); }
-                        else img.removeAttribute('src');
-                    }
-                }
-                // 写真帯
-                document.querySelectorAll('.photo-band[data-slot]').forEach(fig => {
-                    const b = cfg[fig.dataset.slot] || {};
-                    const img = fig.querySelector('img');
-                    const cap = fig.querySelector('.photo-band__cap');
-                    fig.hidden = !b.src;
-                    fig.dataset.size = b.size || 'm';
-                    if (b.src) { img.src = b.src; img.style.objectPosition = pos(b); }
-                    if (cap) { cap.textContent = b.caption || ''; cap.hidden = !b.caption; }
-                });
-                // コラボレーターバナー背景
-                const collab = document.querySelector('[data-slot="collab"]');
-                if (collab) {
-                    const c = cfg.collab || {};
-                    const img = collab.querySelector('.tokubetsu-banner__media img');
-                    collab.classList.toggle('has-photo', !!c.src);
-                    collab.style.setProperty('--collab-tint', ((c.tint != null ? c.tint : 70) / 100).toFixed(2));
-                    if (img) {
-                        if (c.src) { img.src = c.src; img.style.objectPosition = pos(c); }
-                        else img.removeAttribute('src');
-                    }
-                }
-            }
-
-            const IG_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
-
-            function historyHTML(text) {
-                const lines = String(text || '').split('\n').map(l => l.trim()).filter(Boolean);
-                if (!lines.length) return '';
-                return `<dl class="cv-card__history">${lines.map(l => {
-                    // 先頭の「年」部分（例: 2024 / 2024.04 / 2023–2024 / 2024年）と本文を分ける
-                    const m = l.match(/^([0-9０-９]{4}[0-9０-９.\/年月\-–〜~ ]*?)[\s　:：]+(.+)$/);
-                    return m
-                        ? `<div class="cv-card__row"><dt>${esc(m[1].trim())}</dt><dd>${esc(m[2])}</dd></div>`
-                        : `<div class="cv-card__row cv-card__row--plain"><dt></dt><dd>${esc(l)}</dd></div>`;
-                }).join('')}</dl>`;
-            }
-
-            function renderMember(m) {
-                const photo = m.photo
-                    ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos({x:m.photoX,y:m.photoY})}">`
-                    : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`;
-                return `
-                    <article class="cv-card">
-                        <div class="cv-card__photo">${photo}</div>
-                        <div class="cv-card__body">
-                            ${m.role ? `<span class="cv-card__role">${esc(m.role)}</span>` : ''}
-                            <h3 class="cv-card__name">${esc(m.name)}</h3>
-                            ${m.nameEn ? `<p class="cv-card__name-en">${esc(m.nameEn)}</p>` : ''}
-                            ${m.instagram ? `<a class="cv-card__ig" href="${esc(m.instagram)}" target="_blank" rel="noopener noreferrer">${IG_ICON}Instagram</a>` : ''}
-                            ${m.bio ? `<p class="cv-card__bio">${esc(m.bio).replace(/\n/g, '<br>')}</p>` : ''}
-                            ${m.history ? `<h4 class="cv-card__sub">経歴</h4>${historyHTML(m.history)}` : ''}
-                        </div>
-                    </article>`;
-            }
-
-            function applyCV(data) {
-                const grid = document.getElementById('cv-grid');
-                if (!grid) return;
-                const members = (data && data.members) || [];
-                grid.innerHTML = members.length
-                    ? members.map(renderMember).join('')
-                    : '<p class="cv-empty">準備中です。</p>';
-            }
-
-            function scrollToSlot(name) {
-                const el = name === 'cv' ? document.getElementById('cv') : document.querySelector(`[data-slot="${name}"]`);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: name === 'hero' ? 'start' : 'center' });
-            }
-
-            window.FK_SITE = { applyPhotos, applyCV, scrollToSlot };
-
-            if (PREVIEW) {
-                // エディタ内プレビュー: リンクで別ページに飛ばないようにする
-                document.addEventListener('click', e => { if (e.target.closest('a')) e.preventDefault(); }, true);
-                window.parent && window.parent.postMessage({ type: 'fk-preview-ready' }, '*');
-                return;
-            }
-            fetch('site/photos.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).then(applyPhotos).catch(() => applyPhotos({}));
-            fetch('site/cv.json',     { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).then(applyCV).catch(() => applyCV({}));
-        })();
-    </script>
-
-    <style>
-        /* ── コラボレーターバナー ── */
-        .tokubetsu-banner { position: relative; overflow: hidden; background: linear-gradient(120deg, #F15A22 0%, #c44010 60%, #a83000 100%); padding: 56px 0; }
-        .tokubetsu-banner__media { display: none; position: absolute; inset: 0; }
-        .tokubetsu-banner__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .tokubetsu-banner.has-photo { padding: 96px 0; }
-        .tokubetsu-banner.has-photo .tokubetsu-banner__media { display: block; }
-        /* 写真の上にオレンジを重ねる（濃さは --collab-tint） */
-        .tokubetsu-banner.has-photo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(120deg, #F15A22 0%, #c44010 60%, #a83000 100%); opacity: var(--collab-tint, .7); }
-        .tokubetsu-banner__inner { position: relative; z-index: 2; max-width: var(--max, 1200px); margin: 0 auto; padding: 0 var(--pad-x, 48px); display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
-        .tokubetsu-banner__label { color: rgba(255,255,255,.65) !important; }
-        .tokubetsu-banner__title { color: #fff !important; }
-        .tokubetsu-banner__desc { font-family: var(--serif, serif); font-size: 14px; color: rgba(255,255,255,.82); margin-top: 6px; }
-        .tokubetsu-banner__cta { padding: 14px 32px; border: 2px solid rgba(255,255,255,.7); color: #fff; text-decoration: none; font-family: var(--sans, sans-serif); font-size: 12px; font-weight: 700; letter-spacing: .14em; border-radius: 2px; transition: background .2s; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; }
-        .tokubetsu-banner__cta:hover { background: rgba(255,255,255,.15); }
-        @media (max-width: 640px) { .tokubetsu-banner__inner { flex-direction: column; align-items: flex-start; } }
-
-        /* ── 記事カテゴリフィルター ── */
-        .cat-filter {
-            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
-        }
-        .cat-filter__btn {
-            padding: 6px 16px; border-radius: 999px;
-            border: 1.5px solid var(--line);
-            font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .1em;
-            background: none; color: var(--fg-mute); cursor: pointer;
-            transition: background .18s, color .18s, border-color .18s;
-        }
-        .cat-filter__btn:hover { border-color: var(--fg); color: var(--fg); }
-        .cat-filter__btn.is-active                         { background: var(--fg);     border-color: var(--fg);     color: #fff; }
-        .cat-filter__btn[data-cat="essay"].is-active       { background: var(--accent); border-color: var(--accent); color: #fff; }
-        .cat-filter__btn[data-cat="critique"].is-active    { background: #7b3fbf;        border-color: #7b3fbf;        color: #fff; }
-        .cat-filter__btn[data-cat="blog"].is-active        { background: #1a9e5c;        border-color: #1a9e5c;        color: #fff; }
-        .cat-filter__btn[data-cat="art"].is-active         { background: var(--accent2);border-color: var(--accent2);color: #fff; }
-        .cat-filter__btn[data-cat="dialogue"].is-active    { background: #1a1a1a;        border-color: #1a1a1a;        color: #fff; }
-        .articles-empty {
-            color: var(--fg-mute); font-size: 14px;
-            padding: 40px 0 20px; text-align: center;
-        }
-
-        .tw-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.1em;
-            background: var(--accent);
-            vertical-align: text-bottom;
-            margin-left: 2px;
-            animation: tw-blink .7s step-end infinite;
-        }
-        @keyframes tw-blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    </style>
-
+    <script src="strata.js"></script>
 </body>
 </html>

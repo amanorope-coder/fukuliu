@@ -142,14 +142,14 @@ const REPO = 'amanorope-coder/fukuliu', BRANCH = 'main';
 const PHOTOS_PATH = 'site/photos.json', CV_PATH = 'site/cv.json', IMG_DIR = 'site/images';
 
 const SLOTS = [
-  { key: 'hero',   label: 'トップバナー（伏流）', hint: 'ページ最上部。横長の写真向け', opts: ['text', 'tone', 'shade'] },
-  { key: 'band1',  label: '写真帯①',             hint: '最新コンテンツ帯の下・ラジオの前', opts: ['size', 'caption'] },
-  { key: 'band2',  label: '写真帯②',             hint: '記事一覧の下', opts: ['size', 'caption'] },
-  { key: 'collab', label: 'コラボレーター背景',   hint: 'オレンジのバナーの背景', opts: ['tint'] },
-  { key: 'band3',  label: '写真帯③',             hint: 'CVの前', opts: ['size', 'caption'] },
+  { key: 'hero',   label: 'トップ（地上）',       hint: 'ページ最上部の風景。横長の写真向け', opts: ['text', 'tone', 'shade'] },
+  { key: 'band1',  label: '露頭① 記事層',         hint: '記事一覧の下に開く写真の窓', opts: ['size', 'caption'] },
+  { key: 'band2',  label: '露頭② 配信層',         hint: 'ラジオの下に開く写真の窓', opts: ['size', 'caption'] },
+  { key: 'collab', label: 'コラボレーター背景',   hint: '人物層・コラボレーター欄の背景', opts: ['tint'] },
+  { key: 'band3',  label: '露頭③ 人物層',         hint: 'CVの下に開く写真の窓', opts: ['size', 'caption'] },
 ];
 const DEFAULTS = {
-  hero:  { x: 50, y: 50, text: 'center', tone: 'light', shade: 30 },
+  hero:  { x: 50, y: 50, text: 'bottom-left', tone: 'light', shade: 30 },
   band:  { x: 50, y: 50, size: 'm', caption: '' },
   collab:{ x: 50, y: 50, tint: 70 },
 };
@@ -310,7 +310,7 @@ function renderSlotEditor(){
   if (s.opts.includes('text'))  html += choiceRow('文字の位置','text',[['center','中央'],['bottom','下・中央'],['bottom-left','左下']], d.text);
   if (s.opts.includes('tone'))  html += choiceRow('ロゴ・文字の色','tone',[['light','白（暗い写真向け）'],['dark','黒（明るい写真向け）']], d.tone);
   if (s.opts.includes('shade')) html += rangeRow('写真の暗さ／明るさの調整（文字を読みやすく）','shade',d.shade,0,80);
-  if (s.opts.includes('tint'))  html += rangeRow('オレンジの重ね具合','tint',d.tint,0,100);
+  if (s.opts.includes('tint'))  html += rangeRow('色の重ね具合（大きいほど写真が暗く沈む）','tint',d.tint,0,100);
   if (s.opts.includes('size'))  html += choiceRow('高さ','size',[['s','低め'],['m','標準'],['l','高め']], d.size);
   if (s.opts.includes('caption')) html += `<div class="field"><label>キャプション（任意）</label><input type="text" value="${esc(d.caption)}" oninput="setSlot('caption',this.value,true)" placeholder="例：撮影 ◯◯"></div>`;
   $('slot-editor').innerHTML = html;
