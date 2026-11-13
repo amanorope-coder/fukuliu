@@ -53,6 +53,13 @@
         const d = new Date(t);
         return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
     }
+    // 記事の写真：サムネイルがあればそれ、なければカバー写真
+    function artImg(a) {
+        if (a && a.thumb) return { src: a.thumb, x: a.thumbX, y: a.thumbY };
+        if (a && a.cover) return { src: a.cover, x: a.coverX, y: a.coverY };
+        return null;
+    }
+    function imgTag(im) { return `<img src="${esc(im.src)}" alt="" loading="lazy" style="object-position:${pos(im.x, im.y)}">`; }
     function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
     const state = { articles: [], collabs: [], filter: 'all', shown: 7, archFilter: 'all', archShown: 10, cols: 0 };
@@ -69,6 +76,7 @@
             <article class="nc nc--article rv">
                 <div class="nc__swatch"><b>記事</b><span>FROM ${LAYER.article.name} ${LAYER.article.depth}</span></div>
                 <a class="nc__body" ${href(a.url)}>
+                    ${artImg(a) ? `<div class="nc__img">${imgTag(artImg(a))}</div>` : ''}
                     <p class="nc__kind">最新の記事 <span class="cat cat--${esc(a.cat)}">${esc(catLabel(a.cat))}</span><time>${esc(a.date)}</time></p>
                     <h3>${esc(a.title)}</h3>
                     ${a.excerpt ? `<p>${esc(a.excerpt)}</p>` : ''}
@@ -142,7 +150,8 @@
         const f = list[0];
         const feat = $('#article-feature');
         if (feat) feat.innerHTML = f ? `
-            <a class="feat rv" ${href(f.url)}>
+            <a class="feat rv${artImg(f) ? ' feat--img' : ''}" ${href(f.url)}>
+                ${artImg(f) ? `<div class="feat__img">${imgTag(artImg(f))}</div>` : ''}
                 <div class="feat__l">
                     <p class="feat__tag">最新の堆積 / LATEST DEPOSIT <span class="cat cat--${esc(f.cat)}">${esc(catLabel(f.cat))}</span><time>${esc(f.date)}</time></p>
                     <h3>${esc(f.title)}</h3>
@@ -160,6 +169,7 @@
         const buckets = Array.from({ length: cols }, () => []);
         rest.forEach((a, i) => buckets[i % cols].push(`
             <a class="ac rv" ${href(a.url)} data-t="${(a.title.length + i) % 3}" style="--rd:${(i % cols) * 0.07}s">
+                ${artImg(a) ? `<span class="ac__img">${imgTag(artImg(a))}</span>` : ''}
                 <div class="ac__meta"><span class="cat cat--${esc(a.cat)}">${esc(catLabel(a.cat))}</span><time>${esc(a.date)}</time></div>
                 <h4>${esc(a.title)}</h4>
                 ${a.excerpt ? `<p>${esc(a.excerpt)}</p>` : ''}

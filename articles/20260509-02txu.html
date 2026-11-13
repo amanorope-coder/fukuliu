@@ -8,149 +8,32 @@
     <meta property="og:title" content="雑論-「想定」すること/しないこと — FUKURYU">
     <meta property="og:description" content="誰に向けてデザインするのか？">
     <meta property="og:type" content="article">
-    <meta property="og:image" content="../fukuryu-logo.png">
+    <meta property="og:image" content="https://fukuryu.art/fukuryu-logo.png">
     <meta property="og:url" content="https://fukuryu.art/articles/20260509-02txu.html">
+    <meta name="twitter:card" content="summary">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
-    <!-- Google tag (gtag.js) -->
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../article.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
-    <style>
-        html{scroll-padding-top:120px}
-        .article-page{background:linear-gradient(90deg,rgba(35,91,200,.08),transparent 26%),linear-gradient(180deg,#fff 0,var(--bg) 520px)}
-        .article-hero{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 56px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.55fr);gap:56px;align-items:end;border-bottom:1px solid var(--line)}
-        .article-hero__eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
-        .article-hero__title{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,68px);line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
-        .article-hero__lead{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);line-height:1.85;color:var(--fg-mute);margin:0;max-width:760px}
-        .article-hero__side{border-left:1px solid var(--line);padding-left:28px}
-        .article-hero__mark{width:min(240px,70%);height:auto;margin:0 0 34px;opacity:.88}
-        .article-meta-stack{display:grid;gap:18px}
-        .article-meta-stack__item{border-top:1px solid var(--line);padding-top:14px}
-        .article-meta-stack__label{display:block;color:var(--fg-mute);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px}
-        .article-meta-stack__value{font-family:var(--serif);font-size:15px}
-        .article-shell{max-width:var(--max);margin:0 auto;padding:72px var(--pad-x) 120px;display:grid;grid-template-columns:180px minmax(0,760px);gap:clamp(32px,7vw,96px);align-items:start}
-        .article-shell--no-toc{grid-template-columns:minmax(0,760px);justify-content:center}
-        .article-toc{position:sticky;top:132px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute);border-top:2px solid var(--fg);padding-top:18px}
-        .article-toc a{display:block;margin-top:14px;letter-spacing:.06em;text-transform:none;color:var(--fg);text-decoration:none}
-        .article-toc a:hover{color:var(--accent)}
-        .article-toc a.sub{margin-left:12px;font-size:11px;color:var(--fg-mute)}
-        .article-body{font-family:var(--serif);font-size:17px;line-height:2.12;color:var(--fg)}
-        .article-body p{margin:0 0 30px}
-        .article-body h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,34px);line-height:1.45;letter-spacing:-.01em;margin:68px 0 22px}
-        .article-body h3{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.5;margin:48px 0 18px}
-        .article-body blockquote{margin:46px 0;padding:26px 30px;border-left:4px solid var(--accent);background:#f6f8fc;color:var(--fg);font-size:18px;line-height:1.95}
-        .article-body hr{border:0;border-top:1px solid var(--line);margin:56px 0}
-        .article-body .accent{color:var(--accent);font-weight:600}
-        .article-body .accent2{color:var(--accent2);font-weight:600}
-        .article-back{display:inline-flex;align-items:center;gap:10px;margin-top:52px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
-        .article-back::before{content:"";width:28px;height:1px;background:currentColor}
-        .tag--review{background:var(--accent2);color:#fff;border-color:var(--accent2)}
-        .tag--essay{background:var(--accent);color:#fff;border-color:var(--accent)}
-        .tag--dialogue{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-        @media(max-width:880px){
-            .article-hero{grid-template-columns:1fr;gap:36px;padding-top:54px}
-            .article-hero__side{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
-            .article-hero__mark{display:none}
-            .article-shell,.article-shell--no-toc{grid-template-columns:1fr;padding-top:52px}
-            .article-toc{position:static;display:flex;gap:18px;flex-wrap:wrap}
-            .article-toc a{margin-top:0}
-        }
-        @media(max-width:640px){
-            .article-hero__title{font-size:34px}
-            .article-body{font-size:16px;line-height:2}
-            .article-body blockquote{padding:20px;font-size:16px}
-        }
-        /* TOC highlight */
-        .article-toc a{transition:color .25s,font-weight .25s}
-        .article-toc a.is-active{color:var(--accent);font-weight:700}
-        /* Reactions */
-        .article-reactions{max-width:var(--max);margin:0 auto;padding:0 var(--pad-x) 80px;display:flex;flex-direction:column;align-items:center;gap:40px}
-        .like-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border:2px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;font-family:var(--serif);font-size:15px;transition:all .2s}
-        .like-btn:hover{border-color:var(--accent);color:var(--accent)}
-        .like-btn.liked{border-color:#e05;color:#e05;background:#fff0f3}
-        .like-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;transition:fill .2s,stroke .2s}
-        .like-btn.liked svg{fill:#e05;stroke:#e05}
-        .like-note{font-size:11px;color:var(--fg-mute);font-family:var(--sans);margin-top:8px}
-        .comment-section{width:100%;max-width:680px}
-        .comment-section h3{font-family:var(--serif);font-size:18px;font-weight:700;margin:0 0 24px;border-bottom:1px solid var(--line);padding-bottom:12px}
-        .comment-form{display:grid;gap:12px;margin-bottom:40px}
-        .comment-form input,.comment-form textarea{font-family:var(--serif);font-size:15px;padding:12px 16px;border:1px solid var(--line);border-radius:6px;width:100%;box-sizing:border-box;resize:vertical}
-        .comment-form textarea{min-height:100px}
-        .comment-form button{justify-self:end;padding:10px 28px;background:var(--accent);color:#fff;border:0;border-radius:6px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.1em;cursor:pointer}
-        .comment-form button:hover{opacity:.85}
-        .comment-list{display:grid;gap:24px}
-        .comment-item{border-top:1px solid var(--line);padding-top:20px}
-        .comment-item__name{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--fg-mute);margin-bottom:8px}
-        .comment-item__text{font-family:var(--serif);font-size:15px;line-height:1.9;white-space:pre-wrap}
-        .comment-empty{color:var(--fg-mute);font-size:14px;font-family:var(--serif)}
-            /* シェアバー */
-        .share-bar{max-width:var(--max);margin:0 auto;padding:0 var(--pad-x) 48px;display:flex;align-items:center;gap:14px}
-        .share-bar__label{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--fg-mute);text-transform:uppercase;margin-right:4px}
-        .share-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:none;cursor:pointer;color:var(--fg-mute);text-decoration:none;transition:border-color .2s,color .2s}
-        .share-btn:hover{border-color:var(--fg);color:var(--fg)}
-        .share-btn--copy.is-copied{border-color:var(--accent);color:var(--accent)}
-    </style>
 </head>
-<body class="article-page">
-    <header class="site-header">
-        <div class="site-header__status"><div class="site-header__status-inner">
-            <span class="status-pulse" aria-hidden="true"></span>
-            <span class="status-label">ON AIR</span>
-            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
-            <span class="status-date">No. 005 · 2026 SPRING</span>
-        </div></div>
-        <div class="header-inner">
-            <a href="../index.html" class="brand-mark">
-                <img src="../fukuryu-logo.png" alt="伏流" class="brand-mark__img">
-                <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
-            </a>
-            <nav class="global-nav"><ul>
-                <li><a href="../index.html#radio"><span class="nav-text">Radio</span></a></li>
-                <li><a href="../index.html#article"><span class="nav-text">Article</span></a></li>
-                <li><a href="../tokubetsu-kyoryoku.html"><span class="nav-text">Collaborators</span></a></li>
-                <li><a href="../index.html#cv"><span class="nav-text">CV</span></a></li>
-            </ul></nav>
-            <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+<body class="ar-page">
+<main class="ar" data-cat="essay">
+    <header class="ar-head">
+        <div class="ar-head__in">
+            <p class="ar-meta"><span class="cat cat--essay">エッセイ</span><time>2026.05.09</time></p>
+            <h1 class="ar-title">雑論-「想定」すること/しないこと</h1>
+            <p class="ar-lead">誰に向けてデザインするのか？</p>
+            <p class="ar-by">田代明向</p>
         </div>
-        <div class="site-header__bar" aria-hidden="true"></div>
     </header>
-    <main>
-        <section class="article-hero">
-            <div>
-                <div class="article-hero__eyebrow">
-                    <span class="tag tag--essay">エッセイ</span>
-                    <span class="date">2026.05.09</span>
-                </div>
-                <h1 class="article-hero__title">雑論-「想定」すること/しないこと</h1>
-                <p class="article-hero__lead">誰に向けてデザインするのか？</p>
-            </div>
-            <aside class="article-hero__side" aria-label="記事情報">
-                <img src="../fukuryu-logo.png" alt="伏流" class="article-hero__mark">
-                <div class="article-meta-stack">
-                    <div class="article-meta-stack__item">
-                        <span class="article-meta-stack__label">Author</span>
-                        <span class="article-meta-stack__value">田代明向</span>
-                    </div>
-                    <div class="article-meta-stack__item">
-                        <span class="article-meta-stack__label">Category</span>
-                        <span class="article-meta-stack__value">エッセイ</span>
-                    </div>
-                    <div class="article-meta-stack__item">
-                        <span class="article-meta-stack__label">Published</span>
-                        <span class="article-meta-stack__value">2026.05.09</span>
-                    </div>
-                </div>
-            </aside>
-        </section>
-        <div class="article-shell article-shell--no-toc">
-            
-            <article class="article-body">
-                <p>どこで思いついたのかは忘れてしまったが少し前から、私たちは自分たちの行為のいくつか――もう少し絞って言えば、注意書きやモノづくりのような行為において――無意識のうちに、その対象となる人々を「想定」しているのではないか、ということが気になり始めた。
+    <div class="ar-shell ar-shell--solo">
+        <article class="ar-body">
+            <p>どこで思いついたのかは忘れてしまったが少し前から、私たちは自分たちの行為のいくつか――もう少し絞って言えば、注意書きやモノづくりのような行為において――無意識のうちに、その対象となる人々を「想定」しているのではないか、ということが気になり始めた。
 </p><h2 id="h-1">表記についての話から始める</h2>たとえば、京都駅の案内表記には、日本語だけでなく、韓国語、中国語（簡体字）、英語の案内文も併記されている。この看板は、日本語、韓国語、中国語、そして英語を使う人々を想定して設けられている。一方で、加茂町青少年活動センターのトイレに貼られていた「もう一歩前へお願いします。」という注意書きは、日本語でしか書かれていなかった。ここでは、日本語以外を使う人々は想定されていない。同時に、立って用を足さない（おそらく）女性も想定されていない。
 </p><p>また、東山体育館の器具庫にあるプラスチックボックスには、マッキーで「ポール1225まで」「ネット／9人」「メバド11月～」などと書かれて仕分けされていた。私は文字としてはほとんど読めるが、その意味は理解できない。おそらく私は、この場で想定されている人間ではないのだろう。
 </p><p>表記すること、仕分けること、物や建築の形を決めること――そうした行為をまとめて「デザイン」と呼ぶならば、<span class="accent">デザインするということは、その場が「誰の場であるか」を規定することではないかと思う。そしてそれは、誰かを排除することと表裏一体でもある。</span>
@@ -166,121 +49,9 @@
 </p><p><span class="accent">無限の可能性を想定しなければならないStar Warsの世界観において、デザインはそもそも可能なのだろうか。それとも、惑星ごとにある程度の想定は可能なのだろうか。にしても、コルサントやタトゥイーンのような多種族社会では、やはり難しい気がする。</span>
 </p><p>ちなみに、私が幼稚園のころに起きた「肌色論争」も、まさにこの「想定」の変化によって生じた軋轢だったのだと思う。つまり、「肌色」という言葉が廃止されたのは、単に「肌色」という表現が不適切だったからではない。「肌色」という言葉によって想定される肌を持たない人々が、社会の視野に入り始めたからなのだ。
 </p>
-                <a href="../index.html#article" class="article-back">記事一覧に戻る</a>
-            </article>
-        </div>
-        <div class="share-bar">
-        <span class="share-bar__label">Share</span>
-        <button class="share-btn share-btn--copy" onclick="copyURL(this)" title="URLをコピー" aria-label="URLをコピー"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-        <button class="share-btn share-btn--instagram" onclick="shareInstagram()" title="Instagramストーリーに追加" aria-label="Instagramストーリーに追加"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></button>
-        <a class="share-btn share-btn--x" id="share-x" href="#" target="_blank" rel="noopener noreferrer" title="Xでシェア" aria-label="Xでシェア"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </article>
     </div>
-    <!-- reactions -->
-    <div class="article-reactions">
-        <div style="text-align:center">
-            <button class="like-btn" id="like-btn" onclick="toggleLike()">
-                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                <span id="like-label">いいね</span>&nbsp;<span id="like-count">0</span>
-            </button>
-            <p class="like-note">※ いいね数はこのブラウザのみに保存されます</p>
-        </div>
-        <div class="comment-section">
-            <h3>コメント</h3>
-            <form class="comment-form" onsubmit="submitComment(event)">
-                <input type="text" id="comment-name" placeholder="ニックネーム（必須）" required maxlength="30">
-                <textarea id="comment-text" placeholder="感想・コメントをどうぞ" required maxlength="600"></textarea>
-                <button type="submit">送信する</button>
-            </form>
-            <div class="comment-list" id="comment-list"></div>
-        </div>
-    </div>
-    </main>
-    <footer class="site-footer">
-        <div class="site-footer__inner">
-            <div class="site-footer__brand">
-                <img src="../fukuryu-logo.png" alt="伏流" class="site-footer__logo">
-                <p>関西発、領域横断的知のプラットフォーム。</p>
-            </div>
-            <div class="site-footer__cols">
-                <div><h4>Programs</h4><ul>
-                    <li><a href="../index.html#radio">Radio</a></li>
-                    <li><a href="../index.html#article">Article</a></li>
-                    <li><a href="../tokubetsu-kyoryoku.html">Collaborators</a></li>
-                    <li><a href="../index.html#cv">CV</a></li>
-                </ul></div>
-                <div><h4>Follow</h4><ul>
-                    <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
-                </ul></div>
-            </div>
-        </div>
-        <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
-    </footer>
-    <script>
-    document.querySelector('.nav-toggle')?.addEventListener('click',()=>{document.querySelector('.global-nav')?.classList.toggle('is-open')});
-    // Like / Comment
-    (function(){
-        const ID=location.pathname.replace(/.*\//,'').replace('.html','') || 'article';
-        const LK='fk_likes_'+ID, LD='fk_liked_'+ID, CM='fk_comments_'+ID;
-        function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-        function updateLikeUI(){
-            const liked=localStorage.getItem(LD)==='1';
-            const count=parseInt(localStorage.getItem(LK)||'0');
-            const btn=document.getElementById('like-btn');
-            if(!btn)return;
-            btn.classList.toggle('liked',liked);
-            document.getElementById('like-count').textContent=count;
-            document.getElementById('like-label').textContent=liked?'いいね済':'いいね';
-        }
-        window.toggleLike=function(){
-            const liked=localStorage.getItem(LD)==='1';
-            const count=parseInt(localStorage.getItem(LK)||'0');
-            if(liked){localStorage.setItem(LK,count-1);localStorage.removeItem(LD);}
-            else{localStorage.setItem(LK,count+1);localStorage.setItem(LD,'1');}
-            updateLikeUI();
-        };
-        function renderComments(){
-            const list=document.getElementById('comment-list');
-            if(!list)return;
-            const items=JSON.parse(localStorage.getItem(CM)||'[]');
-            if(!items.length){list.innerHTML='<p class="comment-empty">まだコメントはありません。</p>';return;}
-            list.innerHTML=items.map(c=>`<div class="comment-item"><div class="comment-item__name">${esc(c.name)}</div><div class="comment-item__text">${esc(c.text)}</div></div>`).join('');
-        }
-        window.submitComment=function(e){
-            e.preventDefault();
-            const name=document.getElementById('comment-name').value.trim();
-            const text=document.getElementById('comment-text').value.trim();
-            if(!name||!text)return;
-            const items=JSON.parse(localStorage.getItem(CM)||'[]');
-            items.unshift({name,text});
-            localStorage.setItem(CM,JSON.stringify(items));
-            document.getElementById('comment-name').value='';
-            document.getElementById('comment-text').value='';
-            renderComments();
-        };
-        updateLikeUI(); renderComments();
-    })();
-    // TOC highlight
-    (function(){
-        const toc=document.querySelector('.article-toc');
-        if(!toc)return;
-        const links=[...toc.querySelectorAll('a[href^="#"]')];
-        if(!links.length)return;
-        function highlight(){
-            const y=window.scrollY+160;
-            let active=null;
-            links.forEach(a=>{const t=document.querySelector(a.getAttribute('href'));if(t&&t.getBoundingClientRect().top+window.scrollY<=y)active=a;});
-            links.forEach(a=>a.classList.toggle('is-active',a===active));
-        }
-        window.addEventListener('scroll',highlight,{passive:true});
-        highlight();
-    })();
-        // シェアバー
-    (function(){
-        const xBtn=document.getElementById('share-x');
-        if(xBtn){const t=document.title.replace(' — FUKURYU','');xBtn.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(location.href);}
-    })();
-    window.copyURL=function(btn){navigator.clipboard.writeText(location.href).then(function(){btn.classList.add('is-copied');setTimeout(function(){btn.classList.remove('is-copied');},2000);});};
-    window.shareInstagram=function(){if(navigator.share){navigator.share({title:document.title.replace(' — FUKURYU',''),url:location.href});}else{navigator.clipboard.writeText(location.href).then(function(){window.open('https://www.instagram.com/','_blank');});}};
-</script>
+</main>
+<script src="../article.js"></script>
 </body>
 </html>

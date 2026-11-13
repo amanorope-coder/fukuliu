@@ -305,4 +305,10 @@ Supabase（無料tier）を使って全ユーザーが同じカウントを見�
 - strata.css / strata.js を変更したら、index.html の `?v=` の数字を1つ上げる（ブラウザのキャッシュ対策）
 - ローカル確認は `.claude/serve.py`（キャッシュしないサーバー、ポート8765）
 
+## 11. 記事ページ（2026-11 刷新）
+
+- 記事HTML（articles/*.html）には「見出し・カバー写真・目次・本文」だけが入る。見た目は `article.css`、ヘッダー／読んだ深さ／シェア／いいね・コメント／ほかの記事／フッターは `article.js` が差し込む（デザイン変更はこの2ファイルだけで全記事に反映）
+- 記事は `tools/submit.html`（記事エディタ）で作成・修正。テンプレートは同ファイルの `buildArticleHTML`
+- 写真: `articles/manifest.json` の各記事に `cover`/`coverX`/`coverY`（記事を開いたときの写真）、`thumb`/`thumbX`/`thumbY`（トップの一覧用。なければ cover を使う）。画像本体は `articles/images/`
+
 *最終更新: 2026-11-11*
