@@ -309,10 +309,21 @@
         .pf__same { display: flex !important; align-items: center; gap: 6px; text-transform: none !important; letter-spacing: .02em !important; font-size: 12px !important; color: var(--fg) !important; font-weight: 500 !important; margin: 4px 0 8px; cursor: pointer; }
         .pv-cover { margin: -8px 0 24px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 2px; background: #ddd; }
         .pv-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .pv-credit { margin-top: 40px; display: flex; gap: 14px; padding: 18px 14px 12px; border: 1px solid var(--fg); border-radius: 4px; border-top: 7px solid #2b2b2e; font-size: 12.5px; line-height: 1.7; }
-        .pv-credit img { width: 80px; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; flex: none; }
-        .pv-credit b { display: block; font: 600 10px monospace; letter-spacing: .18em; color: var(--fg-mute); margin-bottom: 4px; }
-        .pv-credit span { display: block; }
+        .cr-grid { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 6px 10px; align-items: center; }
+        .cr-grid span { font-size: 11px; font-weight: 700; color: var(--fg-mute); }
+        .cr-grid textarea { min-height: 52px; }
+        .pv-cr .ar-credit { margin-top: 40px; border: 2px solid var(--fg); font-family: var(--sans); }
+        .pv-cr .ar-credit__head { margin: 0; display: flex; justify-content: space-between; padding: 6px 10px; background: var(--fg); color: #fff; font: 600 10px monospace; letter-spacing: .18em; }
+        .pv-cr .ar-credit__in { display: grid; grid-template-columns: 100px minmax(0, 1fr); }
+        .pv-cr .ar-credit--solo .ar-credit__in { grid-template-columns: minmax(0, 1fr); }
+        .pv-cr .ar-credit__thumb { border-right: 2px solid var(--fg); background: #2a2a2a; }
+        .pv-cr .ar-credit__thumb img { width: 100%; height: 100%; min-height: 80px; object-fit: cover; display: block; }
+        .pv-cr dl { margin: 0; }
+        .pv-cr dl div { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+        .pv-cr dl div:last-child { border-bottom: 0; }
+        .pv-cr dt { font: 600 10px/1.9 monospace; color: var(--fg-mute); }
+        .pv-cr dd { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+        .pv-cr dd a { color: inherit; }
     </style>
 </head>
 <body>
@@ -391,10 +402,36 @@
                     <label>記事の最初の写真（カバー）</label>
                     <div id="pf-cover"></div>
                 </div>
-                <div class="field">
+                <div class="field cr-field">
                     <label>写真のクレジット（記事のいちばん下に出ます）</label>
-                    <textarea id="f-credit" rows="3" placeholder="撮影：山田 太郎&#10;提供：〇〇ギャラリー&#10;© 作家名" oninput="updatePreview()"></textarea>
-                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">1行に1項目。空のままなら何も出ません。他の人が撮った写真や作品写真は、撮影者・提供元・作家名を書いておくと安心です。</p>
+                    <div class="cr-grid">
+                        <span>撮影・作者</span><input type="text" id="f-cr-by" placeholder="例：山田 太郎" oninput="updatePreview()">
+                        <span>出典</span><input type="text" id="f-cr-src" placeholder="例：〇〇美術館 公式サイト" oninput="updatePreview()">
+                        <span>出典のURL</span><input type="url" id="f-cr-url" placeholder="https://…（なければ空欄）" oninput="updatePreview()">
+                        <span>ライセンス・許諾</span><input type="text" id="f-cr-lic" list="cr-lic-list" placeholder="選ぶか、自由に書く" oninput="updatePreview()">
+                        <span>加工</span><input type="text" id="f-cr-edit" list="cr-edit-list" placeholder="選ぶか、自由に書く" oninput="updatePreview()">
+                        <span>備考</span><textarea id="f-cr-note" rows="2" placeholder="例：© 作家名　Courtesy of 〇〇ギャラリー" oninput="updatePreview()"></textarea>
+                    </div>
+                    <datalist id="cr-lic-list">
+                        <option value="自分で撮影">
+                        <option value="撮影者の許可を得て掲載">
+                        <option value="作家・所蔵者の許可を得て掲載">
+                        <option value="主催者提供（広報用画像）">
+                        <option value="CC BY 4.0">
+                        <option value="CC BY-SA 4.0">
+                        <option value="CC BY-NC 4.0">
+                        <option value="CC BY-ND 4.0">
+                        <option value="CC0">
+                        <option value="パブリックドメイン">
+                    </datalist>
+                    <datalist id="cr-edit-list">
+                        <option value="なし">
+                        <option value="トリミング">
+                        <option value="色調補正">
+                        <option value="トリミング・色調補正">
+                        <option value="合成・切り抜き">
+                    </datalist>
+                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">書いた項目だけが出ます（全部空なら欄ごと出ません）。「CC BY 4.0」などと書くと、ライセンスの説明ページに自動でリンクします。</p>
                 </div>
                 <div class="field photo-field">
                     <label>トップの一覧に出す写真（サムネイル）</label>
@@ -904,7 +941,7 @@ function updatePreview() {
         ${subtitle ? `<p class="pv-subtitle">${subtitle}</p>` : ''}
         <p class="pv-author">By ${author}</p>
         <div class="pv-body">${bodyHTML || '<p class="pv-empty">本文を入力してください</p>'}</div>
-        ${creditLines(document.getElementById('f-credit').value).length ? `<div class="pv-credit">${photos.cover ? `<img src="${photoSrc(photos.cover)}" alt="" style="object-position:${photos.cover.x}% ${photos.cover.y}%">` : ''}<div><b>${photos.cover ? 'COVER PHOTO　カバー写真' : 'PHOTO　写真'}</b>${creditLines(document.getElementById('f-credit').value).map(l => `<span>${escHTML(l)}</span>`).join('')}</div></div>` : ''}
+        <div class="pv-cr">${creditBlock(readCredit(), photos.cover ? photoSrc(photos.cover) : '', photos.cover)}</div>
     `;
 }
 
@@ -1053,17 +1090,46 @@ function fmtName(s) {
     const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
     return m ? m[1] + ' ' + m[2] : s;
 }
-// 写真のクレジット（記事の本文の最後に置く標本ラベル）
-function creditLines(text) { return String(text || '').split(/\n/).map(s => s.trim()).filter(Boolean); }
-function creditBlock(text, src, ph) {
-    const lines = creditLines(text);
-    if (!lines.length) return '';
-    const thumb = src ? `\n                <div class="ar-credit__thumb"><img src="${src}" alt="" style="object-position:${ph?.x ?? 50}% ${ph?.y ?? 50}%"></div>` : '';
+// 写真のクレジット（記事の本文の最後に置く表）。manifest には coverCredit: { by, src, url, lic, edit, note } で入る
+const CR_KEYS = [['by', '撮影・作者'], ['src', '出典'], ['lic', 'ライセンス・許諾'], ['edit', '加工'], ['note', '備考']];
+function readCredit() {
+    const v = id => document.getElementById(id).value.trim();
+    const cr = { by: v('f-cr-by'), src: v('f-cr-src'), url: v('f-cr-url'), lic: v('f-cr-lic'), edit: v('f-cr-edit'), note: v('f-cr-note') };
+    Object.keys(cr).forEach(k => { if (!cr[k]) delete cr[k]; });
+    return Object.keys(cr).length ? cr : null;
+}
+function fillCredit(cr) {
+    if (typeof cr === 'string') cr = { note: cr };
+    cr = cr || {};
+    [['by', 'f-cr-by'], ['src', 'f-cr-src'], ['url', 'f-cr-url'], ['lic', 'f-cr-lic'], ['edit', 'f-cr-edit'], ['note', 'f-cr-note']]
+        .forEach(([k, id]) => { document.getElementById(id).value = cr[k] || ''; });
+}
+function safeUrl(u) { return /^https?:\/\/\S+$/i.test(String(u || '').trim()) ? String(u).trim() : ''; }
+// 「CC BY 4.0」「CC0」などはクリエイティブ・コモンズの説明ページへ
+function licenseUrl(lic) {
+    const s = String(lic || '').trim();
+    if (/^CC\s*0\b|^CC0/i.test(s)) return 'https://creativecommons.org/publicdomain/zero/1.0/deed.ja';
+    const m = s.match(/^CC\s+(BY(?:-(?:NC|SA|ND))*)(?:\s+(\d\.\d))?/i);
+    return m ? `https://creativecommons.org/licenses/${m[1].toLowerCase()}/${m[2] || '4.0'}/deed.ja` : '';
+}
+function creditBlock(cr, src, ph) {
+    if (!cr) return '';
+    const link = (text, href) => href ? `<a href="${escHTML(href)}" target="_blank" rel="noopener noreferrer">${escHTML(text)}</a>` : escHTML(text);
+    const rows = CR_KEYS.map(([k, label]) => {
+        let val = cr[k];
+        if (k === 'src' && !val && safeUrl(cr.url)) val = safeUrl(cr.url);
+        if (!val) return '';
+        const html = k === 'src' ? link(val, safeUrl(cr.url)) : k === 'lic' ? link(val, licenseUrl(val)) : escHTML(val);
+        return `\n                        <div><dt>${label}</dt><dd>${html}</dd></div>`;
+    }).join('');
+    if (!rows) return '';
+    const thumb = src ? `\n                    <div class="ar-credit__thumb"><img src="${src}" alt="" style="object-position:${ph?.x ?? 50}% ${ph?.y ?? 50}%"></div>` : '';
     return `
-            <aside class="ar-credit${src ? '' : ' ar-credit--solo'}" aria-label="写真のクレジット">${thumb}
-                <div class="ar-credit__txt">
-                    <p class="ar-credit__label">${src ? 'COVER PHOTO' : 'PHOTO'}<span>${src ? 'カバー写真' : '写真'}</span></p>
-                    <ul>${lines.map(l => `<li>${escHTML(l)}</li>`).join('')}</ul>
+            <aside class="ar-credit${src ? '' : ' ar-credit--solo'}" aria-label="写真のクレジット">
+                <p class="ar-credit__head">${src ? 'COVER PHOTO' : 'PHOTO'}<span>写真の出典・権利</span></p>
+                <div class="ar-credit__in">${thumb}
+                    <dl>${rows}
+                    </dl>
                 </div>
             </aside>`;
 }
@@ -1145,7 +1211,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
     const cat      = document.getElementById('f-cat').value;
     const excerpt  = document.getElementById('f-excerpt').value.trim();
     const body     = document.getElementById('f-body').value.trim();
-    const credit   = creditLines(document.getElementById('f-credit').value).join('\n');
+    const credit   = readCredit();
 
     if (!title)  { alert('タイトルを入力してください。'); return; }
     if (!author) { alert('著者名を入力してください。'); return; }
@@ -1213,7 +1279,8 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
 
         if (!isEdit) {
             // 新規の場合はフォームリセット
-            ['f-title','f-subtitle','f-author','f-excerpt','f-body','f-credit'].forEach(id => document.getElementById(id).value='');
+            ['f-title','f-subtitle','f-author','f-excerpt','f-body'].forEach(id => document.getElementById(id).value='');
+            fillCredit(null);
             photos.cover = null; photos.thumb = null; photos.thumbSame = true;
             document.getElementById('thumb-same').checked = true;
             renderPhotoFields();
@@ -1550,7 +1617,7 @@ async function loadForEdit(index) {
     document.getElementById('f-subtitle').value = entry._subtitle || '';
     document.getElementById('f-author').value = entry.author || '';
     document.getElementById('f-excerpt').value = entry.excerpt || '';
-    document.getElementById('f-credit').value = entry.coverCredit || '';
+    fillCredit(entry.coverCredit);
     document.getElementById('f-body').value   = entry._body  || '（本文データなし。直接GitHubで編集してください）';
     photos.cover = entry.cover ? { path: entry.cover, x: entry.coverX ?? 50, y: entry.coverY ?? 50 } : null;
     photos.thumb = entry.thumb ? { path: entry.thumb, x: entry.thumbX ?? 50, y: entry.thumbY ?? 50 } : null;
