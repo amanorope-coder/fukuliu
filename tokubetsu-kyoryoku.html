@@ -8,279 +8,36 @@
     <meta property="og:title" content="コラボレーター — FUKURYU">
     <meta property="og:description" content="FUKURYUにご協力いただいた方々のご紹介。">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="fukuryu-logo.png">
+    <meta property="og:image" content="https://fukuryu.art/fukuryu-logo.png">
+    <meta property="og:url" content="https://fukuryu.art/tokubetsu-kyoryoku.html">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Jost:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="article.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
-    <style>
-        /* ── コラボレーターページ ── */
-        .collab-hero {
-            background: linear-gradient(120deg, #F15A22 0%, #c44010 55%, #a83000 100%);
-            padding: 80px 0 68px;
-            color: #fff;
-        }
-        .collab-hero__inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad-x); }
-        .collab-hero__eyebrow {
-            display: block; font-size: 10px; font-weight: 700; letter-spacing: .22em;
-            text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 18px;
-        }
-        .collab-hero__title {
-            font-family: var(--serif); font-size: clamp(40px,6vw,80px);
-            font-weight: 900; line-height: 1.1; letter-spacing: -.02em; color: #fff; margin: 0 0 20px;
-        }
-        .collab-hero__desc {
-            font-family: var(--serif); font-size: clamp(15px,1.5vw,18px);
-            line-height: 1.85; color: rgba(255,255,255,.85); max-width: 520px; margin: 0;
-        }
-        .collab-hero__count {
-            margin-top: 28px; font-size: 12px; letter-spacing: .1em; color: rgba(255,255,255,.65);
-        }
-        .collab-hero__count strong {
-            font-size: 26px; font-family: var(--serif); font-weight: 900; color: #fff; margin-right: 4px;
-        }
-
-        /* ── Section wrapper ── */
-        .collab-section { max-width: var(--max); margin: 0 auto; padding: 72px var(--pad-x) 120px; }
-
-        /* ── Grid ── */
-        .collab-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 28px;
-        }
-        @media (max-width: 760px) { .collab-grid { grid-template-columns: 1fr; } }
-
-        /* ── Card ── */
-        .collab-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-top: 4px solid #F15A22;
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        /* 写真バナー（全幅ヘッダー） */
-        .collab-card__banner {
-            width: 100%; height: 240px; overflow: hidden;
-            background: linear-gradient(135deg, rgba(241,90,34,.12) 0%, rgba(241,90,34,.04) 100%);
-            flex-shrink: 0;
-        }
-        .collab-card__banner img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-            transition: transform .5s ease;
-        }
-        .collab-card:hover .collab-card__banner img { transform: scale(1.04); }
-        .collab-card__banner-placeholder {
-            width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--serif); font-size: 88px; font-weight: 900;
-            color: rgba(241,90,34,.2);
-        }
-        .collab-card__info { padding: 22px 24px 0; }
-        .collab-card__name {
-            font-family: var(--serif); font-size: 21px; font-weight: 700;
-            margin: 0 0 8px; line-height: 1.3;
-        }
-        .collab-card__role {
-            display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .1em;
-            padding: 3px 10px; border-radius: 999px; background: #F15A22; color: #fff;
-        }
-        .collab-card__bio {
-            padding: 14px 24px 0; font-family: var(--serif);
-            font-size: 14px; line-height: 1.9; color: var(--fg-mute); flex: 1;
-        }
-        /* Q&A */
-        .collab-card__qa {
-            margin: 16px 24px 0; padding: 14px 18px;
-            background: rgba(241,90,34,.06); border-left: 3px solid #F15A22;
-            border-radius: 0 4px 4px 0;
-        }
-        .collab-card__question {
-            font-size: 12px; font-weight: 700; color: #F15A22;
-            margin-bottom: 8px; letter-spacing: .04em;
-        }
-        .collab-card__answer {
-            font-family: var(--serif); font-size: 14px; line-height: 1.85; color: var(--fg);
-        }
-        .collab-links {
-            display: flex; flex-wrap: wrap; gap: 8px; padding: 0 24px 24px;
-        }
-        .collab-link {
-            display: inline-flex; align-items: center; gap: 4px;
-            font-size: 11px; font-weight: 700; letter-spacing: .08em;
-            padding: 5px 12px; border-radius: 999px;
-            border: 1.5px solid #F15A22; color: #F15A22;
-            text-decoration: none; transition: background .15s, color .15s;
-        }
-        .collab-link:hover { background: #F15A22; color: #fff; }
-
-        /* ── Empty ── */
-        .collab-empty {
-            text-align: center; padding: 80px 0;
-            color: var(--fg-mute); font-family: var(--serif); font-size: 16px;
-            grid-column: 1 / -1;
-        }
-
-        /* ── Back link ── */
-        .collab-back {
-            display: inline-flex; align-items: center; gap: 10px; margin-top: 56px;
-            font-family: var(--sans); font-size: 12px; font-weight: 700;
-            letter-spacing: .16em; color: #F15A22; text-decoration: none;
-        }
-        .collab-back::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-
-        @media (max-width: 880px) { .collab-hero { padding: 56px 0 48px; } }
-    </style>
 </head>
-<body>
-
-<header class="site-header">
-    <div class="site-header__status">
-        <div class="site-header__status-inner">
-            <span class="status-pulse" aria-hidden="true"></span>
-            <span class="status-label">ON AIR</span>
-            <span class="status-current">美術史ラジオ EP.05 ──「鑑賞授業！慧可断臂図」配信中</span>
-            <span class="status-date">No. 005 · 2026 SPRING</span>
+<!-- 見た目は article.css、ヘッダー・フッターと一覧の中身は article.js（collaborators/manifest.json を読む） -->
+<body class="ar-page" data-root="">
+<main class="ar" data-kind="page" data-on="people">
+    <header class="pg-head pg-head--people">
+        <div class="pg-head__in">
+            <p class="pg-head__crumb"><a href="index.html#people">PEOPLE</a><span>人物層 −34m</span></p>
+            <p class="pg-head__display">COLLABORATORS</p>
+            <h1 class="pg-head__name">コラボレーター</h1>
+            <p class="pg-head__desc">これまでに伏流にご協力いただいた方々。<br>番組や記事に関わってくれた、ひとりひとりの紹介です。</p>
+            <p class="pg-head__count" id="collab-count"></p>
+        </div>
+    </header>
+    <div class="cb-wrap">
+        <div class="pg-body">
+            <div class="cb-grid" id="collab-grid"><p class="nwl__empty">読み込み中…</p></div>
         </div>
     </div>
-    <div class="header-inner">
-        <a href="index.html" class="brand-mark">
-            <img src="fukuryu-logo.png" alt="伏流" class="brand-mark__img">
-            <span class="brand-mark__sub">FUKURYU / Kansai Art Platform</span>
-        </a>
-        <nav class="global-nav"><ul>
-            <li><a href="index.html#radio"><span class="nav-num">01</span><span class="nav-text">Radio</span></a></li>
-            <li><a href="index.html#article"><span class="nav-num">02</span><span class="nav-text">Article</span></a></li>
-            <li><a href="tokubetsu-kyoryoku.html"><span class="nav-num">03</span><span class="nav-text">Collaborators</span></a></li>
-            <li><a href="index.html#cv"><span class="nav-num">04</span><span class="nav-text">CV</span></a></li>
-        </ul></nav>
-        <button class="nav-toggle" aria-label="メニューを開く"><span></span><span></span><span></span></button>
-    </div>
-    <div class="site-header__bar" aria-hidden="true"></div>
-</header>
-
-<main>
-    <!-- Hero -->
-    <section class="collab-hero">
-        <div class="collab-hero__inner">
-            <span class="collab-hero__eyebrow">Special Thanks / FUKURYU</span>
-            <h1 class="collab-hero__title">コラボレーター</h1>
-            <p class="collab-hero__desc">これまでにご協力いただいた方々について。</p>
-            <p class="collab-hero__count" id="collab-count"></p>
-        </div>
-    </section>
-
-    <!-- Cards -->
-    <section class="collab-section">
-        <div id="collab-grid" class="collab-grid">
-            <p class="collab-empty">読み込み中…</p>
-        </div>
-        <a href="index.html" class="collab-back">トップに戻る</a>
-    </section>
 </main>
-
-<footer class="site-footer">
-    <div class="site-footer__inner">
-        <div class="site-footer__brand">
-            <img src="fukuryu-logo.png" alt="伏流" class="site-footer__logo">
-            <p>関西発、領域横断的知のプラットフォーム。</p>
-        </div>
-        <div class="site-footer__cols">
-            <div><h4>Programs</h4><ul>
-                <li><a href="index.html#radio">Radio</a></li>
-                <li><a href="index.html#article">Article</a></li>
-                <li><a href="tokubetsu-kyoryoku.html">Collaborators</a></li>
-                <li><a href="index.html#cv">CV</a></li>
-            </ul></div>
-            <div><h4>Follow</h4><ul>
-                <li><a href="https://discord.gg/FRKqwewH" target="_blank" rel="noopener noreferrer">Discord</a></li>
-            </ul></div>
-        </div>
-    </div>
-    <div class="site-footer__base"><span>&copy; 2026 FUKURYU</span><span>Designed in Kansai.</span></div>
-</footer>
-
-<script>
-    document.querySelector('.nav-toggle')?.addEventListener('click', () => {
-        document.querySelector('.global-nav')?.classList.toggle('is-open');
-    });
-
-    const SNS_LABELS = {
-        website: '🌐 Website',
-        instagram: 'Instagram',
-        twitter: 'X (Twitter)',
-        note: 'note',
-        youtube: 'YouTube',
-        other: 'Link'
-    };
-
-    function esc(s) {
-        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    function renderCard(c) {
-        const photoX = c.photoX ?? 50;
-        const photoY = c.photoY ?? 50;
-        const bannerHTML = c.photo
-            ? `<div class="collab-card__banner"><img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${photoX}% ${photoY}%"></div>`
-            : `<div class="collab-card__banner"><div class="collab-card__banner-placeholder">${esc((c.name||'?').charAt(0))}</div></div>`;
-
-        const qaHTML = (c.question || c.answer)
-            ? `<div class="collab-card__qa">
-                ${c.question ? `<p class="collab-card__question">Q. ${esc(c.question)}</p>` : ''}
-                ${c.answer   ? `<p class="collab-card__answer">${esc(c.answer).replace(/\n/g,'<br>')}</p>` : ''}
-               </div>`
-            : '';
-
-        const linkEntries = ['website','instagram','twitter','note','youtube','other']
-            .filter(k => c[k] && c[k].trim());
-        const linksHTML = linkEntries.length
-            ? `<div class="collab-links">${linkEntries.map(k =>
-                `<a href="${esc(c[k])}" class="collab-link" target="_blank" rel="noopener noreferrer">${SNS_LABELS[k]}</a>`
-              ).join('')}</div>`
-            : '';
-
-        const bioHTML = c.bio
-            ? `<p class="collab-card__bio">${esc(c.bio).replace(/\n/g,'<br>')}</p>`
-            : '';
-
-        return `
-            <article class="collab-card">
-                ${bannerHTML}
-                <div class="collab-card__info">
-                    <h2 class="collab-card__name">${esc(c.name)}</h2>
-                    ${c.role ? `<span class="collab-card__role">${esc(c.role)}</span>` : ''}
-                </div>
-                ${bioHTML}
-                ${qaHTML}
-                ${linksHTML}
-            </article>`;
-    }
-
-    fetch('collaborators/manifest.json', { cache: 'no-cache' })
-        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-        .then(list => {
-            const grid = document.getElementById('collab-grid');
-            const countEl = document.getElementById('collab-count');
-            if (!Array.isArray(list) || list.length === 0) {
-                grid.innerHTML = '<p class="collab-empty">現在、登録されているご協力者はいません。</p>';
-                return;
-            }
-            grid.innerHTML = list.map(renderCard).join('');
-            if (countEl) countEl.innerHTML =
-                `現在 <strong>${list.length}</strong> 名の方々にご協力いただいています。`;
-        })
-        .catch(() => {
-            document.getElementById('collab-grid').innerHTML =
-                '<p class="collab-empty">読み込みに失敗しました。</p>';
-        });
-</script>
+<script src="article.js"></script>
 </body>
 </html>

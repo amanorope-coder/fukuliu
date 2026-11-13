@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Jost:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="strata.css?v=12">
+    <link rel="stylesheet" href="strata.css?v=13">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
@@ -29,6 +29,7 @@
     <header class="hd" id="hd">
         <a class="hd__logo" href="#top" aria-label="伏流 トップへ"><img src="fukuryu-logo.png" alt="伏流"></a>
         <nav class="hd__nav" aria-label="層の一覧">
+            <a href="#news" data-layer="news"><b>NEWS</b></a>
             <a href="#top" data-layer="top"><b>地上</b><small>±0</small></a>
             <a href="#article" data-layer="article"><b>記事</b><small>−8m</small></a>
             <a href="#radio" data-layer="radio"><b>配信</b><small>−20m</small></a>
@@ -46,6 +47,7 @@
         </div>
         <nav class="menu__col">
             <a href="#top" class="m-top">地上<small>GL ±0.0m</small></a>
+            <a href="#news" class="m-top">NEWS<small>お知らせ</small></a>
             <a href="#article" class="m-article">記事層<small>−8.0m</small></a>
             <a href="#radio" class="m-radio">配信層<small>−20.0m</small></a>
             <a href="#people" class="m-people">人物層<small>−34.0m</small></a>
@@ -88,6 +90,18 @@
                 <div class="contact" style="--bg:var(--l-surface)"><i class="contact__fill"></i><span class="contact__label">GL ±0.0m　地表</span></div>
                 <span class="spring" id="spring" aria-hidden="true"><em>伏流</em></span>
                 <div class="wrap">
+                    <!-- お知らせ（tools/submit.html の「ニュース」タブで作成 → news/manifest.json） -->
+                    <section class="nb" id="news">
+                        <div class="nb__head">
+                            <div>
+                                <p class="nb__display" data-text="news.display" data-label="大きな英字の見出し">NEWS</p>
+                                <h2 class="nb__name" data-text="news.name" data-label="日本語の見出し">お知らせ</h2>
+                            </div>
+                            <a class="nb__all" href="news/">VIEW ALL →</a>
+                        </div>
+                        <ol class="nwl" id="news-rows"><li class="nwl__empty">読み込み中…</li></ol>
+                    </section>
+
                     <header class="sh sh--surface">
                         <p class="sh__depth" data-text="surface.kicker" data-label="見出しの上の小さな文字">SURFACE — 地上の層</p>
                         <p class="sh__display" data-text="surface.display" data-label="大きな英字の見出し">LATEST</p>
@@ -240,6 +254,7 @@
                 <div>
                     <h4>LAYERS</h4>
                     <ul>
+                        <li><a href="news/">NEWS</a></li>
                         <li><a href="#top">地上</a></li>
                         <li><a href="#article">記事層</a></li>
                         <li><a href="#radio">配信層</a></li>
@@ -358,6 +373,6 @@
             
         ];
     </script>
-    <script src="strata.js?v=11"></script>
+    <script src="strata.js?v=13"></script>
 </body>
 </html>

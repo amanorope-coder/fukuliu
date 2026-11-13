@@ -14,6 +14,7 @@
     const NS = 'http://www.w3.org/2000/svg';
     const PREVIEW = new URLSearchParams(location.search).has('preview');
     const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const VEIN = false;   // スクロールに合わせて描く水脈（true で表示）
 
     const EPS = typeof radioEpisodes !== 'undefined' ? radioEpisodes : [];
     const STATIC_ARTICLES = typeof articles !== 'undefined' ? articles : [];
@@ -84,14 +85,30 @@
             ...state.articles.map(artItem),
             ...EPS.map((e, i) => ({ k: 'radio', label: '配信', date: e.date, title: `${e.ep || ''} ${strip(e.title)}`.trim(), url: '#radio', play: i,
                 ex: e.guest ? `ゲスト：${e.guest}` : '', im: e.cover ? { src: e.cover } : null, tp: { cls: 'tp--radio', k: 'RADIO', t: strip(e.title) } })),
-            ...state.collabs.filter(c => c._date).map(c => ({ k: 'people', label: '人物', date: c._date, title: c.name + (c.role ? `（${c.role}）` : ''), url: 'tokubetsu-kyoryoku.html',
-                ex: c.bio, im: c.photo ? { src: c.photo, x: c.photoX, y: c.photoY } : null, tp: { cls: 'tp--people', k: 'PEOPLE', t: c.name } }))
         ].sort((p, q) => dkey(q.date).localeCompare(dkey(p.date)));
     }
     function metaHTML(x, noKind) {
         return `<span class="mt">${noKind ? '' : `<span class="mt__k k--${x.k}">${x.label}</span>`}${x.cat ? `<span class="mt__c cat--${esc(x.cat)}">${esc(catLabel(x.cat))}</span>` : ''}<time>${esc(String(x.date).slice(0, 10))}</time></span>`;
     }
     function playAttr(x) { return x.play != null ? ` data-play="${x.play}"` : ''; }
+
+    // ================================================================
+    //  NEWS（お知らせ）：news/manifest.json の新しい5件
+    // ================================================================
+    const NEWS_CATS = { exhibition: 'EXHIBITION', event: 'EVENT', media: 'MEDIA', radio: 'RADIO', info: 'INFO' };
+    function renderNews(list) {
+        const ol = $('#news-rows');
+        if (!ol) return;
+        const items = (Array.isArray(list) ? list : []).slice().sort((a, b) => dkey(b.date).localeCompare(dkey(a.date))).slice(0, 5);
+        ol.innerHTML = items.length ? items.map((n, i) => `
+            <li class="rv" style="--rd:${i * 0.05}s"><a class="nw" ${href(n.url)}>
+                <time class="nw__d">${esc(n.date)}</time>
+                <span class="nw__c">${esc(NEWS_CATS[n.cat] || 'INFO')}</span>
+                <span class="nw__t">${esc(n.title)}${n.period ? `<small>${esc(n.period)}${n.venue ? '　' + esc(n.venue) : ''}</small>` : ''}</span>
+                <span class="nw__go" aria-hidden="true">→</span>
+            </a></li>`).join('') : '<li class="nwl__empty">現在、お知らせはありません。</li>';
+        afterRender();
+    }
 
     // ================================================================
     //  地表：最新（大きな一本 ＋ 一覧）
@@ -855,7 +872,7 @@
         drawEdges();
         drawRidge();
         drawAquifer();
-        Vein.init();
+        if (VEIN) Vein.init(); else $('#spring')?.remove();
         bind();
         renderRadio();
         renderSurface();
@@ -866,6 +883,7 @@
         applyCV(null);
 
         const json = (u, fb) => fetch(u, { cache: 'no-cache' }).then(r => r.ok ? r.json() : fb).catch(() => fb);
+        json('news/manifest.json', []).then(renderNews);
         Promise.all([json('articles/manifest.json', []), json('collaborators/manifest.json', [])]).then(([man, col]) => {
             const merged = [...(Array.isArray(man) ? man : []), ...STATIC_ARTICLES];
             state.articles = merged.map((a, i) => Object.assign({ _i: i }, a))

@@ -275,6 +275,33 @@ button { font-family: inherit; }
 .news__list .mt { margin-top: 0; }
 .news__list .mc__t { font-size: 15px; margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
+/* ── NEWS の行（アーティストのサイトのような、日付・種類・題の一覧） ── */
+.nwl { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.nw { display: grid; grid-template-columns: 112px 118px minmax(0, 1fr) 28px; align-items: baseline; gap: 18px; padding: 20px 4px; border-bottom: 1px solid var(--rule); text-decoration: none; transition: background .25s, padding .35s var(--ease); }
+.nw__d { font: 500 13px var(--display); letter-spacing: .08em; }
+.nw__c { justify-self: start; padding: 3px 10px; border: 1px solid currentColor; border-radius: 999px; font: 600 10px var(--display); letter-spacing: .16em; white-space: nowrap; }
+.nw__t { font-size: 15px; font-weight: 700; line-height: 1.6; letter-spacing: .02em; }
+.nw__t small { display: block; margin-top: 2px; font-size: 12px; font-weight: 500; color: var(--mute); }
+.nw__go { justify-self: end; font: 500 16px var(--display); transition: transform .35s var(--ease); }
+.nw:hover { background: rgba(27, 26, 23, .04); padding-left: 12px; }
+.nw:hover .nw__t { color: var(--water); }
+.nw:hover .nw__go { transform: translateX(4px); color: var(--water); }
+.nwl__empty { padding: 28px 4px; font-size: 13.5px; color: var(--mute); border-bottom: 1px solid var(--rule); }
+@media (max-width: 640px) {
+    .nw { grid-template-columns: auto auto 1fr; grid-template-rows: auto auto; gap: 6px 12px; padding: 16px 2px; }
+    .nw__t { grid-column: 1 / -1; font-size: 14.5px; }
+    .nw__go { grid-column: 3; grid-row: 1; }
+}
+
+/* トップの NEWS 欄：左に見出し、右に一覧 */
+.nb { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: start; margin-bottom: clamp(88px, 11vw, 150px); }
+.nb__head { position: sticky; top: 96px; }
+.nb__display { margin: 0; font: 600 clamp(52px, 6.4vw, 92px)/.86 var(--display); letter-spacing: .01em; }
+.nb__name { margin: 12px 0 0; font-size: 14px; font-weight: 900; letter-spacing: .34em; }
+.nb__all { display: inline-flex; margin-top: 22px; padding: 9px 20px; border: 1px solid var(--ink); border-radius: 999px; font: 600 11px var(--display); letter-spacing: .24em; text-decoration: none; transition: background .2s, color .2s; }
+.nb__all:hover { background: var(--ink); color: var(--paper); }
+@media (max-width: 900px) { .nb { grid-template-columns: 1fr; } .nb__head { position: static; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; } .nb__all { margin-top: 0; } }
+
 /* ------------------------------------------------------------ 名前のある層 */
 .stratum { position: relative; background: var(--bg); padding: clamp(84px, 9vw, 130px) 0 clamp(96px, 10vw, 150px); }
 .stratum--article { --bg: var(--bg-article); }

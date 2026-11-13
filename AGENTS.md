@@ -313,3 +313,12 @@ Supabase（無料tier）を使って全ユーザーが同じカウントを見�
 - 写真: `articles/manifest.json` の各記事に `cover`/`coverX`/`coverY`（記事を開いたときの写真）、`thumb`/`thumbX`/`thumbY`（トップの一覧用。なければ cover を使う）。画像本体は `articles/images/`
 
 *最終更新: 2026-11-11*
+
+## 12. NEWS・サブページ共通（2026-11 追加）
+
+- NEWS（お知らせ）: `tools/submit.html` の「📢 ニュース」タブで作成・修正・削除。`news/manifest.json`（`cat`: exhibition / event / media / radio / info、`period` 会期、`venue` 会場、`link`/`linkLabel`、`cover`）と `news/YYYYMMDD-xxxxx.html`。画像は `news/images/`
+- トップの NEWS 欄は新しい5件。一覧は `news/index.html`
+- サブページ（記事・ニュース・ニュース一覧・コラボレーター）は共通で `article.css` / `article.js`。`<main class="ar" data-kind="article|news|page">`、`<body data-root="../">`（ルートのページは `""`）
+- トップの「最新」は記事と配信だけ（人物は載せない）
+- スクロールに合わせて描く水脈は `strata.js` の `VEIN = false` で停止中（true で復活）
+

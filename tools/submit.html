@@ -266,6 +266,32 @@
             .hd { padding: 14px 20px; }
             .page { padding: 20px 14px 60px; }
         }
+        /* ── ニュース ── */
+        .nm { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+        .nm__panel { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
+        .nm__panel h2 { font-family: var(--serif); font-weight: 700; font-size: 17px; margin-bottom: 4px; }
+        .nm__panel > p.note { font-size: 12px; color: var(--fg-mute); line-height: 1.7; margin-bottom: 18px; }
+        .nm__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .nm__body { min-height: 200px !important; font-size: 14px !important; }
+        .nm__actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+        .nm__reset { padding: 12px 18px; border: 1px solid var(--line); background: #fff; border-radius: 2px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--sans); }
+        .nm__side { display: grid; gap: 20px; position: sticky; top: 16px; }
+        .nm-pv { border: 1px solid var(--line); border-radius: 3px; padding: 20px; background: #faf8f2; max-height: 60vh; overflow: auto; }
+        .nm-pv__meta { display: flex; gap: 10px; align-items: center; font-size: 11px; letter-spacing: .12em; color: var(--fg-mute); }
+        .nm-pv__meta b { color: var(--fg); border: 1px solid currentColor; border-radius: 999px; padding: 2px 10px; font-size: 10px; letter-spacing: .16em; }
+        .nm-pv h3 { font-size: 22px; font-weight: 900; line-height: 1.4; margin: 10px 0 14px; font-family: var(--sans); }
+        .nm-pv__img { aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; margin-bottom: 14px; background: #ddd; }
+        .nm-pv__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .nm-pv dl { border-top: 1px solid var(--fg); margin-bottom: 14px; }
+        .nm-pv dl div { display: grid; grid-template-columns: 70px 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+        .nm-pv dt { font-size: 10px; letter-spacing: .2em; font-weight: 700; padding-top: 2px; }
+        .nm-pv dd { font-weight: 700; }
+        .nm-pv__btn { display: inline-block; margin-bottom: 14px; padding: 8px 18px; border-radius: 999px; background: var(--fg); color: #fff; font-size: 12px; font-weight: 700; }
+        .nm-pv__body { font-size: 14px; line-height: 1.95; }
+        .nm-pv__body p { margin-bottom: 1em; }
+        .nm-list .article-item__tag { background: var(--fg); }
+        @media (max-width: 1100px) { .nm { grid-template-columns: 1fr; } .nm__side { position: static; } }
+
         /* ── 写真（カバー・サムネイル） ── */
         .meta-panel { max-height: calc(100vh - 32px); overflow-y: auto; }
         .photo-field { padding-top: 14px; border-top: 1px solid var(--line); }
@@ -299,8 +325,9 @@
 
 <!-- タブ -->
 <div class="tabs">
-    <button class="tab-btn is-active" onclick="switchTab('write')">✏️ 新規投稿</button>
-    <button class="tab-btn" onclick="switchTab('edit')">📝 記事を修正</button>
+    <button class="tab-btn is-active" data-tab="write" onclick="switchTab('write')">✏️ 新規投稿</button>
+    <button class="tab-btn" data-tab="edit" onclick="switchTab('edit')">📝 記事を修正</button>
+    <button class="tab-btn" data-tab="news" onclick="switchTab('news')">📢 ニュース</button>
     <a class="tab-btn" href="collaborator-maker.html">🤝 コラボレーター</a>
     <a class="tab-btn" href="site-editor.html">🖼 写真・CV・文章</a>
 </div>
@@ -499,6 +526,61 @@ Enter → 改行
         </div>
     </div>
 
+    <!-- ════════ ニュースタブ ════════ -->
+    <div id="tab-news" style="display:none">
+        <div class="nm">
+            <div class="nm__panel">
+                <h2 id="nm-heading">ニュースを書く</h2>
+                <p class="note">展示・イベント・出演・掲載などのお知らせ。トップの「NEWS」と、ニュース一覧（/news/）に載ります。</p>
+                <div class="nm__row">
+                    <div class="field">
+                        <label>種類</label>
+                        <div class="cat-wrap"><select id="nm-cat" onchange="nmPreview()">
+                            <option value="exhibition">展示（EXHIBITION）</option>
+                            <option value="event">イベント（EVENT）</option>
+                            <option value="media">メディア掲載（MEDIA）</option>
+                            <option value="radio">配信（RADIO）</option>
+                            <option value="info" selected>お知らせ（INFO）</option>
+                        </select></div>
+                    </div>
+                    <div class="field"><label>掲載日</label><input type="date" id="nm-date" oninput="nmPreview()"></div>
+                </div>
+                <div class="field"><label>タイトル</label><input type="text" id="nm-title" placeholder="例：天野紘寿 個展「〇〇」開催のお知らせ" oninput="nmPreview()"></div>
+                <div class="nm__row">
+                    <div class="field"><label>会期・日時（任意）</label><input type="text" id="nm-period" placeholder="例：2026.12.01（火）〜12.14（月）" oninput="nmPreview()"></div>
+                    <div class="field"><label>会場・場所（任意）</label><input type="text" id="nm-venue" placeholder="例：京都・〇〇ギャラリー" oninput="nmPreview()"></div>
+                </div>
+                <div class="nm__row">
+                    <div class="field"><label>リンクURL（任意）</label><input type="url" id="nm-link" placeholder="https://..." oninput="nmPreview()"></div>
+                    <div class="field"><label>リンクの文字（任意）</label><input type="text" id="nm-link-label" placeholder="詳細を見る" oninput="nmPreview()"></div>
+                </div>
+                <div class="field photo-field">
+                    <label>写真（任意。ニュースを開いたとき最初に出ます）</label>
+                    <div id="nm-photo"></div>
+                </div>
+                <div class="field">
+                    <label>本文</label>
+                    <textarea id="nm-body" class="nm__body" placeholder="お知らせの本文。記事と同じ書式（# 見出し、**太字**、==青強調== など）が使えます。" oninput="nmPreview()"></textarea>
+                </div>
+                <div class="nm__actions">
+                    <button class="btn-publish" id="nm-publish" onclick="publishNews()"><span class="spinner"></span><span>公開する</span></button>
+                    <button class="nm__reset" type="button" onclick="resetNews()">新しく書く</button>
+                </div>
+                <div class="result" id="nm-result" style="margin-top:14px"></div>
+            </div>
+            <div class="nm__side">
+                <div class="nm__panel">
+                    <h2>プレビュー</h2>
+                    <div class="nm-pv" id="nm-preview"></div>
+                </div>
+                <div class="nm__panel">
+                    <h2>公開済みのニュース</h2>
+                    <div class="nm-list" id="nm-list"><p class="edit-loading">読み込み中…</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div><!-- /page -->
 
 <script>
@@ -579,8 +661,10 @@ document.addEventListener('DOMContentLoaded', renderPhotoFields);
 function switchTab(name) {
     document.getElementById('tab-write').style.display = name === 'write' ? '' : 'none';
     document.getElementById('tab-edit').style.display  = name === 'edit'  ? '' : 'none';
-    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('is-active', (i===0&&name==='write')||(i===1&&name==='edit')));
+    document.getElementById('tab-news').style.display  = name === 'news'  ? '' : 'none';
+    document.querySelectorAll('.tab-btn[data-tab]').forEach(b => b.classList.toggle('is-active', b.dataset.tab === name));
     if (name === 'edit') loadEditList();
+    if (name === 'news') { loadNewsList(); nmPreview(); }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1108,6 +1192,236 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
         btn.classList.remove('is-loading'); btn.disabled = !getToken();
     }
 }
+
+// ═══════════════════════════════════════════════════════════
+//  ニュース（news/manifest.json と news/*.html）
+// ═══════════════════════════════════════════════════════════
+const NEWS_CAT_LABELS = { exhibition: '展示', event: 'イベント', media: 'メディア掲載', radio: '配信', info: 'お知らせ' };
+const NEWS_CAT_EN = { exhibition: 'EXHIBITION', event: 'EVENT', media: 'MEDIA', radio: 'RADIO', info: 'INFO' };
+const newsPending = new Map();
+const news = { photo: null, editing: null, list: [] };
+const nmV = id => document.getElementById(id).value.trim();
+document.getElementById('nm-date').value = new Date().toISOString().slice(0, 10);
+
+function nmPhotoSrc() {
+    const ph = news.photo;
+    if (!ph) return '';
+    const fn = ph.path.replace(/^news\/images\//, '');
+    return newsPending.has(fn) ? newsPending.get(fn).objectUrl : SITE + ph.path;
+}
+function nmRenderPhoto() {
+    const box = document.getElementById('nm-photo');
+    const ph = news.photo;
+    const pick = `<label class="pf__btn pf__btn--main">${ph ? '写真を変える' : '写真を選ぶ'}<input type="file" accept="image/*" hidden onchange="nmPickPhoto(this)"></label>`;
+    box.innerHTML = ph
+        ? `<div class="pf__box pf__box--cover" id="nm-pfb"><img src="${nmPhotoSrc()}" alt="" style="object-position:${ph.x}% ${ph.y}%"><span class="pf__dot" style="left:${ph.x}%;top:${ph.y}%"></span></div>
+           <div class="pf__row">${pick}<button class="pf__btn" type="button" onclick="news.photo=null;nmRenderPhoto();nmPreview()">外す</button></div>
+           <p class="pf__hint">写真をクリック／ドラッグして「見せたい中心」を決めます。</p>`
+        : `<div class="pf__empty">展示のメインビジュアルやフライヤーなど</div><div class="pf__row">${pick}</div>`;
+    const b = document.getElementById('nm-pfb');
+    if (!b) return;
+    const img = b.querySelector('img'), dot = b.querySelector('.pf__dot');
+    let drag = false;
+    const move = e => {
+        const r = b.getBoundingClientRect();
+        ph.x = Math.round(Math.min(100, Math.max(0, (e.clientX - r.left) / r.width * 100)));
+        ph.y = Math.round(Math.min(100, Math.max(0, (e.clientY - r.top) / r.height * 100)));
+        img.style.objectPosition = `${ph.x}% ${ph.y}%`; dot.style.left = ph.x + '%'; dot.style.top = ph.y + '%';
+        nmPreview();
+    };
+    b.addEventListener('pointerdown', e => { drag = true; b.setPointerCapture(e.pointerId); move(e); });
+    b.addEventListener('pointermove', e => { if (drag) move(e); });
+    b.addEventListener('pointerup', () => drag = false);
+}
+async function nmPickPhoto(input) {
+    const file = input.files[0]; input.value = '';
+    if (!file) return;
+    try {
+        const blob = await compressImage(file, 2400, 0.85);
+        const prev = news.photo && news.photo.path.replace(/^news\/images\//, '');
+        if (prev && newsPending.has(prev)) { URL.revokeObjectURL(newsPending.get(prev).objectUrl); newsPending.delete(prev); }
+        const fn = `${Date.now()}-news.jpg`;
+        newsPending.set(fn, { blob, objectUrl: URL.createObjectURL(blob) });
+        news.photo = { path: `news/images/${fn}`, x: 50, y: 50 };
+        nmRenderPhoto(); nmPreview();
+    } catch (e) { alert(e.message); }
+}
+function nmInfoHTML(d, forPage) {
+    const rows = [['会期', d.period], ['会場', d.venue]].filter(r => r[1]);
+    const dl = rows.length ? `<dl class="ni">${rows.map(r => `<div><dt>${r[0] === '会期' ? 'DATE' : 'PLACE'}</dt><dd>${escHTML(r[1])}</dd></div>`).join('')}</dl>` : '';
+    const link = d.link ? (forPage
+        ? `<p class="ni__link"><a class="ni__btn" href="${escHTML(d.link)}" target="_blank" rel="noopener noreferrer">${escHTML(d.linkLabel || '詳細を見る')} ↗</a></p>`
+        : `<span class="nm-pv__btn">${escHTML(d.linkLabel || '詳細を見る')} ↗</span>`) : '';
+    return dl + link;
+}
+function nmData() {
+    return { cat: document.getElementById('nm-cat').value, date: document.getElementById('nm-date').value, title: nmV('nm-title'),
+             period: nmV('nm-period'), venue: nmV('nm-venue'), link: nmV('nm-link'), linkLabel: nmV('nm-link-label'), body: document.getElementById('nm-body').value.trim() };
+}
+function nmPreview() {
+    const d = nmData();
+    const body = parseMarkdown(d.body, []).replace('{{TOC}}', '');
+    document.getElementById('nm-preview').innerHTML = `
+        <p class="nm-pv__meta"><b>${NEWS_CAT_EN[d.cat]}</b>${fmtDate(d.date)}</p>
+        <h3>${escHTML(d.title || '（タイトル）')}</h3>
+        ${news.photo ? `<div class="nm-pv__img"><img src="${nmPhotoSrc()}" alt="" style="object-position:${news.photo.x}% ${news.photo.y}%"></div>` : ''}
+        ${nmInfoHTML(d, false).replace('class="ni"', '')}
+        <div class="nm-pv__body">${body || '<p style="color:#999">本文を入力してください</p>'}</div>`;
+}
+function buildNewsHTML(d, file, photo) {
+    const catLabel = NEWS_CAT_LABELS[d.cat] || 'お知らせ';
+    const desc = escHTML((d.period ? d.period + ' ' : '') + (d.venue || '') || plainText(d.body).slice(0, 80) || d.title);
+    const ogImg = photo ? SITE + photo.path : SITE + 'fukuryu-logo.png';
+    const cover = photo ? `\n    <figure class="ar-cover"><div class="ar-cover__win"><img src="../${photo.path}" alt="" style="object-position:${photo.x}% ${photo.y}%"></div></figure>` : '';
+    const body = parseMarkdown(d.body, []).replace('{{TOC}}', '');
+    return `<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escHTML(d.title)} — FUKURYU NEWS</title>
+    <meta name="description" content="${desc}">
+    <meta property="og:title" content="${escHTML(d.title)} — FUKURYU">
+    <meta property="og:description" content="${desc}">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="${ogImg}">
+    <meta property="og:url" content="${SITE}${file}">
+    <meta name="twitter:card" content="${photo ? 'summary_large_image' : 'summary'}">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Jost:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../article.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"><\/script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');<\/script>
+</head>
+<body class="ar-page" data-root="../">
+<main class="ar ar--news" data-kind="news" data-cat="${d.cat}">
+    <header class="ar-head">
+        <div class="ar-head__in">
+            <p class="ar-meta"><span class="cat">${catLabel}</span><time>${fmtDate(d.date)}</time></p>
+            <h1 class="ar-title">${escHTML(d.title)}</h1>
+        </div>
+    </header>${cover}
+    <div class="ar-shell ar-shell--solo">
+        <article class="ar-body">
+            ${nmInfoHTML(d, true)}
+            ${body}
+        </article>
+    </div>
+</main>
+<script src="../article.js"><\/script>
+</body>
+</html>
+`;
+}
+async function publishNews() {
+    const token = getToken();
+    if (!token) { alert('投稿キーを入力してください。'); return; }
+    const d = nmData();
+    if (!d.title) { alert('タイトルを入力してください。'); return; }
+    if (!d.date)  { alert('掲載日を入れてください。'); return; }
+    const btn = document.getElementById('nm-publish'), result = document.getElementById('nm-result');
+    btn.classList.add('is-loading'); btn.disabled = true; result.className = 'result'; result.style.display = 'none';
+    try {
+        const editing = news.editing;
+        const file = editing ? editing.url : `news/${d.date.replace(/-/g, '')}-${Math.random().toString(36).slice(2, 7)}.html`;
+        for (const [fn, { blob }] of newsPending) {
+            if (!news.photo || news.photo.path !== `news/images/${fn}`) continue;
+            const ex = await ghGet(`news/images/${fn}`, token);
+            await ghPutBinary(`news/images/${fn}`, token, `ニュース画像追加: ${fn}`, await blobToBase64(blob), ex?.sha);
+        }
+        const exFile = await ghGet(file, token);
+        await ghPut(file, token, `${editing ? 'ニュース更新' : 'ニュース追加'}: ${d.title}`, buildNewsHTML(d, file, news.photo), exFile?.sha);
+        const man = await ghGet('news/manifest.json', token);
+        let arr = man ? JSON.parse(decodeURIComponent(escape(atob(man.content.replace(/\n/g, ''))))) : [];
+        const entry = { cat: d.cat, date: fmtDate(d.date), title: d.title, excerpt: plainText(d.body).slice(0, 80), url: file,
+                        period: d.period, venue: d.venue, link: d.link, linkLabel: d.linkLabel, _body: d.body };
+        if (news.photo) Object.assign(entry, { cover: news.photo.path, coverX: news.photo.x, coverY: news.photo.y });
+        arr = editing ? arr.map(n => n.url === file ? entry : n) : [entry, ...arr];
+        arr.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+        await ghPut('news/manifest.json', token, `ニュース一覧更新: ${d.title}`, JSON.stringify(arr, null, 2), man?.sha);
+        result.className = 'result result--success is-visible';
+        result.innerHTML = `✓ <strong>「${escHTML(d.title)}」を${editing ? '更新' : '公開'}しました。</strong> 反映まで1〜2分。 <a href="${SITE}${file}" target="_blank">確認する →</a>`;
+        newsPending.clear();
+        if (!editing) resetNews(true);
+        loadNewsList();
+    } catch (e) {
+        result.className = 'result result--error is-visible';
+        result.innerHTML = `✗ <strong>失敗しました。</strong> ${escHTML(e.message)}`;
+    } finally {
+        btn.classList.remove('is-loading'); btn.disabled = false;
+    }
+}
+function resetNews(keepResult) {
+    ['nm-title', 'nm-period', 'nm-venue', 'nm-link', 'nm-link-label', 'nm-body'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('nm-cat').value = 'info';
+    document.getElementById('nm-date').value = new Date().toISOString().slice(0, 10);
+    news.photo = null; news.editing = null;
+    document.getElementById('nm-heading').textContent = 'ニュースを書く';
+    document.querySelector('#nm-publish span:last-child').textContent = '公開する';
+    if (!keepResult) { const r = document.getElementById('nm-result'); r.className = 'result'; r.style.display = 'none'; }
+    nmRenderPhoto(); nmPreview();
+}
+async function loadNewsList() {
+    const box = document.getElementById('nm-list');
+    try {
+        const token = getToken();
+        let arr;
+        if (token) {
+            const f = await ghGet('news/manifest.json', token);
+            arr = f ? JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g, ''))))) : [];
+        } else {
+            arr = await fetch('../news/manifest.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []);
+        }
+        news.list = arr;
+        box.innerHTML = arr.length ? `<div class="article-list-edit">${arr.map((n, i) => `
+            <div class="article-item" onclick="editNews(${i})">
+                <span class="article-item__tag">${NEWS_CAT_EN[n.cat] || 'INFO'}</span>
+                <span class="article-item__title">${escHTML(n.title)}</span>
+                <span class="article-item__date">${escHTML(n.date)}</span>
+                <span class="article-item__edit">修正 →</span>
+                <button class="article-item__delete" onclick="event.stopPropagation();deleteNews(${i})">削除</button>
+            </div>`).join('')}</div>` : '<p class="edit-loading">まだニュースはありません。</p>';
+    } catch (e) { box.innerHTML = `<p class="edit-loading">読み込みに失敗しました: ${escHTML(e.message)}</p>`; }
+}
+function editNews(i) {
+    const n = news.list[i];
+    if (!n) return;
+    if (!getToken()) { alert('修正するには投稿キーが必要です。'); return; }
+    document.getElementById('nm-cat').value = n.cat || 'info';
+    document.getElementById('nm-date').value = String(n.date || '').replace(/\./g, '-');
+    document.getElementById('nm-title').value = n.title || '';
+    document.getElementById('nm-period').value = n.period || '';
+    document.getElementById('nm-venue').value = n.venue || '';
+    document.getElementById('nm-link').value = n.link || '';
+    document.getElementById('nm-link-label').value = n.linkLabel || '';
+    document.getElementById('nm-body').value = n._body || '';
+    news.photo = n.cover ? { path: n.cover, x: n.coverX ?? 50, y: n.coverY ?? 50 } : null;
+    news.editing = n;
+    document.getElementById('nm-heading').textContent = `「${n.title}」を修正中`;
+    document.querySelector('#nm-publish span:last-child').textContent = '更新して公開';
+    nmRenderPhoto(); nmPreview();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+async function deleteNews(i) {
+    const token = getToken();
+    const n = news.list[i];
+    if (!token) { alert('投稿キーを設定してください。'); return; }
+    if (!n || !confirm(`「${n.title}」を削除しますか？\nこの操作は元に戻せません。`)) return;
+    try {
+        const f = await ghGet(n.url, token);
+        if (f) await ghDelete(n.url, token, `ニュース削除: ${n.title}`, f.sha);
+        const man = await ghGet('news/manifest.json', token);
+        const arr = JSON.parse(decodeURIComponent(escape(atob(man.content.replace(/\n/g, ''))))).filter(x => x.url !== n.url);
+        await ghPut('news/manifest.json', token, `ニュース一覧更新: ${n.title} を削除`, JSON.stringify(arr, null, 2), man.sha);
+        if (news.editing && news.editing.url === n.url) resetNews();
+        loadNewsList();
+    } catch (e) { alert(`削除に失敗しました: ${e.message}`); }
+}
+document.addEventListener('DOMContentLoaded', () => { nmRenderPhoto(); nmPreview(); });
 
 // ═══════════════════════════════════════════════════════════
 //  修正タブ：記事一覧を読み込む
