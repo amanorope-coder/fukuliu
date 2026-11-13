@@ -10,5 +10,13 @@
     "mobile": {
       "mode": "fit"
     }
+  },
+  "band1": {
+    "x": 50,
+    "y": 50,
+    "size": "s",
+    "caption": "",
+    "src": "",
+    "zoom": 100
   }
 }
