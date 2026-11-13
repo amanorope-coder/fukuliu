@@ -376,7 +376,8 @@
                 </div>
                 <div class="field">
                     <label>著者名</label>
-                    <input type="text" id="f-author" placeholder="例：松森ひろあき" oninput="updatePreview()">
+                    <input type="text" id="f-author" placeholder="例：松森 ひろあき" oninput="updatePreview()">
+                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">苗字と名前の間は自動で半角スペースになります（漢字4文字は2＋2で分けます）。うまく分かれない名前は、自分で間にスペースを入れてください。</p>
                 </div>
                 <div class="field">
                     <label>概要文（一覧表示用）</label>
@@ -867,7 +868,7 @@ function updatePreview() {
     const cat      = document.getElementById('f-cat').value;
     const title    = document.getElementById('f-title').value || '（タイトル）';
     const subtitle = document.getElementById('f-subtitle').value;
-    const author   = document.getElementById('f-author').value || '著者名';
+    const author   = fmtName(document.getElementById('f-author').value) || '著者名';
     const date     = document.getElementById('f-date').value;
     const body     = document.getElementById('f-body').value;
 
@@ -1033,6 +1034,15 @@ async function insertImgFromFile(input) {
 // ═══════════════════════════════════════════════════════════
 //  記事HTMLを生成（フルページ）
 // ═══════════════════════════════════════════════════════════
+// 執筆者名：苗字と名前の間を半角スペース1つに（全角スペースも半角に）。
+// スペースがない名前は「漢字4文字 → 2＋2」「漢字＋かな → その境目」で自動で分ける。それ以外はそのまま
+function fmtName(s) {
+    s = String(s == null ? '' : s).replace(/[\s　]+/g, ' ').trim();
+    if (!s || s.includes(' ')) return s;
+    if (/^\p{sc=Han}{4}$/u.test(s)) return s.slice(0, 2) + ' ' + s.slice(2);
+    const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
+    return m ? m[1] + ' ' + m[2] : s;
+}
 function escHTML(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // 記事ページの見た目は ../article.css と ../article.js が担当する。
@@ -1105,7 +1115,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
 
     const title    = document.getElementById('f-title').value.trim();
     const subtitle = document.getElementById('f-subtitle').value.trim();
-    const author   = document.getElementById('f-author').value.trim();
+    const author   = fmtName(document.getElementById('f-author').value);
     const date     = document.getElementById('f-date').value;
     const cat      = document.getElementById('f-cat').value;
     const excerpt  = document.getElementById('f-excerpt').value.trim();

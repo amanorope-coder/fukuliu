@@ -28,6 +28,15 @@
     };
 
     // ------------------------------------------------------------ utils
+    // 執筆者名：苗字と名前の間を半角スペース1つに（全角スペースも半角に）。
+    // スペースがない名前は「漢字4文字 → 2＋2」「漢字＋かな → その境目」で自動で分ける。それ以外はそのまま
+    function fmtName(s) {
+        s = String(s == null ? '' : s).replace(/[\s　]+/g, ' ').trim();
+        if (!s || s.includes(' ')) return s;
+        if (/^\p{sc=Han}{4}$/u.test(s)) return s.slice(0, 2) + ' ' + s.slice(2);
+        const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
+        return m ? m[1] + ' ' + m[2] : s;
+    }
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function strip(s) { return String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
     function brOnly(s) { return esc(String(s || '').replace(/<br\s*\/?>/gi, '\n')).replace(/\n/g, '<br>'); }
@@ -77,7 +86,7 @@
         return `<span class="md md--tp ${tp.cls}${s}"><span class="tp__k"><span>${esc(tp.k)}</span><span>FUKURYU</span></span>${small ? '' : `<span class="tp__t">${esc(tp.t)}</span>`}</span>`;
     }
     function artItem(a) {
-        return { k: 'article', label: '記事', date: a.date, title: a.title, url: a.url, ex: a.excerpt, by: a.author, cat: a.cat,
+        return { k: 'article', label: '記事', date: a.date, title: a.title, url: a.url, ex: a.excerpt, by: fmtName(a.author), cat: a.cat,
                  im: artImg(a), tp: { cls: 'tp--' + (a.cat || 'essay') + ' tp--q', k: CAT_EN[a.cat] || 'ARTICLE', t: (a.excerpt || a.title).replace(/…$/, '') } };
     }
     function streamItems() {
@@ -167,7 +176,7 @@
                     ${metaHTML(x, true)}
                     <h3 class="mf__t">${esc(f.title)}</h3>
                     ${f.excerpt ? `<p class="mf__x">${esc(f.excerpt)}</p>` : ''}
-                    <p class="mf__by"><span>${esc(f.author || '')}</span><span>READ →</span></p>
+                    <p class="mf__by"><span>${esc(fmtName(f.author))}</span><span>READ →</span></p>
                 </div>
             </a>`)(artItem(f)) : '<p class="empty">この層には、まだ何も堆積していません。</p>';
 
@@ -179,7 +188,7 @@
                 ${media(x.im, x.tp)}
                 ${metaHTML(x, true)}
                 <h4 class="mc__t">${esc(a.title)}</h4>
-                ${a.author ? `<p class="mc__by">${esc(a.author)}</p>` : ''}
+                ${a.author ? `<p class="mc__by">${esc(fmtName(a.author))}</p>` : ''}
             </a>`)(artItem(a))).join('');
 
         const more = $('#article-more');

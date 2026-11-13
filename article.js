@@ -17,6 +17,15 @@
     const CATS = { essay: 'エッセイ', critique: '批評', blog: 'ブログ', art: '美術', dialogue: '対談', review: '展示レビュー' };
     const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', dialogue: 'DIALOGUE', review: 'REVIEW' };
     const NEWS_CATS = { exhibition: ['展示', 'EXHIBITION'], event: ['イベント', 'EVENT'], media: ['メディア掲載', 'MEDIA'], radio: ['配信', 'RADIO'], info: ['お知らせ', 'INFO'] };
+    // 執筆者名：苗字と名前の間を半角スペース1つに（全角スペースも半角に）。
+    // スペースがない名前は「漢字4文字 → 2＋2」「漢字＋かな → その境目」で自動で分ける。それ以外はそのまま
+    function fmtName(s) {
+        s = String(s == null ? '' : s).replace(/[\s　]+/g, ' ').trim();
+        if (!s || s.includes(' ')) return s;
+        if (/^\p{sc=Han}{4}$/u.test(s)) return s.slice(0, 2) + ' ' + s.slice(2);
+        const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
+        return m ? m[1] + ' ' + m[2] : s;
+    }
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function rng(seed) { let s = (seed >>> 0) || 1; return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296); }
     const pos = (x, y) => `${x != null ? x : 50}% ${y != null ? y : 50}%`;
@@ -102,7 +111,7 @@
             inner.appendChild(mainBox);
         }
         const by = $('.ar-by', head);
-        if (by && !by.dataset.done) { by.dataset.done = '1'; by.innerHTML = `<span>text</span>${by.innerHTML}`; }
+        if (by && !by.dataset.done) { by.dataset.done = '1'; by.innerHTML = `<span>text</span>${esc(fmtName(by.textContent))}`; }
     }
     if ($('.ar-cover')) main.classList.add('has-cover');
 
@@ -193,7 +202,7 @@
             ${md}
             <span class="mt"><span class="mt__c cat--${esc(a.cat)}">${esc(CATS[a.cat] || '記事')}</span><time>${esc(a.date)}</time></span>
             <span class="mc__t">${esc(a.title)}</span>
-            ${a.author ? `<span class="mc__by">${esc(a.author)}</span>` : ''}
+            ${a.author ? `<span class="mc__by">${esc(fmtName(a.author))}</span>` : ''}
         </a>`;
     }
     function newsRow(n, i) {
