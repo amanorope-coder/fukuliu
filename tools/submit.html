@@ -309,6 +309,10 @@
         .pf__same { display: flex !important; align-items: center; gap: 6px; text-transform: none !important; letter-spacing: .02em !important; font-size: 12px !important; color: var(--fg) !important; font-weight: 500 !important; margin: 4px 0 8px; cursor: pointer; }
         .pv-cover { margin: -8px 0 24px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 2px; background: #ddd; }
         .pv-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .pv-credit { margin-top: 40px; display: flex; gap: 14px; padding: 18px 14px 12px; border: 1px solid var(--fg); border-radius: 4px; border-top: 7px solid #2b2b2e; font-size: 12.5px; line-height: 1.7; }
+        .pv-credit img { width: 80px; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; flex: none; }
+        .pv-credit b { display: block; font: 600 10px monospace; letter-spacing: .18em; color: var(--fg-mute); margin-bottom: 4px; }
+        .pv-credit span { display: block; }
     </style>
 </head>
 <body>
@@ -386,6 +390,11 @@
                 <div class="field photo-field">
                     <label>記事の最初の写真（カバー）</label>
                     <div id="pf-cover"></div>
+                </div>
+                <div class="field">
+                    <label>写真のクレジット（記事のいちばん下に出ます）</label>
+                    <textarea id="f-credit" rows="3" placeholder="撮影：山田 太郎&#10;提供：〇〇ギャラリー&#10;© 作家名" oninput="updatePreview()"></textarea>
+                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">1行に1項目。空のままなら何も出ません。他の人が撮った写真や作品写真は、撮影者・提供元・作家名を書いておくと安心です。</p>
                 </div>
                 <div class="field photo-field">
                     <label>トップの一覧に出す写真（サムネイル）</label>
@@ -895,6 +904,7 @@ function updatePreview() {
         ${subtitle ? `<p class="pv-subtitle">${subtitle}</p>` : ''}
         <p class="pv-author">By ${author}</p>
         <div class="pv-body">${bodyHTML || '<p class="pv-empty">本文を入力してください</p>'}</div>
+        ${creditLines(document.getElementById('f-credit').value).length ? `<div class="pv-credit">${photos.cover ? `<img src="${photoSrc(photos.cover)}" alt="" style="object-position:${photos.cover.x}% ${photos.cover.y}%">` : ''}<div><b>${photos.cover ? 'COVER PHOTO　カバー写真' : 'PHOTO　写真'}</b>${creditLines(document.getElementById('f-credit').value).map(l => `<span>${escHTML(l)}</span>`).join('')}</div></div>` : ''}
     `;
 }
 
@@ -1043,12 +1053,27 @@ function fmtName(s) {
     const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
     return m ? m[1] + ' ' + m[2] : s;
 }
+// 写真のクレジット（記事の本文の最後に置く標本ラベル）
+function creditLines(text) { return String(text || '').split(/\n/).map(s => s.trim()).filter(Boolean); }
+function creditBlock(text, src, ph) {
+    const lines = creditLines(text);
+    if (!lines.length) return '';
+    const thumb = src ? `\n                <div class="ar-credit__thumb"><img src="${src}" alt="" style="object-position:${ph?.x ?? 50}% ${ph?.y ?? 50}%"></div>` : '';
+    return `
+            <aside class="ar-credit${src ? '' : ' ar-credit--solo'}" aria-label="写真のクレジット">${thumb}
+                <div class="ar-credit__txt">
+                    <p class="ar-credit__label">${src ? 'COVER PHOTO' : 'PHOTO'}<span>${src ? 'カバー写真' : '写真'}</span></p>
+                    <ul>${lines.map(l => `<li>${escHTML(l)}</li>`).join('')}</ul>
+                </div>
+            </aside>`;
+}
 function escHTML(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // 記事ページの見た目は ../article.css と ../article.js が担当する。
 // ここでは「見出し・カバー写真・目次・本文」だけを書き出す（既存記事の変換スクリプトと同じ形）。
 function buildArticleHTML(data) {
-    const { cat, title, subtitle, author, date, body, file, cover } = data;
+    const { cat, title, subtitle, author, date, body, file, cover, credit } = data;
+    const creditHTML = creditBlock(credit, cover && cover.path ? `../${cover.path}` : '', cover);
     const catLabel = CAT_LABELS[cat] || cat;
     const dateJP   = fmtDate(date);
     const tocItems = [];
@@ -1096,7 +1121,7 @@ function buildArticleHTML(data) {
     </header>${coverHTML}
     <div class="${hasTOC ? 'ar-shell' : 'ar-shell ar-shell--solo'}">${tocHTML}
         <article class="ar-body">
-            ${bodyHTML}
+            ${bodyHTML}${creditHTML}
         </article>
     </div>
 </main>
@@ -1120,6 +1145,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
     const cat      = document.getElementById('f-cat').value;
     const excerpt  = document.getElementById('f-excerpt').value.trim();
     const body     = document.getElementById('f-body').value.trim();
+    const credit   = creditLines(document.getElementById('f-credit').value).join('\n');
 
     if (!title)  { alert('タイトルを入力してください。'); return; }
     if (!author) { alert('著者名を入力してください。'); return; }
@@ -1148,7 +1174,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
         }
 
         // 記事HTMLを生成してコミット
-        const articleHTML = buildArticleHTML({ cat, title, subtitle, author, date, body, file: filepath, cover: photos.cover });
+        const articleHTML = buildArticleHTML({ cat, title, subtitle, author, date, body, file: filepath, cover: photos.cover, credit });
         await ghPut(filepath, token, `${isEdit?'記事更新':'記事追加'}: ${title}`, articleHTML, fileSha);
 
         // manifest.json を更新
@@ -1164,6 +1190,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
             _body: body, _subtitle: subtitle  // 修正用に本文を保持
         };
         if (photos.cover) Object.assign(newEntry, { cover: photos.cover.path, coverX: photos.cover.x, coverY: photos.cover.y });
+        if (credit) newEntry.coverCredit = credit;
         if (!photos.thumbSame && photos.thumb) Object.assign(newEntry, { thumb: photos.thumb.path, thumbX: photos.thumb.x, thumbY: photos.thumb.y });
 
         if (isEdit) {
@@ -1186,7 +1213,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
 
         if (!isEdit) {
             // 新規の場合はフォームリセット
-            ['f-title','f-subtitle','f-author','f-excerpt','f-body'].forEach(id => document.getElementById(id).value='');
+            ['f-title','f-subtitle','f-author','f-excerpt','f-body','f-credit'].forEach(id => document.getElementById(id).value='');
             photos.cover = null; photos.thumb = null; photos.thumbSame = true;
             document.getElementById('thumb-same').checked = true;
             renderPhotoFields();
@@ -1523,6 +1550,7 @@ async function loadForEdit(index) {
     document.getElementById('f-subtitle').value = entry._subtitle || '';
     document.getElementById('f-author').value = entry.author || '';
     document.getElementById('f-excerpt').value = entry.excerpt || '';
+    document.getElementById('f-credit').value = entry.coverCredit || '';
     document.getElementById('f-body').value   = entry._body  || '（本文データなし。直接GitHubで編集してください）';
     photos.cover = entry.cover ? { path: entry.cover, x: entry.coverX ?? 50, y: entry.coverY ?? 50 } : null;
     photos.thumb = entry.thumb ? { path: entry.thumb, x: entry.thumbX ?? 50, y: entry.thumbY ?? 50 } : null;

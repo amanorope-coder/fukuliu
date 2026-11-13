@@ -147,6 +147,19 @@ a { color: inherit; }
 .ar-body a { color: var(--water); text-underline-offset: 3px; }
 .ar-body .article-back { display: none; }
 
+/* 本文の最後：写真のクレジット（標本ラベルの形。上辺に地層の帯、写真の縮図つき） */
+.ar-credit { position: relative; max-width: 720px; margin: clamp(48px, 6vw, 72px) 0 0; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; align-items: start; padding: 22px 18px 16px; border: 1px solid var(--ink); border-radius: 4px; background: var(--card); overflow: hidden; }
+.ar-credit--solo { grid-template-columns: minmax(0, 1fr); }
+.ar-credit::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7px;
+    background: linear-gradient(180deg, var(--cc, var(--ink)) 0 2px, #dccfb3 2px 3.5px, #b3b5aa 3.5px 5px, var(--water) 5px 6px, #2b2b2e 6px); }
+.ar-credit__thumb { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; background: #2a2a2a; }
+.ar-credit__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ar-credit .ar-credit__label { margin: 0 0 6px; display: flex; align-items: baseline; gap: 10px; font: 600 10px var(--mono); letter-spacing: .2em; color: var(--mute); }
+.ar-credit__label span { font: 700 10.5px var(--sans); letter-spacing: .14em; }
+.ar-credit ul { margin: 0; padding: 0; list-style: none; }
+.ar-credit li { font-size: 13px; line-height: 1.75; font-weight: 500; letter-spacing: .03em; overflow-wrap: anywhere; }
+.ar-credit + .ar-after { margin-top: 28px; }
+
 /* 本文のあと：シェア・戻る */
 .ar-after { max-width: 720px; margin: clamp(48px, 6vw, 72px) 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; border-top: 1px solid var(--ink); padding-top: 18px; }
 .ar-after__label { font: 600 10px var(--mono); letter-spacing: .2em; color: var(--mute); margin-right: 6px; }
@@ -319,6 +332,7 @@ a:hover .md img { transform: scale(1.035); }
     .ar { --overlap: 80px; }
     .ar-cover__win { border-radius: 6px; }
     .ar-body { font-size: 16px; line-height: 2; }
+    .ar-credit { grid-template-columns: 68px minmax(0, 1fr); gap: 14px; padding: 20px 14px 14px; }
     .ar-body h2 { font-size: 21px; }
     .ar-body blockquote { padding-left: 16px; font-size: 15.5px; }
     .ar-body .callout { padding: 18px; }
