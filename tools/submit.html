@@ -312,18 +312,11 @@
         .cr-grid { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 6px 10px; align-items: center; }
         .cr-grid span { font-size: 11px; font-weight: 700; color: var(--fg-mute); }
         .cr-grid textarea { min-height: 52px; }
-        .pv-cr .ar-credit { margin-top: 40px; border: 2px solid var(--fg); font-family: var(--sans); }
-        .pv-cr .ar-credit__head { margin: 0; display: flex; justify-content: space-between; padding: 6px 10px; background: var(--fg); color: #fff; font: 600 10px monospace; letter-spacing: .18em; }
-        .pv-cr .ar-credit__in { display: grid; grid-template-columns: 100px minmax(0, 1fr); }
-        .pv-cr .ar-credit--solo .ar-credit__in { grid-template-columns: minmax(0, 1fr); }
-        .pv-cr .ar-credit__thumb { border-right: 2px solid var(--fg); background: #2a2a2a; }
-        .pv-cr .ar-credit__thumb img { width: 100%; height: 100%; min-height: 80px; object-fit: cover; display: block; }
-        .pv-cr dl { margin: 0; }
-        .pv-cr dl div { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
-        .pv-cr dl div:last-child { border-bottom: 0; }
-        .pv-cr dt { font: 600 10px/1.9 monospace; color: var(--fg-mute); }
-        .pv-cr dd { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
-        .pv-cr dd a { color: inherit; }
+        .pv-cr .ar-credit { display: block; margin-top: 40px; font-size: 11.5px; line-height: 1.9; color: var(--fg-mute); }
+        .pv-cr .ar-credit span + span::before { content: "／"; margin: 0 .5em; opacity: .55; }
+        .pv-cr .ar-credit__k { font: 600 10px monospace; letter-spacing: .14em; margin-right: 1.2em; }
+        .pv-cr .ar-credit__k + span::before { content: none !important; }
+        .pv-cr .ar-credit a { color: inherit; }
     </style>
 </head>
 <body>
@@ -941,7 +934,7 @@ function updatePreview() {
         ${subtitle ? `<p class="pv-subtitle">${subtitle}</p>` : ''}
         <p class="pv-author">By ${author}</p>
         <div class="pv-body">${bodyHTML || '<p class="pv-empty">本文を入力してください</p>'}</div>
-        <div class="pv-cr">${creditBlock(readCredit(), photos.cover ? photoSrc(photos.cover) : '', photos.cover)}</div>
+        <div class="pv-cr">${creditBlock(readCredit(), !!photos.cover)}</div>
     `;
 }
 
@@ -1090,8 +1083,8 @@ function fmtName(s) {
     const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
     return m ? m[1] + ' ' + m[2] : s;
 }
-// 写真のクレジット（記事の本文の最後に置く表）。manifest には coverCredit: { by, src, url, lic, edit, note } で入る
-const CR_KEYS = [['by', '撮影・作者'], ['src', '出典'], ['lic', 'ライセンス・許諾'], ['edit', '加工'], ['note', '備考']];
+// 写真のクレジット（記事の本文の最後に小さな文字で）。manifest には coverCredit: { by, src, url, lic, edit, note } で入る
+const CR_KEYS = [['by', '撮影・作者'], ['src', '出典'], ['lic', 'ライセンス'], ['edit', '加工'], ['note', '']];
 function readCredit() {
     const v = id => document.getElementById(id).value.trim();
     const cr = { by: v('f-cr-by'), src: v('f-cr-src'), url: v('f-cr-url'), lic: v('f-cr-lic'), edit: v('f-cr-edit'), note: v('f-cr-note') };
@@ -1112,26 +1105,19 @@ function licenseUrl(lic) {
     const m = s.match(/^CC\s+(BY(?:-(?:NC|SA|ND))*)(?:\s+(\d\.\d))?/i);
     return m ? `https://creativecommons.org/licenses/${m[1].toLowerCase()}/${m[2] || '4.0'}/deed.ja` : '';
 }
-function creditBlock(cr, src, ph) {
+function creditBlock(cr, src) {
     if (!cr) return '';
     const link = (text, href) => href ? `<a href="${escHTML(href)}" target="_blank" rel="noopener noreferrer">${escHTML(text)}</a>` : escHTML(text);
-    const rows = CR_KEYS.map(([k, label]) => {
+    const items = CR_KEYS.map(([k, label]) => {
         let val = cr[k];
         if (k === 'src' && !val && safeUrl(cr.url)) val = safeUrl(cr.url);
         if (!val) return '';
         const html = k === 'src' ? link(val, safeUrl(cr.url)) : k === 'lic' ? link(val, licenseUrl(val)) : escHTML(val);
-        return `\n                        <div><dt>${label}</dt><dd>${html}</dd></div>`;
+        return `<span>${label ? label + '：' : ''}${html}</span>`;
     }).join('');
-    if (!rows) return '';
-    const thumb = src ? `\n                    <div class="ar-credit__thumb"><img src="${src}" alt="" style="object-position:${ph?.x ?? 50}% ${ph?.y ?? 50}%"></div>` : '';
+    if (!items) return '';
     return `
-            <aside class="ar-credit${src ? '' : ' ar-credit--solo'}" aria-label="写真のクレジット">
-                <p class="ar-credit__head">${src ? 'COVER PHOTO' : 'PHOTO'}<span>写真の出典・権利</span></p>
-                <div class="ar-credit__in">${thumb}
-                    <dl>${rows}
-                    </dl>
-                </div>
-            </aside>`;
+            <aside class="ar-credit" aria-label="写真のクレジット"><span class="ar-credit__k">${src ? 'COVER PHOTO' : 'PHOTO'}</span>${items}</aside>`;
 }
 function escHTML(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -1139,7 +1125,7 @@ function escHTML(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').re
 // ここでは「見出し・カバー写真・目次・本文」だけを書き出す（既存記事の変換スクリプトと同じ形）。
 function buildArticleHTML(data) {
     const { cat, title, subtitle, author, date, body, file, cover, credit } = data;
-    const creditHTML = creditBlock(credit, cover && cover.path ? `../${cover.path}` : '', cover);
+    const creditHTML = creditBlock(credit, cover && cover.path);
     const catLabel = CAT_LABELS[cat] || cat;
     const dateJP   = fmtDate(date);
     const tocItems = [];
