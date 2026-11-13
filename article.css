@@ -76,12 +76,21 @@ a { color: inherit; }
 .ar-head__in { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); display: grid; grid-template-columns: clamp(108px, 10vw, 136px) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: start; }
 .ar-head__main { min-width: 0; padding-top: 6px; }
 
-/* 左のタブ：カテゴリ・日付（下端は切り込み） */
-.ar-badge { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 10px 30px; background: var(--card); color: var(--ink); text-align: center; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 16px), 0 100%); }
-.ar-badge::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--cc, var(--ink)); }
+/* 左の柱状図：掘り出した地層の芯（コア）。いちばん上の層がカテゴリの色、途中を伏流水が流れる */
+.ar-badge { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding-top: 4px; color: var(--ink); text-align: center; }
 .ar-badge__en { font: 600 clamp(13px, 1.2vw, 16px) var(--display); letter-spacing: .14em; }
 .ar-badge__jp { font-size: 11px; font-weight: 700; letter-spacing: .2em; color: var(--mute); }
-.ar-badge__logo { width: 64%; height: auto; margin: 8px 0 6px; opacity: .9; }
+.ar-badge__core { position: relative; display: flex; flex-direction: column; width: 46px; height: clamp(150px, 15vw, 190px); margin: 10px 0 8px; border: 1.5px solid var(--ink); border-radius: 23px 23px 6px 6px; overflow: hidden; background: #2b2b2e; }
+.ar-badge__core i { display: block; border-top: 1px solid rgba(20, 18, 14, .35); }
+.ar-badge__core i:first-child { border-top: 0; }
+.ar-badge__core .c1 { flex: 0 0 12%; background: var(--cc, var(--ink)); }
+.ar-badge__core .c2 { flex: 0 0 17%; background: radial-gradient(rgba(70, 56, 30, .45) .8px, transparent 1.3px) 0 0 / 5px 5px, #dccfb3; }
+.ar-badge__core .c3 { flex: 0 0 15%; background: repeating-linear-gradient(180deg, transparent 0 4px, rgba(30, 34, 30, .28) 4px 5px), #b3b5aa; }
+.ar-badge__core .cw { flex: 0 0 15%; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10'%3E%3Cpath d='M0 5Q6 1 12 5T24 5' fill='none' stroke='%23235BC8' stroke-width='1.6'/%3E%3C/svg%3E") 0 50% / 24px 10px repeat-x, #d6e2f3; animation: core-flow 4s linear infinite; }
+.ar-badge__core .c4 { flex: 0 0 19%; background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, .22) 0 1.6px, transparent 2.2px) 0 0 / 9px 8px, radial-gradient(circle at 70% 80%, rgba(0, 0, 0, .25) 0 2px, transparent 2.6px) 0 0 / 11px 9px, #8b8273; }
+.ar-badge__core .c5 { flex: 1 1 auto; background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(255, 255, 255, .09) 5px 6px), #2b2b2e; }
+@keyframes core-flow { to { background-position: 24px 50%, 0 0; } }
+@media (prefers-reduced-motion: reduce) { .ar-badge__core .cw { animation: none; } }
 .ar-badge__date { font: 500 11px var(--mono); letter-spacing: .04em; }
 
 .ar-crumb { margin: 0 0 clamp(18px, 2.4vw, 28px); display: flex; align-items: center; gap: 14px; font: 500 11px var(--mono); letter-spacing: .14em; color: var(--mute); }
@@ -224,7 +233,7 @@ a:hover .md img { transform: scale(1.035); }
 }
 
 /* ------------------------------------------------------------ ニュース詳細 */
-.ar-badge--news::before { background: var(--water); }
+.ar-badge--news { --cc: var(--water); }
 .ar--news .ar-head { background: var(--paper); }
 .ni { margin: 0 0 2.4em; border-top: 1px solid var(--ink); }
 .ni div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
@@ -290,9 +299,12 @@ a:hover .md img { transform: scale(1.035); }
     .ar-toc { position: static; grid-column: 1; grid-row: 1; }
     .ar-body { grid-row: 2; }
     .ar-head__in { grid-template-columns: 1fr; gap: 22px; }
-    .ar-badge { flex-direction: row; justify-content: flex-start; gap: 14px; padding: 10px 16px; width: max-content; max-width: 100%; clip-path: none; border-radius: 4px; }
-    .ar-badge::before { top: 0; bottom: 0; right: auto; width: 4px; height: auto; }
-    .ar-badge__logo { width: 44px; margin: 0; order: -1; }
+    /* スマホ・タブレットでは柱状図を横に寝かせて一行に */
+    .ar-badge { flex-direction: row; justify-content: flex-start; gap: 14px; padding: 0; }
+    .ar-badge__core { order: -1; flex-direction: row; width: 96px; height: 22px; margin: 0; border-radius: 11px 4px 4px 11px; }
+    .ar-badge__core i { border-top: 0; border-left: 1px solid rgba(20, 18, 14, .35); }
+    .ar-badge__core i:first-child { border-left: 0; }
+    .ar-badge__core .cw { background-size: 24px 10px; }
     .ar-more__grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 640px) {

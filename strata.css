@@ -186,7 +186,7 @@ button { font-family: inherit; }
 /* ロゴと下の一行は同じ幅でそろえる（--logo-w がロゴ画像の幅） */
 .hero__copy { --logo-w: clamp(240px, 32vw, 500px); position: absolute; z-index: 3; left: var(--pad); bottom: clamp(100px, 17vh, 180px); width: var(--logo-w); }
 .hero[data-pos="center"] .hero__copy { left: 50%; top: 50%; bottom: auto; transform: translate(-50%, -56%); text-align: center; }
-.hero[data-pos="bottom"] .hero__copy { left: 50%; transform: translateX(-50%); text-align: center; }
+.hero[data-pos="bottom"] .hero__copy { left: 50%; bottom: clamp(150px, 25vh, 250px); transform: translateX(-50%); text-align: center; }
 .hero__logo { margin: 0; line-height: 0; }
 .hero__logo img { width: 100%; height: auto; }
 .hero:not([data-tone="dark"]) .hero__logo img { filter: invert(1); }

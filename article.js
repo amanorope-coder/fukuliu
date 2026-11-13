@@ -77,7 +77,7 @@
         hd.style.clipPath = `polygon(0 0, ${W}px 0, ${W}px ${H + 1}px, ${pts.slice().reverse().map(p => `${p[0]}px ${(p[1] + 1).toFixed(1)}px`).join(', ')})`;
     }
 
-    // ------------------------------------------------------------ 頭：左にタブ（カテゴリ or NEWS）、右に題
+    // ------------------------------------------------------------ 頭：左に柱状図（カテゴリ or NEWS）、右に題
     const head = $('.ar-head');
     const cat = main.dataset.cat || (KIND === 'news' ? 'info' : 'essay');
     if (head && KIND !== 'page') {
@@ -96,7 +96,7 @@
                 <div class="ar-badge ${isNews ? 'ar-badge--news' : 'cat--' + esc(cat)}" aria-hidden="true">
                     <span class="ar-badge__en">${isNews ? 'NEWS' : esc(CAT_EN[cat] || 'ARTICLE')}</span>
                     <span class="ar-badge__jp">${esc(isNews ? nc[0] : (CATS[cat] || '記事'))}</span>
-                    <img class="ar-badge__logo" src="${ROOT}fukuryu-logo.png" alt="">
+                    <span class="ar-badge__core"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="cw"></i><i class="c4"></i><i class="c5"></i></span>
                     <time class="ar-badge__date">${esc(date)}</time>
                 </div>`);
             inner.appendChild(mainBox);
