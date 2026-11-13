@@ -67,69 +67,64 @@
     // ================================================================
     //  地表：最新
     // ================================================================
-    function renderSurface() {
-        const box = $('#now');
-        if (!box) return;
-        const a = state.articles[0], ep = EPS[0], c = state.collabs[0];
-        const cards = [];
-        if (a) cards.push(`
-            <article class="nc nc--article rv">
-                <div class="nc__swatch"><b>記事</b><span>FROM ${LAYER.article.name} ${LAYER.article.depth}</span></div>
-                <a class="nc__body" ${href(a.url)}>
-                    ${artImg(a) ? `<div class="nc__img">${imgTag(artImg(a))}</div>` : ''}
-                    <p class="nc__kind">最新の記事 <span class="cat cat--${esc(a.cat)}">${esc(catLabel(a.cat))}</span><time>${esc(a.date)}</time></p>
-                    <h3>${esc(a.title)}</h3>
-                    ${a.excerpt ? `<p>${esc(a.excerpt)}</p>` : ''}
-                    ${a.author ? `<p class="nc__by">${esc(a.author)}</p>` : ''}
-                </a>
-                <a class="nc__dive" href="#article">記事層へ潜る<small>↓ ${LAYER.article.depth}</small></a>
-            </article>`);
-        if (ep) cards.push(`
-            <article class="nc nc--radio rv" style="--rd:.08s">
-                <div class="nc__swatch"><b>配信</b><span>FROM ${LAYER.radio.name} ${LAYER.radio.depth}</span></div>
-                <a class="nc__body" href="#radio" data-play="0">
-                    ${ep.cover ? `<div class="nc__img"><img src="${esc(ep.cover)}" alt="" loading="lazy"></div>` : ''}
-                    <p class="nc__kind">${esc(ep.ep || '最新の配信')}<time>${esc(ep.date)}</time></p>
-                    <h3>${brOnly(ep.title)}</h3>
-                    ${ep.guest ? `<p>ゲスト：${esc(ep.guest)}</p>` : ''}
-                </a>
-                <a class="nc__dive" href="#radio">配信層へ潜る<small>↓ ${LAYER.radio.depth}</small></a>
-            </article>`);
-        if (c) cards.push(`
-            <article class="nc nc--people rv" style="--rd:.16s">
-                <div class="nc__swatch"><b>人物</b><span>FROM ${LAYER.people.name} ${LAYER.people.depth}</span></div>
-                <a class="nc__body" href="tokubetsu-kyoryoku.html">
-                    ${c.photo ? `<div class="nc__peb"><img src="${esc(c.photo)}" alt="" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}"></div>` : ''}
-                    <p class="nc__kind">新しいコラボレーター${c._date ? `<time>${esc(c._date)}</time>` : ''}</p>
-                    <h3>${esc(c.name)}</h3>
-                    ${c.bio ? `<p>${esc(c.bio)}</p>` : ''}
-                    ${c.role ? `<p class="nc__by">${esc(c.role)}</p>` : ''}
-                </a>
-                <a class="nc__dive" href="#people">人物層へ潜る<small>↓ ${LAYER.people.depth}</small></a>
-            </article>`);
-        box.innerHTML = cards.join('');
+    // ── 雑誌風の部品 ──
+    const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', dialogue: 'DIALOGUE', review: 'REVIEW' };
+    // 写真があれば写真、なければ文字で組んだ表紙
+    function media(im, tp, small) {
+        const s = small ? ' md--s' : '';
+        if (im && im.src) return `<span class="md${s}">${imgTag(im)}</span>`;
+        return `<span class="md md--tp ${tp.cls}${s}"><span class="tp__k"><span>${esc(tp.k)}</span><span>FUKURYU</span></span>${small ? '' : `<span class="tp__t">${esc(tp.t)}</span>`}</span>`;
+    }
+    function artItem(a) {
+        return { k: 'article', label: '記事', date: a.date, title: a.title, url: a.url, ex: a.excerpt, by: a.author, cat: a.cat,
+                 im: artImg(a), tp: { cls: 'tp--' + (a.cat || 'essay') + ' tp--q', k: CAT_EN[a.cat] || 'ARTICLE', t: (a.excerpt || a.title).replace(/…$/, '') } };
+    }
+    function streamItems() {
+        return [
+            ...state.articles.map(artItem),
+            ...EPS.map((e, i) => ({ k: 'radio', label: '配信', date: e.date, title: `${e.ep || ''} ${strip(e.title)}`.trim(), url: '#radio', play: i,
+                ex: e.guest ? `ゲスト：${e.guest}` : '', im: e.cover ? { src: e.cover } : null, tp: { cls: 'tp--radio', k: 'RADIO', t: strip(e.title) } })),
+            ...state.collabs.filter(c => c._date).map(c => ({ k: 'people', label: '人物', date: c._date, title: c.name + (c.role ? `（${c.role}）` : ''), url: 'tokubetsu-kyoryoku.html',
+                ex: c.bio, im: c.photo ? { src: c.photo, x: c.photoX, y: c.photoY } : null, tp: { cls: 'tp--people', k: 'PEOPLE', t: c.name } }))
+        ].sort((p, q) => dkey(q.date).localeCompare(dkey(p.date)));
+    }
+    function metaHTML(x, noKind) {
+        return `<span class="mt">${noKind ? '' : `<span class="mt__k k--${x.k}">${x.label}</span>`}${x.cat ? `<span class="mt__c cat--${esc(x.cat)}">${esc(catLabel(x.cat))}</span>` : ''}<time>${esc(String(x.date).slice(0, 10))}</time></span>`;
+    }
+    function playAttr(x) { return x.play != null ? ` data-play="${x.play}"` : ''; }
 
-        // 更新ログ
-        const items = [
-            ...state.articles.map(x => ({ k: 'article', label: '記事', date: x.date, title: x.title, url: x.url })),
-            ...EPS.map((x, i) => ({ k: 'radio', label: '配信', date: x.date, title: `${x.ep || ''} ${strip(x.title)}`.trim(), url: '#radio', play: i })),
-            ...state.collabs.filter(x => x._date).map(x => ({ k: 'people', label: '人物', date: x._date, title: `${x.name}${x.role ? '（' + x.role + '）' : ''}`, url: 'tokubetsu-kyoryoku.html' }))
-        ].sort((p, q) => dkey(q.date).localeCompare(dkey(p.date))).slice(0, 8);
-        const log = $('#log');
-        if (log) log.innerHTML = items.map(x => `
-            <li><a ${href(x.url)}${x.play != null ? ` data-play="${x.play}"` : ''}>
-                <time>${esc(String(x.date).slice(0, 10))}</time><span class="lk lk--${x.k}">${x.label}</span><span class="lt">${esc(x.title)}</span><span class="ld">${LAYER[x.k].depth}</span>
+    // ================================================================
+    //  地表：最新（大きな一本 ＋ 一覧）
+    // ================================================================
+    function renderSurface() {
+        const items = streamItems();
+        // いちばん上は写真のあるものを優先（新しい3件の中から）
+        const li = Math.max(0, items.slice(0, 3).findIndex(x => x.im));
+        const lead = items[li];
+        const rest = items.filter((_, i) => i !== li).slice(0, 6);
+        const box = $('#news-lead');
+        if (box) box.innerHTML = lead ? `
+            <a class="mc mc--lead rv" ${href(lead.url)}${playAttr(lead)}>
+                ${media(lead.im, lead.tp)}
+                ${metaHTML(lead)}
+                <h3 class="mc__t">${esc(lead.title)}</h3>
+                ${lead.ex ? `<p class="mc__x">${esc(lead.ex)}</p>` : ''}
+                ${lead.by ? `<p class="mc__by">${esc(lead.by)}</p>` : ''}
+            </a>` : '';
+        const list = $('#news-list');
+        if (list) list.innerHTML = rest.map((x, i) => `
+            <li class="rv" style="--rd:${i * 0.05}s"><a ${href(x.url)}${playAttr(x)}>
+                ${media(x.im, x.tp, true)}
+                <span>${metaHTML(x)}<span class="mc__t">${esc(x.title)}</span></span>
             </a></li>`).join('');
 
-        // ヒーローの観測データ
-        const all = items.length ? items[0].date : '';
         const sd = $('#st-date'), sc = $('#st-count');
-        if (sd) sd.textContent = String(all).slice(0, 10) || '—';
+        if (sd) sd.textContent = items.length ? String(items[0].date).slice(0, 10) : '—';
         if (sc) sc.textContent = `${state.articles.length}・${EPS.length}・${state.collabs.length}`;
     }
 
     // ================================================================
-    //  記事層
+    //  記事層：特集 ＋ 一覧
     // ================================================================
     function colCount() { return innerWidth >= 1000 ? 3 : innerWidth >= 640 ? 2 : 1; }
 
@@ -137,7 +132,6 @@
         const all = state.articles;
         const list = state.filter === 'all' ? all : all.filter(a => a.cat === state.filter);
 
-        // フィルター
         const fbox = $('#article-filters');
         if (fbox) {
             const counts = {};
@@ -146,40 +140,30 @@
             fbox.innerHTML = keys.map(k => `<button type="button" data-cat="${k}" class="${state.filter === k ? 'is-on' : ''}">${k === 'all' ? 'すべて' : esc(catLabel(k))}<small>${k === 'all' ? all.length : counts[k]}</small></button>`).join('');
         }
 
-        // 最新の堆積
         const f = list[0];
         const feat = $('#article-feature');
-        if (feat) feat.innerHTML = f ? `
-            <a class="feat rv${artImg(f) ? ' feat--img' : ''}" ${href(f.url)}>
-                ${artImg(f) ? `<div class="feat__img">${imgTag(artImg(f))}</div>` : ''}
-                <div class="feat__l">
-                    <p class="feat__tag">最新の堆積 / LATEST DEPOSIT <span class="cat cat--${esc(f.cat)}">${esc(catLabel(f.cat))}</span><time>${esc(f.date)}</time></p>
-                    <h3>${esc(f.title)}</h3>
+        if (feat) feat.innerHTML = f ? (x => `
+            <a class="mf rv" ${href(f.url)}>
+                ${media(x.im, x.tp)}
+                <div>
+                    <p class="mf__label">Latest</p>
+                    ${metaHTML(x, true)}
+                    <h3 class="mf__t">${esc(f.title)}</h3>
+                    ${f.excerpt ? `<p class="mf__x">${esc(f.excerpt)}</p>` : ''}
+                    <p class="mf__by"><span>${esc(f.author || '')}</span><span>READ →</span></p>
                 </div>
-                <div class="feat__r">
-                    ${f.excerpt ? `<p>${esc(f.excerpt)}</p>` : ''}
-                    <p class="feat__by"><span>${esc(f.author || '')}</span><span>読む →</span></p>
-                </div>
-            </a>` : '<p class="empty">この層には、まだ何も堆積していません。</p>';
+            </a>`)(artItem(f)) : '<p class="empty">この層には、まだ何も堆積していません。</p>';
 
-        // 残り：3列にずらして積む
         const rest = list.slice(1, state.shown);
-        const cols = colCount();
-        state.cols = cols;
-        const buckets = Array.from({ length: cols }, () => []);
-        rest.forEach((a, i) => buckets[i % cols].push(`
-            <a class="ac rv" ${href(a.url)} data-t="${(a.title.length + i) % 3}" style="--rd:${(i % cols) * 0.07}s">
-                ${artImg(a) ? `<span class="ac__img">${imgTag(artImg(a))}</span>` : ''}
-                <div class="ac__meta"><span class="cat cat--${esc(a.cat)}">${esc(catLabel(a.cat))}</span><time>${esc(a.date)}</time></div>
-                <h4>${esc(a.title)}</h4>
-                ${a.excerpt ? `<p>${esc(a.excerpt)}</p>` : ''}
-                <div class="ac__by"><span>${esc(a.author || '')}</span><span>→</span></div>
-            </a>`));
-        const dep = $('#articles-list');
-        if (dep) {
-            dep.style.setProperty('--cols', cols);
-            dep.innerHTML = buckets.map(b => `<div class="deposit__col">${b.join('')}</div>`).join('');
-        }
+        state.cols = colCount();
+        const grid = $('#articles-list');
+        if (grid) grid.innerHTML = rest.map((a, i) => (x => `
+            <a class="mc rv" ${href(a.url)} style="--rd:${(i % 3) * 0.07}s">
+                ${media(x.im, x.tp)}
+                ${metaHTML(x, true)}
+                <h4 class="mc__t">${esc(a.title)}</h4>
+                ${a.author ? `<p class="mc__by">${esc(a.author)}</p>` : ''}
+            </a>`)(artItem(a))).join('');
 
         const more = $('#article-more');
         if (more) {
@@ -244,15 +228,13 @@
     // ================================================================
     //  人物層
     // ================================================================
-    const BLOBS = ['58% 42% 50% 50% / 52% 48% 52% 48%', '44% 56% 46% 54% / 58% 44% 56% 42%', '52% 48% 60% 40% / 46% 54% 46% 54%', '62% 38% 46% 54% / 50% 60% 40% 50%', '47% 53% 40% 60% / 55% 45% 55% 45%'];
     function renderCollabs() {
         const ul = $('#collab-list');
         if (!ul) return;
-        const r = rng(7);
         ul.innerHTML = state.collabs.length ? state.collabs.map((c, i) => `
-            <li class="pebble rv" style="--br:${BLOBS[i % BLOBS.length]};--rot:${(r() * 14 - 7).toFixed(1)}deg;--rd:${(i % 6) * 0.06}s">
+            <li class="pp rv" style="--rd:${(i % 6) * 0.05}s">
                 <a href="tokubetsu-kyoryoku.html">
-                    <span class="pebble__img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : ''}</span>
+                    <span class="pp__img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : ''}</span>
                     <b>${esc(c.name)}</b>${c.role ? `<small>${esc(c.role)}</small>` : ''}
                 </a>
             </li>`).join('') : '<li class="empty">準備中です。</li>';

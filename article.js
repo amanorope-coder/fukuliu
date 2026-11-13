@@ -69,24 +69,31 @@
         hd.style.clipPath = `polygon(0 0, ${W}px 0, ${W}px ${H + 1}px, ${pts.slice().reverse().map(p => `${p[0]}px ${(p[1] + 1).toFixed(1)}px`).join(', ')})`;
     }
 
-    // ------------------------------------------------------------ 記事の頭：深さの表示と、砂層の底の境界
+    // ------------------------------------------------------------ 記事の頭：左にカテゴリのタブ、右に題
+    const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', dialogue: 'DIALOGUE', review: 'REVIEW' };
     const head = $('.ar-head');
+    const cat = main.dataset.cat || 'essay';
     if (head) {
         const inner = $('.ar-head__in', head);
-        if (inner && !$('.ar-depth', inner)) inner.insertAdjacentHTML('afterbegin', `<p class="ar-depth"><a href="${ROOT}index.html#article">← 記事層</a>GL −8.0m 〜 −20.0m</p>`);
-        const r = rng(ID.split('').reduce((a, c) => a + c.charCodeAt(0), 7)), amp = 14, pts = [];
-        const a = r() * 6.28, b = r() * 6.28;
-        for (let i = 0; i <= 40; i++) {
-            const t = i / 40;
-            let y = 0.5 + 0.3 * Math.sin(t * 6.283 * 2 + a) + 0.14 * Math.sin(t * 6.283 * 7 + b) + (r() - 0.5) * 0.14;
-            pts.push([t * 100, Math.max(0, Math.min(1, y)) * amp]);
+        const date = ($('.ar-meta time', head) || {}).textContent || '';
+        if (inner && !$('.ar-badge', inner)) {
+            const mainBox = document.createElement('div');
+            mainBox.className = 'ar-head__main';
+            while (inner.firstChild) mainBox.appendChild(inner.firstChild);
+            mainBox.insertAdjacentHTML('afterbegin', `<p class="ar-crumb"><a href="${ROOT}index.html#article">ARTICLE</a><span>記事層 −8m</span></p>`);
+            inner.insertAdjacentHTML('afterbegin', `
+                <div class="ar-badge cat--${esc(cat)}" aria-hidden="true">
+                    <span class="ar-badge__en">${esc(CAT_EN[cat] || 'ARTICLE')}</span>
+                    <span class="ar-badge__jp">${esc(CATS[cat] || '記事')}</span>
+                    <img class="ar-badge__logo" src="${ROOT}fukuryu-logo.png" alt="">
+                    <time class="ar-badge__date">${esc(date)}</time>
+                </div>`);
+            inner.appendChild(mainBox);
         }
-        const edge = document.createElement('div');
-        edge.className = 'ar-edge';
-        edge.innerHTML = `<i style="clip-path:polygon(${pts.map(p => `${p[0].toFixed(2)}% ${p[1].toFixed(1)}px`).join(',')},100% 100%,0 100%)"></i>
-            <svg viewBox="0 0 100 ${amp}" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts.map(p => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ')}"/></svg>`;
-        head.appendChild(edge);
+        const by = $('.ar-by', head);
+        if (by && !by.dataset.done) { by.dataset.done = '1'; by.innerHTML = `<span>text</span>${by.innerHTML}`; }
     }
+    if ($('.ar-cover')) main.classList.add('has-cover');
 
     // カバー写真はふわっと
     const cover = $('.ar-cover img');
@@ -163,7 +170,7 @@
 
     // ------------------------------------------------------------ ほかの記事（manifest.json から）
     main.insertAdjacentHTML('beforeend', `<section class="ar-more" id="ar-more" hidden><div class="ar-more__in">
-        <div class="ar-more__head"><h2>記事層の、ほかの記事</h2><a href="${ROOT}index.html#article">すべて見る →</a></div>
+        <div class="ar-more__head"><h2><span>MORE ARTICLES</span>記事層の、ほかの記事</h2><a href="${ROOT}index.html#article">すべて見る →</a></div>
         <div class="ar-more__grid" id="ar-more-grid"></div></div></section>`);
     fetch(ROOT + 'articles/manifest.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []).then(list => {
         const me = 'articles/' + ID + '.html';
@@ -174,9 +181,14 @@
         $('#ar-more-grid').innerHTML = others.map((a, i) => {
             const img = a.thumb || a.cover;
             const x = a.thumb ? a.thumbX : a.coverX, y = a.thumb ? a.thumbY : a.coverY;
+            const md = img
+                ? `<span class="md"><img src="${ROOT}${esc(img)}" alt="" loading="lazy" style="object-position:${pos(x, y)}"></span>`
+                : `<span class="md md--tp tp--${esc(a.cat)} tp--q"><span class="tp__k"><span>${esc(CAT_EN[a.cat] || 'ARTICLE')}</span><span>FUKURYU</span></span><span class="tp__t">${esc(String(a.excerpt || a.title).replace(/…$/, ''))}</span></span>`;
             return `<a class="mc rv" style="--rd:${i * 0.08}s" href="${ROOT}${esc(a.url)}">
-                ${img ? `<span class="mc__img"><img src="${ROOT}${esc(img)}" alt="" loading="lazy" style="object-position:${pos(x, y)}"></span>` : ''}
-                <span class="mc__body"><span class="mc__meta"><span class="cat cat--${esc(a.cat)}">${esc(CATS[a.cat] || '記事')}</span><time>${esc(a.date)}</time></span><h3>${esc(a.title)}</h3></span>
+                ${md}
+                <span class="mt"><span class="mt__c cat--${esc(a.cat)}">${esc(CATS[a.cat] || '記事')}</span><time>${esc(a.date)}</time></span>
+                <span class="mc__t">${esc(a.title)}</span>
+                ${a.author ? `<span class="mc__by">${esc(a.author)}</span>` : ''}
             </a>`;
         }).join('');
         $('#ar-more').hidden = false;
