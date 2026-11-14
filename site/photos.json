@@ -9,7 +9,8 @@
     "zoom": 110,
     "mobile": {
       "mode": "fit"
-    }
+    },
+    "credit": "Joe Saito"
   },
   "band1": {
     "x": 50,
