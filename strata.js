@@ -28,14 +28,10 @@
     };
 
     // ------------------------------------------------------------ utils
-    // 執筆者名：苗字と名前の間を半角スペース1つに（全角スペースも半角に）。
-    // スペースがない名前は「漢字4文字 → 2＋2」「漢字＋かな → その境目」で自動で分ける。それ以外はそのまま
+    // 人の名前：日本語の苗字と名前は詰める（「天野 紘寿」→「天野紘寿」）。英字の名前は半角スペース1つのまま
     function fmtName(s) {
         s = String(s == null ? '' : s).replace(/[\s　]+/g, ' ').trim();
-        if (!s || s.includes(' ')) return s;
-        if (/^\p{sc=Han}{4}$/u.test(s)) return s.slice(0, 2) + ' ' + s.slice(2);
-        const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
-        return m ? m[1] + ' ' + m[2] : s;
+        return s.replace(/([\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]) (?=[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々])/gu, '$1');
     }
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function strip(s) { return String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
@@ -260,8 +256,8 @@
         ul.innerHTML = state.collabs.length ? state.collabs.map((c, i) => `
             <li class="pp rv" style="--rd:${(i % 6) * 0.05}s">
                 <a href="tokubetsu-kyoryoku.html">
-                    <span class="pp__img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : ''}</span>
-                    <b>${esc(c.name)}</b>${c.role ? `<small>${esc(c.role)}</small>` : ''}
+                    <span class="pp__img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(fmtName(c.name))}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : ''}</span>
+                    <b>${esc(fmtName(c.name))}</b>${c.role ? `<small>${esc(c.role)}</small>` : ''}
                 </a>
             </li>`).join('') : '<li class="empty">準備中です。</li>';
         afterRender();
@@ -283,10 +279,10 @@
         const ms = (data && data.members) || [];
         grid.innerHTML = ms.length ? ms.map((m, i) => `
             <article class="cv-card rv" style="--rd:${i * 0.08}s">
-                <div class="cv-card__photo">${m.photo ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos(m.photoX, m.photoY)};transform-origin:${pos(m.photoX, m.photoY)};transform:scale(${zoom(m.photoZoom)})">` : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`}${m.photo && m.photoCredit ? `<span class="ph-credit"><b>PHOTO</b>${esc(m.photoCredit)}</span>` : ''}</div>
+                <div class="cv-card__photo">${m.photo ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos(m.photoX, m.photoY)};transform-origin:${pos(m.photoX, m.photoY)};transform:scale(${zoom(m.photoZoom)})">` : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`}${m.photo && m.photoCredit ? `<span class="ph-credit"><b>PHOTO</b>${esc(fmtName(m.photoCredit))}</span>` : ''}</div>
                 <div>
                     ${m.role ? `<span class="cv-card__role">${esc(m.role)}</span>` : ''}
-                    <h4 class="cv-card__name">${esc(m.name)}</h4>
+                    <h4 class="cv-card__name">${esc(fmtName(m.name))}</h4>
                     ${m.nameEn ? `<p class="cv-card__name-en">${esc(m.nameEn)}</p>` : ''}
                     ${m.instagram ? `<a class="cv-card__ig" href="${esc(m.instagram)}" target="_blank" rel="noopener noreferrer">${IG}Instagram</a>` : ''}
                     ${m.bio ? `<p class="cv-card__bio">${esc(m.bio).replace(/\n/g, '<br>')}</p>` : ''}
@@ -337,7 +333,7 @@
         text = String(text || '').trim();
         if (!text) { if (el) el.remove(); return; }
         if (!el) { el = document.createElement('span'); el.className = 'ph-credit' + (cls ? ' ' + cls : ''); box.appendChild(el); }
-        el.innerHTML = `<b>PHOTO</b>${esc(text)}`;
+        el.innerHTML = `<b>PHOTO</b>${esc(fmtName(text))}`;
     }
 
     function applyPhotos(cfg) {

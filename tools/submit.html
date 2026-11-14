@@ -386,7 +386,7 @@
                 <div class="field">
                     <label>著者名</label>
                     <input type="text" id="f-author" placeholder="例：松森 ひろあき" oninput="updatePreview()">
-                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">苗字と名前の間は自動で半角スペースになります（漢字4文字は2＋2で分けます）。うまく分かれない名前は、自分で間にスペースを入れてください。</p>
+                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">苗字と名前の間のスペースは自動で詰めます（例：天野 紘寿 → 天野紘寿）。英字の名前はそのままです。</p>
                 </div>
                 <div class="field">
                     <label>概要文（一覧表示用）</label>
@@ -1075,20 +1075,16 @@ async function insertImgFromFile(input) {
 // ═══════════════════════════════════════════════════════════
 //  記事HTMLを生成（フルページ）
 // ═══════════════════════════════════════════════════════════
-// 執筆者名：苗字と名前の間を半角スペース1つに（全角スペースも半角に）。
-// スペースがない名前は「漢字4文字 → 2＋2」「漢字＋かな → その境目」で自動で分ける。それ以外はそのまま
+// 人の名前：日本語の苗字と名前は詰める（「天野 紘寿」→「天野紘寿」）。英字の名前は半角スペース1つのまま
 function fmtName(s) {
     s = String(s == null ? '' : s).replace(/[\s　]+/g, ' ').trim();
-    if (!s || s.includes(' ')) return s;
-    if (/^\p{sc=Han}{4}$/u.test(s)) return s.slice(0, 2) + ' ' + s.slice(2);
-    const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
-    return m ? m[1] + ' ' + m[2] : s;
+    return s.replace(/([\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]) (?=[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々])/gu, '$1');
 }
 // 写真のクレジット（記事の本文の最後に小さな文字で）。manifest には coverCredit: { by, src, url, lic, edit, note } で入る
 const CR_KEYS = [['by', '撮影・作者'], ['src', '出典'], ['lic', 'ライセンス'], ['edit', '加工'], ['note', '']];
 function readCredit() {
     const v = id => document.getElementById(id).value.trim();
-    const cr = { by: v('f-cr-by'), src: v('f-cr-src'), url: v('f-cr-url'), lic: v('f-cr-lic'), edit: v('f-cr-edit'), note: v('f-cr-note') };
+    const cr = { by: fmtName(v('f-cr-by')), src: v('f-cr-src'), url: v('f-cr-url'), lic: v('f-cr-lic'), edit: v('f-cr-edit'), note: v('f-cr-note') };
     Object.keys(cr).forEach(k => { if (!cr[k]) delete cr[k]; });
     return Object.keys(cr).length ? cr : null;
 }

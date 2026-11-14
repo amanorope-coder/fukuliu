@@ -449,7 +449,7 @@ function clearPhoto() {
 const SNS_LABELS = { website: '🌐 Website', instagram: 'Instagram', twitter: 'X (Twitter)', note: 'note', youtube: 'YouTube', other: 'Link' };
 
 function updatePreview() {
-    const name     = document.getElementById('f-name').value.trim();
+    const name     = document.getElementById('f-name').value.replace(/[\s　]+/g, ' ').trim().replace(/([\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]) (?=[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々])/gu, '$1');
     const role     = document.getElementById('f-role').value.trim();
     const bio      = document.getElementById('f-bio').value.trim();
     const question = document.getElementById('f-question').value.trim();
@@ -546,7 +546,7 @@ async function saveCollaborator() {
     const token = getToken();
     if (!token) { alert('投稿キーを入力してください。'); return; }
 
-    const name = document.getElementById('f-name').value.trim();
+    const name = document.getElementById('f-name').value.replace(/[\s　]+/g, ' ').trim().replace(/([\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]) (?=[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々])/gu, '$1');
     const role = document.getElementById('f-role').value.trim();
     if (!name) { alert('名前を入力してください。'); return; }
     if (!role) { alert('関わり方を入力してください。'); return; }

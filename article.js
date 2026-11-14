@@ -17,14 +17,10 @@
     const CATS = { essay: 'エッセイ', critique: '批評', blog: 'ブログ', art: '美術', dialogue: '対談', review: '展示レビュー' };
     const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', dialogue: 'DIALOGUE', review: 'REVIEW' };
     const NEWS_CATS = { exhibition: ['展示', 'EXHIBITION'], event: ['イベント', 'EVENT'], media: ['メディア掲載', 'MEDIA'], radio: ['配信', 'RADIO'], info: ['お知らせ', 'INFO'] };
-    // 執筆者名：苗字と名前の間を半角スペース1つに（全角スペースも半角に）。
-    // スペースがない名前は「漢字4文字 → 2＋2」「漢字＋かな → その境目」で自動で分ける。それ以外はそのまま
+    // 人の名前：日本語の苗字と名前は詰める（「天野 紘寿」→「天野紘寿」）。英字の名前は半角スペース1つのまま
     function fmtName(s) {
         s = String(s == null ? '' : s).replace(/[\s　]+/g, ' ').trim();
-        if (!s || s.includes(' ')) return s;
-        if (/^\p{sc=Han}{4}$/u.test(s)) return s.slice(0, 2) + ' ' + s.slice(2);
-        const m = s.match(/^(\p{sc=Han}{1,3})([\p{sc=Hiragana}\p{sc=Katakana}ー]{2,})$/u);
-        return m ? m[1] + ' ' + m[2] : s;
+        return s.replace(/([\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]) (?=[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々])/gu, '$1');
     }
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function rng(seed) { let s = (seed >>> 0) || 1; return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296); }
@@ -275,10 +271,10 @@
             cgrid.innerHTML = list.length ? list.map((c, i) => {
                 const links = Object.keys(SNS).filter(k => c[k] && String(c[k]).trim());
                 return `<article class="cb rv" style="--rd:${(i % 2) * 0.08}s">
-                    <div class="cb__img">${c.photo ? `<img src="${ROOT}${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : `<span>${esc((c.name || '?').charAt(0))}</span>`}${c.photo && c.photoCredit ? `<span class="ph-credit"><b>PHOTO</b>${esc(c.photoCredit)}</span>` : ''}</div>
+                    <div class="cb__img">${c.photo ? `<img src="${ROOT}${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : `<span>${esc((c.name || '?').charAt(0))}</span>`}${c.photo && c.photoCredit ? `<span class="ph-credit"><b>PHOTO</b>${esc(fmtName(c.photoCredit))}</span>` : ''}</div>
                     <div class="cb__body">
                         <p class="cb__no">No.${String(list.length - i).padStart(2, '0')}${c.role ? `<span>${esc(c.role)}</span>` : ''}</p>
-                        <h2 class="cb__name">${esc(c.name)}</h2>
+                        <h2 class="cb__name">${esc(fmtName(c.name))}</h2>
                         ${c.bio ? `<p class="cb__bio">${esc(c.bio).replace(/\n/g, '<br>')}</p>` : ''}
                         ${c.question || c.answer ? `<div class="cb__qa">${c.question ? `<p class="cb__q"><b>Q.</b>${esc(c.question)}</p>` : ''}${c.answer ? `<p class="cb__a">${esc(c.answer).replace(/\n/g, '<br>')}</p>` : ''}</div>` : ''}
                         ${links.length ? `<p class="cb__links">${links.map(k => `<a href="${esc(c[k])}" target="_blank" rel="noopener noreferrer">${SNS[k]} ↗</a>`).join('')}</p>` : ''}
