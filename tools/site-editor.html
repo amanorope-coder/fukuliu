@@ -479,6 +479,7 @@ function renderMemberEditor(){
     <div class="row"><button class="btn btn--sm" onclick="openLib(p=>{setMember('photo',p);renderMemberEditor();})">ライブラリから選ぶ／アップロード</button>
     ${m.photo?`<button class="btn btn--ghost btn--sm" onclick="setMember('photo','');renderMemberEditor()">写真を外す</button>`:''}</div>
     ${m.photo ? zoomRow(m.photoZoom, "setMember('photoZoom',+this.value)") : ''}
+    ${m.photo ? f('photoCredit','写真の撮影者（写真の右下に小さく出ます・任意）','text','名前だけ。例：山田 太郎') : ''}
     <p class="sec-title">基本情報</p>
     ${f('name','名前')}
     ${f('nameEn','ローマ字表記（任意）','text','例：Hirotoshi Amano')}

@@ -283,7 +283,7 @@
         const ms = (data && data.members) || [];
         grid.innerHTML = ms.length ? ms.map((m, i) => `
             <article class="cv-card rv" style="--rd:${i * 0.08}s">
-                <div class="cv-card__photo">${m.photo ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos(m.photoX, m.photoY)};transform-origin:${pos(m.photoX, m.photoY)};transform:scale(${zoom(m.photoZoom)})">` : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`}</div>
+                <div class="cv-card__photo">${m.photo ? `<img src="${esc(m.photo)}" alt="${esc(m.name)}" style="object-position:${pos(m.photoX, m.photoY)};transform-origin:${pos(m.photoX, m.photoY)};transform:scale(${zoom(m.photoZoom)})">` : `<span class="cv-card__initial">${esc((m.name || '?').charAt(0))}</span>`}${m.photo && m.photoCredit ? `<span class="ph-credit"><b>PHOTO</b>${esc(m.photoCredit)}</span>` : ''}</div>
                 <div>
                     ${m.role ? `<span class="cv-card__role">${esc(m.role)}</span>` : ''}
                     <h4 class="cv-card__name">${esc(m.name)}</h4>

@@ -480,7 +480,7 @@ a:hover .md img { transform: scale(1.035); }
 .cv__head span { font: 600 11px var(--mono); letter-spacing: .18em; }
 .cv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 2.4vw, 32px); }
 .cv-card { display: grid; grid-template-columns: clamp(120px, 14vw, 190px) minmax(0, 1fr); gap: clamp(18px, 2.4vw, 32px); align-items: start; background: var(--card); color: var(--ink); border-radius: 10px; padding: clamp(18px, 2.2vw, 28px); }
-.cv-card__photo { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 6px; display: grid; place-items: center; background: repeating-linear-gradient(45deg, #ddd5c4 0 6px, #e8e2d4 6px 12px); }
+.cv-card__photo { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 6px; display: grid; place-items: center; background: repeating-linear-gradient(45deg, #ddd5c4 0 6px, #e8e2d4 6px 12px); }
 .cv-card__photo img { width: 100%; height: 100%; object-fit: cover; }
 .cv-card__initial { font-size: 48px; font-weight: 900; color: #9a917f; }
 .cv-card__role { font: 600 10px var(--mono); letter-spacing: .16em; color: #6b6559; }

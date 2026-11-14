@@ -275,7 +275,7 @@
             cgrid.innerHTML = list.length ? list.map((c, i) => {
                 const links = Object.keys(SNS).filter(k => c[k] && String(c[k]).trim());
                 return `<article class="cb rv" style="--rd:${(i % 2) * 0.08}s">
-                    <div class="cb__img">${c.photo ? `<img src="${ROOT}${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : `<span>${esc((c.name || '?').charAt(0))}</span>`}</div>
+                    <div class="cb__img">${c.photo ? `<img src="${ROOT}${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : `<span>${esc((c.name || '?').charAt(0))}</span>`}${c.photo && c.photoCredit ? `<span class="ph-credit"><b>PHOTO</b>${esc(c.photoCredit)}</span>` : ''}</div>
                     <div class="cb__body">
                         <p class="cb__no">No.${String(list.length - i).padStart(2, '0')}${c.role ? `<span>${esc(c.role)}</span>` : ''}</p>
                         <h2 class="cb__name">${esc(c.name)}</h2>

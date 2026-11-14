@@ -259,6 +259,11 @@
                         </div>
                         <p class="photo-pos-hint">中心点: <span id="photo-pos-val">50%, 50%</span></p>
                     </div>
+                    <div style="margin-top:14px">
+                        <label>写真の撮影者（任意）</label>
+                        <input type="text" id="f-photoCredit" placeholder="名前だけ。例：山田 太郎" oninput="updatePreview()">
+                        <p class="photo-status">コラボレーターのページで、写真の右下に小さく出ます。</p>
+                    </div>
                 </div>
 
                 <!-- リンク -->
@@ -580,6 +585,7 @@ async function saveCollaborator() {
             photo:     photoPath || '',
             photoX:    _photoPos.x,
             photoY:    _photoPos.y,
+            photoCredit: document.getElementById('f-photoCredit').value.trim(),
             website:   document.getElementById('f-website').value.trim(),
             instagram: document.getElementById('f-instagram').value.trim(),
             twitter:   document.getElementById('f-twitter').value.trim(),
@@ -626,7 +632,7 @@ function resetForm() {
     _editingId = null; _editingPhotoPath = null; _photoPos = { x: 50, y: 50 };
     if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
     document.getElementById('photo-pos-wrap').style.display = 'none';
-    ['name','role','bio','question','answer','website','instagram','twitter','note','youtube','other'].forEach(k => {
+    ['name','role','bio','question','answer','photoCredit','website','instagram','twitter','note','youtube','other'].forEach(k => {
         document.getElementById('f-'+k).value = '';
     });
     document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
@@ -753,6 +759,7 @@ function loadForEdit(index) {
     document.getElementById('f-bio').value       = c.bio       || '';
     document.getElementById('f-question').value  = c.question  || '';
     document.getElementById('f-answer').value    = c.answer    || '';
+    document.getElementById('f-photoCredit').value = c.photoCredit || '';
     document.getElementById('f-website').value   = c.website   || '';
     document.getElementById('f-instagram').value = c.instagram || '';
     document.getElementById('f-twitter').value   = c.twitter   || '';
