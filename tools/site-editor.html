@@ -403,6 +403,7 @@ function renderSlotEditor(){
   if (s.opts.includes('shade')) html += rangeRow('写真の暗さ／明るさの調整（文字を読みやすく）','shade',d.shade,0,80);
   if (s.opts.includes('tint'))  html += rangeRow('色の重ね具合（大きいほど写真が暗く沈む）','tint',d.tint,0,100);
   if (s.opts.includes('size'))  html += choiceRow('高さ','size',[['s','低め'],['m','標準'],['l','高め']], d.size);
+  if (d.src) html += `<div class="field"><label>撮影者（写真の右下に小さく出ます・任意）</label><input type="text" value="${esc(d.credit||'')}" oninput="setSlot('credit',this.value,true)" placeholder="名前だけ。例：山田 太郎"></div>`;
   if (s.opts.includes('caption')) html += `<div class="field"><label>キャプション（任意）</label><input type="text" value="${esc(d.caption)}" oninput="setSlot('caption',this.value,true)" placeholder="例：撮影 ◯◯"></div>`;
   $('slot-editor').innerHTML = html;
   attachFocal('slot-focal', p => { d.x=p.x; d.y=p.y; markDirty('photos'); pushPreview(); });
@@ -431,7 +432,8 @@ function mobileHeroHTML(d){
       <div class="row"><button class="btn btn--sm" onclick="openLib(p=>setHeroM('src',p))">ライブラリから選ぶ／アップロード</button>
       <label class="btn btn--ghost btn--sm">パソコンの写真で試す<input type="file" accept="image/*" hidden onchange="trialFile(this, p=>setHeroM('src',p))"></label></div>
       ${isTrial(m.src)?'<p class="help" style="color:var(--orange);font-weight:700">お試し表示中の写真です（公開されません）。</p>':''}
-      ${m.src ? zoomRow(m.zoom ?? 100, "setHeroM('zoom',+this.value,true)") : ''}`;
+      ${m.src ? zoomRow(m.zoom ?? 100, "setHeroM('zoom',+this.value,true)") : ''}
+      ${m.src ? `<div class="field"><label>スマホ用写真の撮影者（任意）</label><input type="text" value="${esc(m.credit||'')}" oninput="setHeroM('credit',this.value,true)" placeholder="名前だけ。例：山田 太郎"></div>` : ''}`;
   }
   return h + '</div>';
 }

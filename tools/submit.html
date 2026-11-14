@@ -312,6 +312,7 @@
         .cr-grid { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 6px 10px; align-items: center; }
         .cr-grid span { font-size: 11px; font-weight: 700; color: var(--fg-mute); }
         .cr-grid textarea { min-height: 52px; }
+        .pv-cr--top .ar-credit { margin: -14px 0 24px !important; text-align: right; }
         .pv-cr .ar-credit { display: block; margin-top: 40px; font-size: 11.5px; line-height: 1.9; color: var(--fg-mute); }
         .pv-cr .ar-credit span + span::before { content: "／"; margin: 0 .5em; opacity: .55; }
         .pv-cr .ar-credit__k { font: 600 10px monospace; letter-spacing: .14em; margin-right: 1.2em; }
@@ -931,10 +932,10 @@ function updatePreview() {
         </div>
         <h1 class="pv-title">${title}</h1>
         ${photos.cover ? `<div class="pv-cover"><img src="${photoSrc(photos.cover)}" alt="" style="object-position:${photos.cover.x}% ${photos.cover.y}%"></div>` : ''}
+        <div class="pv-cr${photos.cover ? ' pv-cr--top' : ''}">${creditBlock(readCredit(), !!photos.cover)}</div>
         ${subtitle ? `<p class="pv-subtitle">${subtitle}</p>` : ''}
         <p class="pv-author">By ${author}</p>
         <div class="pv-body">${bodyHTML || '<p class="pv-empty">本文を入力してください</p>'}</div>
-        <div class="pv-cr">${creditBlock(readCredit(), !!photos.cover)}</div>
     `;
 }
 
@@ -1105,7 +1106,7 @@ function licenseUrl(lic) {
     const m = s.match(/^CC\s+(BY(?:-(?:NC|SA|ND))*)(?:\s+(\d\.\d))?/i);
     return m ? `https://creativecommons.org/licenses/${m[1].toLowerCase()}/${m[2] || '4.0'}/deed.ja` : '';
 }
-function creditBlock(cr, src) {
+function creditBlock(cr, src, tag = 'aside') {
     if (!cr) return '';
     const link = (text, href) => href ? `<a href="${escHTML(href)}" target="_blank" rel="noopener noreferrer">${escHTML(text)}</a>` : escHTML(text);
     const items = CR_KEYS.map(([k, label]) => {
@@ -1117,7 +1118,7 @@ function creditBlock(cr, src) {
     }).join('');
     if (!items) return '';
     return `
-            <aside class="ar-credit" aria-label="写真のクレジット"><span class="ar-credit__k">${src ? 'COVER PHOTO' : 'PHOTO'}</span>${items}</aside>`;
+            <${tag} class="ar-credit" aria-label="写真のクレジット"><span class="ar-credit__k">${src ? 'COVER PHOTO' : 'PHOTO'}</span>${items}</${tag}>`;
 }
 function escHTML(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -1125,7 +1126,9 @@ function escHTML(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').re
 // ここでは「見出し・カバー写真・目次・本文」だけを書き出す（既存記事の変換スクリプトと同じ形）。
 function buildArticleHTML(data) {
     const { cat, title, subtitle, author, date, body, file, cover, credit } = data;
-    const creditHTML = creditBlock(credit, cover && cover.path);
+    // クレジットは写真の真下（カバー写真がないときだけ本文の最後）
+    const hasCover = !!(cover && cover.path);
+    const creditHTML = hasCover ? '' : creditBlock(credit, false);
     const catLabel = CAT_LABELS[cat] || cat;
     const dateJP   = fmtDate(date);
     const tocItems = [];
@@ -1134,7 +1137,7 @@ function buildArticleHTML(data) {
     const desc     = escHTML(subtitle || title);
     const ogImg    = cover && cover.path ? SITE + cover.path : SITE + 'fukuryu-logo.png';
     const coverHTML = cover && cover.path
-        ? `\n    <figure class="ar-cover"><div class="ar-cover__win"><img src="../${cover.path}" alt="" style="object-position:${cover.x ?? 50}% ${cover.y ?? 50}%"></div></figure>`
+        ? `\n    <figure class="ar-cover"><div class="ar-cover__win"><img src="../${cover.path}" alt="" style="object-position:${cover.x ?? 50}% ${cover.y ?? 50}%"></div>${creditBlock(credit, true, 'figcaption').replace(/\n\s*/, '')}</figure>`
         : '';
     const tocHTML = hasTOC
         ? '\n        <nav class="ar-toc" aria-label="目次">' + tocItems.map(i => `<a href="#${i.id}"${i.level === 3 ? ' class="sub"' : ''}>${escHTML(plainText(i.text))}</a>`).join('') + '</nav>'

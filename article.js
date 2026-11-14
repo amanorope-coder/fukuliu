@@ -114,6 +114,8 @@
         if (by && !by.dataset.done) { by.dataset.done = '1'; by.innerHTML = `<span>text</span>${esc(fmtName(by.textContent))}`; }
     }
     if ($('.ar-cover')) main.classList.add('has-cover');
+    const oldCredit = $('.ar-body > .ar-credit'), coverFig = $('.ar-cover');
+    if (oldCredit && coverFig && !$('.ar-credit', coverFig)) coverFig.appendChild(oldCredit);
 
     // カバー写真はふわっと
     const cover = $('.ar-cover img');

@@ -399,6 +399,16 @@ a:hover .md img { transform: scale(1.035); }
 .dig:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 /* 露頭（大きな写真）：飾らずに一枚 */
+/* 写真の撮影者（右下に小さく。どの写真の上でも読めるよう白文字＋薄い影） */
+.ph-credit { position: absolute; z-index: 4; right: 14px; bottom: 11px; max-width: 70%; text-align: right; pointer-events: none;
+    font: 500 10.5px/1.4 var(--sans); letter-spacing: .06em; color: rgba(255, 255, 255, .92); text-shadow: 0 0 6px rgba(0, 0, 0, .55), 0 0 2px rgba(0, 0, 0, .45); }
+.ph-credit b { font: 600 9.5px var(--mono); letter-spacing: .16em; margin-right: .7em; opacity: .85; }
+.hero > .ph-credit { right: var(--pad); bottom: 30px; }
+.hero > .ph-credit--m { display: none; }
+@media (orientation: portrait) {
+    .hero[data-mmode="photo"] > .ph-credit--pc { display: none; }
+    .hero[data-mmode="photo"] > .ph-credit--m { display: block; }
+}
 .outcrop { position: relative; margin: clamp(64px, 8vw, 110px) 0 0; }
 .outcrop[hidden] { display: none; }
 .outcrop__win { position: relative; height: var(--oh, clamp(280px, 40vw, 560px)); overflow: hidden; border-radius: 8px; background: #222; }
@@ -451,6 +461,7 @@ a:hover .md img { transform: scale(1.035); }
 .collab__media { display: none; position: relative; overflow: hidden; border-radius: 8px; aspect-ratio: 21 / 8; margin-bottom: clamp(32px, 4vw, 52px); }
 .collab.has-photo .collab__media { display: block; }
 .collab__media img { width: 100%; height: 100%; object-fit: cover; }
+.collab__media .ph-credit { z-index: 2; }
 .collab__media::after { content: ""; position: absolute; inset: 0; background: #2f241b; opacity: calc(var(--collab-tint, .7) * .5); }
 .collab__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(28px, 3.4vw, 44px); padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
 .collab h3, .cv__head h3 { margin: 0; font-size: clamp(22px, 2.4vw, 32px); font-weight: 900; letter-spacing: .12em; line-height: 1.3; }

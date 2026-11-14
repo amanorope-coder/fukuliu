@@ -330,6 +330,16 @@
     // ================================================================
     //  写真（site/photos.json）
     // ================================================================
+    // 写真の右下に小さく撮影者の名前（空なら出さない）
+    function photoCredit(box, text, cls) {
+        if (!box) return;
+        let el = box.querySelector(':scope > .ph-credit' + (cls ? '.' + cls : ''));
+        text = String(text || '').trim();
+        if (!text) { if (el) el.remove(); return; }
+        if (!el) { el = document.createElement('span'); el.className = 'ph-credit' + (cls ? ' ' + cls : ''); box.appendChild(el); }
+        el.innerHTML = `<b>PHOTO</b>${esc(text)}`;
+    }
+
     function applyPhotos(cfg) {
         cfg = cfg || {};
         const hero = $('[data-slot="hero"]');
@@ -358,6 +368,8 @@
             if (blur) { if (has && mode === 'fit') blur.src = h.src; else blur.removeAttribute('src'); }
             if (img) { img.style.objectPosition = ''; img.style.transformOrigin = ''; if (has) img.src = h.src; else img.removeAttribute('src'); }
             heroTransform();
+            photoCredit(hero, has ? h.credit : '', 'ph-credit--pc');
+            photoCredit(hero, has && mode === 'photo' ? m.credit : '', 'ph-credit--m');
             const hd = $('#hd');
             if (hd) hd.dataset.tone = hero.dataset.tone;
         }
@@ -369,6 +381,7 @@
             fig.dataset.size = b.size || 'm';
             if (b.src) { img.src = b.src; frame(img, b.x, b.y, b.zoom); }
             if (cap) { cap.textContent = b.caption || ''; cap.hidden = !b.caption; }
+            photoCredit(fig.querySelector('.outcrop__win'), b.src ? b.credit : '');
         });
         const collab = $('[data-slot="collab"]');
         if (collab) {
@@ -377,6 +390,7 @@
             collab.classList.toggle('has-photo', !!c.src);
             collab.style.setProperty('--collab-tint', ((c.tint != null ? c.tint : 70) / 100).toFixed(2));
             if (img) { if (c.src) { img.src = c.src; frame(img, c.x, c.y, c.zoom); } else img.removeAttribute('src'); }
+            photoCredit(collab.querySelector('.collab__media'), c.src ? c.credit : '');
         }
         afterRender();
     }
