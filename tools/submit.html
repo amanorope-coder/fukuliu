@@ -940,6 +940,37 @@ function updatePreview() {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  サイトマップ（sitemap.xml）：記事・ニュースを公開・削除するたびに作り直して Google に知らせる
+// ═══════════════════════════════════════════════════════════
+const SITE_ORIGIN = 'https://fukuryu.art/';
+function buildSitemap(articles, news) {
+    const iso = d => { const m = String(d || '').match(/(\d{4})\D?(\d{1,2})\D?(\d{1,2})/); return m ? `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}` : ''; };
+    const xmlEsc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const items = [...(articles || []), ...(news || [])].filter(a => a && a.url && !/^https?:/i.test(a.url));
+    const newest = items.map(a => iso(a.date)).filter(Boolean).sort().pop() || '';
+    const newestNews = (news || []).map(a => iso(a.date)).filter(Boolean).sort().pop() || '';
+    const rows = [['', newest], ['news/', newestNews], ['tokubetsu-kyoryoku.html', '']]
+        .concat(items.map(a => [String(a.url).replace(/^\/+/, ''), iso(a.date)]));
+    const seen = new Set();
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + rows.filter(([u]) => !seen.has(u) && seen.add(u))
+              .map(([u, d]) => `  <url><loc>${xmlEsc(SITE_ORIGIN + u)}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`).join('\n')
+        + '\n</urlset>\n';
+}
+// 片方の一覧は今書いたものを渡す（GitHub の反映待ちで古い一覧を読まないように）。失敗しても公開自体は止めない
+async function updateSitemap(token, fresh = {}) {
+    try {
+        const read = async p => { const f = await ghGet(p, token); return f ? JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g, ''))))) : []; };
+        const articles = fresh.articles || await read('articles/manifest.json');
+        const news = fresh.news || await read('news/manifest.json');
+        const xml = buildSitemap(articles, news);
+        const cur = await ghGet('sitemap.xml', token);
+        if (cur && decodeURIComponent(escape(atob(cur.content.replace(/\n/g, '')))) === xml) return;
+        await ghPut('sitemap.xml', token, 'サイトマップ更新', xml, cur?.sha);
+    } catch (e) { console.warn('sitemap', e); }
+}
+
+// ═══════════════════════════════════════════════════════════
 //  GitHub API ヘルパー
 // ═══════════════════════════════════════════════════════════
 async function ghGet(path, token) {
@@ -1251,6 +1282,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
             currentArr = [newEntry, ...currentArr];
         }
         await ghPut('articles/manifest.json', token, `マニフェスト更新: ${title}`, JSON.stringify(currentArr, null, 2), existing?.sha);
+        await updateSitemap(token, { articles: currentArr });
 
         const siteUrl = `https://amanorope-coder.github.io/fukuliu/${filepath}`;
         result.className = 'result result--success is-visible';
@@ -1432,6 +1464,7 @@ async function publishNews() {
         arr = editing ? arr.map(n => n.url === file ? entry : n) : [entry, ...arr];
         arr.sort((a, b) => String(b.date).localeCompare(String(a.date)));
         await ghPut('news/manifest.json', token, `ニュース一覧更新: ${d.title}`, JSON.stringify(arr, null, 2), man?.sha);
+        await updateSitemap(token, { news: arr });
         result.className = 'result result--success is-visible';
         result.innerHTML = `✓ <strong>「${escHTML(d.title)}」を${editing ? '更新' : '公開'}しました。</strong> 反映まで1〜2分。 <a href="${SITE}${file}" target="_blank">確認する →</a>`;
         newsPending.clear();
@@ -1506,6 +1539,7 @@ async function deleteNews(i) {
         const man = await ghGet('news/manifest.json', token);
         const arr = JSON.parse(decodeURIComponent(escape(atob(man.content.replace(/\n/g, ''))))).filter(x => x.url !== n.url);
         await ghPut('news/manifest.json', token, `ニュース一覧更新: ${n.title} を削除`, JSON.stringify(arr, null, 2), man.sha);
+        await updateSitemap(token, { news: arr });
         if (news.editing && news.editing.url === n.url) resetNews();
         loadNewsList();
     } catch (e) { alert(`削除に失敗しました: ${e.message}`); }
@@ -1571,6 +1605,7 @@ async function deleteArticle(index) {
         const currentArr = JSON.parse(decodeURIComponent(escape(atob(manifestFile.content.replace(/\n/g,'')))));
         const newArr = currentArr.filter(a => a.url !== entry.url);
         await ghPut('articles/manifest.json', token, `マニフェスト更新: ${entry.title} を削除`, JSON.stringify(newArr, null, 2), manifestFile.sha);
+        await updateSitemap(token, { articles: newArr });
 
         // 一覧をリロード
         await loadEditList();

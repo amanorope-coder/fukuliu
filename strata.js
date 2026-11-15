@@ -107,6 +107,7 @@
         const items = (Array.isArray(list) ? list : []).slice().sort((a, b) => dkey(b.date).localeCompare(dkey(a.date))).slice(0, 5);
         ol.innerHTML = items.length ? items.map((n, i) => `
             <li class="rv" style="--rd:${i * 0.05}s"><a class="nw" ${href(n.url)}>
+                <span class="nw__im${n.cover ? '' : ' nw__im--none'}" aria-hidden="true">${n.cover ? `<img src="${esc(n.cover)}" alt="" loading="lazy" style="object-position:${n.coverX ?? 50}% ${n.coverY ?? 50}%">` : '<i>NEWS</i>'}</span>
                 <time class="nw__d">${esc(n.date)}</time>
                 <span class="nw__c">${esc(NEWS_CATS[n.cat] || 'INFO')}</span>
                 <span class="nw__t">${esc(n.title)}${n.period ? `<small>${esc(n.period)}${n.venue ? '　' + esc(n.venue) : ''}</small>` : ''}</span>

@@ -206,6 +206,7 @@
     function newsRow(n, i) {
         const c = NEWS_CATS[n.cat] || NEWS_CATS.info;
         return `<li class="rv" style="--rd:${Math.min(i, 8) * 0.04}s"><a class="nw" href="${ROOT}${esc(n.url)}">
+            <span class="nw__im${n.cover ? '' : ' nw__im--none'}" aria-hidden="true">${n.cover ? `<img src="${ROOT}${esc(n.cover)}" alt="" loading="lazy" style="object-position:${n.coverX ?? 50}% ${n.coverY ?? 50}%">` : '<i>NEWS</i>'}</span>
             <time class="nw__d">${esc(n.date)}</time>
             <span class="nw__c">${esc(c[1])}</span>
             <span class="nw__t">${esc(n.title)}${n.period ? `<small>${esc(n.period)}${n.venue ? '　' + esc(n.venue) : ''}</small>` : ''}</span>
