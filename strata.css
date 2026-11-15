@@ -183,6 +183,12 @@ button { font-family: inherit; }
 .hero__land { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 46%; }
 .hero.has-photo .hero__land { display: none; }
 
+/* 読み込み中：写真と位置の設定（site/photos.json）が届くまで中身を隠す（初期配置のロゴが一瞬見えないように）。
+   スクリプトが動かなくても4秒後には必ず出す */
+.hero.is-loading > * { opacity: 0; animation: hero-failsafe 0s 4s forwards; }
+.hero.is-ready > * { animation: hero-in .7s var(--ease) both; }
+@keyframes hero-failsafe { to { opacity: 1; } }
+@keyframes hero-in { from { opacity: 0; } to { opacity: 1; } }
 /* ロゴと下の一行は同じ幅でそろえる（--logo-w がロゴ画像の幅） */
 .hero__copy { --logo-w: clamp(240px, 32vw, 500px); position: absolute; z-index: 3; left: var(--pad); bottom: clamp(100px, 17vh, 180px); width: var(--logo-w); }
 .hero[data-pos="center"] .hero__copy { left: 50%; top: 50%; bottom: auto; transform: translate(-50%, -56%); text-align: center; }

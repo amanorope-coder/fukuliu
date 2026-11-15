@@ -915,12 +915,25 @@
             renderArchive();
         });
 
+        // トップの写真：設定と文章を当てて、写真の読み込みが済んでから見せる（最大2.5秒待つ）
+        const heroEl = $('[data-slot="hero"]');
+        const showHero = () => { if (heroEl && heroEl.classList.contains('is-loading')) { heroEl.classList.remove('is-loading'); heroEl.classList.add('is-ready'); } };
         if (PREVIEW) {
+            showHero();
             window.parent && window.parent !== window && window.parent.postMessage({ type: 'fk-preview-ready' }, '*');
         } else {
-            json('site/photos.json', {}).then(applyPhotos);
+            setTimeout(showHero, 2500);
+            Promise.all([json('site/photos.json', {}), json('site/texts.json', {})]).then(([photos, texts]) => {
+                applyPhotos(photos);
+                applyTexts(texts);
+                const img = heroEl && heroEl.querySelector('.hero__img');
+                if (!img || !img.getAttribute('src') || (img.complete && img.naturalWidth)) return showHero();
+                (img.decode ? img.decode() : Promise.reject()).then(showHero, () => {
+                    img.addEventListener('load', showHero, { once: true });
+                    img.addEventListener('error', showHero, { once: true });
+                });
+            });
             json('site/cv.json', {}).then(applyCV);
-            json('site/texts.json', {}).then(applyTexts);
         }
         onScroll();
     }
