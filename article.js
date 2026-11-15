@@ -36,7 +36,7 @@
     const ON = KIND === 'news' || main.dataset.on === 'news' ? 'news/' : main.dataset.on === 'people' ? 'index.html#people' : 'index.html#article';
     document.body.insertAdjacentHTML('afterbegin', `
         <header class="hd" id="hd">
-            <a class="hd__logo hd__logo--top" href="${ROOT}index.html" aria-label="伏流 トップへ戻る">TOP</a>
+            <a class="hd__logo hd__logo--top" href="${ROOT}index.html" aria-label="伏流 ホームへ戻る">HOME</a>
             <nav class="hd__nav" aria-label="サイト内">${NAV.map(([h, n, d]) => `<a href="${ROOT}${h}"${h === ON ? ' class="is-on"' : ''}><b>${n}</b>${d ? `<small>${d}</small>` : ''}</a>`).join('')}</nav>
             <button class="hd__menu" id="menu-open" type="button" aria-expanded="false" aria-controls="menu"><i></i>潜る</button>
         </header>
