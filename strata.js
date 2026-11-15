@@ -253,13 +253,32 @@
     function renderCollabs() {
         const ul = $('#collab-list');
         if (!ul) return;
-        ul.innerHTML = state.collabs.length ? state.collabs.map((c, i) => `
-            <li class="pp rv" style="--rd:${(i % 6) * 0.05}s">
+        // トップには新しい3人だけ。残りの人は「ほかの◯人」のカード（ぼかした写真）から一覧ページへ
+        const PICK = 3;
+        const top = state.collabs.slice(0, PICK), rest = state.collabs.slice(PICK);
+        const card = (c, i) => `
+            <li class="pp rv" style="--rd:${i * 0.06}s">
                 <a href="tokubetsu-kyoryoku.html${c.id ? '#c-' + encodeURIComponent(c.id) : ''}">
-                    <span class="pp__img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(fmtName(c.name))}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : ''}</span>
+                    <span class="pp__img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(fmtName(c.name))}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : ''}${i === 0 ? '<i class="pp__new">NEW</i>' : ''}</span>
                     <b>${esc(fmtName(c.name))}</b>${c.role ? `<small>${esc(c.role)}</small>` : ''}
                 </a>
-            </li>`).join('') : '<li class="empty">準備中です。</li>';
+            </li>`;
+        const tiles = rest.slice(0, 4);
+        const more = rest.length ? `
+            <li class="pp pp--more rv" style="--rd:${PICK * 0.06}s">
+                <a href="tokubetsu-kyoryoku.html">
+                    <span class="pp__img pp-more" data-n="${Math.min(tiles.length, 4)}">
+                        <span class="pp-more__tiles" aria-hidden="true">${tiles.map(c => c.photo
+                            ? `<img src="${esc(c.photo)}" alt="" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">`
+                            : `<span>${esc((c.name || '?').charAt(0))}</span>`).join('')}</span>
+                        <span class="pp-more__num"><em>+${rest.length}</em><small>PEOPLE</small></span>
+                        <span class="pp-more__go">すべて見る →</span>
+                    </span>
+                    <b>ほかのコラボレーター</b>
+                    <small>${rest.slice(0, 3).map(c => esc(fmtName(c.name))).join('・')}${rest.length > 3 ? ' ほか' : ''}</small>
+                </a>
+            </li>` : '';
+        ul.innerHTML = state.collabs.length ? top.map(card).join('') + more : '<li class="empty">準備中です。</li>';
         afterRender();
     }
 
