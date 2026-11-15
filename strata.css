@@ -337,7 +337,7 @@ button { font-family: inherit; }
 .filters button.is-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 .cat { display: inline-block; font: 700 10px var(--sans); letter-spacing: .08em; padding: 2px 8px; color: #fff; background: var(--cc, #555); white-space: nowrap; }
-.cat--essay { --cc: #235BC8; } .cat--critique { --cc: #7b3fbf; } .cat--blog { --cc: #1a8a55; } .cat--art { --cc: #d9501c; } .cat--dialogue { --cc: #1a1a1a; }
+.cat--essay { --cc: #235BC8; } .cat--critique { --cc: #7b3fbf; } .cat--blog { --cc: #1a8a55; } .cat--art { --cc: #d9501c; } .cat--dialogue { --cc: #d81b72; }
 
 /* ── 写真（媒体） ── 写真は飾らず、角を少しだけ丸めた長方形で大きく */
 .md { position: relative; display: block; overflow: hidden; border-radius: 6px; background: #d8d0bd; aspect-ratio: var(--ar, 4 / 3); }
@@ -356,7 +356,7 @@ a:hover .md img { transform: scale(1.035); }
 .md--s.md--tp { padding: 10px; justify-content: center; align-items: center; }
 .md--s .tp__k { font-size: 9px; letter-spacing: .2em; }
 .md--s .tp__t, .md--s.md--tp::after, .md--s .tp__k span:last-child { display: none; }
-.tp--essay { --tp: #1f3a72; } .tp--critique { --tp: #3d2a63; } .tp--blog { --tp: #1e4634; } .tp--art { --tp: #74321a; } .tp--dialogue { --tp: #1b1a17; } .tp--review { --tp: #74321a; }
+.tp--essay { --tp: #1f3a72; } .tp--critique { --tp: #3d2a63; } .tp--blog { --tp: #1e4634; } .tp--art { --tp: #74321a; } .tp--dialogue { --tp: #5e1236; } .tp--review { --tp: #74321a; }
 .tp--radio { --tp: #23262b; } .tp--people { --tp: #4a3b2f; }
 
 /* ── 見出しまわり（種類・日付・題） ── */
@@ -365,6 +365,8 @@ a:hover .md img { transform: scale(1.035); }
 .mt__k::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--kc, var(--ink)); }
 .k--article { --kc: #b08a3e; } .k--radio { --kc: var(--water); } .k--people { --kc: #8a5a3c; }
 .mt__c { color: var(--cc, var(--mute)); font-family: var(--sans); font-weight: 700; letter-spacing: .1em; }
+/* 対談だけは色の帯で目立たせる */
+.mt__c.mt__c.cat--dialogue { background: var(--cc); color: #fff; padding: 2px 9px; border-radius: 2px; }
 .mt__c.cat--essay, .mt__c.cat--critique, .mt__c.cat--blog, .mt__c.cat--art, .mt__c.cat--dialogue { background: none; padding: 0; }
 .mc { display: block; text-decoration: none; min-width: 0; }
 .mc__t { margin: 8px 0 0; font-size: 17px; line-height: 1.55; font-weight: 700; letter-spacing: .02em; transition: color .2s; word-break: auto-phrase; }
