@@ -255,7 +255,7 @@
         if (!ul) return;
         ul.innerHTML = state.collabs.length ? state.collabs.map((c, i) => `
             <li class="pp rv" style="--rd:${(i % 6) * 0.05}s">
-                <a href="tokubetsu-kyoryoku.html">
+                <a href="tokubetsu-kyoryoku.html${c.id ? '#c-' + encodeURIComponent(c.id) : ''}">
                     <span class="pp__img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(fmtName(c.name))}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : ''}</span>
                     <b>${esc(fmtName(c.name))}</b>${c.role ? `<small>${esc(c.role)}</small>` : ''}
                 </a>

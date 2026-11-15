@@ -270,7 +270,7 @@
             if (cnt) cnt.innerHTML = list.length ? `<b>${list.length}</b> PEOPLE` : '';
             cgrid.innerHTML = list.length ? list.map((c, i) => {
                 const links = Object.keys(SNS).filter(k => c[k] && String(c[k]).trim());
-                return `<article class="cb rv" style="--rd:${(i % 2) * 0.08}s">
+                return `<article class="cb rv"${c.id ? ` id="c-${esc(c.id)}"` : ''} style="--rd:${(i % 2) * 0.08}s">
                     <div class="cb__img">${c.photo ? `<img src="${ROOT}${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" style="object-position:${pos(c.photoX, c.photoY)}">` : `<span>${esc((c.name || '?').charAt(0))}</span>`}${c.photo && c.photoCredit ? `<span class="ph-credit"><b>PHOTO</b>${esc(fmtName(c.photoCredit))}</span>` : ''}</div>
                     <div class="cb__body">
                         <p class="cb__no">No.${String(list.length - i).padStart(2, '0')}${c.role ? `<span>${esc(c.role)}</span>` : ''}</p>
@@ -282,7 +282,24 @@
                 </article>`;
             }).join('') : '<p class="nwl__empty">現在、登録されているご協力者はいません。</p>';
             reveal();
+            focusCollab(true);
         });
+        // トップで押した人（#c-<id>）を正面に。フォントの読み込みで位置がずれたら合わせ直す
+        function focusCollab(first) {
+            let id = '';
+            try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
+            const el = id && document.getElementById(id);
+            if (!el || !el.classList.contains('cb')) return;
+            $$('.cb.is-focus').forEach(x => x.classList.remove('is-focus'));
+            el.classList.add('is-in', 'is-focus');
+            const go = () => el.scrollIntoView({ block: 'start', behavior: 'instant' });
+            go();
+            if (first) {
+                requestAnimationFrame(go);
+                if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (window.scrollY > 0) go(); });
+            }
+        }
+        window.addEventListener('hashchange', () => focusCollab(false));
     }
 
     // ------------------------------------------------------------ フッター

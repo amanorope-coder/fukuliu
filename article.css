@@ -295,6 +295,9 @@ a:hover .md img { transform: scale(1.035); }
 .cb__links { margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .cb__links a { padding: 5px 13px; border: 1px solid var(--rule); border-radius: 999px; font: 600 11px var(--display); letter-spacing: .1em; text-decoration: none; transition: border-color .2s, color .2s; }
 .cb__links a:hover { border-color: var(--water); color: var(--water); }
+/* トップから押した人：名前の色を一瞬だけ変えて知らせる */
+.cb.is-focus .cb__name { animation: cb-focus 2.4s var(--ease) both; }
+@keyframes cb-focus { 0%, 40% { color: var(--water); } 100% { color: inherit; } }
 @media (max-width: 1000px) { .cb-grid { grid-template-columns: 1fr; } }
 @media (max-width: 520px) { .cb { grid-template-columns: 1fr; } .cb__img { max-width: 260px; } }
 
