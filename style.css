@@ -18,7 +18,7 @@
     --pad-x:     6vw;
 
     --serif:     "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-    --sans:      "Inter", "Zen Kaku Gothic New", "Noto Sans JP", "Helvetica Neue", "Hiragino Kaku Gothic ProN", sans-serif;
+    --sans:      "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
 
     --t:         cubic-bezier(.2,.7,.2,1);
 }
@@ -70,14 +70,14 @@ ul { list-style: none; padding: 0; margin: 0; }
     display: inline-flex;
     align-items: center;
     font-family: var(--sans);
-    font-weight: 900;
+    font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1;
 }
 .brand-mark__jp,
 .brand-mark__en {
     font-family: var(--sans);
-    font-weight: 900;
+    font-weight: 700;
 }
 
 /* ============================================================
@@ -323,7 +323,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     right: -2vw;
     top: 30px;
     font-family: var(--serif);
-    font-weight: 900;
+    font-weight: 700;
     font-size: clamp(180px, 30vw, 420px);
     color: var(--bg-soft);
     line-height: .8;
@@ -353,7 +353,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     font-size: clamp(64px, 12vw, 200px);
     line-height: .9;
     letter-spacing: -0.04em;
-    font-weight: 900;
+    font-weight: 700;
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -362,7 +362,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .hero__logo-jp,
 .hero__logo-en {
     font-family: var(--sans);
-    font-weight: 900;
+    font-weight: 700;
 }
 .hero__logo-en {
     margin-left: 0;
@@ -452,7 +452,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     margin: 0;
     font-family: var(--serif);
     font-size: clamp(20px, 2.5vw, 28px);
-    font-weight: 900;
+    font-weight: 700;
     color: #fff;
     letter-spacing: -0.01em;
 }
@@ -691,7 +691,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 .program__title {
     font-family: var(--serif);
-    font-weight: 900;
+    font-weight: 700;
     font-size: clamp(32px, 4.5vw, 56px);
     line-height: 1.2;
     margin: 0 0 18px;
@@ -753,7 +753,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     position: absolute;
     bottom: 16px; left: 20px;
     font-family: var(--serif);
-    font-weight: 900;
+    font-weight: 700;
     font-size: 84px;
     line-height: 1;
     color: rgba(255,255,255,.85);
@@ -1229,7 +1229,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .article-feature__title {
     font-family: var(--serif);
     font-size: clamp(26px, 3.5vw, 40px);
-    font-weight: 900;
+    font-weight: 700;
     line-height: 1.3;
     letter-spacing: -.02em;
     margin: 0 0 18px;
@@ -1300,7 +1300,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 
 .article-row__num {
     font-family: var(--serif);
-    font-weight: 900;
+    font-weight: 700;
     font-size: 28px;
     color: var(--fg-mute);
     letter-spacing: -0.02em;
@@ -1393,7 +1393,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .series-card--accent:hover { background: var(--fg); }
 .series-card__no {
     font-family: var(--serif);
-    font-weight: 900;
+    font-weight: 700;
     font-size: 14px;
     letter-spacing: 0.05em;
     margin-bottom: 28px;
@@ -1818,7 +1818,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     display: flex; align-items: center; justify-content: center;
 }
 .cv-card__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cv-card__initial { font-family: var(--serif); font-weight: 900; font-size: 120px; color: var(--line); }
+.cv-card__initial { font-family: var(--serif); font-weight: 700; font-size: 120px; color: var(--line); }
 .cv-card__body { padding-top: 28px; }
 .cv-card__role {
     display: inline-block;
@@ -1836,8 +1836,8 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 .cv-card__name-en {
     margin: 6px 0 0;
-    font-family: "Inter", sans-serif;
-    font-size: 11px; font-weight: 600;
+    font-family: "Jost", "Futura", sans-serif;
+    font-size: 11px; font-weight: 500;
     letter-spacing: .2em; text-transform: uppercase;
     color: var(--fg-mute);
 }
@@ -1873,7 +1873,7 @@ ul { list-style: none; padding: 0; margin: 0; }
     line-height: 1.7;
 }
 .cv-card__row dt {
-    font-family: "Inter", var(--sans);
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
     font-variant-numeric: tabular-nums;
     color: var(--fg-mute);
     font-size: 12px;
