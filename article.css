@@ -280,6 +280,8 @@ a:hover .md img { transform: scale(1.035); }
 .pg-head__crumb a { font: 600 12px var(--display); letter-spacing: .28em; text-decoration: none; }
 .pg-head__crumb a::before { content: "← "; }
 .pg-head__display { margin: 0; max-width: 100%; font: 600 clamp(34px, 10vw, 150px)/.88 var(--display); letter-spacing: .005em; text-transform: uppercase; }
+/* COLLABORATORS は長いので、画面の幅に収まる大きさにして中央にそろえる */
+.pg-head--people .pg-head__display { font-size: clamp(30px, 8.2vw, 118px); }
 .pg-head__name { margin: clamp(14px, 1.8vw, 20px) 0 0; font-size: clamp(14px, 1.25vw, 17px); font-weight: 700; letter-spacing: .14em; }
 .pg-head__desc { margin: 16px 0 0; max-width: 34em; font-size: 14px; line-height: 1.95; font-weight: 500; }
 .pg-head__count { margin: 14px 0 0; font: 500 11px var(--display); letter-spacing: .3em; }
