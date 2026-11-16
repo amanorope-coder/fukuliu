@@ -277,7 +277,7 @@
                         <p class="cb__no">No.${String(list.length - i).padStart(2, '0')}${c.role ? `<span>${esc(c.role)}</span>` : ''}</p>
                         <h2 class="cb__name">${esc(fmtName(c.name))}</h2>
                         ${c.bio ? `<p class="cb__bio">${esc(c.bio).replace(/\n/g, '<br>')}</p>` : ''}
-                        ${c.question || c.answer ? `<div class="cb__qa">${c.question ? `<p class="cb__q"><b>Q.</b>${esc(c.question)}</p>` : ''}${c.answer ? `<p class="cb__a">${esc(c.answer).replace(/\n/g, '<br>')}</p>` : ''}</div>` : ''}
+                        ${[[c.question, c.answer], [c.question2, c.answer2]].filter(([q, a]) => q || a).map(([q, a]) => `<div class="cb__qa">${q ? `<p class="cb__q"><b>Q.</b>${esc(q)}</p>` : ''}${a ? `<p class="cb__a">${esc(a).replace(/\n/g, '<br>')}</p>` : ''}</div>`).join('')}
                         ${links.length ? `<p class="cb__links">${links.map(k => `<a href="${esc(c[k])}" target="_blank" rel="noopener noreferrer">${SNS[k]} ↗</a>`).join('')}</p>` : ''}
                     </div>
                 </article>`;

@@ -232,6 +232,20 @@
                     <label>回答</label>
                     <textarea id="f-answer" placeholder="質問への回答を入力してください。" oninput="updatePreview()"></textarea>
                 </div>
+                <div class="form-grid--full" id="qa2-wrap" hidden>
+                    <div class="field">
+                        <label>質問 2</label>
+                        <input type="text" id="f-question2" placeholder="2つ目の質問" oninput="updatePreview()">
+                    </div>
+                    <div class="field">
+                        <label>回答 2</label>
+                        <textarea id="f-answer2" placeholder="2つ目の質問への回答" oninput="updatePreview()"></textarea>
+                    </div>
+                </div>
+                <div class="field form-grid--full">
+                    <button type="button" class="btn-sm btn-sm--ghost" id="qa2-add" onclick="toggleQA2(true)">＋ 2つ目の質問を追加</button>
+                    <button type="button" class="btn-sm btn-sm--ghost" id="qa2-remove" onclick="toggleQA2(false)" hidden>2つ目の質問を消す</button>
+                </div>
 
                 <!-- 写真 -->
                 <div class="field form-grid--full">
@@ -454,6 +468,8 @@ function updatePreview() {
     const bio      = document.getElementById('f-bio').value.trim();
     const question = document.getElementById('f-question').value.trim();
     const answer   = document.getElementById('f-answer').value.trim();
+    const question2 = document.getElementById('f-question2').value.trim();
+    const answer2   = document.getElementById('f-answer2').value.trim();
     const links = ['website','instagram','twitter','note','youtube','other']
         .filter(k => document.getElementById('f-'+k).value.trim());
 
@@ -481,6 +497,12 @@ function updatePreview() {
             ${answer   ? `<p class="preview-card__answer">${answer.slice(0,100)}${answer.length>100?'…':''}</p>` : ''}
            </div>`
         : '';
+    const qa2HTML = (question2 || answer2)
+        ? `<div class="preview-card__qa">
+            ${question2 ? `<p class="preview-card__question">Q. ${question2}</p>` : ''}
+            ${answer2   ? `<p class="preview-card__answer">${answer2.slice(0,100)}${answer2.length>100?'…':''}</p>` : ''}
+           </div>`
+        : '';
 
     document.getElementById('card-preview').innerHTML = `
         <div class="preview-card">
@@ -490,7 +512,7 @@ function updatePreview() {
                 ${role ? `<span class="preview-card__role">${role}</span>` : ''}
             </div>
             ${bioHTML}
-            ${qaHTML}
+            ${qaHTML}${qa2HTML}
             ${linksHTML}
         </div>`;
 }
@@ -582,6 +604,8 @@ async function saveCollaborator() {
             bio:       document.getElementById('f-bio').value.trim(),
             question:  document.getElementById('f-question').value.trim(),
             answer:    document.getElementById('f-answer').value.trim(),
+            question2: document.getElementById('f-question2').value.trim(),
+            answer2:   document.getElementById('f-answer2').value.trim(),
             photo:     photoPath || '',
             photoX:    _photoPos.x,
             photoY:    _photoPos.y,
@@ -628,13 +652,23 @@ async function saveCollaborator() {
 // ═══════════════════════════════════════════
 //  フォームリセット
 // ═══════════════════════════════════════════
+// 2つ目の質問の欄を出す・しまう（しまうときは中身も消す）
+function toggleQA2(on, silent) {
+    document.getElementById('qa2-wrap').hidden = !on;
+    document.getElementById('qa2-add').hidden = on;
+    document.getElementById('qa2-remove').hidden = !on;
+    if (!on) { document.getElementById('f-question2').value = ''; document.getElementById('f-answer2').value = ''; }
+    else if (!silent) document.getElementById('f-question2').focus();
+    if (!silent) updatePreview();
+}
 function resetForm() {
     _editingId = null; _editingPhotoPath = null; _photoPos = { x: 50, y: 50 };
     if (_pendingPhoto) { URL.revokeObjectURL(_pendingPhoto.objectUrl); _pendingPhoto = null; }
     document.getElementById('photo-pos-wrap').style.display = 'none';
-    ['name','role','bio','question','answer','photoCredit','website','instagram','twitter','note','youtube','other'].forEach(k => {
+    ['name','role','bio','question','answer','question2','answer2','photoCredit','website','instagram','twitter','note','youtube','other'].forEach(k => {
         document.getElementById('f-'+k).value = '';
     });
+    toggleQA2(false, true);
     document.getElementById('photo-preview').innerHTML = '<span style="line-height:1.4">写真なし</span>';
     document.getElementById('photo-status').textContent = 'JPG・PNG・HEIC対応。大きな画像は自動で圧縮されます。';
     document.getElementById('photo-status').style.color = '';
@@ -759,6 +793,9 @@ function loadForEdit(index) {
     document.getElementById('f-bio').value       = c.bio       || '';
     document.getElementById('f-question').value  = c.question  || '';
     document.getElementById('f-answer').value    = c.answer    || '';
+    document.getElementById('f-question2').value = c.question2 || '';
+    document.getElementById('f-answer2').value   = c.answer2   || '';
+    toggleQA2(!!(c.question2 || c.answer2), true);
     document.getElementById('f-photoCredit').value = c.photoCredit || '';
     document.getElementById('f-website').value   = c.website   || '';
     document.getElementById('f-instagram').value = c.instagram || '';
