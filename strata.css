@@ -22,19 +22,34 @@
     /* 層の色と模様 */
     --l-surface: #f2efe7;
     --l-article: #e4d9c0;
+    /* 砂層：暗い砂粒・明るい砂粒（石英）・横に伸びた葉理・太い層理・大きな色むら */
     --bg-article:
-        radial-gradient(circle, rgba(70, 52, 22, .04) .9px, transparent 1.3px) 0 0 / 9px 9px,
-        radial-gradient(circle, rgba(70, 52, 22, .02) .7px, transparent 1.1px) 4px 5px / 13px 11px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.376 0 0 0 0 0.282 0 0 0 0 0.149 4.2 0 0 0 -2.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 220px 220px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='19' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1.000 0 0 0 0 0.980 0 0 0 0 0.925 4.0 0 0 0 -2.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 200px 200px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='420'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0022 .045' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.518 0 0 0 0 0.408 0 0 0 0 0.235 0.6 0 0 0 -0.21'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.95'/%3E%3C/svg%3E") 0 0 / 900px 420px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='1100'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0006 .006' numOctaves='2' seed='17' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.471 0 0 0 0 0.361 0 0 0 0 0.196 0.6 0 0 0 -0.24'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 1400px 1100px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0012 .004' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.588 0 0 0 0 0.471 0 0 0 0 0.275 0.5 0 0 0 -0.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 1200px 800px,
+        linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.05) 100%),
         #e4d9c0;
     --l-radio: #b3b5aa;
+    /* シルト層：細かい粒と、はっきりした薄い葉理 */
     --bg-radio:
-        repeating-linear-gradient(180deg, transparent 0 9px, rgba(30, 34, 30, .025) 9px 10px),
-        repeating-linear-gradient(180deg, transparent 0 37px, rgba(30, 34, 30, .02) 37px 39px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.204 0 0 0 0 0.227 0 0 0 0 0.204 3.8 0 0 0 -2.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 180px 180px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='1' seed='29' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.922 0 0 0 0 0.933 0 0 0 0 0.894 3.6 0 0 0 -2.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 160px 160px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='360'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0018 .11' numOctaves='3' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.275 0 0 0 0 0.298 0 0 0 0 0.267 0.8 0 0 0 -0.28'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.95'/%3E%3C/svg%3E") 0 0 / 1000px 360px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='1100'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0006 .007' numOctaves='2' seed='27' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.227 0 0 0 0 0.251 0 0 0 0 0.220 0.6 0 0 0 -0.24'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 1400px 1100px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0010 .0035' numOctaves='2' seed='13' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.235 0 0 0 0 0.259 0 0 0 0 0.227 0.45 0 0 0 -0.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 1200px 900px,
+        linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.06) 100%),
         #b3b5aa;
     --l-people: #6b5644;
+    /* 泥層：まだらの粘土に小石・明るい粒 */
     --bg-people:
-        radial-gradient(ellipse 6px 4.5px at 50% 50%, transparent 62%, rgba(0, 0, 0, .04) 68% 92%, transparent 96%) 0 0 / 26px 21px,
-        radial-gradient(circle, rgba(255, 240, 220, .025) 1px, transparent 1.5px) 11px 9px / 15px 13px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' seed='31' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.941 0 0 0 0 0.871 0 0 0 0 0.769 3.6 0 0 0 -2.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 260px 260px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.5' numOctaves='3' seed='37' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.110 0 0 0 0 0.078 0 0 0 0 0.055 3.0 0 0 0 -1.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 240px 240px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .018' numOctaves='3' seed='41' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.157 0 0 0 0 0.110 0 0 0 0 0.078 0.8 0 0 0 -0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 800px 600px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='400'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0016 .05' numOctaves='2' seed='43' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.588 0 0 0 0 0.471 0 0 0 0 0.361 0.5 0 0 0 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E") 0 0 / 1000px 400px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='1100'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0006 .006' numOctaves='2' seed='47' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.118 0 0 0 0 0.086 0 0 0 0 0.063 0.6 0 0 0 -0.24'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 1400px 1100px,
+        linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.12) 100%),
         #6b5644;
     --l-bed: #15171b;
     --rule: rgba(27, 26, 23, .28);
@@ -280,7 +295,7 @@ button { font-family: inherit; }
 .spring em { position: absolute; left: 26px; top: -2px; white-space: nowrap; font: 700 11px var(--sans); font-style: normal; letter-spacing: .14em; color: var(--water); }
 
 /* ------------------------------------------------------------ 地表（最新） */
-.surface { position: relative; --bg: var(--l-surface); background: var(--l-surface); padding: clamp(110px, 11.7vw, 170px) 0 clamp(125px, 13vw, 195px); }
+.surface { position: relative; --bg: var(--l-surface); background: var(--l-surface); padding: clamp(84px, 9vw, 130px) 0 clamp(96px, 10vw, 150px); }
 .news { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(28px, 4.4vw, 72px); align-items: start; }
 .news__h { display: flex; justify-content: space-between; align-items: baseline; margin: 0; padding: 0 0 12px; border-bottom: 1px solid var(--rule); font: 700 13px var(--sans); letter-spacing: .12em; }
 .news__h span:last-child { font: 500 10px var(--mono); letter-spacing: .22em; color: var(--mute); }
@@ -315,30 +330,30 @@ button { font-family: inherit; }
 }
 
 /* トップの NEWS 欄：左に見出し、右に一覧 */
-.nb { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: start; margin-bottom: clamp(110px, 14vw, 190px); }
+.nb { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: start; margin-bottom: clamp(88px, 11vw, 150px); }
 .nb__head { position: sticky; top: 96px; }
-.nb__display { margin: 0; font: 500 13px/1.4 var(--display); letter-spacing: .3em; text-transform: uppercase; opacity: .7; }
-.nb__name { margin: 10px 0 0; font-size: clamp(26px, 3vw, 40px); font-weight: 700; letter-spacing: .1em; line-height: 1.35; }
+.nb__display { margin: 0; font: 600 clamp(52px, 6.4vw, 92px)/.86 var(--display); letter-spacing: .01em; }
+.nb__name { margin: 12px 0 0; font-size: 14px; font-weight: 700; letter-spacing: .14em; }
 .nb__all { display: inline-flex; margin-top: 22px; padding: 9px 20px; border: 1px solid var(--ink); border-radius: 999px; font: 600 11px var(--display); letter-spacing: .24em; text-decoration: none; transition: background .2s, color .2s; }
 .nb__all:hover { background: var(--ink); color: var(--paper); }
 @media (max-width: 900px) { .nb { grid-template-columns: 1fr; } .nb__head { position: static; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; } .nb__all { margin-top: 0; } }
 
 /* ------------------------------------------------------------ 名前のある層 */
-.stratum { position: relative; background: var(--bg); padding: clamp(110px, 11.7vw, 170px) 0 clamp(125px, 13vw, 195px); }
+.stratum { position: relative; background: var(--bg); padding: clamp(84px, 9vw, 130px) 0 clamp(96px, 10vw, 150px); }
 .stratum--article { --bg: var(--bg-article); }
 .stratum--radio { --bg: var(--bg-radio); }
 .stratum--people { --bg: var(--bg-people); color: #f4efe4; --rule: rgba(244, 239, 228, .35); --mute: #d6cbb8; }
 .stratum--people .mt__k, .stratum--people .mf__t { color: inherit; }
 
-/* 見出し：深度 → 小さな英字ラベル → 和文の見出し → 説明文 */
-.sh { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto clamp(56px, 7.5vw, 104px); padding-bottom: clamp(30px, 3.8vw, 46px); border-bottom: 1px solid var(--rule); }
+/* 見出し：大きな英字＋小さな日本語（雑誌の扉のように） */
+.sh { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto clamp(44px, 6vw, 84px); padding-bottom: clamp(24px, 3vw, 36px); border-bottom: 1px solid var(--rule); }
 .sh__depth { margin: 0 0 clamp(18px, 2.2vw, 26px); display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; font: 500 11px var(--mono); letter-spacing: .16em; }
 .sh__depth b { font-weight: 600; letter-spacing: .06em; }
 .sh__depth b::after { content: "／"; margin-left: 12px; font-weight: 400; opacity: .5; }
-.sh__display { margin: 0; font: 500 13px/1.4 var(--display); letter-spacing: .3em; text-transform: uppercase; opacity: .7; word-break: keep-all; }
-.sh__name { margin: clamp(10px, 1.2vw, 14px) 0 0; font-size: clamp(26px, 3vw, 40px); font-weight: 700; letter-spacing: .1em; line-height: 1.35; }
-.sh__en { margin: 10px 0 0; font: 500 10.5px var(--mono); letter-spacing: .2em; opacity: .65; }
-.sh__desc { margin: 22px auto 0; max-width: 34em; font-size: 14px; line-height: 1.95; font-weight: 500; }
+.sh__display { margin: 0; font: 600 clamp(60px, 10.5vw, 158px)/.86 var(--display); letter-spacing: .005em; text-transform: uppercase; word-break: keep-all; }
+.sh__name { margin: clamp(14px, 1.8vw, 20px) 0 0; font-size: clamp(14px, 1.25vw, 17px); font-weight: 700; letter-spacing: .14em; line-height: 1.5; }
+.sh__en { margin: 6px 0 0; font: 500 10.5px var(--mono); letter-spacing: .2em; opacity: .65; }
+.sh__desc { margin: 18px auto 0; max-width: 34em; font-size: 14px; line-height: 1.95; font-weight: 500; }
 .sh .radio-cta { margin-top: 22px; }
 
 .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: clamp(32px, 4vw, 52px); }
@@ -536,7 +551,7 @@ a:hover .md img { transform: scale(1.035); }
 .cv-empty { margin: 0; font-size: 14px; }
 
 /* ------------------------------------------------------------ 岩盤 */
-.bedrock { position: relative; --bg: var(--l-bed); background: var(--l-bed); color: #e9e5dc; padding-top: clamp(110px, 11.7vw, 170px); }
+.bedrock { position: relative; --bg: var(--l-bed); background: var(--l-bed); color: #e9e5dc; padding-top: clamp(84px, 9vw, 130px); }
 .bedrock .filters button:hover { background: rgba(233, 229, 220, .1); }
 .bedrock .filters button.is-on { background: #e9e5dc; color: #111; border-color: #e9e5dc; }
 .arch-status { margin: 0 0 12px; font: 500 11px var(--mono); color: #9c978c; letter-spacing: .08em; }
@@ -594,7 +609,7 @@ a:hover .md img { transform: scale(1.035); }
 /* ------------------------------------------------------------ RESPONSIVE */
 @media (max-width: 1000px) {
     .hero__copy { --logo-w: clamp(240px, 44vw, 440px); }
-    .stratum { padding: clamp(84px, 13vw, 130px) 0 clamp(98px, 14vw, 156px); }
+    .stratum { padding: clamp(64px, 10vw, 100px) 0 clamp(76px, 11vw, 120px); }
     .news { grid-template-columns: 1fr; }
     .mg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .gauge { top: auto; bottom: 14px; left: 14px; right: auto; transform: none; }
@@ -623,21 +638,19 @@ a:hover .md img { transform: scale(1.035); }
     .hd__logo img { height: 26px; }
     .hd__menu { padding: 6px 12px; font-size: 12px; }
     html { scroll-padding-top: 60px; }
-    .surface { padding: 84px 0 104px; }
-    .sh__display { font-size: 12px; }
-    .sh__name { font-size: 26px; }
+    .surface { padding: 64px 0 80px; }
+    .sh__display { font-size: clamp(48px, 15vw, 72px); }
     .sh__depth { font-size: 10px; gap: 8px; }
     .sh__desc { font-size: 13.5px; line-height: 1.9; }
     .filters { gap: 6px; }
     .filters button { padding: 6px 13px; font-size: 12px; }
-    .mg { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--rule); }
-    .mg .mc { display: grid; grid-template-columns: 38% minmax(0, 1fr); grid-template-rows: auto auto 1fr; column-gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
-    .mg .md { grid-row: 1 / span 3; --ar: 4 / 3; border-radius: 4px; }
+    .mg { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 14px; }
+    .mg .md { --ar: 4 / 3; border-radius: 4px; }
     .mg .md--tp { padding: 10px; justify-content: center; align-items: center; }
     .mg .md--tp .tp__t, .mg .md--tp::after, .mg .tp__k span:last-child { display: none; }
-    .mg .mt { margin-top: 0; }
-    .mg .mc__t { font-size: 15px; margin-top: 4px; }
-    .mg .mc__by { margin-top: 4px; }
+    .mg .mt { margin-top: 10px; font-size: 10.5px; gap: 2px 8px; flex-wrap: wrap; }
+    .mg .mc__t { font-size: 14.5px; line-height: 1.5; margin-top: 4px; }
+    .mg .mc__by { margin-top: 4px; font-size: 11px; }
     .mf__t { font-size: 24px; }
     .mc--lead .mc__t { font-size: 22px; }
     .news__list a { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; }
