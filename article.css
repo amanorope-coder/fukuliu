@@ -21,8 +21,8 @@
     --ease: cubic-bezier(.2, .7, .2, 1);
     --l-article: #e4d9c0;
     --bg-article:
-        radial-gradient(circle, rgba(70, 52, 22, .12) .9px, transparent 1.3px) 0 0 / 9px 9px,
-        radial-gradient(circle, rgba(70, 52, 22, .06) .7px, transparent 1.1px) 4px 5px / 13px 11px,
+        radial-gradient(circle, rgba(70, 52, 22, .04) .9px, transparent 1.3px) 0 0 / 9px 9px,
+        radial-gradient(circle, rgba(70, 52, 22, .02) .7px, transparent 1.1px) 4px 5px / 13px 11px,
         #e4d9c0;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -41,8 +41,10 @@ a { color: inherit; }
 /* ホーム以外のページ：ロゴの代わりに「HOME」（ホームへの戻り口） */
 .hd__logo--top { position: relative; z-index: 1; font: 600 22px/1 var(--display); letter-spacing: .14em; color: var(--ink); text-decoration: none; transition: color .2s; }
 .hd__logo--top:hover { color: var(--water); }
-.hd__ridge { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
-.hd__ridge path { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; }
+/* ヘッダー下の仕切り：まっすぐな 1px の線（稜線の SVG と切り抜きは使わない） */
+.hd__ridge { display: none; }
+.hd { clip-path: none !important; }
+.hd::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--ink); pointer-events: none; }
 .hd__nav { margin-left: auto; display: flex; gap: 2px; }
 .hd__nav a { display: flex; align-items: baseline; gap: 6px; padding: 8px 12px; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: .08em; }
 .hd__nav a::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--water); align-self: center; transform: scale(0); transition: transform .3s var(--ease); }
