@@ -408,6 +408,15 @@ a:hover .md img { transform: scale(1.035); }
 .cb__works { margin: 18px 0 0; }
 .cb__works-h { margin: 0 0 6px; font: 600 10.5px var(--mono); letter-spacing: .14em; color: var(--mute); }
 .cb__works ul { list-style: none; margin: 0; padding: 0; }
+/* 3つ以上：矢印のボタンにまとめ、押すとひらく */
+details.cb__works summary { display: inline-flex; align-items: center; gap: 10px; margin: 0; padding: 7px 12px 7px 14px; border: 1px solid var(--rule); border-radius: 999px; cursor: pointer; list-style: none; color: var(--ink); transition: border-color .2s, background .2s; }
+details.cb__works summary::-webkit-details-marker { display: none; }
+details.cb__works summary:hover { border-color: var(--ink); }
+details.cb__works summary b { font: 600 11px var(--mono); letter-spacing: .04em; color: var(--water); }
+details.cb__works summary i { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .25s; }
+details.cb__works[open] summary i { transform: translateY(2px) rotate(-135deg); }
+details.cb__works[open] summary { background: rgba(27, 26, 23, .05); }
+details.cb__works ul { margin-top: 8px; }
 .cb__works a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 7px 0; text-decoration: none; font-size: 13px; line-height: 1.55; }
 .cb__wk { font: 600 10px/1.6 var(--sans); letter-spacing: .08em; padding: 0 7px; border-radius: 2px; background: var(--ink); color: var(--paper); }
 .cb__wt { font-weight: 700; }

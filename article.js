@@ -391,8 +391,13 @@
             ];
             const worksHTML = c => {
                 const w = worksOf(c);
-                return w.length ? `<div class="cb__works"><p class="cb__works-h">関わったコンテンツ</p><ul>${w.map(x =>
-                    `<li><a href="${esc(x.u)}"${x.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}><span class="cb__wk">${x.k}</span><span class="cb__wt">${esc(x.t)}</span><span class="cb__wg" aria-hidden="true">${x.ext ? '↗' : '→'}</span></a></li>`).join('')}</ul></div>` : '';
+                if (!w.length) return '';
+                const ul = `<ul>${w.map(x =>
+                    `<li><a href="${esc(x.u)}"${x.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}><span class="cb__wk">${x.k}</span><span class="cb__wt">${esc(x.t)}</span><span class="cb__wg" aria-hidden="true">${x.ext ? '↗' : '→'}</span></a></li>`).join('')}</ul>`;
+                // 3つ以上は矢印の中にまとめ、押すと全部ひらく
+                return w.length >= 3
+                    ? `<details class="cb__works"><summary class="cb__works-h">関わったコンテンツ<b>${w.length}件</b><i aria-hidden="true"></i></summary>${ul}</details>`
+                    : `<div class="cb__works"><p class="cb__works-h">関わったコンテンツ</p>${ul}</div>`;
             };
             const cnt = $('#collab-count');
             if (cnt) cnt.innerHTML = list.length ? `<b>${list.length}</b> PEOPLE` : '';
