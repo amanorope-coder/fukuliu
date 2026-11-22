@@ -23,7 +23,8 @@
 
     const LAYER = {
         article: { name: '記事層', depth: '−8m' },
-        radio:   { name: '配信層', depth: '−20m' },
+        project: { name: '企画層', depth: '−20m' },
+        radio:   { name: '配信層', depth: '−27m' },
         people:  { name: '人物層', depth: '−34m' }
     };
 
@@ -68,13 +69,13 @@
     function imgTag(im) { return `<img src="${esc(im.src)}" alt="" loading="lazy" style="object-position:${pos(im.x, im.y)}">`; }
     function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
-    const state = { articles: [], collabs: [], filter: 'all', shown: 7, archFilter: 'all', archShown: 10, cols: 0 };
+    const state = { articles: [], collabs: [], projects: [], photos: {}, filter: 'all', shown: 7, archFilter: 'all', archShown: 10, cols: 0 };
 
     // ================================================================
     //  地表：最新
     // ================================================================
     // ── 雑誌風の部品 ──
-    const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', dialogue: 'DIALOGUE', review: 'REVIEW' };
+    const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', interview: 'INTERVIEW', dialogue: 'DIALOGUE', review: 'REVIEW' };
     // 写真があれば写真、なければ文字で組んだ表紙
     function media(im, tp, small) {
         const s = small ? ' md--s' : '';
@@ -82,7 +83,7 @@
         return `<span class="md md--tp ${tp.cls}${s}"><span class="tp__k"><span>${esc(tp.k)}</span><span>FUKURYU</span></span>${small ? '' : `<span class="tp__t">${esc(tp.t)}</span>`}</span>`;
     }
     function artItem(a) {
-        return { k: 'article', label: '記事', date: a.date, title: a.title, url: a.url, ex: a.excerpt, by: fmtName(a.author), cat: a.cat,
+        return { k: 'article', label: a.series ? '連載' : '記事', date: a.date, title: a.title, url: a.url, ex: a.excerpt, by: fmtName(a.author), cat: a.cat,
                  im: artImg(a), tp: { cls: 'tp--' + (a.cat || 'essay') + ' tp--q', k: CAT_EN[a.cat] || 'ARTICLE', t: (a.excerpt || a.title).replace(/…$/, '') } };
     }
     function streamItems() {
@@ -152,7 +153,7 @@
     function colCount() { return innerWidth >= 1000 ? 3 : innerWidth >= 640 ? 2 : 1; }
 
     function renderArticles() {
-        const all = state.articles;
+        const all = state.articles.filter(a => !a.series);
         const list = state.filter === 'all' ? all : all.filter(a => a.cat === state.filter);
 
         const fbox = $('#article-filters');
@@ -194,6 +195,42 @@
             more.hidden = left === 0;
             more.querySelector('small').textContent = `あと${left}件`;
         }
+        afterRender();
+    }
+
+    // ================================================================
+    //  企画層：projects/manifest.json の企画をカードで
+    //    type: "series" … 連載（articles/manifest.json の series が企画の id の記事）
+    //    type: "photos" … 写真の企画（projects/<id>/manifest.json の写真）
+    // ================================================================
+    function renderProjects() {
+        const box = $('#project-list');
+        if (!box) return;
+        const list = state.projects;
+        box.innerHTML = list.length ? list.map((p, i) => {
+            let media, count;
+            if (p.type === 'series') {
+                const eps = state.articles.filter(a => a.series === p.id);
+                const im = eps.map(artImg).find(Boolean);
+                media = im ? imgTag(im) : `<span class="pj__blank">${esc(p.en || p.title)}</span>`;
+                count = eps.length ? `全${eps.length}回` : '準備中';
+            } else {
+                const all = state.photos[p.id] || [];
+                const ph = all.slice(-6);
+                media = ph.length
+                    ? `<span class="pj__mosaic">${ph.map(x => `<img src="${esc(x.src)}" alt="" loading="lazy" style="object-position:${pos(x.x, x.y)}">`).join('')}${'<i></i>'.repeat(6 - ph.length)}</span>`
+                    : `<span class="pj__blank">${esc(p.en || p.title)}</span>`;
+                count = all.length ? `${all.length}枚` : '準備中';
+            }
+            const kind = p.type === 'series' ? 'SERIES' : p.type === 'photos' ? 'PHOTO' : 'PROJECT';
+            return `<a class="pj rv" ${href(p.url)} style="--rd:${(i % 2) * 0.08}s">
+                <span class="pj__media">${media}<span class="pj__kind">${kind}</span><span class="pj__count">${count}</span></span>
+                ${p.en ? `<span class="pj__en">${esc(p.en)}</span>` : ''}
+                <span class="pj__t">${esc(p.title)}</span>
+                ${p.desc ? `<span class="pj__x">${esc(p.desc)}</span>` : ''}
+                <span class="pj__go">VIEW →</span>
+            </a>`;
+        }).join('') : '<p class="empty">準備中です。</p>';
         afterRender();
     }
 
@@ -645,7 +682,8 @@
     const SEGS = [
         { id: 'top', name: '地上', d: 0 },
         { id: 'article', name: '記事層', d: 8 },
-        { id: 'radio', name: '配信層', d: 20 },
+        { id: 'project', name: '企画層', d: 20 },
+        { id: 'radio', name: '配信層', d: 27 },
         { id: 'people', name: '人物層', d: 34 },
         { id: 'bedrock', name: '古層', d: 50 }
     ];
@@ -916,6 +954,7 @@
         renderRadio();
         renderSurface();
         renderArticles();
+        renderProjects();
         renderCollabs();
         renderArchive();
         applyPhotos({});
@@ -931,8 +970,15 @@
                 .sort((a, b) => String(b.id).localeCompare(String(a.id)));
             renderSurface();
             renderArticles();
+            renderProjects();
             renderCollabs();
             renderArchive();
+        });
+        json('projects/manifest.json', []).then(list => {
+            state.projects = Array.isArray(list) ? list : [];
+            renderProjects();
+            state.projects.filter(p => p.type === 'photos').forEach(p =>
+                json(`projects/${p.id}/manifest.json`, []).then(ph => { state.photos[p.id] = Array.isArray(ph) ? ph : []; renderProjects(); }));
         });
 
         // トップの写真：設定と文章を当てて、写真の読み込みが済んでから見せる（最大2.5秒待つ）

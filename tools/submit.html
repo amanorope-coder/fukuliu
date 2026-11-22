@@ -139,7 +139,21 @@
         .pv-tag--critique { background: #7b3fbf; }
         .pv-tag--blog     { background: #1a9e5c; }
         .pv-tag--art      { background: var(--accent2); }
-        .pv-tag--dialogue { background: #1a1a1a; }
+        .pv-tag--interview { background: #d81b72; }
+        .pv-tag--dialogue { background: #3b3fb6; }
+        .cl-box { display: flex; flex-wrap: wrap; gap: 6px; }
+        .cl-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 7px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; cursor: pointer; background: #fff; }
+        .field .cl-chip input[type="checkbox"] { width: auto; height: auto; margin: 0; padding: 0; border: 0; flex: none; accent-color: var(--accent); }
+        .cl-chip:has(input:checked) { border-color: var(--accent); background: rgba(35, 91, 200, .08); color: var(--accent); font-weight: 700; }
+        .mp-pick { display: flex; gap: 16px; align-items: flex-start; }
+        .mp-box { flex: none; width: 150px; aspect-ratio: 1; display: grid; place-items: center; background: var(--bg-soft); border-radius: 3px; }
+        .mp-box__empty { font-size: 11px; color: var(--fg-mute); }
+        .mp-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+        .mp-list .edit-loading { grid-column: 1 / -1; }
+        .mp-item { position: relative; aspect-ratio: 1; overflow: hidden; cursor: pointer; background: var(--bg-soft); }
+        .mp-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .mp-item__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 6px; font-size: 10px; background: rgba(0, 0, 0, .55); color: #fff; }
+        .mp-item__del { position: absolute; top: 4px; right: 4px; padding: 2px 6px; font-size: 10px; border: 0; border-radius: 2px; background: rgba(255, 255, 255, .9); cursor: pointer; }
         .pv-date { font-size: 11px; letter-spacing: .1em; color: var(--fg-mute); }
         .pv-title { font-family: var(--serif); font-weight: 900; font-size: 28px; line-height: 1.3; letter-spacing: -.02em; margin-bottom: 14px; }
         .pv-subtitle { font-family: var(--serif); font-size: 16px; color: var(--fg-mute); line-height: 1.6; margin-bottom: 18px; }
@@ -337,6 +351,7 @@
     <button class="tab-btn is-active" data-tab="write" onclick="switchTab('write')">✏️ 新規投稿</button>
     <button class="tab-btn" data-tab="edit" onclick="switchTab('edit')">📝 記事を修正</button>
     <button class="tab-btn" data-tab="news" onclick="switchTab('news')">📢 ニュース</button>
+    <button class="tab-btn" data-tab="map" onclick="switchTab('map')">🗺 日常を地図</button>
     <a class="tab-btn" href="collaborator-maker.html">🤝 コラボレーター</a>
     <a class="tab-btn" href="site-editor.html">🖼 写真・CV・文章</a>
 </div>
@@ -367,6 +382,7 @@
                             <option value="critique">批評</option>
                             <option value="blog">ブログ</option>
                             <option value="art">美術</option>
+                            <option value="interview">インタビュー</option>
                             <option value="dialogue">対談</option>
                         </select>
                     </div>
@@ -387,6 +403,16 @@
                     <label>著者名</label>
                     <input type="text" id="f-author" placeholder="例：松森 ひろあき" oninput="updatePreview()">
                     <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">苗字と名前の間のスペースは自動で詰めます（例：天野 紘寿 → 天野紘寿）。英字の名前はそのままです。</p>
+                </div>
+                <div class="field">
+                    <label>連載（企画）</label>
+                    <div class="cat-wrap"><select id="f-series"><option value="">なし（ふつうの記事）</option></select></div>
+                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">連載を選ぶと、トップの「企画層」の連載ページに入ります（記事層の一覧には出ません）。回の番号は公開日の順に自動で付きます。</p>
+                </div>
+                <div class="field">
+                    <label>関わったコラボレーター（任意）</label>
+                    <div class="cl-box" id="f-collabs"><p style="font-size:11px;color:var(--fg-mute)">読み込み中…</p></div>
+                    <p style="font-size:11px;color:var(--fg-mute);margin:6px 0 0;">選んだ人は記事の下に「#名前」で出て、コラボレーターのページからこの記事に飛べます。著者名にコラボレーターの名前があれば、選ばなくても自動でつながります。</p>
                 </div>
                 <div class="field">
                     <label>概要文（一覧表示用）</label>
@@ -568,6 +594,41 @@ Enter → 改行
     </div>
 
     <!-- ════════ ニュースタブ ════════ -->
+    <!-- ════ 企画「日常を地図」：写真を足す ════ -->
+    <div id="tab-map" style="display:none">
+        <div class="nm">
+            <div class="nm__panel">
+                <h2 id="mp-heading">「日常を地図」に写真を足す</h2>
+                <p class="note">足した写真は、企画「日常を地図」のページに3列で並びます（新しい写真は最後＝右下に増えていきます）。日付とメモは写真の上には出ず、PCではマウスを乗せたとき、スマホではタップしたときだけ表示されます。</p>
+                <div class="field">
+                    <label>写真</label>
+                    <div class="mp-pick">
+                        <div class="mp-box" id="mp-box"><span class="mp-box__empty">写真なし</span></div>
+                        <div>
+                            <label class="pf__btn pf__btn--main">写真を選ぶ<input type="file" accept="image/*" hidden onchange="mpPick(this)"></label>
+                            <p class="pf__hint" style="margin-top:8px">正方形に切り取って並びます。写真をクリック／ドラッグすると、見せたい中心を決められます。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="nm__row">
+                    <div class="field"><label>日付</label><input type="date" id="mp-date"></div>
+                    <div class="field"><label>メモ（任意・短く）</label><input type="text" id="mp-memo" maxlength="80" placeholder="例：鴨川の夕方"></div>
+                </div>
+                <div class="nm__actions">
+                    <button class="btn-publish" id="mp-publish" onclick="publishMapPhoto()"><span class="spinner"></span><span>追加する</span></button>
+                    <button class="nm__reset" type="button" onclick="resetMap()">新しく足す</button>
+                </div>
+                <div class="result" id="mp-result" style="margin-top:14px"></div>
+            </div>
+            <div class="nm__side">
+                <div class="nm__panel">
+                    <h2>並んでいる写真</h2>
+                    <p class="note">ページと同じ順番です。写真を押すと日付・メモ・切り取りを直せます。</p>
+                    <div class="mp-list" id="mp-list"><p class="edit-loading">読み込み中…</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="tab-news" style="display:none">
         <div class="nm">
             <div class="nm__panel">
@@ -630,7 +691,7 @@ Enter → 改行
 // ═══════════════════════════════════════════════════════════
 const REPO   = 'amanorope-coder/fukuliu';
 const BRANCH = 'main';
-const CAT_LABELS = { essay: 'エッセイ', critique: '批評', blog: 'ブログ', art: '美術', dialogue: '対談' };
+const CAT_LABELS = { essay: 'エッセイ', critique: '批評', blog: 'ブログ', art: '美術', interview: 'インタビュー', dialogue: '対談' };
 const pendingImages = new Map(); // filename → { blob, objectUrl }
 
 // ═══════════════════════════════════════════════════════════
@@ -703,9 +764,11 @@ function switchTab(name) {
     document.getElementById('tab-write').style.display = name === 'write' ? '' : 'none';
     document.getElementById('tab-edit').style.display  = name === 'edit'  ? '' : 'none';
     document.getElementById('tab-news').style.display  = name === 'news'  ? '' : 'none';
+    document.getElementById('tab-map').style.display   = name === 'map'   ? '' : 'none';
     document.querySelectorAll('.tab-btn[data-tab]').forEach(b => b.classList.toggle('is-active', b.dataset.tab === name));
     if (name === 'edit') loadEditList();
     if (name === 'news') { loadNewsList(); nmPreview(); }
+    if (name === 'map') loadMapList();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -943,13 +1006,14 @@ function updatePreview() {
 //  サイトマップ（sitemap.xml）：記事・ニュースを公開・削除するたびに作り直して Google に知らせる
 // ═══════════════════════════════════════════════════════════
 const SITE_ORIGIN = 'https://fukuryu.art/';
-function buildSitemap(articles, news) {
+function buildSitemap(articles, news, projects) {
     const iso = d => { const m = String(d || '').match(/(\d{4})\D?(\d{1,2})\D?(\d{1,2})/); return m ? `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}` : ''; };
     const xmlEsc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const items = [...(articles || []), ...(news || [])].filter(a => a && a.url && !/^https?:/i.test(a.url));
     const newest = items.map(a => iso(a.date)).filter(Boolean).sort().pop() || '';
     const newestNews = (news || []).map(a => iso(a.date)).filter(Boolean).sort().pop() || '';
     const rows = [['', newest], ['news/', newestNews], ['tokubetsu-kyoryoku.html', '']]
+        .concat((projects || []).filter(p => p && p.url && !/^https?:/i.test(p.url)).map(p => [String(p.url).replace(/^\/+/, ''), '']))
         .concat(items.map(a => [String(a.url).replace(/^\/+/, ''), iso(a.date)]));
     const seen = new Set();
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -963,12 +1027,163 @@ async function updateSitemap(token, fresh = {}) {
         const read = async p => { const f = await ghGet(p, token); return f ? JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g, ''))))) : []; };
         const articles = fresh.articles || await read('articles/manifest.json');
         const news = fresh.news || await read('news/manifest.json');
-        const xml = buildSitemap(articles, news);
+        const projects = fresh.projects || await read('projects/manifest.json');
+        const xml = buildSitemap(articles, news, projects);
         const cur = await ghGet('sitemap.xml', token);
         if (cur && decodeURIComponent(escape(atob(cur.content.replace(/\n/g, '')))) === xml) return;
         await ghPut('sitemap.xml', token, 'サイトマップ更新', xml, cur?.sha);
     } catch (e) { console.warn('sitemap', e); }
 }
+
+// ═══════════════════════════════════════════════════════════
+//  企画「日常を地図」：projects/nichijo/manifest.json に { src, date, memo, x, y } を足していく（並びは足した順）
+// ═══════════════════════════════════════════════════════════
+const MAP_DIR = 'projects/nichijo';
+const mp = { blob: null, url: '', x: 50, y: 50, editing: -1, list: [] };
+function mpBox() {
+    const box = document.getElementById('mp-box');
+    const src = mp.url || (mp.editing >= 0 && mp.list[mp.editing] ? SITE + mp.list[mp.editing].src : '');
+    if (!src) { box.className = 'mp-box'; box.innerHTML = '<span class="mp-box__empty">写真なし</span>'; return; }
+    box.className = 'mp-box pf__box';
+    box.innerHTML = `<img src="${src}" alt="" style="object-position:${mp.x}% ${mp.y}%"><span class="pf__dot" style="left:${mp.x}%;top:${mp.y}%"></span>`;
+    if (!box._bound) {   // 中心を決める（ドラッグ）
+        box._bound = true;
+        let drag = false;
+        const move = e => {
+            const r = box.getBoundingClientRect();
+            mp.x = Math.round(Math.min(100, Math.max(0, (e.clientX - r.left) / r.width * 100)));
+            mp.y = Math.round(Math.min(100, Math.max(0, (e.clientY - r.top) / r.height * 100)));
+            const img = box.querySelector('img'), dot = box.querySelector('.pf__dot');
+            if (img) img.style.objectPosition = `${mp.x}% ${mp.y}%`;
+            if (dot) { dot.style.left = mp.x + '%'; dot.style.top = mp.y + '%'; }
+        };
+        box.addEventListener('pointerdown', e => { if (!box.querySelector('img')) return; drag = true; box.setPointerCapture(e.pointerId); move(e); });
+        box.addEventListener('pointermove', e => { if (drag) move(e); });
+        box.addEventListener('pointerup', () => drag = false);
+        box.addEventListener('pointercancel', () => drag = false);
+    }
+}
+async function mpPick(input) {
+    const file = input.files[0]; input.value = '';
+    if (!file) return;
+    try {
+        const blob = await compressImage(file, 2000, 0.85);
+        if (mp.url) URL.revokeObjectURL(mp.url);
+        mp.blob = blob; mp.url = URL.createObjectURL(blob); mp.x = 50; mp.y = 50;
+        mpBox();
+    } catch (e) { alert(e.message); }
+}
+function resetMap(keepResult) {
+    if (mp.url) URL.revokeObjectURL(mp.url);
+    Object.assign(mp, { blob: null, url: '', x: 50, y: 50, editing: -1 });
+    document.getElementById('mp-date').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('mp-memo').value = '';
+    document.getElementById('mp-heading').textContent = '「日常を地図」に写真を足す';
+    document.getElementById('mp-publish').querySelector('span:last-child').textContent = '追加する';
+    if (!keepResult) { const r = document.getElementById('mp-result'); r.className = 'result'; r.innerHTML = ''; }
+    mpBox();
+}
+async function readMap(token) {
+    const f = await ghGet(MAP_DIR + '/manifest.json', token);
+    return { arr: f ? JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g, ''))))) : [], sha: f?.sha };
+}
+async function loadMapList() {
+    const box = document.getElementById('mp-list');
+    try {
+        const token = getToken();
+        mp.list = token ? (await readMap(token)).arr : await fetch('../' + MAP_DIR + '/manifest.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []);
+        box.innerHTML = mp.list.length ? mp.list.map((p, i) => `
+            <div class="mp-item" onclick="editMapPhoto(${i})" title="${escHTML(p.memo || '')}">
+                <img src="${SITE}${escHTML(p.src)}" alt="" loading="lazy" style="object-position:${p.x ?? 50}% ${p.y ?? 50}%">
+                <span class="mp-item__cap">${escHTML(p.date || '')}</span>
+                <button class="mp-item__del" type="button" onclick="event.stopPropagation();deleteMapPhoto(${i})">削除</button>
+            </div>`).join('') : '<p class="edit-loading">まだ写真はありません。</p>';
+    } catch (e) { box.innerHTML = `<p class="edit-loading">読み込みに失敗しました: ${escHTML(e.message)}</p>`; }
+}
+function editMapPhoto(i) {
+    const p = mp.list[i];
+    if (!p) return;
+    if (!getToken()) { alert('直すには投稿キーが必要です。'); return; }
+    if (mp.url) URL.revokeObjectURL(mp.url);
+    Object.assign(mp, { blob: null, url: '', x: p.x ?? 50, y: p.y ?? 50, editing: i });
+    document.getElementById('mp-date').value = String(p.date || '').replace(/\./g, '-');
+    document.getElementById('mp-memo').value = p.memo || '';
+    document.getElementById('mp-heading').textContent = '写真を直す';
+    document.getElementById('mp-publish').querySelector('span:last-child').textContent = '直して保存';
+    mpBox();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+async function publishMapPhoto() {
+    const token = getToken();
+    if (!token) { alert('投稿キーを入力してください。'); return; }
+    const editing = mp.editing >= 0;
+    if (!editing && !mp.blob) { alert('写真を選んでください。'); return; }
+    const date = document.getElementById('mp-date').value;
+    const memo = document.getElementById('mp-memo').value.trim();
+    const btn = document.getElementById('mp-publish'), result = document.getElementById('mp-result');
+    btn.classList.add('is-loading'); btn.disabled = true;
+    try {
+        let src = editing ? mp.list[mp.editing].src : '';
+        if (mp.blob) {
+            src = `${MAP_DIR}/images/${Date.now()}.jpg`;
+            await ghPutBinary(src, token, `日常を地図：写真追加`, await blobToBase64(mp.blob));
+        }
+        const { arr, sha } = await readMap(token);
+        const entry = { src, date: fmtDate(date), memo, x: mp.x, y: mp.y };
+        if (editing) {
+            const at = arr.findIndex(p => p.src === mp.list[mp.editing].src);
+            if (at < 0) throw new Error('元の写真が見つかりませんでした。一覧を読み直してください。');
+            arr[at] = entry;
+        } else arr.push(entry);
+        await ghPut(MAP_DIR + '/manifest.json', token, `日常を地図：${editing ? '写真を修正' : '写真を追加'}`, JSON.stringify(arr, null, 2), sha);
+        result.className = 'result result--success is-visible';
+        result.innerHTML = `✓ <strong>${editing ? '直しました' : '追加しました'}。</strong> 反映まで1〜2分。 <a href="${SITE}projects/nichijo.html" target="_blank">ページを見る →</a>`;
+        resetMap(true);
+        loadMapList();
+    } catch (e) {
+        result.className = 'result result--error is-visible';
+        result.innerHTML = `✗ <strong>失敗しました。</strong> ${escHTML(e.message)}`;
+    } finally { btn.classList.remove('is-loading'); btn.disabled = false; }
+}
+async function deleteMapPhoto(i) {
+    const p = mp.list[i];
+    if (!p) return;
+    const token = getToken();
+    if (!token) { alert('削除するには投稿キーが必要です。'); return; }
+    if (!confirm(`この写真（${p.date || ''}）を「日常を地図」から削除しますか？`)) return;
+    try {
+        const { arr, sha } = await readMap(token);
+        await ghPut(MAP_DIR + '/manifest.json', token, '日常を地図：写真を削除', JSON.stringify(arr.filter(x => x.src !== p.src), null, 2), sha);
+        const f = await ghGet(p.src, token).catch(() => null);
+        if (f) await ghDelete(p.src, token, '日常を地図：写真ファイルを削除', f.sha).catch(() => {});
+        if (mp.editing === i) resetMap();
+        loadMapList();
+    } catch (e) { alert(`削除に失敗しました: ${e.message}`); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  記事の「連載」と「関わったコラボレーター」の選択肢（projects/manifest.json・collaborators/manifest.json）
+// ═══════════════════════════════════════════════════════════
+const meta = { series: [], collabs: [] };
+async function loadArticleMeta() {
+    const get = u => fetch('../' + u, { cache: 'no-cache' }).then(r => r.ok ? r.json() : []).catch(() => []);
+    const [pjs, cbs] = await Promise.all([get('projects/manifest.json'), get('collaborators/manifest.json')]);
+    meta.series = (Array.isArray(pjs) ? pjs : []).filter(p => p.type === 'series');
+    meta.collabs = Array.isArray(cbs) ? cbs : [];
+    const sel = document.getElementById('f-series'), keep = sel.value;
+    sel.innerHTML = '<option value="">なし（ふつうの記事）</option>' + meta.series.map(p => `<option value="${escHTML(p.id)}">${escHTML(p.title)}</option>`).join('');
+    sel.value = keep;
+    const box = document.getElementById('f-collabs'), on = readCollabs();
+    box.innerHTML = meta.collabs.length ? meta.collabs.map(c => `<label class="cl-chip"><input type="checkbox" value="${escHTML(c.id)}"${on.includes(c.id) ? ' checked' : ''}><span>${escHTML(c.name)}</span></label>`).join('') : '<p class="pf__hint">コラボレーターがまだいません。</p>';
+}
+function readCollabs() { return [...document.querySelectorAll('#f-collabs input:checked')].map(i => i.value); }
+function setCollabs(ids) { document.querySelectorAll('#f-collabs input').forEach(i => { i.checked = (ids || []).includes(i.value); }); }
+function setSeries(id) {
+    const sel = document.getElementById('f-series');
+    if (id && ![...sel.options].some(o => o.value === id)) sel.insertAdjacentHTML('beforeend', `<option value="${escHTML(id)}">${escHTML(id)}</option>`);
+    sel.value = id || '';
+}
+document.addEventListener('DOMContentLoaded', () => { loadArticleMeta(); resetMap(); });
 
 // ═══════════════════════════════════════════════════════════
 //  GitHub API ヘルパー
@@ -1152,7 +1367,7 @@ function escHTML(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').re
 // 記事ページの見た目は ../article.css と ../article.js が担当する。
 // ここでは「見出し・カバー写真・目次・本文」だけを書き出す（既存記事の変換スクリプトと同じ形）。
 function buildArticleHTML(data) {
-    const { cat, title, subtitle, author, date, body, file, cover, credit } = data;
+    const { cat, title, subtitle, author, date, body, file, cover, credit, series } = data;
     // クレジットは写真の真下（カバー写真がないときだけ本文の最後）
     const hasCover = !!(cover && cover.path);
     const creditHTML = hasCover ? '' : creditBlock(credit, false);
@@ -1193,7 +1408,7 @@ function buildArticleHTML(data) {
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');<\/script>
 </head>
 <body class="ar-page">
-<main class="ar" data-cat="${cat}">
+<main class="ar" data-cat="${cat}"${series ? ` data-series="${escHTML(series)}"` : ''}>
     <header class="ar-head">
         <div class="ar-head__in">
             <p class="ar-meta"><span class="cat cat--${cat}">${catLabel}</span><time>${dateJP}</time></p>
@@ -1228,6 +1443,8 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
     const excerpt  = document.getElementById('f-excerpt').value.trim();
     const body     = document.getElementById('f-body').value.trim();
     const credit   = readCredit();
+    const series   = document.getElementById('f-series').value;
+    const collabs  = readCollabs();
 
     if (!title)  { alert('タイトルを入力してください。'); return; }
     if (!author) { alert('著者名を入力してください。'); return; }
@@ -1256,7 +1473,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
         }
 
         // 記事HTMLを生成してコミット
-        const articleHTML = buildArticleHTML({ cat, title, subtitle, author, date, body, file: filepath, cover: photos.cover, credit });
+        const articleHTML = buildArticleHTML({ cat, title, subtitle, author, date, body, file: filepath, cover: photos.cover, credit, series });
         await ghPut(filepath, token, `${isEdit?'記事更新':'記事追加'}: ${title}`, articleHTML, fileSha);
 
         // manifest.json を更新
@@ -1273,6 +1490,8 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
         };
         if (photos.cover) Object.assign(newEntry, { cover: photos.cover.path, coverX: photos.cover.x, coverY: photos.cover.y });
         if (credit) newEntry.coverCredit = credit;
+        if (series) newEntry.series = series;
+        if (collabs.length) newEntry.collabs = collabs;
         if (!photos.thumbSame && photos.thumb) Object.assign(newEntry, { thumb: photos.thumb.path, thumbX: photos.thumb.x, thumbY: photos.thumb.y });
 
         if (isEdit) {
@@ -1298,6 +1517,7 @@ async function publishArticle(existingPath, existingFileSha, existingManifestEnt
             // 新規の場合はフォームリセット
             ['f-title','f-subtitle','f-author','f-excerpt','f-body'].forEach(id => document.getElementById(id).value='');
             fillCredit(null);
+            setSeries(''); setCollabs([]);
             photos.cover = null; photos.thumb = null; photos.thumbSame = true;
             document.getElementById('thumb-same').checked = true;
             renderPhotoFields();
@@ -1561,7 +1781,7 @@ async function loadEditList() {
         const arr = JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,'')))));
         if (!arr.length) { wrap.innerHTML = '<p class="edit-loading">まだ投稿された記事がありません。</p>'; return; }
 
-        const colors = { essay: 'var(--accent)', critique: '#7b3fbf', blog: '#1a9e5c', art: 'var(--accent2)', dialogue: '#1a1a1a' };
+        const colors = { essay: 'var(--accent)', critique: '#7b3fbf', blog: '#1a9e5c', art: 'var(--accent2)', interview: '#d81b72', dialogue: '#3b3fb6' };
         wrap.innerHTML = `<div class="article-list-edit">` +
             arr.map((a,i) => `
                 <div class="article-item" onclick="loadForEdit(${i})">
@@ -1638,6 +1858,8 @@ async function loadForEdit(index) {
     document.getElementById('f-author').value = entry.author || '';
     document.getElementById('f-excerpt').value = entry.excerpt || '';
     fillCredit(entry.coverCredit);
+    setSeries(entry.series || '');
+    setCollabs(entry.collabs || []);
     document.getElementById('f-body').value   = entry._body  || '（本文データなし。直接GitHubで編集してください）';
     photos.cover = entry.cover ? { path: entry.cover, x: entry.coverX ?? 50, y: entry.coverY ?? 50 } : null;
     photos.thumb = entry.thumb ? { path: entry.thumb, x: entry.thumbX ?? 50, y: entry.thumbY ?? 50 } : null;

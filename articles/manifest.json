@@ -10,10 +10,11 @@
     "_subtitle": "サラリーマン佐藤の土日",
     "cover": "articles/images/1795283794862-cover.jpg",
     "coverX": 49,
-    "coverY": 84
+    "coverY": 84,
+    "series": "sato"
   },
   {
-    "cat": "dialogue",
+    "cat": "interview",
     "date": "2026.11.15",
     "title": "吉田泰星インタビュー",
     "excerpt": "建築によって人との関係性やイベントなど、さまざまな文脈がどのように絡み合っていくのか。それを形として表現しているのかな",
@@ -36,7 +37,8 @@
     "_subtitle": "関東サラリーマン、文章を書く",
     "cover": "articles/images/1794649585252-cover.jpg",
     "coverX": 54,
-    "coverY": 100
+    "coverY": 100,
+    "series": "sato"
   },
   {
     "cat": "art",

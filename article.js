@@ -14,8 +14,8 @@
     const NS = 'http://www.w3.org/2000/svg';
     const ROOT = document.body.dataset.root != null ? document.body.dataset.root : '../';
     const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const CATS = { essay: 'エッセイ', critique: '批評', blog: 'ブログ', art: '美術', dialogue: '対談', review: '展示レビュー' };
-    const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', dialogue: 'DIALOGUE', review: 'REVIEW' };
+    const CATS = { essay: 'エッセイ', critique: '批評', blog: 'ブログ', art: '美術', interview: 'インタビュー', dialogue: '対談', review: '展示レビュー' };
+    const CAT_EN = { essay: 'ESSAY', critique: 'CRITIQUE', blog: 'BLOG', art: 'ART', interview: 'INTERVIEW', dialogue: 'DIALOGUE', review: 'REVIEW' };
     const NEWS_CATS = { exhibition: ['展示', 'EXHIBITION'], event: ['イベント', 'EVENT'], media: ['メディア掲載', 'MEDIA'], radio: ['配信', 'RADIO'], info: ['お知らせ', 'INFO'] };
     // 人の名前：日本語の苗字と名前は詰める（「天野 紘寿」→「天野紘寿」）。英字の名前は半角スペース1つのまま
     function fmtName(s) {
@@ -30,10 +30,35 @@
     const KIND = main.dataset.kind || 'article';
     const ID = location.pathname.replace(/.*\//, '').replace('.html', '') || 'article';
     const getJSON = u => fetch(ROOT + u, { cache: 'no-cache' }).then(r => r.ok ? r.json() : []).catch(() => []);
+    // ------------------------------------------------------------ 人と作品のつながり（ハッシュタグ・コラボレーターの「関わったコンテンツ」）
+    //   記事・企画の collabs（コラボレーターの id）に加えて、著者名・ゲスト名にその人の名前があれば自動でつなぐ
+    const squash = s => fmtName(s).replace(/\s+/g, '');
+    function namedIn(text, c) { const n = squash(c && c.name); return n.length >= 2 && squash(text).includes(n); }
+    function peopleOf(entry, collabs, extraText) {
+        const ids = new Set((entry && entry.collabs) || []);
+        collabs.forEach(c => { if (namedIn(((entry && entry.author) || '') + ' ' + (extraText || ''), c)) ids.add(c.id); });
+        return collabs.filter(c => ids.has(c.id));
+    }
+    function tagsHTML(people) {
+        if (!people.length) return '';
+        return `<div class="ar-tags"><span class="ar-tags__k">PEOPLE</span>${people.map(c =>
+            `<a href="${ROOT}tokubetsu-kyoryoku.html#c-${encodeURIComponent(c.id)}">#${esc(fmtName(c.name))}</a>`).join('')}</div>`;
+    }
+    // 配信のエピソードは index.html の radioEpisodes 配列にあるので、そこから読む
+    function radioEpisodes() {
+        return fetch(ROOT + 'index.html', { cache: 'no-cache' }).then(r => r.ok ? r.text() : '').then(t => {
+            const m = t.match(/const radioEpisodes = (\[[\s\S]*?\n\s*\]);/);
+            try { return m ? (new Function('return ' + m[1]))() : []; } catch (e) { return []; }
+        }).catch(() => []);
+    }
+    const stripTags = s => String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    const spotifyUrl = v => /^https?:\/\//.test(v || '') ? String(v).trim() : (v ? `https://open.spotify.com/episode/${String(v).split('?')[0]}` : '');
+    const SERIES = main.dataset.series || '';
+
 
     // ------------------------------------------------------------ ヘッダー・メニュー
-    const NAV = [['news/', 'NEWS', ''], ['index.html#article', '記事', '−8m'], ['index.html#radio', '配信', '−20m'], ['index.html#people', '人物', '−34m'], ['index.html#bedrock', '古層', '−50m']];
-    const ON = KIND === 'news' || main.dataset.on === 'news' ? 'news/' : main.dataset.on === 'people' ? 'index.html#people' : 'index.html#article';
+    const NAV = [['news/', 'NEWS', ''], ['index.html#article', '記事', '−8m'], ['index.html#project', '企画', '−20m'], ['index.html#radio', '配信', '−27m'], ['index.html#people', '人物', '−34m'], ['index.html#bedrock', '古層', '−50m']];
+    const ON = KIND === 'news' || main.dataset.on === 'news' ? 'news/' : main.dataset.on === 'people' ? 'index.html#people' : (main.dataset.on === 'project' || SERIES) ? 'index.html#project' : 'index.html#article';
     document.body.insertAdjacentHTML('afterbegin', `
         <header class="hd" id="hd">
             <a class="hd__logo hd__logo--top" href="${ROOT}index.html" aria-label="伏流 ホームへ戻る">HOME</a>
@@ -44,7 +69,7 @@
             <div class="menu__top"><img src="${ROOT}fukuryu-logo.png" alt="伏流"><button class="menu__close" id="menu-close" type="button">閉じる</button></div>
             <nav class="menu__col"><a href="${ROOT}index.html">地上<small>GL ±0.0m</small></a>${NAV.map(([h, n, d]) => `<a href="${ROOT}${h}">${n}<small>${d}</small></a>`).join('')}</nav>
         </div>
-        ${KIND === 'article' ? '<div class="ar-progress" aria-hidden="true"><i><span id="ar-depth">−8.0m</span></i></div><div class="ar-mprog" aria-hidden="true"></div>' : ''}`);
+        ${KIND === 'article' ? `<div class="ar-progress" aria-hidden="true"><i><span id="ar-depth">${SERIES ? '−20.0m' : '−8.0m'}</span></i></div><div class="ar-mprog" aria-hidden="true"></div>` : ''}`);
     const menu = $('#menu'), open = $('#menu-open');
     const setMenu = on => { menu.classList.toggle('is-open', on); menu.setAttribute('aria-hidden', String(!on)); open.setAttribute('aria-expanded', String(on)); document.body.style.overflow = on ? 'hidden' : ''; };
     open.addEventListener('click', () => setMenu(true));
@@ -96,11 +121,13 @@
             const nc = NEWS_CATS[cat] || NEWS_CATS.info;
             mainBox.insertAdjacentHTML('afterbegin', isNews
                 ? `<p class="ar-crumb"><a href="${ROOT}news/">NEWS</a><span>${esc(nc[0])}</span></p>`
+                : SERIES
+                ? `<p class="ar-crumb"><a href="${ROOT}projects/${esc(SERIES)}.html" id="ar-series-link">SERIES</a><span>企画層 −20m</span></p>`
                 : `<p class="ar-crumb"><a href="${ROOT}index.html#article">ARTICLE</a><span>記事層 −8m</span></p>`);
             inner.insertAdjacentHTML('afterbegin', `
-                <div class="ar-badge ${isNews ? 'ar-badge--news' : 'cat--' + esc(cat)}" aria-hidden="true">
-                    <span class="ar-badge__en">${isNews ? 'NEWS' : esc(CAT_EN[cat] || 'ARTICLE')}</span>
-                    <span class="ar-badge__jp">${esc(isNews ? nc[0] : (CATS[cat] || '記事'))}</span>
+                <div class="ar-badge ${isNews ? 'ar-badge--news' : SERIES ? 'ar-badge--series' : 'cat--' + esc(cat)}" aria-hidden="true">
+                    <span class="ar-badge__en">${isNews ? 'NEWS' : SERIES ? 'SERIES' : esc(CAT_EN[cat] || 'ARTICLE')}</span>
+                    <span class="ar-badge__jp" id="ar-badge-jp">${esc(isNews ? nc[0] : SERIES ? '連載' : (CATS[cat] || '記事'))}</span>
                     <span class="ar-badge__core"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="cw"></i><i class="c4"></i><i class="c5"></i></span>
                     <time class="ar-badge__date">${esc(date)}</time>
                 </div>`);
@@ -110,6 +137,7 @@
         if (by && !by.dataset.done) { by.dataset.done = '1'; by.innerHTML = `<span>text</span>${esc(fmtName(by.textContent))}`; }
     }
     if ($('.ar-cover')) main.classList.add('has-cover');
+    if (SERIES) main.classList.add('ar--series');
     const oldCredit = $('.ar-body > .ar-credit'), coverFig = $('.ar-cover');
     if (oldCredit && coverFig && !$('.ar-credit', coverFig)) coverFig.appendChild(oldCredit);
 
@@ -122,7 +150,7 @@
     const title = ($('.ar-title') || {}).textContent || document.title;
     if (body && KIND !== 'page') {
         const url = location.href.split('#')[0];
-        const back = KIND === 'news' ? `<a class="ar-back" href="${ROOT}news/">ニュース一覧へ →</a>` : `<a class="ar-back" href="${ROOT}index.html#article">記事層に戻る ↑</a>`;
+        const back = KIND === 'news' ? `<a class="ar-back" href="${ROOT}news/">ニュース一覧へ →</a>` : SERIES ? `<a class="ar-back" href="${ROOT}projects/${esc(SERIES)}.html">連載の一覧へ →</a>` : `<a class="ar-back" href="${ROOT}index.html#article">記事層に戻る ↑</a>`;
         body.insertAdjacentHTML('beforeend', `
             <div class="ar-after">
                 <span class="ar-after__label">SHARE</span>
@@ -218,10 +246,36 @@
     // ------------------------------------------------------------ ほかの記事／ほかのニュース
     if (KIND === 'article') {
         main.insertAdjacentHTML('beforeend', `<section class="ar-more" id="ar-more" hidden><div class="ar-more__in">
-            <div class="ar-more__head"><h2><span>MORE ARTICLES</span>記事層の、ほかの記事</h2><a href="${ROOT}index.html#article">すべて見る →</a></div>
+            <div class="ar-more__head">${SERIES
+                ? `<h2><span>SERIES</span><b id="ar-more-series">この連載</b>のほかの回</h2><a href="${ROOT}projects/${esc(SERIES)}.html">連載の一覧へ →</a>`
+                : `<h2><span>MORE ARTICLES</span>記事層の、ほかの記事</h2><a href="${ROOT}index.html#article">すべて見る →</a>`}</div>
             <div class="ar-more__grid" id="ar-more-grid"></div></div></section>`);
-        getJSON('articles/manifest.json').then(list => {
-            const others = (Array.isArray(list) ? list : []).filter(a => a.url && a.url !== 'articles/' + ID + '.html').sort(byDate).slice(0, 3);
+        const SELF = 'articles/' + ID + '.html';
+        Promise.all([getJSON('articles/manifest.json'), getJSON('collaborators/manifest.json'), SERIES ? getJSON('projects/manifest.json') : []]).then(([list, collabs, projects]) => {
+            list = Array.isArray(list) ? list : [];
+            const me = list.find(a => a.url === SELF);
+            // 関わったコラボレーター（#名前 → コラボレーターのページのその人）
+            const tags = tagsHTML(peopleOf(me, Array.isArray(collabs) ? collabs : []));
+            const after = $('.ar-body .ar-after');
+            if (tags && after && !$('.ar-tags', body)) after.insertAdjacentHTML('beforebegin', tags);
+            let others;
+            if (SERIES) {
+                const pj = (Array.isArray(projects) ? projects : []).find(p => p.id === SERIES);
+                const name = pj ? pj.title : '連載';
+                const eps = list.filter(a => a.series === SERIES).sort((a, b) => -byDate(a, b));   // 古い順＝第1回から
+                const n = eps.findIndex(a => a.url === SELF);
+                const link = $('#ar-series-link'); if (link) link.textContent = pj ? (pj.en || pj.title) : 'SERIES';
+                const jp = $('#ar-badge-jp'); if (jp && n >= 0) jp.textContent = `${name} 第${n + 1}回`;
+                const mh = $('#ar-more-series'); if (mh) mh.textContent = name;
+                const prev = eps[n - 1], next = eps[n + 1];
+                if (after && (prev || next)) after.insertAdjacentHTML('afterend', `<nav class="ar-snav" aria-label="連載の前後の回">
+                    ${prev ? `<a class="ar-snav__prev" href="${ROOT}${esc(prev.url)}"><small>← 前の回　第${n}回</small>${esc(prev.title)}</a>` : '<span></span>'}
+                    ${next ? `<a class="ar-snav__next" href="${ROOT}${esc(next.url)}"><small>次の回　第${n + 2}回 →</small>${esc(next.title)}</a>` : '<span></span>'}
+                </nav>`);
+                others = eps.filter(a => a.url !== SELF).reverse().slice(0, 3);
+            } else {
+                others = list.filter(a => a.url && a.url !== SELF && !a.series).sort(byDate).slice(0, 3);
+            }
             if (!others.length) return;
             $('#ar-more-grid').innerHTML = others.map(articleCard).join('');
             $('#ar-more').hidden = false;
@@ -261,12 +315,85 @@
         getJSON('news/manifest.json').then(list => { all = (Array.isArray(list) ? list : []).slice().sort(byDate); draw(); });
     }
 
+    // ------------------------------------------------------------ 企画：連載の一覧（#series-list）
+    const slist = $('#series-list');
+    if (slist) {
+        const sid = slist.dataset.series;
+        getJSON('articles/manifest.json').then(list => {
+            const eps = (Array.isArray(list) ? list : []).filter(a => a.series === sid).sort((a, b) => -byDate(a, b));   // 古い順
+            const cnt = $('#series-count');
+            if (cnt) cnt.innerHTML = eps.length ? `全 <b>${eps.length}</b> 回` : '';
+            slist.innerHTML = eps.length ? eps.map((a, i) => {
+                const img = a.thumb || a.cover, x = a.thumb ? a.thumbX : a.coverX, y = a.thumb ? a.thumbY : a.coverY;
+                return `<li class="sr rv" style="--rd:${Math.min(i, 4) * 0.06}s"><a href="${ROOT}${esc(a.url)}">
+                    <span class="sr__no"><small>第</small>${String(i + 1).padStart(2, '0')}<small>回</small></span>
+                    <span class="sr__img">${img ? `<img src="${ROOT}${esc(img)}" alt="" loading="lazy" style="object-position:${pos(x, y)}">` : `<span class="sr__blank">SERIES</span>`}</span>
+                    <span class="sr__txt">
+                        <span class="mt"><span class="mt__c cat--${esc(a.cat)}">${esc(CATS[a.cat] || '記事')}</span><time>${esc(a.date)}</time></span>
+                        <span class="sr__t">${esc(a.title)}</span>
+                        ${a.excerpt ? `<span class="sr__x">${esc(a.excerpt)}</span>` : ''}
+                        ${a.author ? `<span class="sr__by">${esc(fmtName(a.author))}</span>` : ''}
+                    </span>
+                </a></li>`;
+            }).reverse().join('') : '<li class="nwl__empty">まだ公開された回はありません。</li>';   // 新しい回が上
+            reveal();
+        });
+    }
+
+    // ------------------------------------------------------------ 企画：日常を地図（#photo-map）。3列。日付とメモは、PCはマウスを乗せたとき・スマホはタップしたときだけ
+    const pmap = $('#photo-map');
+    if (pmap) {
+        getJSON('projects/nichijo/manifest.json').then(list => {
+            list = Array.isArray(list) ? list : [];
+            const cnt = $('#photo-count');
+            if (cnt) cnt.innerHTML = list.length ? `<b>${list.length}</b> PHOTOS` : '';
+            pmap.innerHTML = list.length ? list.map((p, i) => `
+                <figure class="pm rv" tabindex="0" style="--rd:${(i % 3) * 0.05}s">
+                    <img src="${ROOT}${esc(p.src)}" alt="${esc(p.memo || '')}" loading="lazy" style="object-position:${pos(p.x, p.y)}">
+                    ${p.date || p.memo ? `<figcaption class="pm__cap">${p.date ? `<time>${esc(p.date)}</time>` : ''}${p.memo ? `<span>${esc(p.memo).replace(/\n/g, '<br>')}</span>` : ''}</figcaption>` : ''}
+                </figure>`).join('') : '<p class="nwl__empty">まだ写真はありません。</p>';
+            reveal();
+        });
+        // スマホ：タップで開く（もう一度タップ、または別の写真で閉じる）
+        pmap.addEventListener('click', e => {
+            const f = e.target.closest('.pm');
+            if (!f) return;
+            const on = !f.classList.contains('is-open');
+            $$('.pm.is-open', pmap).forEach(x => x.classList.remove('is-open'));
+            f.classList.toggle('is-open', on);
+        });
+    }
+
+    // ------------------------------------------------------------ 企画：関わった人（#project-tags）
+    const ptags = $('#project-tags');
+    if (ptags) {
+        const pid = ptags.dataset.project;
+        Promise.all([getJSON('projects/manifest.json'), getJSON('collaborators/manifest.json'), getJSON('articles/manifest.json')]).then(([pjs, collabs, arts]) => {
+            const pj = (Array.isArray(pjs) ? pjs : []).find(p => p.id === pid);
+            const authors = (Array.isArray(arts) ? arts : []).filter(a => a.series === pid).map(a => a.author).join(' ');
+            ptags.innerHTML = tagsHTML(peopleOf(pj || {}, Array.isArray(collabs) ? collabs : [], authors));
+        });
+    }
+
     // ------------------------------------------------------------ 一覧ページ：コラボレーター
     const cgrid = $('#collab-grid');
     if (cgrid) {
         const SNS = { website: 'Website', instagram: 'Instagram', twitter: 'X', note: 'note', youtube: 'YouTube', other: 'Link' };
-        getJSON('collaborators/manifest.json').then(list => {
+        Promise.all([getJSON('collaborators/manifest.json'), getJSON('articles/manifest.json'), getJSON('projects/manifest.json'), radioEpisodes()]).then(([list, arts, pjs, eps]) => {
             list = Array.isArray(list) ? list : [];
+            arts = (Array.isArray(arts) ? arts : []).slice().sort(byDate);
+            pjs = Array.isArray(pjs) ? pjs : [];
+            eps = Array.isArray(eps) ? eps : [];
+            const worksOf = c => [
+                ...pjs.filter(p => (p.collabs || []).includes(c.id)).map(p => ({ k: '企画', t: p.title, u: ROOT + p.url })),
+                ...arts.filter(a => (a.collabs || []).includes(c.id) || namedIn(a.author, c)).map(a => ({ k: a.series ? '連載' : '記事', t: a.title, u: ROOT + a.url })),
+                ...eps.filter(e => (e.collabs || []).includes(c.id) || namedIn(e.guest, c)).map(e => ({ k: '出演', t: `${e.ep || ''} ${stripTags(e.title)}`.trim(), u: spotifyUrl(e.id), ext: true })),
+            ];
+            const worksHTML = c => {
+                const w = worksOf(c);
+                return w.length ? `<div class="cb__works"><p class="cb__works-h">関わったコンテンツ</p><ul>${w.map(x =>
+                    `<li><a href="${esc(x.u)}"${x.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}><span class="cb__wk">${x.k}</span><span class="cb__wt">${esc(x.t)}</span><span class="cb__wg" aria-hidden="true">${x.ext ? '↗' : '→'}</span></a></li>`).join('')}</ul></div>` : '';
+            };
             const cnt = $('#collab-count');
             if (cnt) cnt.innerHTML = list.length ? `<b>${list.length}</b> PEOPLE` : '';
             cgrid.innerHTML = list.length ? list.map((c, i) => {
@@ -279,6 +406,7 @@
                         ${c.bio ? `<p class="cb__bio">${esc(c.bio).replace(/\n/g, '<br>')}</p>` : ''}
                         ${[[c.question, c.answer], [c.question2, c.answer2]].filter(([q, a]) => q || a).map(([q, a]) => `<div class="cb__qa">${q ? `<p class="cb__q"><b>Q.</b>${esc(q)}</p>` : ''}${a ? `<p class="cb__a">${esc(a).replace(/\n/g, '<br>')}</p>` : ''}</div>`).join('')}
                         ${links.length ? `<p class="cb__links">${links.map(k => `<a href="${esc(c[k])}" target="_blank" rel="noopener noreferrer">${SNS[k]} ↗</a>`).join('')}</p>` : ''}
+                        ${worksHTML(c)}
                     </div>
                 </article>`;
             }).join('') : '<p class="nwl__empty">現在、登録されているご協力者はいません。</p>';
@@ -311,6 +439,7 @@
                 <li><a href="${ROOT}index.html">トップ</a></li>
                 <li><a href="${ROOT}news/">NEWS</a></li>
                 <li><a href="${ROOT}index.html#article">記事</a></li>
+                <li><a href="${ROOT}index.html#project">企画</a></li>
                 <li><a href="${ROOT}index.html#radio">配信</a></li>
                 <li><a href="${ROOT}tokubetsu-kyoryoku.html">コラボレーター</a></li>
                 <li><a href="https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap" target="_blank" rel="noopener noreferrer">Spotify</a></li>
@@ -334,7 +463,7 @@
                 bar.style.setProperty('--p', (p * 100).toFixed(1) + '%');
                 bar.style.opacity = r.bottom < innerHeight * 0.45 ? 0 : 1;
                 mbar.style.setProperty('--p', (p * 100).toFixed(1) + '%');
-                depthEl.textContent = `−${(8 + p * 12).toFixed(1)}m`;
+                depthEl.textContent = SERIES ? `−${(20 + p * 7).toFixed(1)}m` : `−${(8 + p * 12).toFixed(1)}m`;
             }
             if (toc.length) {
                 let active = null;

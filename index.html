@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Jost:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="strata.css?v=28">
+    <link rel="stylesheet" href="strata.css?v=30">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
@@ -32,7 +32,8 @@
             <a href="#news" data-layer="news"><b>NEWS</b></a>
             <a href="#top" data-layer="top"><b>地上</b><small>±0</small></a>
             <a href="#article" data-layer="article"><b>記事</b><small>−8m</small></a>
-            <a href="#radio" data-layer="radio"><b>配信</b><small>−20m</small></a>
+            <a href="#project" data-layer="project"><b>企画</b><small>−20m</small></a>
+            <a href="#radio" data-layer="radio"><b>配信</b><small>−27m</small></a>
             <a href="#people" data-layer="people"><b>人物</b><small>−34m</small></a>
             <a href="#bedrock" data-layer="bedrock"><b>古層</b><small>−50m</small></a>
         </nav>
@@ -49,7 +50,8 @@
             <a href="#top" class="m-top">地上<small>GL ±0.0m</small></a>
             <a href="#news" class="m-top">NEWS<small>お知らせ</small></a>
             <a href="#article" class="m-article">記事層<small>−8.0m</small></a>
-            <a href="#radio" class="m-radio">配信層<small>−20.0m</small></a>
+            <a href="#project" class="m-project">企画層<small>−20.0m</small></a>
+            <a href="#radio" class="m-radio">配信層<small>−27.0m</small></a>
             <a href="#people" class="m-people">人物層<small>−34.0m</small></a>
             <a href="#bedrock" class="m-bedrock">古層<small>−50.0m</small></a>
         </nav>
@@ -145,15 +147,36 @@
 
 
         <div class="seam" aria-hidden="true">
-            <i class="p-dash" style="--c:#c8b998;--h:27px"></i>
+            <i class="p-fine" style="--c:#dacdaf;--h:19px"></i>
+            <i class="p-dash" style="--c:#cdbd99;--h:26px"></i>
+        </div>
+
+        <!-- ================= 企画層 ================= -->
+        <!-- ★ 企画の一覧は projects/manifest.json。各企画のページは projects/ の中（連載は記事メーカーの「連載」、写真は「🗺 日常を地図」タブから） ★ -->
+        <section class="stratum stratum--project" id="project" data-layer="project" data-depth="20">
+            <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −20.0m　企画層 上面</span></div>
+            <div class="wrap">
+                <header class="sh">
+                    <p class="sh__display" data-text="project.display" data-label="大きな英字の見出し">PROJECT</p>
+                    <h2 class="sh__name" data-text="project.name" data-label="層の名前（英字の下の日本語）">企画層</h2>
+                    <p class="sh__en" data-text="project.en" data-label="英字の小見出し">PROJECT STRATUM</p>
+                    <p class="sh__desc" data-text="project.desc" data-label="説明文">連載や写真の企画など、ひとつのテーマで少しずつ積み重ねていくもの。</p>
+                </header>
+                <div class="pj-grid" id="project-list"></div>
+            </div>
+        </section>
+
+
+        <div class="seam" aria-hidden="true">
+            <i class="p-peb" style="--c:#b8a684;--h:22px"></i>
             <i class="p-fine" style="--c:#a7a291;--h:18px"></i>
-            <i class="p-lines" style="--c:#bebaa9;--h:36px"></i>
+            <i class="p-lines" style="--c:#bebaa9;--h:34px"></i>
         </div>
 
         <!-- ================= 配信層 ================= -->
         <!-- ★ エピソードの追加・編集はこのファイル末尾の radioEpisodes 配列 ★ -->
-        <section class="stratum stratum--radio" id="radio" data-layer="radio" data-depth="20">
-            <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −20.0m　配信層 上面</span></div>
+        <section class="stratum stratum--radio" id="radio" data-layer="radio" data-depth="27">
+            <div class="contact"><i class="contact__fill"></i><span class="contact__label">GL −27.0m　配信層 上面</span></div>
             <div class="wrap">
                 <header class="sh">
                     <p class="sh__display" data-text="radio.display" data-label="大きな英字の見出し">RADIO</p>
@@ -256,6 +279,7 @@
                         <li><a href="news/">NEWS</a></li>
                         <li><a href="#top">地上</a></li>
                         <li><a href="#article">記事層</a></li>
+                        <li><a href="#project">企画層</a></li>
                         <li><a href="#radio">配信層</a></li>
                         <li><a href="#people">人物層</a></li>
                         <li><a href="#bedrock">古層（アーカイブ）</a></li>
@@ -290,7 +314,7 @@
         //  記事 — 固定記事（ふだんは tools/submit.html から公開するので空でOK）
         //  ------------------------------------------------------------
         //  manifest.json に載らない記事を出したいときだけ、ここに足す。
-        //    cat     : 'essay' | 'critique' | 'blog' | 'art' | 'dialogue'
+        //    cat     : 'essay' | 'critique' | 'blog' | 'art' | 'interview' | 'dialogue'
         //    date    : 公開日 (例: '2026.04.25')
         //    title / excerpt / author / url
         // ============================================================
@@ -301,6 +325,7 @@
             critique: { label: '批評' },
             blog:     { label: 'ブログ' },
             art:      { label: '美術' },
+            interview: { label: 'インタビュー' },
             dialogue: { label: '対談' }
         };
 
@@ -315,6 +340,7 @@
         //    title   : タイトル（改行は<br>OK）
         //    guest / excerpt : 任意
         //    cover   : カバー画像のファイル名（任意）
+        //    collabs : 出演したコラボレーターの id（collaborators/manifest.json）。コラボレーターのページに「出演」として載る
         // ============================================================
         const RADIO_SHOW_URL = 'https://open.spotify.com/show/6TLeThJuz0o47VzxMjzZap?si=1fe3026650de4eb9';
 
@@ -322,6 +348,7 @@
              {
                 id: 'https://open.spotify.com/episode/4S951Zuj510O05K6zOuOcq?si=feqUKwM_Qc-FLxjsS84amQ',
                 ep: 'EP.06',
+                collabs: ['1779349263337-wzneq'],
                 date: '2026.05.14',
                 title: '「読解！難解！石山寺縁起絵巻！」<br>──絵と文字に宿る物語性',
                 guest: '白　植寛（京都大学大学院 文学研究科博士後期課程/音韻学）',
@@ -331,6 +358,7 @@
             {
                 id: 'https://open.spotify.com/episode/5Up5gCMdyZd8pAlVJwZp0b?si=0mOrFDpUSmmzT4FYBK6DOQ',
                 ep: 'EP.05',
+                collabs: ['1779349171537-iv355'],
                 date: '2026.04.21',
                 title: '「鑑賞授業！慧可断臂図」<br>──画聖の“異色作”を見る',
                 guest: '山手 亮弥（立命館大学／東アジア研究領域）',
@@ -340,6 +368,7 @@
             {
                 id: 'https://open.spotify.com/episode/5eAHVrzbppPVt2rHq9RIrX?si=68e8a4f0a0d443f3b8c9c9e7a1c8e5',
                 ep: 'EP.03',
+                collabs: ['1779349490067-ijgvv'],
                 date: '2026.04.15',
                 title: '「日本画の“東西”」',
                 guest: '山本 涼太（京都市立芸術大学／日本画）',
@@ -349,6 +378,7 @@
             {
                 id: 'https://open.spotify.com/episode/2hONcXrarRBerwlEhtnokU?si=wRyA1AKQSoWc64u-iUltyg',
                 ep: 'EP.02',
+                collabs: ['1794696673106-000jw'],
                 date: '2026.03.23',
                 title: '「病と画家」',
                 guest: '久保ゆうき(京都市立芸術大学/ゴッホ研究)',
@@ -361,6 +391,7 @@
              {
                 id: 'https://open.spotify.com/episode/0cpjwPqMcWbJw0HzVDZr6f?si=PxBa5EjHSwq8DUnQaYrCbA',
                 ep: 'EP.01',
+                collabs: ['1779349005390-1eled'],
                 date: '2026.03.24',
                 title: '「関西ニューウェーブ」',
                 guest: 'オオノ(京都市立芸術大学/彫刻)',
@@ -372,6 +403,6 @@
             
         ];
     </script>
-    <script src="strata.js?v=28"></script>
+    <script src="strata.js?v=30"></script>
 </body>
 </html>

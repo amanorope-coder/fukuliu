@@ -322,3 +322,12 @@ Supabase（無料tier）を使って全ユーザーが同じカウントを見�
 - トップの「最新」は記事と配信だけ（人物は載せない）
 - スクロールに合わせて描く水脈は `strata.js` の `VEIN = false` で停止中（true で復活）
 
+
+## 13. 企画層・連載・日常を地図・人と作品のつながり（2026-11 追加）
+
+- トップは 地上 → 記事層（−8m）→ **企画層（−20m）** → 配信層（−27m）→ 人物層（−34m）→ 古層（−50m）。企画層の背景は礫層（`--bg-project`）
+- 企画の一覧は `projects/manifest.json`（`id` / `type`: `series`＝連載・`photos`＝写真 / `title` / `en` / `desc` / `url` / `collabs`）。各企画のページは `projects/<id>.html`
+- 連載（例：`projects/sato.html`）：記事メーカーの「連載」で選んだ記事（manifest の `series` が企画の id）が入る。記事層の一覧には出さず、最新・古層には出す。記事HTMLの `<main data-series="…">` で見出しが「SERIES 第N回」・前後の回・ほかの回の表示になる。回の番号は公開日の順
+- 日常を地図（`projects/nichijo.html`）：写真は `projects/nichijo/manifest.json`（`src` / `date` / `memo` / `x` / `y`、並びは足した順）と `projects/nichijo/images/`。記事メーカーの「🗺 日常を地図」タブで追加・修正・削除。いつも3列、日付とメモはPCはホバー・スマホはタップで表示
+- 記事のカテゴリに `interview`（インタビュー、マゼンタの帯）を追加。`dialogue`（対談）は藍の帯
+- 人と作品のつながり：記事の `collabs`（コラボレーターの id、記事メーカーで選ぶ）＋著者名に名前がある人 → 記事の下に「#名前」。コラボレーターのページには、その人の「関わったコンテンツ」（企画・記事・連載・配信の出演）が並ぶ。配信は `index.html` の `radioEpisodes` の `collabs`（またはゲスト名）でつながる

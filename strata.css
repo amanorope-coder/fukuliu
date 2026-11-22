@@ -31,6 +31,16 @@
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0012 .004' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.588 0 0 0 0 0.471 0 0 0 0 0.275 0.5 0 0 0 -0.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 1200px 800px,
         linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.05) 100%),
         #e4d9c0;
+    --l-project: #c9b48f;
+    /* 礫層：大小の小石（暗・明）・砂粒・ゆるい層理 */
+    --bg-project:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.06' numOctaves='2' seed='53' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.361 0 0 0 0 0.290 0 0 0 0 0.196 7.0 0 0 0 -4.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E") 0 0 / 300px 300px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.075' numOctaves='2' seed='59' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.965 0 0 0 0 0.925 0 0 0 0 0.839 7.0 0 0 0 -4.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.38'/%3E%3C/svg%3E") 0 0 / 280px 280px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' seed='61' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.345 0 0 0 0 0.259 0 0 0 0 0.141 4.2 0 0 0 -2.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 200px 200px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1100' height='420'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.002 .04' numOctaves='3' seed='67' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.471 0 0 0 0 0.376 0 0 0 0 0.235 0.6 0 0 0 -0.22'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E") 0 0 / 1100px 420px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='1100'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0006 .006' numOctaves='2' seed='71' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.431 0 0 0 0 0.337 0 0 0 0 0.204 0.6 0 0 0 -0.24'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E") 0 0 / 1400px 1100px,
+        linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.06) 100%),
+        #c9b48f;
     --l-radio: #b3b5aa;
     /* シルト層：細かい粒と、はっきりした薄い葉理 */
     --bg-radio:
@@ -143,6 +153,7 @@ button { font-family: inherit; }
 .menu__col a small { font: 500 12px var(--mono); letter-spacing: .04em; }
 .m-top { flex: 1; background: var(--l-surface); }
 .m-article { flex: 1.3; background: var(--bg-article); }
+.m-project { flex: 1.1; background: var(--bg-project); }
 .m-radio { flex: 1.3; background: var(--bg-radio); }
 .m-people { flex: 1.4; background: var(--bg-people); color: #f4efe4; }
 .m-bedrock { flex: 1.4; background: #15171b; color: #e9e5dc; }
@@ -171,6 +182,7 @@ button { font-family: inherit; }
 .gauge:hover .gauge__col a span { opacity: 1; transform: translate(0, -50%); }
 .g-top { background: var(--l-surface); }
 .g-article { background: var(--bg-article); }
+.g-project { background: var(--bg-project); }
 .g-radio { background: var(--bg-radio); }
 .g-people { background: var(--bg-people); }
 .g-bedrock { background: #262a31; }
@@ -374,7 +386,7 @@ button { font-family: inherit; }
 .filters button.is-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 .cat { display: inline-block; font: 700 10px var(--sans); letter-spacing: .08em; padding: 2px 8px; color: #fff; background: var(--cc, #555); white-space: nowrap; }
-.cat--essay { --cc: #235BC8; } .cat--critique { --cc: #7b3fbf; } .cat--blog { --cc: #1a8a55; } .cat--art { --cc: #d9501c; } .cat--dialogue { --cc: #d81b72; }
+.cat--essay { --cc: #235BC8; } .cat--critique { --cc: #7b3fbf; } .cat--blog { --cc: #1a8a55; } .cat--art { --cc: #d9501c; } .cat--interview { --cc: #d81b72; } .cat--dialogue { --cc: #3b3fb6; }
 
 /* ── 写真（媒体） ── 写真は飾らず、角を少しだけ丸めた長方形で大きく */
 .md { position: relative; display: block; overflow: hidden; border-radius: 6px; background: #d8d0bd; aspect-ratio: var(--ar, 4 / 3); }
@@ -393,7 +405,7 @@ a:hover .md img { transform: scale(1.035); }
 .md--s.md--tp { padding: 10px; justify-content: center; align-items: center; }
 .md--s .tp__k { font-size: 9px; letter-spacing: .2em; }
 .md--s .tp__t, .md--s.md--tp::after, .md--s .tp__k span:last-child { display: none; }
-.tp--essay { --tp: #1f3a72; } .tp--critique { --tp: #3d2a63; } .tp--blog { --tp: #1e4634; } .tp--art { --tp: #74321a; } .tp--dialogue { --tp: #5e1236; } .tp--review { --tp: #74321a; }
+.tp--essay { --tp: #1f3a72; } .tp--critique { --tp: #3d2a63; } .tp--blog { --tp: #1e4634; } .tp--art { --tp: #74321a; } .tp--interview { --tp: #5e1236; } .tp--dialogue { --tp: #23255e; } .tp--review { --tp: #74321a; }
 .tp--radio { --tp: #23262b; } .tp--people { --tp: #4a3b2f; }
 
 /* ── 見出しまわり（種類・日付・題） ── */
@@ -403,7 +415,7 @@ a:hover .md img { transform: scale(1.035); }
 .k--article { --kc: #b08a3e; } .k--radio { --kc: var(--water); } .k--people { --kc: #8a5a3c; }
 .mt__c { color: var(--cc, var(--mute)); font-family: var(--sans); font-weight: 700; letter-spacing: .1em; }
 /* 対談だけは色の帯で目立たせる */
-.mt__c.mt__c.cat--dialogue { background: var(--cc); color: #fff; padding: 2px 9px; border-radius: 2px; }
+.mt__c.mt__c.cat--interview, .mt__c.mt__c.cat--dialogue { background: var(--cc); color: #fff; padding: 2px 9px; border-radius: 2px; }
 .mt__c.cat--essay, .mt__c.cat--critique, .mt__c.cat--blog, .mt__c.cat--art, .mt__c.cat--dialogue { background: none; padding: 0; }
 .mc { display: block; text-decoration: none; min-width: 0; }
 .mc__t { margin: 8px 0 0; font-size: 17px; line-height: 1.55; font-weight: 700; letter-spacing: .02em; transition: color .2s; word-break: auto-phrase; }
@@ -613,6 +625,26 @@ a:hover .md img { transform: scale(1.035); }
 .is-preview [data-text]:hover { outline: 1.5px dashed var(--water); outline-offset: 4px; }
 .fk-flash { animation: fkflash 1.6s ease-out; }
 @keyframes fkflash { 0%, 40% { outline: 3px solid var(--orange); outline-offset: 6px; } 100% { outline: 3px solid transparent; outline-offset: 6px; } }
+
+/* ------------------------------------------------------------ 企画層（連載・写真の企画のカード） */
+.stratum--project { --bg: var(--bg-project); }
+.pj-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(36px, 4vw, 56px) clamp(24px, 3vw, 44px); }
+.pj { display: block; text-decoration: none; color: inherit; min-width: 0; }
+.pj__media { position: relative; display: block; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 6px; background: #3a3127; }
+.pj__media > img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+.pj:hover .pj__media > img { transform: scale(1.035); }
+.pj__mosaic { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 3px; background: #2e2820; }
+.pj__mosaic img, .pj__mosaic i { width: 100%; height: 100%; min-height: 0; object-fit: cover; display: block; background: #4a3f33; transition: transform 1.1s var(--ease); }
+.pj:hover .pj__mosaic img { transform: scale(1.04); }
+.pj__blank { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; text-align: center; color: #e9dcc2; font: 600 clamp(22px, 2.6vw, 34px)/1.1 var(--display); letter-spacing: .04em; }
+.pj__kind { position: absolute; left: 12px; top: 12px; padding: 3px 10px; border-radius: 999px; background: rgba(27, 26, 23, .82); color: #f2efe7; font: 600 10px/1.5 var(--mono); letter-spacing: .18em; }
+.pj__count { position: absolute; right: 12px; bottom: 10px; color: #fff; font: 600 12px var(--mono); letter-spacing: .06em; text-shadow: 0 0 8px rgba(0, 0, 0, .6); }
+.pj__en { display: block; margin-top: 16px; font: 600 11px var(--display); letter-spacing: .26em; opacity: .75; }
+.pj__t { display: block; margin-top: 6px; font-size: clamp(22px, 2.3vw, 30px); font-weight: 700; letter-spacing: .06em; line-height: 1.35; transition: color .2s; }
+.pj:hover .pj__t { color: var(--water); }
+.pj__x { display: block; margin-top: 10px; font-size: 13.5px; line-height: 1.9; color: #3f3a31; }
+.pj__go { display: inline-block; margin-top: 14px; font: 600 11.5px var(--display); letter-spacing: .22em; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+@media (max-width: 640px) { .pj-grid { grid-template-columns: 1fr; } }
 
 /* ------------------------------------------------------------ RESPONSIVE */
 @media (max-width: 1000px) {

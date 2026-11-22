@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日常を地図 — FUKURYU</title>
+    <meta name="description" content="日々のなかで見つけたものを、一枚ずつ置いていく。写真でつくる日常の地図。">
+    <meta property="og:title" content="日常を地図 — FUKURYU">
+    <meta property="og:description" content="日々のなかで見つけたものを、一枚ずつ置いていく。写真でつくる日常の地図。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://fukuryu.art/fukuryu-logo.png">
+    <meta property="og:url" content="https://fukuryu.art/projects/nichijo.html">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Jost:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../article.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
+</head>
+<!-- 企画「日常を地図」：projects/nichijo/manifest.json の写真を3列に並べる（article.js）。
+     写真は記事メーカーの「🗺 日常を地図」タブから追加。日付とメモは、PCはマウスを乗せたとき・スマホはタップしたときだけ出る -->
+<body class="ar-page" data-root="../">
+<main class="ar" data-kind="page" data-on="project">
+    <header class="pg-head pg-head--project">
+        <div class="pg-head__in">
+            <p class="pg-head__crumb"><a href="../index.html#project">PROJECT</a><span>企画層 −20m</span></p>
+            <p class="pg-head__display">MAPPING THE EVERYDAY</p>
+            <h1 class="pg-head__name">日常を地図</h1>
+            <p class="pg-head__desc">日々のなかで見つけたものを、一枚ずつ置いていく。写真でつくる日常の地図。</p>
+            <p class="pg-head__count" id="photo-count"></p>
+        </div>
+    </header>
+    <div class="pj-page">
+        <div class="pg-body">
+            <div class="pm-grid" id="photo-map"><p class="nwl__empty">読み込み中…</p></div>
+            <div class="pj-tags" id="project-tags" data-project="nichijo"></div>
+        </div>
+    </div>
+</main>
+<script src="../article.js"></script>
+</body>
+</html>
