@@ -6,14 +6,16 @@
     "en": "SATO SERIES",
     "desc": "佐藤奏太が、好きなアーティストと作品を出発点に書き継いでいく連載。",
     "url": "projects/sato.html",
-    "collabs": ["1794696793687-9v0u8"]
+    "collabs": [
+      "1794696793687-9v0u8"
+    ]
   },
   {
     "id": "nichijo",
     "type": "photos",
     "title": "日常を地図",
-    "en": "MAPPING THE EVERYDAY",
-    "desc": "日々のなかで見つけたものを、一枚ずつ置いていく。写真でつくる日常の地図。",
+    "en": "ATLAS EVERYDAY",
+    "desc": "毎日一枚、地図の代わりに。",
     "url": "projects/nichijo.html",
     "collabs": []
   }

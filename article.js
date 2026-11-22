@@ -354,7 +354,7 @@
                 </figure>`).join('') : '<p class="nwl__empty">まだ写真はありません。</p>';
             reveal();
         });
-        // 正方形 ⇄ 本来の比率（F・S・P・M で切り取った形）
+        // スクエア ⇄ オリジナル（F・S・P・M で切り取った本来の比率）
         const bar = $('.pm-bar');
         if (bar) bar.addEventListener('click', e => {
             const b = e.target.closest('button[data-view]');
