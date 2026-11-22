@@ -349,10 +349,18 @@
             if (cnt) cnt.innerHTML = list.length ? `<b>${list.length}</b> PHOTOS` : '';
             pmap.innerHTML = list.length ? list.map((p, i) => `
                 <figure class="pm rv" tabindex="0" style="--rd:${(i % 3) * 0.05}s">
-                    <img src="${ROOT}${esc(p.src)}" alt="${esc(p.memo || '')}" loading="lazy" style="object-position:${pos(p.x, p.y)}">
+                    <img src="${ROOT}${esc(p.src)}" alt="${esc(p.memo || '')}" loading="lazy"${p.ratio ? '' : ` style="object-position:${pos(p.x, p.y)}"`}>
                     ${p.date || p.memo ? `<figcaption class="pm__cap">${p.date ? `<time>${esc(p.date)}</time>` : ''}${p.memo ? `<span>${esc(p.memo).replace(/\n/g, '<br>')}</span>` : ''}</figcaption>` : ''}
                 </figure>`).join('') : '<p class="nwl__empty">まだ写真はありません。</p>';
             reveal();
+        });
+        // 正方形 ⇄ 本来の比率（F・S・P・M で切り取った形）
+        const bar = $('.pm-bar');
+        if (bar) bar.addEventListener('click', e => {
+            const b = e.target.closest('button[data-view]');
+            if (!b) return;
+            $$('button', bar).forEach(x => { const on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', String(on)); });
+            pmap.classList.toggle('is-natural', b.dataset.view === 'natural');
         });
         // スマホ：タップで開く（もう一度タップ、または別の写真で閉じる）
         pmap.addEventListener('click', e => {

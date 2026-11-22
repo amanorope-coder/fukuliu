@@ -448,6 +448,16 @@ details.cb__works ul { margin-top: 8px; }
 }
 /* 日常を地図：いつも3列。日付とメモは隠しておき、PCはマウスを乗せたとき・スマホはタップしたときに濃いグレーの上に出す */
 .pm-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(3px, .5vw, 8px); max-width: 1040px; margin: 0 auto; }
+/* 本来の比率：正方形のマスの中に、写真をその比率のまま収める（並びはそのまま） */
+.pm-grid.is-natural .pm { background: transparent; }
+.pm-grid.is-natural .pm img { object-fit: contain; }
+.pm-bar { display: flex; justify-content: flex-end; gap: 6px; max-width: 1040px; margin: 0 auto 14px; }
+.pm-bar button { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink); font: 700 12px var(--sans); letter-spacing: .04em; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.pm-bar button:hover { border-color: var(--ink); }
+.pm-bar button.is-on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.pm-ico { display: inline-block; border: 1.5px solid currentColor; border-radius: 1px; }
+.pm-ico--sq { width: 10px; height: 10px; }
+.pm-ico--nt { width: 8px; height: 12px; }
 .pm { position: relative; margin: 0; aspect-ratio: 1; overflow: hidden; background: #ddd3c0; cursor: pointer; outline: none; }
 .pm img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pm__cap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; padding: 10%; text-align: center;

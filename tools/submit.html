@@ -146,7 +146,14 @@
         .field .cl-chip input[type="checkbox"] { width: auto; height: auto; margin: 0; padding: 0; border: 0; flex: none; accent-color: var(--accent); }
         .cl-chip:has(input:checked) { border-color: var(--accent); background: rgba(35, 91, 200, .08); color: var(--accent); font-weight: 700; }
         .mp-pick { display: flex; gap: 16px; align-items: flex-start; }
-        .mp-box { flex: none; width: 150px; aspect-ratio: 1; display: grid; place-items: center; background: var(--bg-soft); border-radius: 3px; }
+        .mp-ratio { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; }
+        .mp-ratio button { min-width: 44px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 2px; background: #fff; font: 700 12px var(--sans); cursor: pointer; }
+        .mp-ratio button small { display: block; font-size: 9px; font-weight: 500; color: var(--fg-mute); }
+        .mp-ratio button.is-on { border-color: var(--fg); background: var(--fg); color: #fff; }
+        .mp-ratio button.is-on small { color: rgba(255, 255, 255, .7); }
+        .mp-ratio .mp-sep { width: 1px; height: 28px; background: var(--line); margin: 0 4px; }
+        .mp-ratio[data-lock] button { opacity: .45; pointer-events: none; }
+        .mp-box { flex: none; width: 170px; aspect-ratio: var(--ar, 1); display: grid; place-items: center; background: var(--bg-soft); border-radius: 3px; }
         .mp-box__empty { font-size: 11px; color: var(--fg-mute); }
         .mp-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
         .mp-list .edit-loading { grid-column: 1 / -1; }
@@ -599,14 +606,27 @@ Enter → 改行
         <div class="nm">
             <div class="nm__panel">
                 <h2 id="mp-heading">「日常を地図」に写真を足す</h2>
-                <p class="note">足した写真は、企画「日常を地図」のページに3列で並びます（新しい写真は最後＝右下に増えていきます）。日付とメモは写真の上には出ず、PCではマウスを乗せたとき、スマホではタップしたときだけ表示されます。</p>
+                <p class="note">足した写真は、企画「日常を地図」のページに3列の正方形で並びます（新しい写真は最後＝右下に増えていきます）。ページの「本来の比率」ボタンで、選んだ比率の形に戻ります。日付とメモは写真の上には出ず、PCではマウスを乗せたとき、スマホではタップしたときだけ表示されます。</p>
+                <div class="field">
+                    <label>比率（キャンバスの F・S・P・M）</label>
+                    <div class="mp-ratio" id="mp-ratio">
+                        <button type="button" data-r="F">F<small>1:1.24</small></button>
+                        <button type="button" data-r="S">S<small>1:1</small></button>
+                        <button type="button" data-r="P">P<small>1:1.41</small></button>
+                        <button type="button" data-r="M">M<small>1:1.62</small></button>
+                        <span class="mp-sep"></span>
+                        <button type="button" data-o="v">縦</button>
+                        <button type="button" data-o="h">横</button>
+                    </div>
+                    <p class="pf__hint">写真はこの比率に切り取って保存します。ページではふだん正方形で並び、「本来の比率」ボタンでこの比率に戻ります。</p>
+                </div>
                 <div class="field">
                     <label>写真</label>
                     <div class="mp-pick">
                         <div class="mp-box" id="mp-box"><span class="mp-box__empty">写真なし</span></div>
                         <div>
                             <label class="pf__btn pf__btn--main">写真を選ぶ<input type="file" accept="image/*" hidden onchange="mpPick(this)"></label>
-                            <p class="pf__hint" style="margin-top:8px">正方形に切り取って並びます。写真をクリック／ドラッグすると、見せたい中心を決められます。</p>
+                            <p class="pf__hint" style="margin-top:8px">枠が保存される形です。写真をクリック／ドラッグすると、切り取る位置（見せたい中心）を決められます。</p>
                         </div>
                     </div>
                 </div>
@@ -1039,10 +1059,45 @@ async function updateSitemap(token, fresh = {}) {
 //  企画「日常を地図」：projects/nichijo/manifest.json に { src, date, memo, x, y } を足していく（並びは足した順）
 // ═══════════════════════════════════════════════════════════
 const MAP_DIR = 'projects/nichijo';
-const mp = { blob: null, url: '', x: 50, y: 50, editing: -1, list: [] };
+const mp = { blob: null, url: '', x: 50, y: 50, editing: -1, list: [], ratio: 'F', orient: 'v' };
+// キャンバスの比率（長辺 ÷ 短辺）：F 人物型・S 正方形・P 風景型・M 海景型
+const RATIOS = { F: 1.236, S: 1, P: 1.414, M: 1.618 };
+function mpAspect(r, o) { const k = RATIOS[r] || 1; return r === 'S' ? 1 : (o === 'h' ? k : 1 / k); }   // 幅 ÷ 高さ
+function mpRatioUI() {
+    const box = document.getElementById('mp-ratio');
+    box.querySelectorAll('[data-r]').forEach(b => b.classList.toggle('is-on', b.dataset.r === mp.ratio));
+    box.querySelectorAll('[data-o]').forEach(b => { b.classList.toggle('is-on', b.dataset.o === mp.orient); b.hidden = mp.ratio === 'S'; });
+    box.querySelector('.mp-sep').hidden = mp.ratio === 'S';
+    // すでに保存した写真を直すときは比率を変えられない（切り取り済みのため。変えたいときは写真を選び直す）
+    if (mp.editing >= 0 && !mp.blob) box.dataset.lock = '1'; else delete box.dataset.lock;
+    document.getElementById('mp-box').style.setProperty('--ar', mpAspect(mp.ratio, mp.orient));
+}
+document.addEventListener('click', e => {
+    const b = e.target.closest('#mp-ratio button');
+    if (!b) return;
+    if (b.dataset.r) mp.ratio = b.dataset.r;
+    if (b.dataset.o) mp.orient = b.dataset.o;
+    mpRatioUI();
+});
+// 選んだ比率・中心で切り取った JPEG を作る（長辺は最大 2000px）
+async function mpCrop() {
+    const img = new Image();
+    img.src = mp.url;
+    await img.decode();
+    const W = img.naturalWidth, H = img.naturalHeight, ar = mpAspect(mp.ratio, mp.orient);
+    let cw = W, ch = H;
+    if (W / H > ar) cw = Math.round(H * ar); else ch = Math.round(W / ar);
+    const sx = Math.round((W - cw) * mp.x / 100), sy = Math.round((H - ch) * mp.y / 100);
+    const scale = Math.min(1, 2000 / Math.max(cw, ch));
+    const c = document.createElement('canvas');
+    c.width = Math.round(cw * scale); c.height = Math.round(ch * scale);
+    c.getContext('2d').drawImage(img, sx, sy, cw, ch, 0, 0, c.width, c.height);
+    return { blob: await new Promise(r => c.toBlob(r, 'image/jpeg', 0.88)), w: c.width, h: c.height };
+}
 function mpBox() {
     const box = document.getElementById('mp-box');
     const src = mp.url || (mp.editing >= 0 && mp.list[mp.editing] ? SITE + mp.list[mp.editing].src : '');
+    mpRatioUI();
     if (!src) { box.className = 'mp-box'; box.innerHTML = '<span class="mp-box__empty">写真なし</span>'; return; }
     box.className = 'mp-box pf__box';
     box.innerHTML = `<img src="${src}" alt="" style="object-position:${mp.x}% ${mp.y}%"><span class="pf__dot" style="left:${mp.x}%;top:${mp.y}%"></span>`;
@@ -1067,7 +1122,7 @@ async function mpPick(input) {
     const file = input.files[0]; input.value = '';
     if (!file) return;
     try {
-        const blob = await compressImage(file, 2000, 0.85);
+        const blob = await compressImage(file, 3000, 0.92);   // 切り取りは保存のときに
         if (mp.url) URL.revokeObjectURL(mp.url);
         mp.blob = blob; mp.url = URL.createObjectURL(blob); mp.x = 50; mp.y = 50;
         mpBox();
@@ -1075,7 +1130,7 @@ async function mpPick(input) {
 }
 function resetMap(keepResult) {
     if (mp.url) URL.revokeObjectURL(mp.url);
-    Object.assign(mp, { blob: null, url: '', x: 50, y: 50, editing: -1 });
+    Object.assign(mp, { blob: null, url: '', x: 50, y: 50, editing: -1, ratio: 'F', orient: 'v' });
     document.getElementById('mp-date').value = new Date().toISOString().slice(0, 10);
     document.getElementById('mp-memo').value = '';
     document.getElementById('mp-heading').textContent = '「日常を地図」に写真を足す';
@@ -1094,8 +1149,8 @@ async function loadMapList() {
         mp.list = token ? (await readMap(token)).arr : await fetch('../' + MAP_DIR + '/manifest.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []);
         box.innerHTML = mp.list.length ? mp.list.map((p, i) => `
             <div class="mp-item" onclick="editMapPhoto(${i})" title="${escHTML(p.memo || '')}">
-                <img src="${SITE}${escHTML(p.src)}" alt="" loading="lazy" style="object-position:${p.x ?? 50}% ${p.y ?? 50}%">
-                <span class="mp-item__cap">${escHTML(p.date || '')}</span>
+                <img src="${SITE}${escHTML(p.src)}" alt="" loading="lazy">
+                <span class="mp-item__cap">${escHTML(p.date || '')}${p.ratio ? `　${escHTML(p.ratio)}${p.ratio !== 'S' ? (p.orient === 'h' ? '・横' : '・縦') : ''}` : ''}</span>
                 <button class="mp-item__del" type="button" onclick="event.stopPropagation();deleteMapPhoto(${i})">削除</button>
             </div>`).join('') : '<p class="edit-loading">まだ写真はありません。</p>';
     } catch (e) { box.innerHTML = `<p class="edit-loading">読み込みに失敗しました: ${escHTML(e.message)}</p>`; }
@@ -1105,7 +1160,7 @@ function editMapPhoto(i) {
     if (!p) return;
     if (!getToken()) { alert('直すには投稿キーが必要です。'); return; }
     if (mp.url) URL.revokeObjectURL(mp.url);
-    Object.assign(mp, { blob: null, url: '', x: p.x ?? 50, y: p.y ?? 50, editing: i });
+    Object.assign(mp, { blob: null, url: '', x: 50, y: 50, editing: i, ratio: p.ratio || 'S', orient: p.orient || 'v' });
     document.getElementById('mp-date').value = String(p.date || '').replace(/\./g, '-');
     document.getElementById('mp-memo').value = p.memo || '';
     document.getElementById('mp-heading').textContent = '写真を直す';
@@ -1123,13 +1178,19 @@ async function publishMapPhoto() {
     const btn = document.getElementById('mp-publish'), result = document.getElementById('mp-result');
     btn.classList.add('is-loading'); btn.disabled = true;
     try {
-        let src = editing ? mp.list[mp.editing].src : '';
+        const old = editing ? mp.list[mp.editing] : null;
+        let src = old ? old.src : '', ratio = old ? old.ratio : mp.ratio, orient = old ? old.orient : mp.orient, w = old && old.w, h = old && old.h;
         if (mp.blob) {
+            const cut = await mpCrop();
             src = `${MAP_DIR}/images/${Date.now()}.jpg`;
-            await ghPutBinary(src, token, `日常を地図：写真追加`, await blobToBase64(mp.blob));
+            await ghPutBinary(src, token, `日常を地図：写真追加`, await blobToBase64(cut.blob));
+            ratio = mp.ratio; orient = mp.orient; w = cut.w; h = cut.h;
         }
         const { arr, sha } = await readMap(token);
-        const entry = { src, date: fmtDate(date), memo, x: mp.x, y: mp.y };
+        const entry = { src, date: fmtDate(date), memo };
+        if (ratio) entry.ratio = ratio;
+        if (ratio && ratio !== 'S' && orient) entry.orient = orient;
+        if (w && h) Object.assign(entry, { w, h });
         if (editing) {
             const at = arr.findIndex(p => p.src === mp.list[mp.editing].src);
             if (at < 0) throw new Error('元の写真が見つかりませんでした。一覧を読み直してください。');
