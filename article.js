@@ -343,24 +343,33 @@
     // ------------------------------------------------------------ 企画：日常を地図（#photo-map）。3列。日付とメモは、PCはマウスを乗せたとき・スマホはタップしたときだけ
     const pmap = $('#photo-map');
     if (pmap) {
-        getJSON('projects/nichijo/manifest.json').then(list => {
-            list = Array.isArray(list) ? list : [];
-            const cnt = $('#photo-count');
-            if (cnt) cnt.innerHTML = list.length ? `<b>${list.length}</b> PHOTOS` : '';
-            pmap.innerHTML = list.length ? list.map((p, i) => `
+        // 並びはいつも新しい順。投稿順＝足した順（manifest の後ろほど新しい）、日付順＝写真の日付（同じ日は投稿順）
+        let photos = [], sort = 'post';
+        const dkey = p => String(p.date || '').replace(/[^0-9]/g, '');
+        const draw = () => {
+            const list = photos.map((p, n) => ({ p, n }));
+            list.sort((a, b) => (sort === 'date' && dkey(b.p).localeCompare(dkey(a.p))) || b.n - a.n);
+            pmap.innerHTML = list.length ? list.map(({ p }, i) => `
                 <figure class="pm rv" tabindex="0" style="--rd:${(i % 3) * 0.05}s">
                     <img src="${ROOT}${esc(p.src)}" alt="${esc(p.memo || '')}" loading="lazy"${p.ratio ? '' : ` style="object-position:${pos(p.x, p.y)}"`}>
                     ${p.date || p.memo ? `<figcaption class="pm__cap">${p.date ? `<time>${esc(p.date)}</time>` : ''}${p.memo ? `<span>${esc(p.memo).replace(/\n/g, '<br>')}</span>` : ''}</figcaption>` : ''}
                 </figure>`).join('') : '<p class="nwl__empty">まだ写真はありません。</p>';
             reveal();
+        };
+        getJSON('projects/nichijo/manifest.json').then(list => {
+            photos = Array.isArray(list) ? list : [];
+            const cnt = $('#photo-count');
+            if (cnt) cnt.innerHTML = photos.length ? `<b>${photos.length}</b> PHOTOS` : '';
+            draw();
         });
-        // スクエア ⇄ オリジナル（F・S・P・M で切り取った本来の比率）
+        // 投稿順 ⇄ 日付順、スクエア ⇄ オリジナル（F・S・P・M で切り取った本来の比率）
         const bar = $('.pm-bar');
         if (bar) bar.addEventListener('click', e => {
-            const b = e.target.closest('button[data-view]');
+            const b = e.target.closest('button[data-view], button[data-sort]');
             if (!b) return;
-            $$('button', bar).forEach(x => { const on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', String(on)); });
-            pmap.classList.toggle('is-natural', b.dataset.view === 'natural');
+            $$('button', b.parentNode).forEach(x => { const on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', String(on)); });
+            if (b.dataset.view) pmap.classList.toggle('is-natural', b.dataset.view === 'natural');
+            else if (b.dataset.sort !== sort) { sort = b.dataset.sort; draw(); }
         });
         // スマホ：タップで開く（もう一度タップ、または別の写真で閉じる）
         pmap.addEventListener('click', e => {

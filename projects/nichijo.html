@@ -21,7 +21,7 @@
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4FLG1F6QJ6');</script>
 </head>
 <!-- 企画「日常を地図」：projects/nichijo/manifest.json の写真を3列に並べる（article.js）。
-     写真は記事メーカーの「🗺 日常を地図」タブから追加。日付とメモは、PCはマウスを乗せたとき・スマホはタップしたときだけ出る -->
+     写真は記事メーカーの「🗺 日常を地図」タブから追加。並びは新しい順（投稿順／日付順を切り替え）。日付とメモは、PCはマウスを乗せたとき・スマホはタップしたときだけ出る -->
 <body class="ar-page" data-root="../">
 <main class="ar" data-kind="page" data-on="project">
     <header class="pg-head pg-head--project">
@@ -35,9 +35,15 @@
     </header>
     <div class="pj-page">
         <div class="pg-body">
-            <div class="pm-bar" role="group" aria-label="写真の見せ方">
-                <button type="button" class="is-on" data-view="square" aria-pressed="true"><i class="pm-ico pm-ico--sq" aria-hidden="true"></i>スクエア</button>
-                <button type="button" data-view="natural" aria-pressed="false"><i class="pm-ico pm-ico--nt" aria-hidden="true"></i>オリジナル</button>
+            <div class="pm-bar">
+                <div class="pm-bar__g" role="group" aria-label="並び順">
+                    <button type="button" class="is-on" data-sort="post" aria-pressed="true">投稿順</button>
+                    <button type="button" data-sort="date" aria-pressed="false">日付順</button>
+                </div>
+                <div class="pm-bar__g" role="group" aria-label="写真の見せ方">
+                    <button type="button" class="is-on" data-view="square" aria-pressed="true"><i class="pm-ico pm-ico--sq" aria-hidden="true"></i>スクエア</button>
+                    <button type="button" data-view="natural" aria-pressed="false"><i class="pm-ico pm-ico--nt" aria-hidden="true"></i>オリジナル</button>
+                </div>
             </div>
             <div class="pm-grid" id="photo-map"><p class="nwl__empty">読み込み中…</p></div>
             <div class="pj-tags" id="project-tags" data-project="nichijo"></div>

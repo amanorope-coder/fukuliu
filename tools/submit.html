@@ -608,7 +608,7 @@ Enter → 改行
         <div class="nm">
             <div class="nm__panel">
                 <h2 id="mp-heading">「日常を地図」に写真を足す</h2>
-                <p class="note">足した写真は、企画「日常を地図」のページに3列の正方形で並びます（新しい写真は最後＝右下に増えていきます）。ページの「オリジナル」ボタンで、選んだ比率の形に戻ります。日付とメモは写真の上には出ず、PCではマウスを乗せたとき、スマホではタップしたときだけ表示されます。</p>
+                <p class="note">足した写真は、企画「日常を地図」のページに3列の正方形で並びます（新しい写真が左上に来ます。ページでは「投稿順」「日付順」を切り替えられます）。ページの「オリジナル」ボタンで、選んだ比率の形に戻ります。日付とメモは写真の上には出ず、PCではマウスを乗せたとき、スマホではタップしたときだけ表示されます。</p>
                 <div class="field">
                     <label>比率（キャンバスの F・S・P・M）</label>
                     <div class="mp-ratio" id="mp-ratio">
@@ -1058,7 +1058,7 @@ async function updateSitemap(token, fresh = {}) {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  企画「日常を地図」：projects/nichijo/manifest.json に { src, date, memo, x, y } を足していく（並びは足した順）
+//  企画「日常を地図」：projects/nichijo/manifest.json に { src, date, memo, x, y } を足していく（足した順に保存。ページとこの一覧では新しい順に並べる）
 // ═══════════════════════════════════════════════════════════
 const MAP_DIR = 'projects/nichijo';
 const mp = { blob: null, url: '', x: 50, y: 50, editing: -1, list: [], ratio: 'F', orient: 'v' };
@@ -1162,7 +1162,7 @@ async function loadMapList() {
     try {
         const token = getToken();
         mp.list = token ? (await readMap(token)).arr : await fetch('../' + MAP_DIR + '/manifest.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []);
-        box.innerHTML = mp.list.length ? mp.list.map((p, i) => `
+        box.innerHTML = mp.list.length ? mp.list.map((p, i) => [p, i]).reverse().map(([p, i]) => `
             <div class="mp-item" onclick="editMapPhoto(${i})" title="${escHTML(p.memo || '')}">
                 <img src="${escHTML(mpSrc(p.src))}" alt="" loading="lazy" onerror="mpRetry(this)" onload="mpLoaded(this)">
                 <span class="mp-item__cap">${escHTML(p.date || '')}${p.ratio ? `　${escHTML(p.ratio)}${p.ratio !== 'S' ? (p.orient === 'h' ? '・横' : '・縦') : ''}` : ''}</span>
