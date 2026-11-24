@@ -34,5 +34,14 @@
     "orient": "h",
     "w": 2000,
     "h": 1415
+  },
+  {
+    "src": "projects/nichijo/images/1795494584543.jpg",
+    "date": "2026.11.21",
+    "memo": "LKS2026の看板",
+    "ratio": "P",
+    "orient": "v",
+    "w": 1415,
+    "h": 2000
   }
 ]
