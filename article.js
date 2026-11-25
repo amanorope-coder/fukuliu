@@ -340,17 +340,18 @@
         });
     }
 
-    // ------------------------------------------------------------ 企画：日常を地図（#photo-map）。3列。日付とメモは、PCはマウスを乗せたとき・スマホはタップしたときだけ
+    // ------------------------------------------------------------ 企画：日常を地図（#photo-map）。3列。PCはマウスを乗せると日付とメモ。写真を押す（タップする）と、背景を暗くぼかして本来の比率で大きく開く
     const pmap = $('#photo-map');
     if (pmap) {
         // 並びはいつも新しい順。投稿順＝足した順（manifest の後ろほど新しい）、日付順＝写真の日付（同じ日は投稿順）
-        let photos = [], sort = 'post';
+        let photos = [], sort = 'post', shown = [];
         const dkey = p => String(p.date || '').replace(/[^0-9]/g, '');
         const draw = () => {
             const list = photos.map((p, n) => ({ p, n }));
             list.sort((a, b) => (sort === 'date' && dkey(b.p).localeCompare(dkey(a.p))) || b.n - a.n);
+            shown = list.map(x => x.p);
             pmap.innerHTML = list.length ? list.map(({ p }, i) => `
-                <figure class="pm rv" tabindex="0" style="--rd:${(i % 3) * 0.05}s">
+                <figure class="pm rv" tabindex="0" role="button" aria-label="写真を大きく見る${p.date ? '（' + esc(p.date) + '）' : ''}" data-i="${i}" style="--rd:${(i % 3) * 0.05}s">
                     <img src="${ROOT}${esc(p.src)}" alt="${esc(p.memo || '')}" loading="lazy"${p.ratio ? '' : ` style="object-position:${pos(p.x, p.y)}"`}>
                     ${p.date || p.memo ? `<figcaption class="pm__cap">${p.date ? `<time>${esc(p.date)}</time>` : ''}${p.memo ? `<span>${esc(p.memo).replace(/\n/g, '<br>')}</span>` : ''}</figcaption>` : ''}
                 </figure>`).join('') : '<p class="nwl__empty">まだ写真はありません。</p>';
@@ -371,13 +372,79 @@
             if (b.dataset.view) pmap.classList.toggle('is-natural', b.dataset.view === 'natural');
             else if (b.dataset.sort !== sort) { sort = b.dataset.sort; draw(); }
         });
-        // スマホ：タップで開く（もう一度タップ、または別の写真で閉じる）
+        // 大きく見る（ライトボックス）：背景を暗くぼかし、写真を本来の比率で画面の真ん中に。
+        // 閉じる＝背景・×・Esc。前後＝矢印ボタン・←→キー・スマホは左右にスワイプ
+        const lb = document.createElement('div');
+        lb.className = 'lb';
+        lb.hidden = true;
+        lb.setAttribute('role', 'dialog');
+        lb.setAttribute('aria-modal', 'true');
+        lb.setAttribute('aria-label', '写真');
+        lb.innerHTML = `
+            <button class="lb__close" type="button" aria-label="閉じる"><span aria-hidden="true">×</span></button>
+            <button class="lb__nav lb__nav--prev" type="button" aria-label="前の写真"><span aria-hidden="true">‹</span></button>
+            <figure class="lb__fig"><img class="lb__img" alt=""><figcaption class="lb__cap"><time></time><span></span></figcaption></figure>
+            <button class="lb__nav lb__nav--next" type="button" aria-label="次の写真"><span aria-hidden="true">›</span></button>
+            <p class="lb__no" aria-live="polite"></p>`;
+        document.body.appendChild(lb);
+        let at = -1, back = null;
+        const img = $('.lb__img', lb), cap = $('.lb__cap', lb);
+        const show = i => {
+            if (!shown.length) return;
+            at = (i + shown.length) % shown.length;
+            const p = shown[at];
+            img.removeAttribute('src');
+            if (p.w && p.h) { img.width = p.w; img.height = p.h; } else { img.removeAttribute('width'); img.removeAttribute('height'); }
+            img.src = ROOT + p.src;
+            img.alt = p.memo || '';
+            $('time', cap).textContent = p.date || '';
+            $('span', cap).innerHTML = esc(p.memo || '').replace(/\n/g, '<br>');
+            cap.hidden = !p.date && !p.memo;
+            $('.lb__no', lb).textContent = `${at + 1} / ${shown.length}`;
+            $$('.lb__nav', lb).forEach(b => b.hidden = shown.length < 2);
+        };
+        const open = i => {
+            back = document.activeElement;
+            show(i);
+            lb.hidden = false;
+            document.documentElement.classList.add('lb-lock');
+            requestAnimationFrame(() => lb.classList.add('is-on'));
+            $('.lb__close', lb).focus({ preventScroll: true });
+        };
+        const close = () => {
+            if (lb.hidden) return;
+            lb.classList.remove('is-on');
+            document.documentElement.classList.remove('lb-lock');
+            setTimeout(() => { lb.hidden = true; img.removeAttribute('src'); }, 220);
+            if (back && back.focus) back.focus({ preventScroll: true });
+        };
         pmap.addEventListener('click', e => {
-            const f = e.target.closest('.pm');
-            if (!f) return;
-            const on = !f.classList.contains('is-open');
-            $$('.pm.is-open', pmap).forEach(x => x.classList.remove('is-open'));
-            f.classList.toggle('is-open', on);
+            const f = e.target.closest('.pm[data-i]');
+            if (f) open(+f.dataset.i);
+        });
+        pmap.addEventListener('keydown', e => {
+            const f = e.target.closest('.pm[data-i]');
+            if (f && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(+f.dataset.i); }
+        });
+        lb.addEventListener('click', e => {
+            if (e.target.closest('.lb__nav--prev')) return show(at - 1);
+            if (e.target.closest('.lb__nav--next')) return show(at + 1);
+            if (e.target.closest('.lb__img, .lb__cap')) return;
+            close();   // 背景・×
+        });
+        document.addEventListener('keydown', e => {
+            if (lb.hidden) return;
+            if (e.key === 'Escape') close();
+            else if (e.key === 'ArrowLeft') show(at - 1);
+            else if (e.key === 'ArrowRight') show(at + 1);
+        });
+        let sx = null, sy = 0;
+        lb.addEventListener('touchstart', e => { if (e.touches.length === 1) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, { passive: true });
+        lb.addEventListener('touchend', e => {
+            if (sx === null) return;
+            const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+            sx = null;
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) show(at + (dx < 0 ? 1 : -1));
         });
     }
 
