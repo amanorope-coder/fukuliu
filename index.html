@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Jost:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="strata.css?v=30">
+    <link rel="stylesheet" href="strata.css?v=31">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FLG1F6QJ6"></script>
@@ -102,6 +102,18 @@
                             <a class="nb__all" href="news/">VIEW ALL →</a>
                         </div>
                         <ol class="nwl" id="news-rows"><li class="nwl__empty">読み込み中…</li></ol>
+                    </section>
+
+                    <!-- CURRENTS：気になるニュース・おすすめのニュース（tools/submit.html の「CURRENTS」タブ → currents/manifest.json）。
+                         1件もないときは出さない。3件以上なら新しい2件のほかは「ほか N 件」にまとめる -->
+                    <section class="nb nb--currents" id="currents" hidden>
+                        <div class="nb__head">
+                            <div>
+                                <p class="nb__display" data-text="currents.display" data-label="大きな英字の見出し">CURRENTS</p>
+                                <h2 class="nb__name" data-text="currents.name" data-label="日本語の見出し">気になるニュース</h2>
+                            </div>
+                        </div>
+                        <ol class="nwl" id="currents-rows"></ol>
                     </section>
 
                     <header class="sh sh--surface">
@@ -403,6 +415,6 @@
             
         ];
     </script>
-    <script src="strata.js?v=30"></script>
+    <script src="strata.js?v=31"></script>
 </body>
 </html>

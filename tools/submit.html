@@ -160,8 +160,19 @@
         .mp-item { position: relative; aspect-ratio: 1; overflow: hidden; cursor: pointer; background: var(--bg-soft); }
         .mp-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .mp-item__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 6px; font-size: 10px; background: rgba(0, 0, 0, .55); color: #fff; }
-        .mp-item.is-waiting img, .mp-box.is-waiting img { visibility: hidden; }
-        .mp-item.is-waiting::before, .mp-box.is-waiting::before { content: "反映待ち…"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; color: var(--fg-mute); }
+        .cr-box { --ar: 1.6; width: 200px; }
+        .cr-list { display: flex; flex-direction: column; gap: 6px; }
+        .cr-item { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 6px; border: 1px solid var(--line); border-radius: 3px; background: #fff; cursor: pointer; }
+        .cr-item:hover { border-color: var(--fg); }
+        .cr-item__im { position: relative; display: grid; place-items: center; aspect-ratio: 1.6; overflow: hidden; border-radius: 2px; background: #2b2a26; color: rgba(255, 255, 255, .75); font-size: 9px; font-weight: 700; text-align: center; padding: 2px; }
+        .cr-item__im img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+        .cr-item__t { font-size: 12px; font-weight: 700; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .cr-item__m { display: block; margin-top: 2px; font-size: 10px; color: var(--fg-mute); }
+        .cr-item__del { padding: 2px 6px; font-size: 10px; border: 1px solid var(--line); border-radius: 2px; background: #fff; cursor: pointer; }
+        .cr-list__fold { margin: 6px 0 0; font-size: 10.5px; color: var(--fg-mute); }
+        .cr-item__im.is-waiting { background: var(--bg-soft); }
+        .mp-item.is-waiting img, .mp-box.is-waiting img, .cr-item__im.is-waiting img { visibility: hidden; }
+        .mp-item.is-waiting::before, .mp-box.is-waiting::before, .cr-item__im.is-waiting::before { content: "反映待ち…"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; color: var(--fg-mute); }
         .mp-item__del { position: absolute; top: 4px; right: 4px; padding: 2px 6px; font-size: 10px; border: 0; border-radius: 2px; background: rgba(255, 255, 255, .9); cursor: pointer; }
         .pv-date { font-size: 11px; letter-spacing: .1em; color: var(--fg-mute); }
         .pv-title { font-family: var(--serif); font-weight: 900; font-size: 28px; line-height: 1.3; letter-spacing: -.02em; margin-bottom: 14px; }
@@ -361,6 +372,7 @@
     <button class="tab-btn" data-tab="edit" onclick="switchTab('edit')">📝 記事を修正</button>
     <button class="tab-btn" data-tab="news" onclick="switchTab('news')">📢 ニュース</button>
     <button class="tab-btn" data-tab="map" onclick="switchTab('map')">🗺 日常を地図</button>
+    <button class="tab-btn" data-tab="cur" onclick="switchTab('cur')">🔗 CURRENTS</button>
     <a class="tab-btn" href="collaborator-maker.html">🤝 コラボレーター</a>
     <a class="tab-btn" href="site-editor.html">🖼 写真・CV・文章</a>
 </div>
@@ -651,6 +663,44 @@ Enter → 改行
             </div>
         </div>
     </div>
+    <div id="tab-cur" style="display:none">
+        <div class="nm">
+            <div class="nm__panel">
+                <h2 id="cr-heading">CURRENTS にニュースを足す</h2>
+                <p class="note">気になるニュース・おすすめのニュースへのリンク。トップの NEWS の下「CURRENTS」に新しい順で載ります。3件以上になると、新しい2件のほかは「ほか N 件」の矢印にまとまり、押すと全部ひらきます。押すと元の記事が新しいタブで開きます。</p>
+                <div class="field"><label>リンク（URL）</label><input type="url" id="cr-url" placeholder="https://…"></div>
+                <div class="field"><label>見出し</label><input type="text" id="cr-title" maxlength="120" placeholder="元の記事の見出し"></div>
+                <div class="nm__row">
+                    <div class="field"><label>媒体名（任意）</label><input type="text" id="cr-source" maxlength="40" placeholder="例：美術手帖"></div>
+                    <div class="field"><label>日付</label><input type="date" id="cr-date"></div>
+                </div>
+                <div class="field"><label>ひとこと（任意・短く）</label><input type="text" id="cr-comment" maxlength="100" placeholder="例：この秋いちばん見ておきたい展示。"></div>
+                <div class="field">
+                    <label>サムネ（任意）</label>
+                    <div class="mp-pick">
+                        <div class="mp-box cr-box" id="cr-box"><span class="mp-box__empty">画像なし</span></div>
+                        <div>
+                            <label class="pf__btn pf__btn--main">画像を選ぶ<input type="file" accept="image/*" hidden onchange="crPick(this)"></label>
+                            <button type="button" class="pf__btn" onclick="crClearImage()">画像を外す</button>
+                            <p class="pf__hint" style="margin-top:8px">元の記事の画像を保存して選んでください。クリック／ドラッグで見せたい中心を決められます。画像がないときは、黒地に媒体名の入った表紙になります。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="nm__actions">
+                    <button class="btn-publish" id="cr-publish" onclick="publishCur()"><span class="spinner"></span><span>載せる</span></button>
+                    <button class="nm__reset" type="button" onclick="resetCur()">新しく足す</button>
+                </div>
+                <div class="result" id="cr-result" style="margin-top:14px"></div>
+            </div>
+            <div class="nm__side">
+                <div class="nm__panel">
+                    <h2>載っているニュース</h2>
+                    <p class="note">トップと同じ順番です。押すと直せます。</p>
+                    <div class="cr-list" id="cr-list"><p class="edit-loading">読み込み中…</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="tab-news" style="display:none">
         <div class="nm">
             <div class="nm__panel">
@@ -787,10 +837,12 @@ function switchTab(name) {
     document.getElementById('tab-edit').style.display  = name === 'edit'  ? '' : 'none';
     document.getElementById('tab-news').style.display  = name === 'news'  ? '' : 'none';
     document.getElementById('tab-map').style.display   = name === 'map'   ? '' : 'none';
+    document.getElementById('tab-cur').style.display   = name === 'cur'   ? '' : 'none';
     document.querySelectorAll('.tab-btn[data-tab]').forEach(b => b.classList.toggle('is-active', b.dataset.tab === name));
     if (name === 'edit') loadEditList();
     if (name === 'news') { loadNewsList(); nmPreview(); }
     if (name === 'map') loadMapList();
+    if (name === 'cur') loadCurList();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1101,14 +1153,14 @@ async function mpCrop() {
 const mpLocal = {};
 function mpSrc(src) { return mpLocal[src] || SITE + src; }
 function mpRetry(img) {
-    const item = img.closest('.mp-item, .mp-box');
+    const item = img.closest('.mp-item, .mp-box, .cr-item__im');
     if (item) item.classList.add('is-waiting');
     const n = +(img.dataset.retry || 0);
     if (n >= 30) return;
     img.dataset.retry = n + 1;
     setTimeout(() => { img.src = img.src.replace(/\?.*$/, '') + '?r=' + Date.now(); }, 5000);
 }
-function mpLoaded(img) { const item = img.closest('.mp-item, .mp-box'); if (item) item.classList.remove('is-waiting'); }
+function mpLoaded(img) { const item = img.closest('.mp-item, .mp-box, .cr-item__im'); if (item) item.classList.remove('is-waiting'); }
 function mpBox() {
     const box = document.getElementById('mp-box');
     const src = mp.url || (mp.editing >= 0 && mp.list[mp.editing] ? mpSrc(mp.list[mp.editing].src) : '');
@@ -1157,6 +1209,162 @@ async function readMap(token) {
     const f = await ghGet(MAP_DIR + '/manifest.json', token);
     return { arr: f ? JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g, ''))))) : [], sha: f?.sha };
 }
+// ═══════════════════════════════════════════════════════════
+//  CURRENTS（気になるニュース）：currents/manifest.json に
+//  { id, url, title, source, date, comment, image, imageX, imageY } を足していく（並びはトップで日付の新しい順）
+// ═══════════════════════════════════════════════════════════
+const CUR_DIR = 'currents';
+const cr = { blob: null, url: '', x: 50, y: 50, editing: -1, list: [], drop: false };
+function crOrder(list) {   // トップと同じ並び（日付の新しい順、同じ日はあとから足したもの）
+    const k = c => String(c.date || '').replace(/[^0-9]/g, '');
+    return list.map((c, i) => [c, i]).sort((a, b) => k(b[0]).localeCompare(k(a[0])) || b[1] - a[1]);
+}
+function crBox() {
+    const box = document.getElementById('cr-box');
+    const old = cr.editing >= 0 ? cr.list[cr.editing] : null;
+    const src = cr.url || (old && old.image && !cr.drop ? mpSrc(old.image) : '');
+    if (!src) { box.className = 'mp-box cr-box'; box.innerHTML = '<span class="mp-box__empty">画像なし</span>'; return; }
+    box.className = 'mp-box cr-box pf__box';
+    box.innerHTML = `<img src="${src}" alt="" style="object-position:${cr.x}% ${cr.y}%" onerror="mpRetry(this)" onload="mpLoaded(this)"><span class="pf__dot" style="left:${cr.x}%;top:${cr.y}%"></span>`;
+    if (!box._bound) {   // 見せたい中心（ドラッグ）
+        box._bound = true;
+        let drag = false;
+        const move = e => {
+            const r = box.getBoundingClientRect();
+            cr.x = Math.round(Math.min(100, Math.max(0, (e.clientX - r.left) / r.width * 100)));
+            cr.y = Math.round(Math.min(100, Math.max(0, (e.clientY - r.top) / r.height * 100)));
+            const img = box.querySelector('img'), dot = box.querySelector('.pf__dot');
+            if (img) img.style.objectPosition = `${cr.x}% ${cr.y}%`;
+            if (dot) { dot.style.left = cr.x + '%'; dot.style.top = cr.y + '%'; }
+        };
+        box.addEventListener('pointerdown', e => { if (!box.querySelector('img')) return; drag = true; box.setPointerCapture(e.pointerId); move(e); });
+        box.addEventListener('pointermove', e => { if (drag) move(e); });
+        box.addEventListener('pointerup', () => drag = false);
+        box.addEventListener('pointercancel', () => drag = false);
+    }
+}
+async function crPick(input) {
+    const file = input.files[0]; input.value = '';
+    if (!file) return;
+    try {
+        const blob = await compressImage(file, 1400, 0.85);
+        if (cr.url) URL.revokeObjectURL(cr.url);
+        Object.assign(cr, { blob, url: URL.createObjectURL(blob), x: 50, y: 50, drop: false });
+        crBox();
+    } catch (e) { alert(e.message); }
+}
+function crClearImage() {
+    if (cr.url) URL.revokeObjectURL(cr.url);
+    Object.assign(cr, { blob: null, url: '', x: 50, y: 50, drop: true });
+    crBox();
+}
+function resetCur(keepResult) {
+    if (cr.url) URL.revokeObjectURL(cr.url);
+    Object.assign(cr, { blob: null, url: '', x: 50, y: 50, editing: -1, drop: false });
+    ['cr-url', 'cr-title', 'cr-source', 'cr-comment'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('cr-date').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('cr-heading').textContent = 'CURRENTS にニュースを足す';
+    document.getElementById('cr-publish').querySelector('span:last-child').textContent = '載せる';
+    if (!keepResult) { const r = document.getElementById('cr-result'); r.className = 'result'; r.innerHTML = ''; }
+    crBox();
+}
+async function readCur(token) {
+    const f = await ghGet(CUR_DIR + '/manifest.json', token);
+    return { arr: f ? JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\n/g, ''))))) : [], sha: f?.sha };
+}
+async function loadCurList() {
+    const box = document.getElementById('cr-list');
+    if (!document.getElementById('cr-date').value) resetCur();
+    try {
+        const token = getToken();
+        cr.list = token ? (await readCur(token)).arr : await fetch('../' + CUR_DIR + '/manifest.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []);
+        const rows = crOrder(cr.list);
+        box.innerHTML = rows.length ? rows.map(([c, i], n) => `
+            ${n === 2 && rows.length >= 3 ? '<p class="cr-list__fold">ここから下は、トップでは「ほか N 件」の中にまとまります</p>' : ''}
+            <div class="cr-item" onclick="editCur(${i})" title="${escHTML(c.url)}">
+                <span class="cr-item__im">${c.image ? `<img src="${escHTML(mpSrc(c.image))}" alt="" loading="lazy" style="object-position:${c.imageX ?? 50}% ${c.imageY ?? 50}%" onerror="mpRetry(this)" onload="mpLoaded(this)">` : escHTML(c.source || 'NEWS')}</span>
+                <span><span class="cr-item__t">${escHTML(c.title)}</span><span class="cr-item__m">${escHTML([c.source, c.date].filter(Boolean).join('　'))}</span></span>
+                <button class="cr-item__del" type="button" onclick="event.stopPropagation();deleteCur(${i})">削除</button>
+            </div>`).join('') : '<p class="edit-loading">まだありません。</p>';
+    } catch (e) { box.innerHTML = `<p class="edit-loading">読み込みに失敗しました: ${escHTML(e.message)}</p>`; }
+}
+function editCur(i) {
+    const c = cr.list[i];
+    if (!c) return;
+    if (!getToken()) { alert('直すには投稿キーが必要です。'); return; }
+    if (cr.url) URL.revokeObjectURL(cr.url);
+    Object.assign(cr, { blob: null, url: '', x: c.imageX ?? 50, y: c.imageY ?? 50, editing: i, drop: false });
+    document.getElementById('cr-url').value = c.url || '';
+    document.getElementById('cr-title').value = c.title || '';
+    document.getElementById('cr-source').value = c.source || '';
+    document.getElementById('cr-comment').value = c.comment || '';
+    document.getElementById('cr-date').value = String(c.date || '').replace(/\./g, '-');
+    document.getElementById('cr-heading').textContent = 'ニュースを直す';
+    document.getElementById('cr-publish').querySelector('span:last-child').textContent = '直して保存';
+    crBox();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+async function publishCur() {
+    const token = getToken();
+    if (!token) { alert('投稿キーを入力してください。'); return; }
+    const v = id => document.getElementById(id).value.trim();
+    const url = v('cr-url'), title = v('cr-title'), source = v('cr-source'), comment = v('cr-comment'), date = v('cr-date');
+    if (!/^https?:\/\/\S+$/.test(url)) { alert('リンク（https:// から始まるURL）を入れてください。'); return; }
+    if (!title) { alert('見出しを入れてください。'); return; }
+    const editing = cr.editing >= 0, old = editing ? cr.list[cr.editing] : null;
+    const btn = document.getElementById('cr-publish'), result = document.getElementById('cr-result');
+    btn.classList.add('is-loading'); btn.disabled = true;
+    try {
+        let image = old && old.image && !cr.drop ? old.image : '';
+        if (cr.blob) {
+            image = `${CUR_DIR}/images/${Date.now()}.jpg`;
+            await ghPutBinary(image, token, 'CURRENTS：画像追加', await blobToBase64(cr.blob));
+            mpLocal[image] = URL.createObjectURL(cr.blob);
+        }
+        const { arr, sha } = await readCur(token);
+        const entry = { id: old && old.id ? old.id : String(Date.now()), url, title, date: fmtDate(date) };
+        if (source) entry.source = source;
+        if (comment) entry.comment = comment;
+        if (image) Object.assign(entry, { image, imageX: cr.x, imageY: cr.y });
+        if (editing) {
+            const at = arr.findIndex(c => (old.id && c.id === old.id) || (!old.id && c.url === old.url && c.title === old.title));
+            if (at < 0) throw new Error('元のニュースが見つかりませんでした。一覧を読み直してください。');
+            arr[at] = entry;
+        } else arr.push(entry);
+        await ghPut(CUR_DIR + '/manifest.json', token, `CURRENTS：${editing ? 'ニュースを修正' : 'ニュースを追加'}`, JSON.stringify(arr, null, 2), sha);
+        // 差し替えた・外した前の画像は消す
+        if (old && old.image && old.image !== image && old.image.startsWith(CUR_DIR + '/images/')) {
+            const f = await ghGet(old.image, token).catch(() => null);
+            if (f) await ghDelete(old.image, token, 'CURRENTS：前の画像を削除', f.sha).catch(() => {});
+        }
+        result.className = 'result result--success is-visible';
+        result.innerHTML = `✓ <strong>${editing ? '直しました' : '載せました'}。</strong> 反映まで1〜2分。 <a href="${SITE}#currents" target="_blank">トップで見る →</a>`;
+        resetCur(true);
+        loadCurList();
+    } catch (e) {
+        result.className = 'result result--error is-visible';
+        result.innerHTML = `✗ <strong>失敗しました。</strong> ${escHTML(e.message)}`;
+    } finally { btn.classList.remove('is-loading'); btn.disabled = false; }
+}
+async function deleteCur(i) {
+    const c = cr.list[i];
+    if (!c) return;
+    const token = getToken();
+    if (!token) { alert('削除するには投稿キーが必要です。'); return; }
+    if (!confirm(`「${c.title}」を CURRENTS から削除しますか？`)) return;
+    try {
+        const { arr, sha } = await readCur(token);
+        const keep = arr.filter(x => !((c.id && x.id === c.id) || (!c.id && x.url === c.url && x.title === c.title)));
+        await ghPut(CUR_DIR + '/manifest.json', token, 'CURRENTS：ニュースを削除', JSON.stringify(keep, null, 2), sha);
+        if (c.image && c.image.startsWith(CUR_DIR + '/images/')) {
+            const f = await ghGet(c.image, token).catch(() => null);
+            if (f) await ghDelete(c.image, token, 'CURRENTS：画像を削除', f.sha).catch(() => {});
+        }
+        if (cr.editing === i) resetCur();
+        loadCurList();
+    } catch (e) { alert('削除に失敗しました: ' + e.message); }
+}
+
 async function loadMapList() {
     const box = document.getElementById('mp-list');
     try {

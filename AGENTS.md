@@ -331,3 +331,9 @@ Supabase（無料tier）を使って全ユーザーが同じカウントを見�
 - 日常を地図（`projects/nichijo.html`）：写真は `projects/nichijo/manifest.json`（`src` / `date` / `memo` / `x` / `y`、足した順に保存。ページでは新しい順に並び、「投稿順」「日付順」を切り替えられる）と `projects/nichijo/images/`。記事メーカーの「🗺 日常を地図」タブで追加・修正・削除。いつも3列、日付とメモはPCはホバーで表示。写真を押す（タップ）と背景を暗くぼかして本来の比率で大きく開く（前後は矢印・←→・スワイプ、閉じるは背景・×・Esc）
 - 記事のカテゴリに `interview`（インタビュー、マゼンタの帯）を追加。`dialogue`（対談）は藍の帯
 - 人と作品のつながり：記事の `collabs`（コラボレーターの id、記事メーカーで選ぶ）＋著者名に名前がある人 → 記事の下に「#名前」。コラボレーターのページには、その人の「関わったコンテンツ」（企画・記事・連載・配信の出演）が並ぶ。配信は `index.html` の `radioEpisodes` の `collabs`（またはゲスト名）でつながる
+
+## 14. CURRENTS（気になるニュース・2026-11 追加）
+
+- トップの NEWS の下。外のニュース・おすすめのニュースへのリンクとサムネ。`currents/manifest.json`（`id` / `url` / `title` / `source` 媒体名 / `date` / `comment` ひとこと / `image`・`imageX`・`imageY`）、画像は `currents/images/`
+- 記事メーカー（`tools/submit.html`）の「🔗 CURRENTS」タブで追加・修正・削除
+- 並びは日付の新しい順（同じ日はあとから足したもの）。3件以上なら新しい2件のほかは「ほか N 件」（`<details>`）にまとめる。1件もないときは欄ごと出さない

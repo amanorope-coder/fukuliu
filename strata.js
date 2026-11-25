@@ -118,6 +118,37 @@
     }
 
     // ================================================================
+    //  CURRENTS（気になるニュース）：currents/manifest.json。外のニュースへのリンク
+    //  新しい順（日付、同じ日はあとから足したもの）。3件以上なら新しい2件のほかは「ほか N 件」にまとめる
+    // ================================================================
+    function renderCurrents(list) {
+        const sec = $('#currents'), ol = $('#currents-rows');
+        if (!sec || !ol) return;
+        const items = (Array.isArray(list) ? list : []).filter(c => c && c.url && c.title)
+            .map((c, n) => ({ c, n })).sort((a, b) => dkey(b.c.date).localeCompare(dkey(a.c.date)) || b.n - a.n).map(x => x.c);
+        sec.hidden = !items.length;
+        if (!items.length) return;
+        const row = (c, i, rv = true) => `
+            <li${rv ? ` class="rv" style="--rd:${i * 0.05}s"` : ''}><a class="cr" ${href(c.url)}>
+                <span class="cr__im${c.image ? '' : ' cr__im--none'}" aria-hidden="true">${c.image ? `<img src="${esc(c.image)}" alt="" loading="lazy" style="object-position:${c.imageX ?? 50}% ${c.imageY ?? 50}%">` : `<i>${esc(c.source || 'NEWS')}</i>`}</span>
+                <span class="cr__tx">
+                    <span class="cr__meta">${c.source ? `<b>${esc(c.source)}</b>` : ''}${c.date ? `<time>${esc(c.date)}</time>` : ''}</span>
+                    <span class="cr__t">${esc(c.title)}</span>
+                    ${c.comment ? `<span class="cr__c">${esc(c.comment)}</span>` : ''}
+                </span>
+                <span class="cr__go" aria-hidden="true">↗</span>
+            </a></li>`;
+        const fold = items.length >= 3;
+        const head = fold ? items.slice(0, 2) : items, rest = fold ? items.slice(2) : [];
+        ol.innerHTML = head.map(row).join('') + (rest.length ? `
+            <li class="cr-fold"><details>
+                <summary><span>ほか <b>${rest.length}</b> 件</span><i aria-hidden="true"></i></summary>
+                <ol class="nwl">${rest.map((c, i) => row(c, i, false)).join('')}</ol>
+            </details></li>` : '');
+        afterRender();
+    }
+
+    // ================================================================
     //  地表：最新（大きな一本 ＋ 一覧）
     // ================================================================
     function renderSurface() {
@@ -962,6 +993,7 @@
 
         const json = (u, fb) => fetch(u, { cache: 'no-cache' }).then(r => r.ok ? r.json() : fb).catch(() => fb);
         json('news/manifest.json', []).then(renderNews);
+        json('currents/manifest.json', []).then(renderCurrents);
         Promise.all([json('articles/manifest.json', []), json('collaborators/manifest.json', [])]).then(([man, col]) => {
             const merged = [...(Array.isArray(man) ? man : []), ...STATIC_ARTICLES];
             state.articles = merged.map((a, i) => Object.assign({ _i: i }, a))
