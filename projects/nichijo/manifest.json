@@ -87,5 +87,14 @@
     "ratio": "S",
     "w": 2000,
     "h": 2000
+  },
+  {
+    "src": "projects/nichijo/images/1795743646269.jpg",
+    "date": "2026.11.25",
+    "memo": "ローソン広告(天王寺)",
+    "ratio": "M",
+    "orient": "h",
+    "w": 2000,
+    "h": 1236
   }
 ]
