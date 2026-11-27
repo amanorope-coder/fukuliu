@@ -96,5 +96,14 @@
     "orient": "h",
     "w": 2000,
     "h": 1236
+  },
+  {
+    "src": "projects/nichijo/images/1795743732596.jpg",
+    "date": "2026.11.19",
+    "memo": "COHJU(漢字表記)",
+    "ratio": "F",
+    "orient": "v",
+    "w": 1618,
+    "h": 2000
   }
 ]
